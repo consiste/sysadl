@@ -5,7 +5,7 @@ Never commit to the master branch, it might lead to several issues. Create your 
 
 # SysADL
 
-In order to start working with this code, follow this steps:
+In order to start working with this code, follow these steps:
 - Clone the repository
 - Import as existing projects in Eclipse (there will be a lot of errors)
 - Open SysADL_Sintax/model/SysADL_Sintax.genmodel

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated sysADL_Sintax -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="sysADL_Sintax.presentation.SysADLModelWizardID"
+            name="%_UI_SysADLModelWizard_label"
+            class="sysADL_Sintax.presentation.SysADLModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/SysADLModelFile.gif">
+         <description>%_UI_SysADLModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated sysADL_Sintax -->
+      <editor
+            id="sysADL_Sintax.presentation.SysADLEditorID"
+            name="%_UI_SysADLEditor_label"
+            icon="icons/full/obj16/SysADLModelFile.gif"
+            extensions="sysadl"
+            class="sysADL_Sintax.presentation.SysADLEditor"
+            contributorClass="sysADL_Sintax.presentation.SysADLActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>

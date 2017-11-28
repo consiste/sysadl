@@ -1,4 +1,9 @@
-# sysadl
+
+# Important
+
+Never commit to the master branch, it might lead to several issues. Create your own branch and work on it. As soon as you finish your work, create a pull request to the master branch.
+
+# SysADL
 
 In order to start working with this code, follow this steps:
 - Clone the repository
@@ -14,6 +19,3 @@ In order to start working with this code, follow this steps:
 
 Report any problem you find with this process.
 
-# Important
-
-Never commit to the master branch without asking me (eduardoafs), it might lead to several issues. Create your own branch and work on it.

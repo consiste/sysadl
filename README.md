@@ -19,3 +19,4 @@ In order to start working with this code, follow these steps:
 
 Report any problem you find with this process.
 
+IMPORTANT: Sirius uses Java frames which sources are NOT included in common JREs. Therefore, install JDK and configure Eclipse to use it to build instead of any JRE.

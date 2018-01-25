@@ -124,7 +124,7 @@ Package returns Package:
 Requirement returns Requirement:
 	'Requirement' name=ID '(' id=EFloat ')'
 	'{'
-		'text' '=' text=EString
+		('text' '=' text=EString)?
 		('satisfiedBy' satisfiedBy+=[ElementDef|EString] ( "," satisfiedBy+=[ElementDef|EString])* ';')?
 		('derive' derivedBy+=[Requirement|EString] ( "," derivedBy+=[Requirement|EString])* ';' )?
 		(properties+=Property

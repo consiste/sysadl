@@ -14,9 +14,11 @@ public class RequirementAssignSatisfy extends AbstractExternalJavaAction {
 
 	@Override
 	public boolean canExecute(Collection<? extends EObject> arg0) {
-		/*System.out.println("arg0 is: "+arg0);
-		System.out.println("AssignSatisfy "+((arg0 instanceof ElementDef)? "can" : "cannot") + " execute.");
-		return (arg0 instanceof ElementDef);*/
+		for (EObject e : arg0) {
+			if (!(e instanceof ElementDef)) {
+				return false;
+			}
+		}
 		return true; 
 	}
 

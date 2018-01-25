@@ -45,7 +45,7 @@ DataDef returns DataDef:
 
 
 ComponentDef returns ComponentDef:
-	(isBoundary?='boundary')? 'component' 'def' name=ID (showInRequirements?='[r]')?
+	(isBoundary?='boundary')? 'component' 'def' name=ID ('satisfies' satisfies=[Requirement|QualifiedName])?
 	'{'
 		('ports' ports+=PortUse*)?
 		(properties+=Property

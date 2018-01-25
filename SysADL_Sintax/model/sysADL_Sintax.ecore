@@ -183,7 +183,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="delegations" upperBound="-1"
         eType="#//ActivityDelegation" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ActionDef" eSuperTypes="#//BehaviorDef">
+  <eClassifiers xsi:type="ecore:EClass" name="ActionDef" eSuperTypes="#//BehaviorDef #//ActivityFlowable">
     <eStructuralFeatures xsi:type="ecore:EReference" name="returnType" eType="#//TypeDef"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ActionUse" eSuperTypes="#//NamedElement #//ActivityFlowable">
@@ -455,15 +455,11 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Allocation" abstract="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="ExecutableAllocation" eSuperTypes="#//Allocation">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="source" lowerBound="1"
-        eType="#//Executable"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
-        eType="#//ActionDef"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source" eType="#//Executable"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//ActionDef"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ActivityAllocation" eSuperTypes="#//Allocation">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="source" lowerBound="1"
-        eType="#//ActivityDef"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
-        eType="#//StructuralDef"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source" eType="#//ActivityDef"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//StructuralDef"/>
   </eClassifiers>
 </ecore:EPackage>

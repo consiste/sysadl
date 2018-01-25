@@ -35,7 +35,7 @@
         </edgeMappings>
         <containerMappings name="BDD" semanticCandidatesExpression="var:self" domainClass="sysADL_Sintax.Package">
           <subNodeMappings name="BDD.Dimension" semanticCandidatesExpression="feature:architectures" domainClass="sysADL_Sintax.DimensionDef">
-            <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="['&lt;&lt;dimenstion>>\n'+self.name/]" iconPath="/SysADL.viewpoints/icons/DataType.gif" labelPosition="node" resizeKind="NSEW" color="//@userColorsPalettes[name='Colors']/@entries[name='BlueDataType']">
+            <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="['&lt;&lt;dimension>>\n'+self.name/]" iconPath="/SysADL.viewpoints/icons/DataType.gif" labelPosition="node" resizeKind="NSEW" color="//@userColorsPalettes[name='Colors']/@entries[name='BlueDataType']">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </style>
@@ -535,72 +535,6 @@
           </ownedTools>
         </toolSections>
       </defaultLayer>
-      <additionalLayers name="BDD.Disabled" label="Disable/Under Development Features">
-        <toolSections name="Test" label="BDD.Tools.Test"/>
-        <toolSections name="BDD.Tools.Disabled">
-          <ownedTools xsi:type="tool:ContainerCreationDescription" name="BDD.Tools.SimplePort" label="Define Simple Port" forceRefresh="true" containerMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.SimplePortDef']" iconPath="/SysADL.viewpoints/icons/Property.gif">
-            <variable name="container"/>
-            <viewVariable name="containerView"/>
-            <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="SimplePortDef" referenceName="architectures">
-                <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
-                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newPort"/>
-                </subModelOperations>
-              </firstModelOperations>
-            </initialOperation>
-          </ownedTools>
-          <ownedTools xsi:type="tool:ContainerCreationDescription" name="BDD.Tools.CompositePort" label="Define Composite Port" forceRefresh="true" containerMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.CompositePort']" iconPath="/SysADL.viewpoints/icons/Property.gif">
-            <variable name="container"/>
-            <viewVariable name="containerView"/>
-            <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="CompositePortDef" referenceName="architectures">
-                <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
-                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newPort"/>
-                  <subModelOperations xsi:type="tool_1:CreateInstance" typeName="PortUse" referenceName="ports" variableName="instance1">
-                    <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance1">
-                      <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newPort1"/>
-                    </subModelOperations>
-                  </subModelOperations>
-                  <subModelOperations xsi:type="tool_1:CreateInstance" typeName="PortUse" referenceName="ports" variableName="instance2">
-                    <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance2">
-                      <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newPort2"/>
-                    </subModelOperations>
-                  </subModelOperations>
-                </subModelOperations>
-              </firstModelOperations>
-            </initialOperation>
-          </ownedTools>
-          <ownedTools xsi:type="tool:NodeCreationDescription" name="BDD.Tools.Component.Port" label="Port (Component, Composite Port)" forceRefresh="true" nodeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ComponentDef']/@borderedNodeMappings[name='BDD.ComDef.Ports'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.CompositePort']/@subNodeMappings[name='BDD.CompositePort.Ports'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.Import.ComponentDef']/@borderedNodeMappings[name='BDD.ComDef.Import.Ports']" iconPath="/SysADL.viewpoints/icons/Property.gif">
-            <variable name="container"/>
-            <viewVariable name="containerView"/>
-            <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="PortUse" referenceName="ports">
-                <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
-                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newPort"/>
-                </subModelOperations>
-              </firstModelOperations>
-            </initialOperation>
-          </ownedTools>
-          <ownedTools xsi:type="tool:NodeCreationDescription" name="BDD.Tools.Component.Port" label="Port (Component, Composite Port)" forceRefresh="true" nodeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ComponentDef']/@borderedNodeMappings[name='BDD.ComDef.Ports'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.CompositePort']/@subNodeMappings[name='BDD.CompositePort.Ports'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.Import.ComponentDef']/@borderedNodeMappings[name='BDD.ComDef.Import.Ports']" iconPath="/SysADL.viewpoints/icons/Property.gif">
-            <variable name="container"/>
-            <viewVariable name="containerView"/>
-            <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="PortUse" referenceName="ports">
-                <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
-                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newPort"/>
-                </subModelOperations>
-              </firstModelOperations>
-            </initialOperation>
-          </ownedTools>
-          <ownedTools xsi:type="tool:NodeCreationDescription" name="PortRef" label="Port Ref (Connector)" forceRefresh="true" nodeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ConnectorDef']/@borderedNodeMappings[name='BDD.Connector.PortRef']" iconPath="/SysADL.viewpoints/icons/Property.gif">
-            <variable name="container"/>
-            <viewVariable name="containerView"/>
-            <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="PortUse" referenceName="ports"/>
-            </initialOperation>
-          </ownedTools>
-        </toolSections>
-      </additionalLayers>
     </ownedRepresentations>
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="SysADL.IBD" label="Internal Block Diagram (Structural IBD)" domainClass="sysADL_Sintax.Configuration">
       <metamodel href="../../SysADL_Sintax/model/sysADL_Sintax.ecore#/"/>
@@ -1761,7 +1695,7 @@
                 <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
               </style>
             </subContainerMappings>
-            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;Executable>>\n'+self.name/]" iconPath="/SysADL.viewpoints/icons/Constraint.gif" backgroundStyle="GradientTopToBottom">
+            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;Executable>>\n'+self.name + ' : '+self.returnType.name/]" iconPath="/SysADL.viewpoints/icons/Constraint.gif" backgroundStyle="GradientTopToBottom">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
@@ -1812,6 +1746,7 @@
                     <subModelOperations xsi:type="tool_1:CreateInstance" typeName="Executable" referenceName="architectures">
                       <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                         <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="[(i.name + 'EX').replace('ANEX','EX')/]"/>
+                        <subModelOperations xsi:type="tool_1:SetValue" featureName="returnType" valueExpression="[i.returnType/]"/>
                         <subModelOperations xsi:type="tool_1:For" expression="[i.oclAsType(ActionDef).inParameters/]" iteratorName="param">
                           <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                             <subModelOperations xsi:type="tool_1:CreateInstance" typeName="TypeUse" referenceName="params" variableName="p">
@@ -1850,13 +1785,27 @@
         <variables name="root" documentation="The semantic root element of the table."/>
         <variables name="element" documentation="The semantic currently edited element."/>
         <variables name="container" documentation="The semantic element corresponding to the view container."/>
-        <firstModelOperation xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.ActivityAllocation" referenceName="alloc"/>
+        <firstModelOperation xsi:type="tool_1:ChangeContext" browseExpression="var:self">
+          <subModelOperations xsi:type="tool_1:If" conditionExpression="[self.allocation.oclIsUndefined()/]">
+            <subModelOperations xsi:type="tool_1:CreateInstance" typeName="AllocationTable" referenceName="allocation"/>
+          </subModelOperations>
+          <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[self.allocation/]">
+            <subModelOperations xsi:type="tool_1:CreateInstance" typeName="ActivityAllocation" referenceName="allocs"/>
+          </subModelOperations>
+        </firstModelOperation>
       </ownedCreateLine>
       <ownedCreateLine name="SysADL.Allocation.NewEX" label="New Executable Allocation" elementsToSelect="var:self" mapping="//@ownedViewpoints[name='SysADL.Allocation']/@ownedRepresentations[name='SysADL.Allocation.Table']/@ownedLineMappings[name='SysADL.Alloc']">
         <variables name="root" documentation="The semantic root element of the table."/>
         <variables name="element" documentation="The semantic currently edited element."/>
         <variables name="container" documentation="The semantic element corresponding to the view container."/>
-        <firstModelOperation xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.ExecutableAllocation" referenceName="alloc"/>
+        <firstModelOperation xsi:type="tool_1:ChangeContext" browseExpression="var:self">
+          <subModelOperations xsi:type="tool_1:If" conditionExpression="[self.allocation.oclIsUndefined()/]">
+            <subModelOperations xsi:type="tool_1:CreateInstance" typeName="AllocationTable" referenceName="allocation"/>
+          </subModelOperations>
+          <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[self.allocation/]">
+            <subModelOperations xsi:type="tool_1:CreateInstance" typeName="ExecutableAllocation" referenceName="allocs"/>
+          </subModelOperations>
+        </firstModelOperation>
       </ownedCreateLine>
       <ownedColumnMappings name="SysADL.Alloc.Source" headerLabelExpression="Source" featureName="source" labelExpression="[self.source.name/]"/>
       <ownedColumnMappings name="SysADL.Alloc.Target" headerLabelExpression="Target" featureName="target" labelExpression="[self.target.name/]"/>

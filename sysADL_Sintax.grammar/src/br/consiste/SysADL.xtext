@@ -326,7 +326,7 @@ ConstraintDef returns ConstraintDef:
  * Executable Viewpoint 
  */
 Executable returns Executable:
-	'executable' 'def' name=ID '(' ('in' params+=TypeUse (',' 'in' params+=TypeUse)*)? ')' ':' 'out' returnType=[TypeDef|ID] (showInRequirements?='[r]')?
+	'executable' 'def' name=ID '(' ('in' params+=TypeUse (',' 'in' params+=TypeUse)*)? ')' ':' 'out' returnType=[TypeDef|QualifiedName] (showInRequirements?='[r]')?
 	'{'
 		body+=NonBlockStatement*
 	'}';
@@ -654,8 +654,9 @@ ActivityFlow returns ActivityFlow:
 
 AllocationTable returns AllocationTable:
 	{AllocationTable}
-	'allocations' ':'
+	'allocations' '{'
 		allocs+=Allocation*
+	'}'
 ;
 
 Allocation returns Allocation:
@@ -663,12 +664,12 @@ Allocation returns Allocation:
 
 ExecutableAllocation returns ExecutableAllocation:
 	{ExecutableAllocation}
-	'executable' source=[Executable|QualifiedName] 'to' target=[ActionDef|QualifiedName]
+	'executable' (source=[Executable|QualifiedName] | 'null') 'to' (target=[ActionDef|QualifiedName] | 'null')
 ; 
 
 ActivityAllocation returns ActivityAllocation:
 	{ActivityAllocation}
-	'activity' source=[ActivityDef|QualifiedName] 'to' target=[StructuralDef|QualifiedName]
+	'activity' (source=[ActivityDef|QualifiedName] | 'null') 'to' (target=[StructuralDef|QualifiedName] | 'null')
 ;
 
 EBoolean returns ecore::EBoolean:

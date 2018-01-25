@@ -14,8 +14,12 @@ public class RequirementDeleteElement extends AbstractExternalJavaAction {
 
 	@Override
 	public boolean canExecute(Collection<? extends EObject> arg0) {
-		// TODO Auto-generated method stub
-		return true;
+		for (EObject e : arg0) {
+			if (!(e instanceof ElementDef)) {
+				return false;
+			}
+		}
+		return true; 
 	}
 
 	@Override

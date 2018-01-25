@@ -20,8 +20,8 @@
         eType="#//Package" containment="true" eKeys="#//NamedElement/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="requirements" upperBound="-1"
         eType="#//Requirement" containment="true" eKeys="#//NamedElement/name"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="involvedElements" upperBound="-1"
-        eType="#//ElementDef"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="involvedElements" ordered="false"
+        upperBound="-1" eType="#//ElementDef"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="allocation" eType="#//AllocationTable"
         derived="true" containment="true"/>
   </eClassifiers>

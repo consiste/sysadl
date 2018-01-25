@@ -988,7 +988,7 @@
               <firstModelOperations xsi:type="tool:Navigation" createIfNotExistent="true" diagramDescription="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='Parametric']"/>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="BDD.Behavior.Tools.ParamIn" label="Parameter (In)" precondition="[container.oclIsTypeOf(ActionDef)._or(container.oclIsTypeOf(ActivityDef))/]" candidatesExpression="[self.eContainer().oclAsType(Package).eContents(TypeDef)->union(self.eContainer().oclAsType(Package).imports.eContents(TypeDef))/]" rootExpression="var:self" childrenExpression="var:self" message="Select Parameter Type" iconPath="/SysADL.viewpoints/icons/Parameter.gif" windowTitle="Select Type" windowImagePath="/SysADL.viewpoints/icons/Parameter.gif">
+          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="BDD.Behavior.Tools.ParamIn" label="Parameter (In)" precondition="[container.oclIsKindOf(BehaviorDef)/]" candidatesExpression="[self.eContainer().oclAsType(Package).eContents(TypeDef)->union(self.eContainer().oclAsType(Package).imports.eContents(TypeDef))/]" rootExpression="var:self" childrenExpression="var:self" message="Select Parameter Type" iconPath="/SysADL.viewpoints/icons/Parameter.gif" windowTitle="Select Type" windowImagePath="/SysADL.viewpoints/icons/Parameter.gif">
             <element name="element"/>
             <containerView name="containerView"/>
             <container name="container"/>
@@ -1003,7 +1003,7 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="BDD.Behavior.Tools.ParamOut" label="Parameter (Out)" precondition="[container.oclIsTypeOf(ActionDef)._or(container.oclIsTypeOf(ActivityDef))/]" candidatesExpression="[self.eContainer().oclAsType(Package).eContents(TypeDef)->union(self.eContainer().oclAsType(Package).imports.eContents(TypeDef))/]" rootExpression="var:self" childrenExpression="var:self" message="Select Parameter Type" iconPath="/SysADL.viewpoints/icons/Parameter.gif" windowTitle="Select Type" windowImagePath="/SysADL.viewpoints/icons/Parameter.gif">
+          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="BDD.Behavior.Tools.ParamOut" label="Parameter (Out)" precondition="[container.oclIsKindOf(BehaviorDef)/]" candidatesExpression="[self.eContainer().oclAsType(Package).eContents(TypeDef)->union(self.eContainer().oclAsType(Package).imports.eContents(TypeDef))/]" rootExpression="var:self" childrenExpression="var:self" message="Select Parameter Type" iconPath="/SysADL.viewpoints/icons/Parameter.gif" windowTitle="Select Type" windowImagePath="/SysADL.viewpoints/icons/Parameter.gif">
             <element name="element"/>
             <containerView name="containerView"/>
             <container name="container"/>

@@ -1302,7 +1302,7 @@
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </style>
           </borderedNodeMappings>
-          <subNodeMappings name="ADNew.Switch" deletionDescription="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@additionalLayers[name='AC.Disabled']/@toolSections.0/@ownedTools[name='ADNew.Delete.Switch']" semanticCandidatesExpression="[self.flows.targetSwitch/]" domainClass="sysADL_Sintax.ActivitySwitch">
+          <subNodeMappings name="ADNew.Switch" semanticCandidatesExpression="[self.flows.targetSwitch/]" domainClass="sysADL_Sintax.ActivitySwitch">
             <style xsi:type="style:LozengeNodeDescription" showIcon="false" labelExpression="['&lt;&lt;switch>>'/]" hideLabelByDefault="true" resizeKind="NSEW">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
@@ -1348,7 +1348,7 @@
           </style>
         </containerMappings>
         <toolSections name="ADNew.Tools.Intance" label="Action Instance">
-          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="test2" label="Action Instance" forceRefresh="true" candidatesExpression="[self.eContainer().eContainer().oclAsType(Package).eContents(ActionDef)->union(self.eContainer().eContainer().oclAsType(Package).imports.eContents(ActionDef))/]" rootExpression="var:self" childrenExpression="var:self" message="Select Action Def" iconPath="/SysADL.viewpoints/icons/Body.gif" windowTitle="Select Action">
+          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="test2" label="Action Instance" precondition="[container.oclIsTypeOf(Configuration)/]" forceRefresh="true" candidatesExpression="[self.eContainer().eContainer().oclAsType(Package).eContents(ActionDef)->union(self.eContainer().eContainer().oclAsType(Package).imports.eContents(ActionDef))/]" rootExpression="var:self" childrenExpression="var:self" message="Select Action Def" iconPath="/SysADL.viewpoints/icons/Body.gif" windowTitle="Select Action">
             <element name="element"/>
             <containerView name="containerView"/>
             <container name="container"/>
@@ -1491,34 +1491,6 @@
           </ownedTools>
         </toolSections>
       </defaultLayer>
-      <additionalLayers name="AC.Disabled" label="Disabled/Removed Features">
-        <toolSections name="ADNew.Tools.Free" label="Free Elements">
-          <ownedTools xsi:type="tool:DeleteElementDescription" name="ADNew.Delete.Switch" forceRefresh="true">
-            <element name="element"/>
-            <elementView name="elementView"/>
-            <containerView name="containerView"/>
-            <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[self.eContainer(ActivityFlow)/]">
-                <subModelOperations xsi:type="tool_1:RemoveElement"/>
-              </firstModelOperations>
-            </initialOperation>
-          </ownedTools>
-          <ownedTools xsi:type="tool:ContainerCreationDescription" name="ADNew.Tools.Free.Action" label="Free Action" forceRefresh="true" containerMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@containerMappings[name='ADNew.Self']/@subContainerMappings[name='ADNew.Actions']" iconPath="/SysADL.viewpoints/icons/Action.gif">
-            <variable name="container"/>
-            <viewVariable name="containerView"/>
-            <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.ActionUse" referenceName="actions"/>
-            </initialOperation>
-          </ownedTools>
-          <ownedTools xsi:type="tool:NodeCreationDescription" name="ADNew.Tools.Free.ActionPin" label="Free Action Pin" forceRefresh="true" nodeMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@containerMappings[name='ADNew.Self']/@subContainerMappings[name='ADNew.Actions']/@borderedNodeMappings[name='ADNew.Actions.Input']" iconPath="/SysADL.viewpoints/icons/Property.gif">
-            <variable name="container"/>
-            <viewVariable name="containerView"/>
-            <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.ActionPin" referenceName="pinIn"/>
-            </initialOperation>
-          </ownedTools>
-        </toolSections>
-      </additionalLayers>
     </ownedRepresentations>
   </ownedViewpoints>
   <ownedViewpoints name="SysADL.Executable" label="SysADL Executable Viewpoint" modelFileExtension="sysadl">

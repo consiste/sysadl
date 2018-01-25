@@ -59,6 +59,7 @@
     </genClasses>
     <genClasses ecoreClass="sysADL_Sintax.ecore#//ElementDef">
       <genFeatures property="None" createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//ElementDef/showInRequirements"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ElementDef/satisfies"/>
     </genClasses>
     <genClasses image="false" ecoreClass="sysADL_Sintax.ecore#//DataDef"/>
     <genClasses ecoreClass="sysADL_Sintax.ecore#//ConstraintUse">

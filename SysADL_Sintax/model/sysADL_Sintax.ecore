@@ -28,6 +28,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="ElementDef" abstract="true" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="showInRequirements" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="satisfies" ordered="false"
+        eType="#//Requirement" unsettable="true" eOpposite="#//Requirement/satisfiedBy"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DataDef" abstract="true" eSuperTypes="#//ElementDef"/>
   <eClassifiers xsi:type="ecore:EClass" name="ConstraintUse">
@@ -447,7 +449,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="composition" upperBound="-1"
         eType="#//Requirement" containment="true" eKeys="#//NamedElement/name #//Requirement/text"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="satisfiedBy" upperBound="-1"
-        eType="#//ElementDef"/>
+        eType="#//ElementDef" eOpposite="#//ElementDef/satisfies"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AllocationTable">
     <eStructuralFeatures xsi:type="ecore:EReference" name="allocs" upperBound="-1"

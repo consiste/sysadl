@@ -326,7 +326,7 @@ ConstraintDef returns ConstraintDef:
  * Executable Viewpoint 
  */
 Executable returns Executable:
-	'executable' 'def' name=ID '(' ('in' params+=TypeUse (',' 'in' params+=TypeUse)*)? ')' ':' 'out' returnType=[TypeDef|ID] (showInRequirements?='[r]')?
+	'executable' 'def' name=ID '(' ('in' params+=TypeUse (',' 'in' params+=TypeUse)*)? ')' ':' 'out' returnType=[TypeDef|QualifiedName] (showInRequirements?='[r]')?
 	'{'
 		body+=NonBlockStatement*
 	'}';

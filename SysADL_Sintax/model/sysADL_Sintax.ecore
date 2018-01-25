@@ -183,7 +183,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="delegations" upperBound="-1"
         eType="#//ActivityDelegation" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ActionDef" eSuperTypes="#//BehaviorDef">
+  <eClassifiers xsi:type="ecore:EClass" name="ActionDef" eSuperTypes="#//BehaviorDef #//ActivityFlowable">
     <eStructuralFeatures xsi:type="ecore:EReference" name="returnType" eType="#//TypeDef"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ActionUse" eSuperTypes="#//NamedElement #//ActivityFlowable">

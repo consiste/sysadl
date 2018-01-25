@@ -24,7 +24,6 @@ public class RequirementAssignSatisfy extends AbstractExternalJavaAction {
 
 	@Override
 	public void execute(Collection<? extends EObject> arg0, Map<String, Object> arg1) {
-		System.out.println("Executing...");
 		ElementDef element = getOptionalParameter(arg1, "source", ElementDef.class);
 		Requirement req = getOptionalParameter(arg1, "target", Requirement.class);
 		

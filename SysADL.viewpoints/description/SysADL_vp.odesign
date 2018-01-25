@@ -1850,13 +1850,27 @@
         <variables name="root" documentation="The semantic root element of the table."/>
         <variables name="element" documentation="The semantic currently edited element."/>
         <variables name="container" documentation="The semantic element corresponding to the view container."/>
-        <firstModelOperation xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.ActivityAllocation" referenceName="alloc"/>
+        <firstModelOperation xsi:type="tool_1:ChangeContext" browseExpression="var:self">
+          <subModelOperations xsi:type="tool_1:If" conditionExpression="[self.allocation.oclIsUndefined()/]">
+            <subModelOperations xsi:type="tool_1:CreateInstance" typeName="AllocationTable" referenceName="allocation"/>
+          </subModelOperations>
+          <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[self.allocation/]">
+            <subModelOperations xsi:type="tool_1:CreateInstance" typeName="ActivityAllocation" referenceName="allocs"/>
+          </subModelOperations>
+        </firstModelOperation>
       </ownedCreateLine>
       <ownedCreateLine name="SysADL.Allocation.NewEX" label="New Executable Allocation" elementsToSelect="var:self" mapping="//@ownedViewpoints[name='SysADL.Allocation']/@ownedRepresentations[name='SysADL.Allocation.Table']/@ownedLineMappings[name='SysADL.Alloc']">
         <variables name="root" documentation="The semantic root element of the table."/>
         <variables name="element" documentation="The semantic currently edited element."/>
         <variables name="container" documentation="The semantic element corresponding to the view container."/>
-        <firstModelOperation xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.ExecutableAllocation" referenceName="alloc"/>
+        <firstModelOperation xsi:type="tool_1:ChangeContext" browseExpression="var:self">
+          <subModelOperations xsi:type="tool_1:If" conditionExpression="[self.allocation.oclIsUndefined()/]">
+            <subModelOperations xsi:type="tool_1:CreateInstance" typeName="AllocationTable" referenceName="allocation"/>
+          </subModelOperations>
+          <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[self.allocation/]">
+            <subModelOperations xsi:type="tool_1:CreateInstance" typeName="ExecutableAllocation" referenceName="allocs"/>
+          </subModelOperations>
+        </firstModelOperation>
       </ownedCreateLine>
       <ownedColumnMappings name="SysADL.Alloc.Source" headerLabelExpression="Source" featureName="source" labelExpression="[self.source.name/]"/>
       <ownedColumnMappings name="SysADL.Alloc.Target" headerLabelExpression="Target" featureName="target" labelExpression="[self.target.name/]"/>

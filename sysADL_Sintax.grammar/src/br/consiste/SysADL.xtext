@@ -274,7 +274,7 @@ ActivityDef returns ActivityDef:
 
 DataStore returns DataStore:
 	'DataStore'
-	name=ID ':' type=[TypeDef|EString]
+	name=ID ':' type=[TypeDef|QualifiedName]
 	'{'
 		
 		properties+=Property*
@@ -285,7 +285,7 @@ DataBuffer returns DataBuffer:
 	'DataBuffer'
 	name=ID
 	'{'
-		'type' type=[TypeDef|EString]
+		'type' type=[TypeDef|QualifiedName]
 		('properties' '{' properties+=Property ( "," properties+=Property)* '}' )?
 		('initValue' initValue=Expression)?
 	'}';
@@ -428,7 +428,7 @@ PrimaryExpression returns Expression:
 ;
 
 NameExpression returns NameExpression:
-	cite=[NamedElement|ID]
+	cite=[NamedElement|QualifiedName]
 ;
 
 NonNameExpression returns Expression:
@@ -469,7 +469,7 @@ ParenthesizedExpression returns Expression:
 ;
 
 PropertyAccessExpression returns PropertyAccessExpression:	
-	(target=NonNameExpression | target=NameExpression) '.' field=[NamedElement|EString]
+	(target=NonNameExpression | target=NameExpression) '.' field=[NamedElement|QualifiedName]
 ;
 
 /* InvocationExpression returns InvocationExpression: // TODO enable all of this
@@ -584,7 +584,7 @@ ConstraintUse returns ConstraintUse:
 	;
 
 ActivityDelegation returns ActivityDelegation:
-	'delegate' source=[ActivityFlowable|EString] 'to' (target=[ActivityFlowable|EString] | targetSwitch=ActivitySwitch)
+	'delegate' source=[ActivityFlowable|QualifiedName] 'to' (target=[ActivityFlowable|QualifiedName] | targetSwitch=ActivitySwitch)
 ;
 
 enum ConstraintKind returns ConstraintKind:
@@ -600,7 +600,7 @@ ActivitySwitch returns ActivitySwitch:
 ActivitySwitchCase returns ActivitySwitchCase:
 	{ActivitySwitchCase}
 	'case' ('condition' condition=Expression)
-		('target' target=[ActivityFlowable|EString])
+		('target' target=[ActivityFlowable|QualifiedName])
 	;
 
 
@@ -631,17 +631,17 @@ ProtocolBodyInternal returns ProtocolBodyInternal:
 	'(' ProtocolBody ')' | ActionSend | ActionReceive;
 
 ActionSend returns ActionSend:
-	'send' expr=Expression	'via' flowTo=[Pin|ID]
+	'send' expr=Expression	'via' flowTo=[Pin|QualifiedName]
 ;
 
 ActionReceive returns ActionReceive:
-	'receive' var=TypeUse 'from' flowTo=[Pin|ID]
+	'receive' var=TypeUse 'from' flowTo=[Pin|QualifiedName]
 ;
 
 ActivityFlow returns ActivityFlow:
 	'flow'
-	'from' source=[ActivityFlowable|EString]
-	'to' (target=[ActivityFlowable|EString] | targetSwitch=ActivitySwitch)?
+	'from' source=[ActivityFlowable|QualifiedName]
+	'to' (target=[ActivityFlowable|QualifiedName] | targetSwitch=ActivitySwitch)?
 ;
 
 

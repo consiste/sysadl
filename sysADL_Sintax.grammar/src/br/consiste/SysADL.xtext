@@ -87,12 +87,9 @@ ActivityFlowable returns ActivityFlowable:
 
 ActionUse returns ActionUse:
 	{ActionUse}
-	'ActionUse'
-	name=ID
-	'{'
-		('definition' definition=[ActionDef|QualifiedName])?
-		('properties' '{' properties+=Property ( "," properties+=Property)* '}' )?
-		('pinIn' '{' pinIn+=Pin ( "," pinIn+=Pin)* '}' )?
+	name=ID ':' definition=[ActionDef|QualifiedName] '{'
+		('using' 'pins' pinIn+=Pin* )?
+		properties+=Property*
 	'}';
 
 ActivityRelation returns ActivityRelation:
@@ -260,20 +257,18 @@ ActionDef returns ActionDef:
 ActivityDef returns ActivityDef:
 	{ActivityDef}
 	'activity' 'def'
-	name=ID// (showInRequirements?='[r]')?
+	name=ID  ('(' inParameters+=Pin (',' inParameters+=Pin)* ')') (':' outParameters+=Pin (',' outParameters+=Pin)*)?
 	'{'
-		('properties' '{' properties+=Property ( "," properties+=Property)* '}' )?
-		('inParameters' '{' inParameters+=Pin ( "," inParameters+=Pin)* '}' )?
-		('outParameters' '{' outParameters+=Pin ( "," outParameters+=Pin)* '}' )?
-		('behaDefs' '{' behaDefs+=BehaviorDef ( "," behaDefs+=BehaviorDef)* '}' )?
-		('dataDefs' '{' dataDefs+=DataDef ( "," dataDefs+=DataDef)* '}' )?
-		('constraints' '{' constraints+=ConstraintUse ( "," constraints+=ConstraintUse)* '}' )?
-		('delegations' '{' delegations+=ActivityDelegation ( "," delegations+=ActivityDelegation)* '}' )?
-		('acbody' acbody=ActivityBody)?
+		(properties+=Property
+		| behaDefs+=BehaviorDef
+		| dataDefs+=DataDef)* 
+		('constraint' ':' constraints+=ConstraintUse*)?
+		('delegations' ':' delegations+=ActivityDelegation*)?
+		(acbody=ActivityBody)?
 	'}';
 
 DataStore returns DataStore:
-	'DataStore'
+	'datastore'
 	name=ID ':' type=[TypeDef|QualifiedName]
 	'{'
 		
@@ -282,7 +277,7 @@ DataStore returns DataStore:
 	'}';
 
 DataBuffer returns DataBuffer:
-	'DataBuffer'
+	'buffer'
 	name=ID
 	'{'
 		'type' type=[TypeDef|QualifiedName]
@@ -305,13 +300,11 @@ Protocol returns Protocol: // TODO
 
 ConstraintDef returns ConstraintDef:
 	{ConstraintDef}
-	'ConstraintDef'
-	name=ID
+	'constraint'
+	name=ID ('(' inParameters+=Pin (',' inParameters+=Pin)* ')') (':' outParameters+=Pin (',' outParameters+=Pin)*)?  
 	'{'
-		('properties' '{' properties+=Property ( "," properties+=Property)* '}' )?
-		('paramIn' '{' inParameters+=Pin ( "," inParameters+=Pin)* '}' )?
-		('paramOut' '{' outParameters+=Pin ( "," outParameters+=Pin)* '}' )?
-		('equation' equation=Expression)?
+		('equation' '=' equation=Expression)?
+		properties+=Property*
 	'}';
 
 
@@ -588,7 +581,7 @@ ActivityDelegation returns ActivityDelegation:
 ;
 
 enum ConstraintKind returns ConstraintKind:
-				preCondition = 'preCondition' | postCondition = 'postCondition' | invariant = 'invariant';
+				preCondition = 'pre-condition' | postCondition = 'post-condition' | invariant = 'invariant';
 
 ActivitySwitch returns ActivitySwitch:
 	{ActivitySwitch}
@@ -599,8 +592,7 @@ ActivitySwitch returns ActivitySwitch:
 
 ActivitySwitchCase returns ActivitySwitchCase:
 	{ActivitySwitchCase}
-	'case' ('condition' condition=Expression)
-		('target' target=[ActivityFlowable|QualifiedName])
+	'case' (condition=Expression) ':' (target=[ActivityFlowable|QualifiedName])
 	;
 
 

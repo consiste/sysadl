@@ -10,8 +10,16 @@
   <extension
         point="org.eclipse.sirius.externalJavaAction">
      <javaActions
-           actionClass="sysadl.viewpoints.OpenEmbeddedXtextEditor"
-           id="SysADL.viewpoints.OpenEmbeddedXtextEditor">
+           actionClass="sysadl.viewpoints.actions.RequirementAssignSatisfy"
+           id="org.sysadl.viewpoints.assignsatisfy">
+     </javaActions>
+     <javaActions
+           actionClass="sysadl.viewpoints.actions.RequirementDeleteSatisfy"
+           id="org.sysadl.viewpoints.deletesatisfy">
+     </javaActions>
+     <javaActions
+           actionClass="sysadl.viewpoints.actions.RequirementDeleteElement"
+           id="org.sysadl.viewpoints.deleteimported">
      </javaActions>
   </extension>
 </plugin>

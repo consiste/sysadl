@@ -263,7 +263,7 @@ ActivityDef returns ActivityDef:
 		| behaDefs+=BehaviorDef
 		| dataDefs+=DataDef)* 
 		('constraint' ':' constraints+=ConstraintUse*)?
-		('delegations' ':' delegations+=ActivityDelegation*)?
+		delegations+=ActivityDelegation*
 		(acbody=ActivityBody)?
 	'}';
 

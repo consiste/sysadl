@@ -569,7 +569,7 @@ ConnectorBinding returns ConnectorBinding:
 	firstPort=[PortUse|QualifiedName] '=' secondPort=[PortUse|QualifiedName];
 
 enum FlowProperty returns FlowProperty:
-				in = 'in' | out = 'out';
+	in = 'in' | out = 'out';
 
 ConstraintUse returns ConstraintUse:
 	{ConstraintUse}

@@ -322,7 +322,7 @@ Executable returns Executable:
  * Executable[STATEMENTS]
  */
 Statement returns Statement:
-	Expression | BlockStatement | IfBlockStatement | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | SwitchStatement
+	Expression | BlockStatement | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | SwitchStatement
 ;
 
 // Same as above, but block statement is not allowed
@@ -507,8 +507,17 @@ BinaryExpression returns Expression:// TODO
 /**
  * Conditional (ternary operation) expressions
  */
-ConditionalExpression returns Expression:// TODO
-	'cond'
+ConditionalExpression returns ConditionalExpression:// TODO
+	ConditionalAndOrConditionalOrExpression
+	| ConditionalTestExpression
+;
+
+ConditionalAndOrConditionalOrExpression returns ConditionalExpression: // FIXME add in the metamodel 
+	'cond and or'
+;
+
+ConditionalTestExpression returns ConditionalTestExpression:
+	op1=Expression '?' op2=Expression ':' op3=Expression 
 ;
 
 /**

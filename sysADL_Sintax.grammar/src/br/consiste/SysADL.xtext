@@ -322,7 +322,7 @@ Executable returns Executable:
  * Executable[STATEMENTS]
  */
 Statement returns Statement:
-	Expression | BlockStatement | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | SwitchStatement
+	Expression | BlockStatement | IfBlockStatement | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | SwitchStatement
 ;
 
 // Same as above, but block statement is not allowed
@@ -348,7 +348,7 @@ VariableDecl returns VariableDecl:
 
 IfBlockStatement returns IfBlockStatement:
 	main_if=IfStatement
-	('or' paralel_ifs+=IfStatement)*
+	('or' paralel_ifs+=IfStatement)* // TODO need to fix it, we need some mechanism to find out the order of the if statements if combining parallel and sequential 
 	('else' sequential_ifs+=IfStatement)*
 	(else=ElseStatement)?
 ;

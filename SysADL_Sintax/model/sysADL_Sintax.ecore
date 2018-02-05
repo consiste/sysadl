@@ -301,6 +301,15 @@
   <eClassifiers xsi:type="ecore:EClass" name="Expression" eSuperTypes="#//Statement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConditionalExpression" eSuperTypes="#//Expression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ConditionalTestExpression" eSuperTypes="#//ConditionalExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="op1" eType="#//Expression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="op2" eType="#//Expression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="op3" eType="#//Expression"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PrimaryExpression" abstract="true" interface="true"
       eSuperTypes="#//Expression"/>
   <eClassifiers xsi:type="ecore:EClass" name="NameExpression" eSuperTypes="#//PrimaryExpression">

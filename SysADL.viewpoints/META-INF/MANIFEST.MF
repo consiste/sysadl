@@ -10,7 +10,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.sirius.common.acceleo.mtl,
  org.eclipse.core.resources;bundle-version="3.9.0",
  SysADL_Sintax;bundle-version="2.1.0",
- SysADL_Sintax.edit;bundle-version="2.1.0",
+ SysADL_Sintax.edit,
  SysADL_Sintax.editor;bundle-version="2.1.0",
  com.google.inject,
  org.eclipse.xtext

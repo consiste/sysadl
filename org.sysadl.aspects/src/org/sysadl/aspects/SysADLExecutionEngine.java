@@ -2,8 +2,11 @@ package org.sysadl.aspects;
 
 import java.util.Map;
 
+import sysADL_Sintax.AffixOperator;
 import sysADL_Sintax.Executable;
 import sysADL_Sintax.Expression;
+import sysADL_Sintax.IncrementOrDecrementExpression;
+import sysADL_Sintax.NameExpression;
 import sysADL_Sintax.ReturnStatement;
 import sysADL_Sintax.Statement;
 
@@ -41,5 +44,24 @@ public class SysADLExecutionEngine {
 			else interpreter.run((Statement)s, context);
 		}
 		return null;
+	}
+	
+	public Object evaluate(IncrementOrDecrementExpression e, Map<String, Object> context) {
+		// x++
+		// LeftHandSize: target = x
+		// AffixOperator: AffixOperator.PLUS
+		switch (e.getOperator().getValue()) {
+			case AffixOperator.MINUS:
+				Integer o = (Integer) evaluate(e.getOperand().getTarget(), context);
+				o--;
+				return o;
+			case AffixOperator.PLUS: break;
+			default:
+		}
+		return null;
+	}
+	
+	public Object evaluate(NameExpression n, Map<String, Object> context) {
+		return context.get(n.getValue());
 	}
 }

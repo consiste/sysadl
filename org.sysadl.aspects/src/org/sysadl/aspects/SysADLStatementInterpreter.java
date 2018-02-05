@@ -6,6 +6,7 @@ import sysADL_Sintax.BlockStatement;
 import sysADL_Sintax.DoStatement;
 import sysADL_Sintax.Expression;
 import sysADL_Sintax.ForStatement;
+import sysADL_Sintax.IfBlockStatement;
 import sysADL_Sintax.ReturnStatement;
 import sysADL_Sintax.Statement;
 import sysADL_Sintax.SwitchStatement;
@@ -42,4 +43,6 @@ public abstract class SysADLStatementInterpreter {
 	public abstract void run(ForStatement s,Map<String,Object>context);
 
 	public abstract void run(SwitchStatement s, Map<String, Object> context);
+	
+	public abstract void run(IfBlockStatement s, Map<String, Object> context);
 }

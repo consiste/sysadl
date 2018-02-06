@@ -64,4 +64,13 @@ public class SysADLExecutionEngine {
 	public Object evaluate(NameExpression n, Map<String, Object> context) {
 		return context.get(n.getValue());
 	}
+	
+	private static SysADLExecutionEngine instance = new SysADLExecutionEngine();
+	private SysADLExecutionEngine() {
+		
+	}
+	
+	public static SysADLExecutionEngine getInstance() {
+		return instance;
+	}
 }

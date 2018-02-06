@@ -34,7 +34,7 @@ public abstract class SysADLStatementInterpreter {
 
 	public abstract void run(VariableDecl s,Map<String,Object>context);
 
-	public abstract void run(ReturnStatement s,Map<String,Object>context);
+	//public abstract void run(ReturnStatement s,Map<String,Object>context);
 
 	public abstract void run(WhileStatement s,Map<String,Object>context);
 

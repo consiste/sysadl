@@ -70,12 +70,4 @@ public class SysADLCreationTools {
 		// TODO
 		return l;
 	}
-	
-	public static Model getModel(EObject e) {
-		EObject val = e;
-		while (!(val instanceof Model)) {
-			val = val.eContainer(); // might be infinite loop
-		}
-		return (Model) val;
-	}
 }

@@ -407,9 +407,9 @@ Expression returns Expression:
 	/*PrimaryExpression
 	| IncrementAndDecrementExpression
 	| UnaryExpression
-	| BinaryExpression*/
+	| BinaryExpression
 	| ConditionalExpression 
-	/*| AssignmentExpression*/
+	| AssignmentExpression*/
 ;
 
 /**
@@ -504,103 +504,20 @@ BinaryExpression returns Expression:// TODO
 	'bin'
 ;
 
-ConditionalAndOrConditionalOrExpression returns Expression: 
-	InclusiveOrOrConditionalAndExpression | ConditionalOrExpression
-;
-
-InclusiveOrOrConditionalAndExpression returns Expression:
-	ExclusiveOrOrInclusiveOrExpression | ConditionalAndExpression
-;
-
-ExclusiveOrOrInclusiveOrExpression returns Expression:
-	AndOrExclusiveOrExpression | InclusiveOrExpression
-;
-
-AndOrExclusiveOrExpression returns Expression:
-	EqualityOrAndExpression | ExclusiveOrExpression
-;
-
-EqualityOrAndExpression returns Expression:
-	ClassificationOrEqualityExpression | AndExpression
-;
-
-ClassificationOrEqualityExpression returns Expression:
-	RelationalOrClassificationExpression | EqualityExpression
-;
-
-RelationalOrClassificationExpression returns Expression:
-	ArithmeticOrRelationalExpression | ClassificationExpression
-;
-
-ArithmeticOrRelationalExpression returns Expression:
-	UnaryOrArithmeticExpression | RelationalExpression
-;
-
-UnaryOrArithmeticExpression returns Expression:
-	UnaryOrMultiplicativeExpression | AdditiveExpression
-;
-
-UnaryOrMultiplicativeExpression returns Expression:
-	UnaryExpression | MultiplicativeExpression
-;
-
-MultiplicativeExpression returns ArithmeticExpression:
-	op1=UnaryExpression operator=("*" | "/" | "%") op2=UnaryOrMultiplicativeExpression
-;
-
-AdditiveExpression returns ArithmeticExpression:
-	=>op1=UnaryOrMultiplicativeExpression operator=("+" | "-") op2=UnaryOrArithmeticExpression
-;
-
-RelationalExpression returns RelationalExpression:
-	=>op1=ArithmeticOrShiftExpression operator=("<" | ">" | "<=" | ">=") op2=ArithmeticOrShiftExpression
-;
-
-ArithmeticOrShiftExpression returns Expression:
-	UnaryOrArithmeticExpression | ShiftExpression
-;
-
-ShiftExpression returns ShiftExpression:
-	=>op1=UnaryOrArithmeticExpression operator=("<<" | ">>" | ">>>") op2=ArithmeticOrShiftExpression
-;
-
-ClassificationExpression returns ClassificationExpression:
-	=>op=ArithmeticOrRelationalExpression operator=("instanceof" | "hastype") typeName=[TypeDef|QualifiedName]
-;
-
-EqualityExpression returns LogicalExpression:
-	=>op1=RelationalOrClassificationExpression operator=("=" | "!=") op2=ClassificationOrEqualityExpression
-;
-
-AndExpression returns LogicalExpression:
-	=>op1=ClassificationOrEqualityExpression operator="&" op2=EqualityOrAndExpression
-;
-
-ExclusiveOrExpression returns LogicalExpression:
-	=>op1=EqualityOrAndExpression operator="^" op2=AndOrExclusiveOrExpression
-;
-
-InclusiveOrExpression returns LogicalExpression:
-	=>op1=AndOrExclusiveOrExpression operator="|" op2=ExclusiveOrOrInclusiveOrExpression
-;
-
-ConditionalAndExpression returns ConditionalLogicalExpression:
-	=>op1=ExclusiveOrOrInclusiveOrExpression operator="&&" op2=InclusiveOrOrConditionalAndExpression
-;
-
-ConditionalOrExpression returns ConditionalLogicalExpression:
-	 =>op1=InclusiveOrOrConditionalAndExpression operator="||" op2=ConditionalAndOrConditionalOrExpression
-;
-
 /**
  * Conditional (ternary operation) expressions
  */
-ConditionalExpression returns Expression:
-	ConditionalAndOrConditionalOrExpression	| ConditionalTestExpression
+ConditionalExpression returns ConditionalExpression:// TODO
+	ConditionalAndOrConditionalOrExpression
+	| ConditionalTestExpression
+;
+
+ConditionalAndOrConditionalOrExpression returns ConditionalExpression: // FIXME add in the metamodel 
+	'cond and or'
 ;
 
 ConditionalTestExpression returns ConditionalTestExpression:
-	=>op1=ConditionalAndOrConditionalOrExpression "?" op2=Expression ":" op3=ConditionalExpression
+	op1=Expression '?' op2=Expression ':' op3=Expression 
 ;
 
 /**

@@ -301,33 +301,14 @@
   <eClassifiers xsi:type="ecore:EClass" name="Expression" eSuperTypes="#//Statement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ConditionalTestExpression" eSuperTypes="#//Expression">
+  <eClassifiers xsi:type="ecore:EClass" name="ConditionalExpression" eSuperTypes="#//Expression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ConditionalTestExpression" eSuperTypes="#//ConditionalExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="op1" eType="#//Expression"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="op2" eType="#//Expression"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="op3" eType="#//Expression"
         containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="BinaryExpression" eSuperTypes="#//Expression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="op1" eType="#//Expression"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="op2" eType="#//Expression"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ConditionalLogicalExpression" eSuperTypes="#//BinaryExpression"/>
-  <eClassifiers xsi:type="ecore:EClass" name="LogicalExpression" eSuperTypes="#//BinaryExpression"/>
-  <eClassifiers xsi:type="ecore:EClass" name="RelationalExpression" eSuperTypes="#//BinaryExpression"/>
-  <eClassifiers xsi:type="ecore:EClass" name="ShiftExpression" eSuperTypes="#//BinaryExpression"/>
-  <eClassifiers xsi:type="ecore:EClass" name="ArithmeticExpression" eSuperTypes="#//BinaryExpression"/>
-  <eClassifiers xsi:type="ecore:EClass" name="UnaryExpression" eSuperTypes="#//Expression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="op" eType="#//Expression"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ClassificationExpression" eSuperTypes="#//UnaryExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="typeName" eType="#//TypeDef"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PrimaryExpression" abstract="true" interface="true"
       eSuperTypes="#//Expression"/>

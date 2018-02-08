@@ -1,5 +1,5 @@
 /* 
- * @author Eduardo Silva
+ * @author Eduardo Silva and Lidiane Santos
 */
 grammar br.consiste.SysADL with org.eclipse.xtext.common.Terminals
 

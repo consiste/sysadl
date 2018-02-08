@@ -239,6 +239,28 @@
     <genClasses ecoreClass="sysADL_Sintax.ecore#//Expression">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//Expression/value"/>
     </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ConditionalTestExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ConditionalTestExpression/op1"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ConditionalTestExpression/op2"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ConditionalTestExpression/op3"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//BinaryExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//BinaryExpression/op1"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//BinaryExpression/op2"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//BinaryExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ConditionalLogicalExpression"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//LogicalExpression"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//RelationalExpression"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ShiftExpression"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ArithmeticExpression"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//UnaryExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//UnaryExpression/op"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//UnaryExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ClassificationExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ClassificationExpression/typeName"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="sysADL_Sintax.ecore#//PrimaryExpression"/>
     <genClasses ecoreClass="sysADL_Sintax.ecore#//NameExpression">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//NameExpression/cite"/>

@@ -409,7 +409,7 @@ Expression returns Expression:
 	| UnaryExpression
 	| BinaryExpression*/
 	| ConditionalExpression 
-	/*| AssignmentExpression*/
+	| AssignmentExpression
 ;
 
 /**
@@ -462,7 +462,16 @@ ParenthesizedExpression returns Expression:
 ;
 
 PropertyAccessExpression returns PropertyAccessExpression:	
-	(target=NonNameExpression | target=NameExpression) '.' field=[NamedElement|QualifiedName]
+	featureRef=FeatureReference
+;
+
+FeatureReference returns FeatureReference:
+	//target=(NameExpression | NonNameExpression) "." field=[NamedElement|QualifiedName]
+	target=(NameTargetExpression | NonNameExpression) "." field=[NamedElement|ID]
+;
+
+NameTargetExpression returns Expression:
+	ID ('::' ID)+
 ;
 
 /* InvocationExpression returns InvocationExpression: // TODO enable all of this
@@ -606,10 +615,23 @@ ConditionalTestExpression returns ConditionalTestExpression:
 /**
  * Assignment expressions (TODO check AssignmentStatement)
  */
-AssignmentExpression returns Expression: // TODO
-	'ass'
+AssignmentExpression returns AssignmentExpression: 
+	lhs=LeftHandSide operator=AssignmentOperator v=Expression
 ;
 
+enum AssignmentOperator returns AssignmentOperator:
+	equal = "=" | plusEqual = "+=" | minusEqual = "-=" | starEqual = "*=" | 
+	modEqual = "%=" | divEqual = "/=" | andEqual = "&=" | orEqual = "|=" | powerEqual = "^=" | 
+	powerEqual = "<<=" | shiftRightEqual = ">>=" | shiftRightDoubledEqual = ">>>="
+;
+
+LeftHandSide returns LeftHandSide:
+	=>target=NameExpression (index=Index)? | feature=FeatureReference (index=Index)? | =>"(" LeftHandSide ")"
+;
+
+Index returns Expression:
+	"[" Expression "]"
+;
 
 /**
  * Name reference and naming rules

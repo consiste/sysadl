@@ -302,19 +302,20 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalTestExpression" eSuperTypes="#//Expression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="op1" eType="#//Expression"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="op1" lowerBound="1" eType="#//Expression"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="op2" eType="#//Expression"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="op2" lowerBound="1" eType="#//Expression"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="op3" eType="#//Expression"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="op3" lowerBound="1" eType="#//Expression"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BinaryExpression" eSuperTypes="#//Expression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="op1" eType="#//Expression"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="op1" lowerBound="1" eType="#//Expression"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="op2" eType="#//Expression"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="op2" lowerBound="1" eType="#//Expression"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalLogicalExpression" eSuperTypes="#//BinaryExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="LogicalExpression" eSuperTypes="#//BinaryExpression"/>
@@ -322,12 +323,14 @@
   <eClassifiers xsi:type="ecore:EClass" name="ShiftExpression" eSuperTypes="#//BinaryExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="ArithmeticExpression" eSuperTypes="#//BinaryExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="UnaryExpression" eSuperTypes="#//Expression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="op" eType="#//Expression"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="op" lowerBound="1" eType="#//Expression"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ClassificationExpression" eSuperTypes="#//UnaryExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="typeName" eType="#//TypeDef"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="typeName" lowerBound="1"
+        eType="#//TypeDef"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PrimaryExpression" abstract="true" interface="true"
       eSuperTypes="#//Expression"/>
@@ -351,6 +354,10 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ThisExpression" eSuperTypes="#//NonNameExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="PropertyAccessExpression" eSuperTypes="#//PrimaryExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featureRef" lowerBound="1"
+        eType="#//FeatureReference" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FeatureReference">
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
         eType="#//Expression" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="field" lowerBound="1" eType="#//NamedElement"/>
@@ -397,7 +404,10 @@
   <eClassifiers xsi:type="ecore:EClass" name="LeftHandSide">
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//NameExpression"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="index" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//Expression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="#//FeatureReference"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VariableDecl" eSuperTypes="#//Statement #//TypeUse">
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//Expression"

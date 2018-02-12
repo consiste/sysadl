@@ -461,14 +461,15 @@ PropertyAccessExpression returns PropertyAccessExpression:
 
 FeatureReference returns FeatureReference:
 	//target=(NameExpression | NonNameExpression) "." field=[NamedElement|QualifiedName]
-	target=FeatureTargetExpression "." field=[NamedElement|ID]
+	//target=FeatureTargetExpression "." field=[NamedElement|ID]
+	(feature=[NamedElement|QualifiedName] | expr=NonNameExpression) '.' field=[NamedElement|ID]
 ;
 
-FeatureTargetExpression returns Expression:
-	{Expression} NameTargetExpression | NonNameExpression
+/*FeatureTargetExpression returns Expression:
+	{Expression} feature=[NamedElement|QualifiedName] | expr=NonNameExpression
 ;
 
-NameTargetExpression: ID ('::' ID)+;
+NameTargetExpression: ID ('::' ID)+;*/
 
 /* InvocationExpression returns InvocationExpression: // TODO enable all of this
 target=[BehavioralDef|EString] tuple=Tuple

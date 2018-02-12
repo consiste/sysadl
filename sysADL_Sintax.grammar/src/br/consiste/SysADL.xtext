@@ -404,20 +404,14 @@ DefaultSwitchClause returns DefaultSwitchClause:
  */
 Expression returns Expression:
 	value=EString // Removed FIXME caused problems in behavioral diagram   
-	/*PrimaryExpression
-	| IncrementAndDecrementExpression
-	| UnaryExpression
-	| BinaryExpression*/
-	| ConditionalExpression 
-	| AssignmentExpression
+	| ConditionalExpression | AssignmentExpression
 ;
 
 /**
  * Basic, simplest expressions
  */
 PrimaryExpression returns Expression:
-	NameExpression
-	| NonNameExpression
+	NameExpression | NonNameExpression
 ;
 
 NameExpression returns NameExpression:
@@ -467,12 +461,14 @@ PropertyAccessExpression returns PropertyAccessExpression:
 
 FeatureReference returns FeatureReference:
 	//target=(NameExpression | NonNameExpression) "." field=[NamedElement|QualifiedName]
-	target=(NameTargetExpression | NonNameExpression) "." field=[NamedElement|ID]
+	target=FeatureTargetExpression "." field=[NamedElement|ID]
 ;
 
-NameTargetExpression returns Expression:
-	ID ('::' ID)+
+FeatureTargetExpression returns Expression:
+	{Expression} NameTargetExpression | NonNameExpression
 ;
+
+NameTargetExpression: ID ('::' ID)+;
 
 /* InvocationExpression returns InvocationExpression: // TODO enable all of this
 target=[BehavioralDef|EString] tuple=Tuple
@@ -495,121 +491,144 @@ NamedExpression returns NamedExpression:
 /**
  * Increment and decrement expressions
  */
-IncrementAndDecrementExpression returns Expression: // TODO
-	'inc'
+IncrementOrDecrementExpression returns IncrementOrDecrementExpression:
+	PostfixExpression | PrefixExpression
+;
+
+PostfixExpression returns IncrementOrDecrementExpression:
+	operand=LeftHandSide operator=AffixOperator
+;
+
+PrefixExpression returns IncrementOrDecrementExpression:
+	operator=AffixOperator operand=LeftHandSide
+;
+
+enum AffixOperator returns AffixOperator:
+	minus = "--" | plus = "++"
 ;
 
 /**
  * Unary expressions
  */
-UnaryExpression returns Expression:// TODO
-	'unary'
+UnaryExpression returns Expression:
+	/*PrimaryExpression | IncrementOrDecrementExpression |*/ BooleanUnaryExpression |
+	BitStringUnaryExpression | NumericUnaryExpression /*| CastExpression*/ | IsolationExpression
+;
+
+BooleanUnaryExpression returns BooleanUnaryExpression:
+	operator="!" op=UnaryExpression
+;
+
+BitStringUnaryExpression returns BitStringUnaryExpression:
+	operator="~" op=UnaryExpression
+;
+
+NumericUnaryExpression returns NumericUnaryExpression:
+	operator=NumericUnaryOperator op=UnaryExpression
+;
+
+NumericUnaryOperator returns ecore::EString:
+	"+" | "-"
+;
+
+//TODO 
+//CastExpression returns CastExpression:
+//	"(" typeName=[TypeDef|QualifiedName] ")" op=NonNumericUnaryExpression
+//;
+//
+//NonNumericUnaryExpression returns Expression:
+//	PrimaryExpression | PostfixExpression | BooleanUnaryExpression | 
+//	BitStringUnaryExpression | CastExpression | IsolationExpression
+//;
+
+IsolationExpression returns IsolationExpression:
+	operator='$' op=UnaryExpression
 ;
 
 /**
  * Binary Expressions
  */
-BinaryExpression returns Expression:// TODO
-	'bin'
-;
 
-ConditionalAndOrConditionalOrExpression returns Expression: 
-	InclusiveOrOrConditionalAndExpression | ConditionalOrExpression
-;
-
-InclusiveOrOrConditionalAndExpression returns Expression:
-	ExclusiveOrOrInclusiveOrExpression | ConditionalAndExpression
-;
-
-ExclusiveOrOrInclusiveOrExpression returns Expression:
-	AndOrExclusiveOrExpression | InclusiveOrExpression
-;
-
-AndOrExclusiveOrExpression returns Expression:
-	EqualityOrAndExpression | ExclusiveOrExpression
-;
-
-EqualityOrAndExpression returns Expression:
-	ClassificationOrEqualityExpression | AndExpression
-;
-
-ClassificationOrEqualityExpression returns Expression:
-	RelationalOrClassificationExpression | EqualityExpression
-;
-
-RelationalOrClassificationExpression returns Expression:
-	ArithmeticOrRelationalExpression | ClassificationExpression
-;
-
-ArithmeticOrRelationalExpression returns Expression:
-	UnaryOrArithmeticExpression | RelationalExpression
-;
-
-UnaryOrArithmeticExpression returns Expression:
-	UnaryOrMultiplicativeExpression | AdditiveExpression
-;
-
-UnaryOrMultiplicativeExpression returns Expression:
-	UnaryExpression | MultiplicativeExpression
-;
+/* ARITHMETIC EXPRESSIONS */
 
 MultiplicativeExpression returns ArithmeticExpression:
-	op1=UnaryExpression operator=("*" | "/" | "%") op2=UnaryOrMultiplicativeExpression
+	op1=UnaryExpression ({ArithmeticExpression.op1=current} operator=MultiplicativeOperator op2=UnaryExpression)*
+;
+
+MultiplicativeOperator returns ecore::EString:
+	("*" | "/" | "%")
 ;
 
 AdditiveExpression returns ArithmeticExpression:
-	=>op1=UnaryOrMultiplicativeExpression operator=("+" | "-") op2=UnaryOrArithmeticExpression
-;
-
-RelationalExpression returns RelationalExpression:
-	=>op1=ArithmeticOrShiftExpression operator=("<" | ">" | "<=" | ">=") op2=ArithmeticOrShiftExpression
-;
-
-ArithmeticOrShiftExpression returns Expression:
-	UnaryOrArithmeticExpression | ShiftExpression
+	op1=MultiplicativeExpression ({ArithmeticExpression.op1=current} operator=NumericUnaryOperator op2=MultiplicativeExpression)*
 ;
 
 ShiftExpression returns ShiftExpression:
-	=>op1=UnaryOrArithmeticExpression operator=("<<" | ">>" | ">>>") op2=ArithmeticOrShiftExpression
+	op1=AdditiveExpression ({ShiftExpression.op1=current} operator=ShiftOperator op2=AdditiveExpression)*
+;
+
+ShiftOperator returns ecore::EString:
+	"<<" | ">>" | ">>>"
+;
+
+RelationalExpression returns RelationalExpression:
+	op1=ShiftExpression ({RelationalExpression.op1=current} operator=RelationalOperator op2=ShiftExpression)*
+;
+
+RelationalOperator returns ecore::EString:
+	"<" | ">" | "<=" | ">="
 ;
 
 ClassificationExpression returns ClassificationExpression:
-	=>op=ArithmeticOrRelationalExpression operator=("instanceof" | "hastype") typeName=[TypeDef|QualifiedName]
+	op=RelationalExpression operator=ClassificationOperator typeName=[TypeDef|QualifiedName]
 ;
 
-EqualityExpression returns LogicalExpression:
-	=>op1=RelationalOrClassificationExpression operator=("=" | "!=") op2=ClassificationOrEqualityExpression
+ClassificationOperator returns ecore::EString:
+	"instanceof" | "hastype"
 ;
+
+EqualityExpression returns BinaryExpression:
+	op1=ClassificationExpression ({BinaryExpression.op1=current} operator=EqualityOperator op2=ClassificationExpression)*
+;
+
+EqualityOperator returns ecore::EString:
+	"=" | "!="
+;
+
+/* LOGICAL EXPRESSIONS */
 
 AndExpression returns LogicalExpression:
-	=>op1=ClassificationOrEqualityExpression operator="&" op2=EqualityOrAndExpression
+	op1=EqualityExpression ({LogicalExpression.op1=current} operator="&" op2=EqualityExpression)*
 ;
 
 ExclusiveOrExpression returns LogicalExpression:
-	=>op1=EqualityOrAndExpression operator="^" op2=AndOrExclusiveOrExpression
+	op1=AndExpression ({LogicalExpression.op1=current} operator="^" op2=AndExpression)*
 ;
 
 InclusiveOrExpression returns LogicalExpression:
-	=>op1=AndOrExclusiveOrExpression operator="|" op2=ExclusiveOrOrInclusiveOrExpression
+	op1=ExclusiveOrExpression ({LogicalExpression.op1=current} operator="|" op2=ExclusiveOrExpression)*
 ;
 
+/* CONDITIONAL LOGICAL EXPRESSIONS */
+
 ConditionalAndExpression returns ConditionalLogicalExpression:
-	=>op1=ExclusiveOrOrInclusiveOrExpression operator="&&" op2=InclusiveOrOrConditionalAndExpression
+	op1=InclusiveOrExpression ({ConditionalLogicalExpression.op1=current} operator="&&" op2=InclusiveOrExpression)*
 ;
 
 ConditionalOrExpression returns ConditionalLogicalExpression:
-	 =>op1=InclusiveOrOrConditionalAndExpression operator="||" op2=ConditionalAndOrConditionalOrExpression
+	 op1=ConditionalAndExpression ({ConditionalLogicalExpression.op1=current} operator="||" op2=ConditionalAndExpression)*
 ;
 
 /**
  * Conditional (ternary operation) expressions
  */
 ConditionalExpression returns Expression:
-	ConditionalAndOrConditionalOrExpression	| ConditionalTestExpression
+	ConditionalOrExpression	| ConditionalTestExpression
+	//op1=ConditionalOrExpression ({ConditionalTestExpression.op1=current} "?" op2=Expression ":" op3=ConditionalOrExpression)*
 ;
 
 ConditionalTestExpression returns ConditionalTestExpression:
-	=>op1=ConditionalAndOrConditionalOrExpression "?" op2=Expression ":" op3=ConditionalExpression
+	=>op1=ConditionalOrExpression "?" op2=Expression ":" op3=ConditionalExpression
 ;
 
 /**

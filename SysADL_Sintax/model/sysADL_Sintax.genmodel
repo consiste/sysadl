@@ -258,6 +258,13 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//UnaryExpression/op"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//UnaryExpression/operator"/>
     </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//BooleanUnaryExpression"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//BitStringUnaryExpression"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//NumericUnaryExpression"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//CastExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//CastExpression/typeName"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//IsolationExpression"/>
     <genClasses ecoreClass="sysADL_Sintax.ecore#//ClassificationExpression">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ClassificationExpression/typeName"/>
     </genClasses>
@@ -277,8 +284,12 @@
     </genClasses>
     <genClasses ecoreClass="sysADL_Sintax.ecore#//ThisExpression"/>
     <genClasses ecoreClass="sysADL_Sintax.ecore#//PropertyAccessExpression">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//PropertyAccessExpression/target"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//PropertyAccessExpression/field"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//PropertyAccessExpression/featureRef"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//FeatureReference">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//FeatureReference/feature"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//FeatureReference/field"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//FeatureReference/expr"/>
     </genClasses>
     <genClasses image="false" ecoreClass="sysADL_Sintax.ecore#//IncrementOrDecrementExpression">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//IncrementOrDecrementExpression/operand"/>
@@ -296,7 +307,8 @@
     </genClasses>
     <genClasses ecoreClass="sysADL_Sintax.ecore#//LeftHandSide">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//LeftHandSide/target"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//LeftHandSide/index"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//LeftHandSide/index"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//LeftHandSide/feature"/>
     </genClasses>
     <genClasses ecoreClass="sysADL_Sintax.ecore#//VariableDecl">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//VariableDecl/value"/>

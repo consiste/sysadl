@@ -403,8 +403,9 @@ DefaultSwitchClause returns DefaultSwitchClause:
  * Expressions are divided into 6 groups of expressions
  */
 Expression returns Expression:
-	value=EString // Removed FIXME caused problems in behavioral diagram   
-	| ConditionalExpression | AssignmentExpression
+	//value=EString // FIXME Removal caused problems in behavioral diagram   
+	ConditionalExpression | AssignmentExpression 
+	//| PrimaryExpression // FIXME remove it after fixing UnaryExpression
 ;
 
 /**
@@ -438,7 +439,7 @@ LiteralExpression returns Expression:
 ; 
 	
 BooleanLiteralExpression returns BooleanLiteralExpression:
-	isTrue?='true'; 
+	isTrue=EBoolean;
 
 NaturalLiteralExpression returns NaturalLiteralExpression:
 	int_value=INT;
@@ -462,7 +463,7 @@ PropertyAccessExpression returns PropertyAccessExpression:
 FeatureReference returns FeatureReference:
 	//target=(NameExpression | NonNameExpression) "." field=[NamedElement|QualifiedName]
 	//target=FeatureTargetExpression "." field=[NamedElement|ID]
-	(feature=[NamedElement|QualifiedName] | expr=NonNameExpression) '.' field=[NamedElement|ID]
+	(feature=[NamedElement|QualifiedName] | expr=NonNameExpression) '->' field=[NamedElement|ID]
 ;
 
 /*FeatureTargetExpression returns Expression:
@@ -512,8 +513,8 @@ enum AffixOperator returns AffixOperator:
  * Unary expressions
  */
 UnaryExpression returns Expression:
-	/*PrimaryExpression | IncrementOrDecrementExpression |*/ BooleanUnaryExpression |
-	BitStringUnaryExpression | NumericUnaryExpression /*| CastExpression*/ | IsolationExpression
+	PrimaryExpression | /*IncrementOrDecrementExpression |*/ BooleanUnaryExpression |
+	BitStringUnaryExpression /* | NumericUnaryExpression | CastExpression*/ | IsolationExpression
 ;
 
 BooleanUnaryExpression returns BooleanUnaryExpression:
@@ -524,18 +525,17 @@ BitStringUnaryExpression returns BitStringUnaryExpression:
 	operator="~" op=UnaryExpression
 ;
 
-NumericUnaryExpression returns NumericUnaryExpression:
+/*NumericUnaryExpression returns NumericUnaryExpression:
 	operator=NumericUnaryOperator op=UnaryExpression
 ;
-
 NumericUnaryOperator returns ecore::EString:
 	"+" | "-"
-;
+;*/
 
 //TODO 
 //CastExpression returns CastExpression:
 //	"(" typeName=[TypeDef|QualifiedName] ")" op=NonNumericUnaryExpression
-//;
+//; // NonNumericUnaryExpression 'as' typeName=[TypeDef|QualifiedName] // Xtend alternative
 //
 //NonNumericUnaryExpression returns Expression:
 //	PrimaryExpression | PostfixExpression | BooleanUnaryExpression | 
@@ -561,7 +561,7 @@ MultiplicativeOperator returns ecore::EString:
 ;
 
 AdditiveExpression returns ArithmeticExpression:
-	op1=MultiplicativeExpression ({ArithmeticExpression.op1=current} operator=NumericUnaryOperator op2=MultiplicativeExpression)*
+	op1=MultiplicativeExpression ({ArithmeticExpression.op1=current} (operator='+'|operator='-') op2=MultiplicativeExpression)*
 ;
 
 ShiftExpression returns ShiftExpression:
@@ -581,7 +581,7 @@ RelationalOperator returns ecore::EString:
 ;
 
 ClassificationExpression returns ClassificationExpression:
-	op=RelationalExpression operator=ClassificationOperator typeName=[TypeDef|QualifiedName]
+	op=RelationalExpression (operator=ClassificationOperator typeName=[TypeDef|QualifiedName])?
 ;
 
 ClassificationOperator returns ecore::EString:
@@ -593,11 +593,10 @@ EqualityExpression returns BinaryExpression:
 ;
 
 EqualityOperator returns ecore::EString:
-	"=" | "!="
+	"==" | "!="
 ;
 
 /* LOGICAL EXPRESSIONS */
-
 AndExpression returns LogicalExpression:
 	op1=EqualityExpression ({LogicalExpression.op1=current} operator="&" op2=EqualityExpression)*
 ;
@@ -646,7 +645,7 @@ enum AssignmentOperator returns AssignmentOperator:
 ;
 
 LeftHandSide returns LeftHandSide:
-	=>target=NameExpression (index=Index)? | feature=FeatureReference (index=Index)? | =>"(" LeftHandSide ")"
+	/*=>target=NameExpression (index=Index)? | feature=FeatureReference (index=Index)? |*/ =>"(" LeftHandSide ")"
 ;
 
 Index returns Expression:

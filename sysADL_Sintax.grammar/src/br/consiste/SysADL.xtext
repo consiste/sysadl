@@ -630,17 +630,17 @@ ConditionalExpression returns ConditionalTestExpression:
  * Assignment expressions (TODO check AssignmentStatement)
  */
 AssignmentExpression returns AssignmentExpression: 
-	lhs=LeftHandSide operator=AssignmentOperator v=Expression
+	=>lhs=LeftHandSide operator=AssignmentOperator v=Expression
 ;
 
 enum AssignmentOperator returns AssignmentOperator:
 	equal = "=" | plusEqual = "+=" | minusEqual = "-=" | starEqual = "*=" | 
 	modEqual = "%=" | divEqual = "/=" | andEqual = "&=" | orEqual = "|=" | powerEqual = "^=" | 
-	powerEqual = "<<=" | shiftRightEqual = ">>=" | shiftRightDoubledEqual = ">>>="
+	shiftLeftEqual = "<<=" | shiftRightEqual = ">>=" | shiftRightDoubledEqual = ">>>="
 ;
 
 LeftHandSide returns LeftHandSide: //TODO
-	/*=>target=NameExpression (index=Index)? | feature=FeatureReference (index=Index)? |*/ =>"(" LeftHandSide ")"
+	target=NameExpression (index=Index)? | /*feature=FeatureReference (index=Index)? |*/ "(" LeftHandSide ")"
 ;
 
 Index returns Expression:

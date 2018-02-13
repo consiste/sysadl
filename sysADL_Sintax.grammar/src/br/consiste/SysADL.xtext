@@ -404,8 +404,7 @@ DefaultSwitchClause returns DefaultSwitchClause:
  */
 Expression returns Expression:
 	//value=EString // FIXME Removal caused problems in behavioral diagram   
-	ConditionalExpression | AssignmentExpression 
-	//| PrimaryExpression // FIXME remove it after fixing UnaryExpression
+	ConditionalExpression | AssignmentExpression
 ;
 
 /**
@@ -461,7 +460,6 @@ PropertyAccessExpression returns PropertyAccessExpression:
 ;
 
 FeatureReference returns FeatureReference:
-	//target=(NameExpression | NonNameExpression) "." field=[NamedElement|QualifiedName]
 	//target=FeatureTargetExpression "." field=[NamedElement|ID]
 	(feature=[NamedElement|QualifiedName] | expr=NonNameExpression) '->' field=[NamedElement|ID]
 ;
@@ -506,7 +504,7 @@ PrefixExpression returns IncrementOrDecrementExpression:
 ;
 
 enum AffixOperator returns AffixOperator:
-	minus = "--" | plus = "++"
+	incr = "++" | decr = "--"
 ;
 
 /**
@@ -528,9 +526,10 @@ BitStringUnaryExpression returns BitStringUnaryExpression:
 /*NumericUnaryExpression returns NumericUnaryExpression:
 	operator=NumericUnaryOperator op=UnaryExpression
 ;
-NumericUnaryOperator returns ecore::EString:
-	"+" | "-"
-;*/
+*/
+enum NumericUnaryOperator returns NumericUnaryOperator:
+	plus = "+" | minus = "-"
+;
 
 //TODO 
 //CastExpression returns CastExpression:
@@ -552,48 +551,44 @@ IsolationExpression returns IsolationExpression:
 
 /* ARITHMETIC EXPRESSIONS */
 
-MultiplicativeExpression returns ArithmeticExpression:
-	op1=UnaryExpression ({ArithmeticExpression.op1=current} operator=MultiplicativeOperator op2=UnaryExpression)*
+MultiplicativeExpression returns MultiplicativeExpression:
+	op1=UnaryExpression ({MultiplicativeExpression.op1=current} operator=MultiplicativeOperator op2=UnaryExpression)*
 ;
 
-MultiplicativeOperator returns ecore::EString:
-	("*" | "/" | "%")
+enum MultiplicativeOperator returns MultiplicativeOperator:
+	star = "*" | slash = "/" | rem = "%"
 ;
 
-AdditiveExpression returns ArithmeticExpression:
-	op1=MultiplicativeExpression ({ArithmeticExpression.op1=current} (operator='+'|operator='-') op2=MultiplicativeExpression)*
+AdditiveExpression returns AdditiveExpression:
+	op1=MultiplicativeExpression ({AdditiveExpression.op1=current} operator=NumericUnaryOperator op2=MultiplicativeExpression)*
 ;
 
 ShiftExpression returns ShiftExpression:
 	op1=AdditiveExpression ({ShiftExpression.op1=current} operator=ShiftOperator op2=AdditiveExpression)*
 ;
 
-ShiftOperator returns ecore::EString:
-	"<<" | ">>" | ">>>"
+enum ShiftOperator returns ShiftOperator:
+	lshift = "<<" | rshift = ">>" | urshift = ">>>"
 ;
 
 RelationalExpression returns RelationalExpression:
 	op1=ShiftExpression ({RelationalExpression.op1=current} operator=RelationalOperator op2=ShiftExpression)*
 ;
 
-RelationalOperator returns ecore::EString:
-	"<" | ">" | "<=" | ">="
+enum RelationalOperator returns RelationalOperator:
+	less = "<" | greater = ">" | less_equal = "<=" | greater_equal = ">="
 ;
 
 ClassificationExpression returns ClassificationExpression:
-	op=RelationalExpression (operator=ClassificationOperator typeName=[TypeDef|QualifiedName])?
+	op=RelationalExpression (operator=("instanceof" | "hastype") typeName=[TypeDef|QualifiedName])?
 ;
 
-ClassificationOperator returns ecore::EString:
-	"instanceof" | "hastype"
+EqualityExpression returns EqualityExpression:
+	op1=ClassificationExpression ({EqualityExpression.op1=current} operator=EqualityOperator op2=ClassificationExpression)*
 ;
 
-EqualityExpression returns BinaryExpression:
-	op1=ClassificationExpression ({BinaryExpression.op1=current} operator=EqualityOperator op2=ClassificationExpression)*
-;
-
-EqualityOperator returns ecore::EString:
-	"==" | "!="
+enum EqualityOperator returns EqualityOperator:
+	equal = "==" | different = "!="
 ;
 
 /* LOGICAL EXPRESSIONS */
@@ -622,14 +617,14 @@ ConditionalOrExpression returns ConditionalLogicalExpression:
 /**
  * Conditional (ternary operation) expressions
  */
-ConditionalExpression returns Expression:
-	ConditionalOrExpression	| ConditionalTestExpression
-	//op1=ConditionalOrExpression ({ConditionalTestExpression.op1=current} "?" op2=Expression ":" op3=ConditionalOrExpression)*
+ConditionalExpression returns ConditionalTestExpression:
+	//ConditionalOrExpression	| ConditionalTestExpression
+	op1=ConditionalOrExpression ({ConditionalTestExpression.op1=current} "?" op2=Expression ":" op3=ConditionalOrExpression)*
 ;
 
-ConditionalTestExpression returns ConditionalTestExpression:
-	=>op1=ConditionalOrExpression "?" op2=Expression ":" op3=ConditionalExpression
-;
+//ConditionalTestExpression returns ConditionalTestExpression:
+//	=>op1=ConditionalOrExpression "?" op2=Expression ":" op3=ConditionalExpression
+//;
 
 /**
  * Assignment expressions (TODO check AssignmentStatement)
@@ -644,7 +639,7 @@ enum AssignmentOperator returns AssignmentOperator:
 	powerEqual = "<<=" | shiftRightEqual = ">>=" | shiftRightDoubledEqual = ">>>="
 ;
 
-LeftHandSide returns LeftHandSide:
+LeftHandSide returns LeftHandSide: //TODO
 	/*=>target=NameExpression (index=Index)? | feature=FeatureReference (index=Index)? |*/ =>"(" LeftHandSide ")"
 ;
 

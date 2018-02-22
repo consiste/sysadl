@@ -2,6 +2,9 @@ package org.sysadl.aspects;
 
 import java.util.Map;
 
+import org.eclipse.emf.common.util.EList;
+import org.sysadl.context.SysADLContext;
+
 import sysADL_Sintax.AffixOperator;
 import sysADL_Sintax.Executable;
 import sysADL_Sintax.Expression;
@@ -25,7 +28,7 @@ public class SysADLExecutionEngine {
 	 * @param context map ID-value with available variables
 	 * @return result of the evaluation
 	 */
-	public Object evaluate(Expression e, Map<String, Object> context) {
+	public Object evaluate(Expression e, SysADLContext context) {
 		// TODO implement m
 		return null;
 	}
@@ -36,7 +39,8 @@ public class SysADLExecutionEngine {
 	 * @param context map ID-value with available variables
 	 * @return the result of the execution
 	 */
-	public Object execute(Executable e, Map<String, Object> context) {
+	public Object execute(Executable e, SysADLContext context) {
+		EList l = e.getBody();
 		for (Object s : e.getBody()) {
 			if (s instanceof ReturnStatement) { // only returns if find a return statement
 				return evaluate(((ReturnStatement) s).getValue(), context);
@@ -46,23 +50,23 @@ public class SysADLExecutionEngine {
 		return null;
 	}
 	
-	public Object evaluate(IncrementOrDecrementExpression e, Map<String, Object> context) {
+	public Object evaluate(IncrementOrDecrementExpression e, SysADLContext context) {
 		// x++
 		// LeftHandSize: target = x
 		// AffixOperator: AffixOperator.PLUS
 		switch (e.getOperator().getValue()) {
-			case AffixOperator.MINUS:
+			case AffixOperator.DECR:
 				Integer o = (Integer) evaluate(e.getOperand().getTarget(), context);
 				o--;
 				return o;
-			case AffixOperator.PLUS: break;
+			case AffixOperator.INCR: break;
 			default:
 		}
 		return null;
 	}
 	
-	public Object evaluate(NameExpression n, Map<String, Object> context) {
-		return context.get(n.getValue());
+	public Object evaluate(NameExpression n, SysADLContext context) {
+		return context.findByName(n.getCite().getName());
 	}
 	
 	private static SysADLExecutionEngine instance = new SysADLExecutionEngine();

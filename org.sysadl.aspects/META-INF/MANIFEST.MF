@@ -15,4 +15,3 @@ Require-Bundle: fr.inria.diverse.k3.al.annotationprocessor.plugin;bundle-version
  org.eclipse.xtend.lib.macro
 Bundle-ManifestVersion: 2
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-

@@ -81,19 +81,7 @@ public class StatementsInterpreterImpl extends SysADLStatementInterpreter {
 			run(_if.getBody(), context);
 		} else { 
 			if (s.getElse()!=null) run(s.getElse().getBody(), context);
-		}	
+		}
 	}
 
 }
-/**
- * switch (xx) {
- *  case 1:
- *  case 2:
- *    yyyyy
- *    break;
- *  case 3:
- *  default:
- * }
- * 
- * 
-*/

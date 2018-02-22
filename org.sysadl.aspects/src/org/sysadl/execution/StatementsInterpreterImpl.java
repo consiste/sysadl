@@ -3,6 +3,7 @@ package org.sysadl.execution;
 import org.sysadl.aspects.SysADLExecutionEngine;
 import org.sysadl.aspects.SysADLStatementInterpreter;
 import org.sysadl.context.SysADLContext;
+import org.sysadl.context.exceptions.ContextException;
 
 import sysADL_Sintax.BlockStatement;
 import sysADL_Sintax.DoStatement;
@@ -18,55 +19,55 @@ import sysADL_Sintax.WhileStatement;
 public class StatementsInterpreterImpl extends SysADLStatementInterpreter {
 
 	@Override
-	public void run(Expression s, SysADLContext context) {
+	public void run(Expression s, SysADLContext context) throws ContextException {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void run(BlockStatement s, SysADLContext context) {
+	public void run(BlockStatement s, SysADLContext context) throws ContextException {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void run(VariableDecl s, SysADLContext context) {
+	public void run(VariableDecl s, SysADLContext context) throws ContextException {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void run(ReturnStatement s, SysADLContext context) {
+	public void run(ReturnStatement s, SysADLContext context) throws ContextException {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void run(WhileStatement s, SysADLContext context) {
+	public void run(WhileStatement s, SysADLContext context) throws ContextException {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void run(DoStatement s, SysADLContext context) {
+	public void run(DoStatement s, SysADLContext context) throws ContextException {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void run(ForStatement s, SysADLContext context) {
+	public void run(ForStatement s, SysADLContext context) throws ContextException {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void run(SwitchStatement s, SysADLContext context) {
+	public void run(SwitchStatement s, SysADLContext context) throws ContextException {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void run(IfBlockStatement s, SysADLContext context) {
+	public void run(IfBlockStatement s, SysADLContext context) throws ContextException {
 		// Retrieve instance of ExecutionEngine
 		SysADLExecutionEngine eg = SysADLExecutionEngine.getInstance();
 		

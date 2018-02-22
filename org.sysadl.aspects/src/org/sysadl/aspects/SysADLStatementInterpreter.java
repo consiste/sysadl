@@ -3,6 +3,7 @@ package org.sysadl.aspects;
 import java.util.Map;
 
 import org.sysadl.context.SysADLContext;
+import org.sysadl.context.exceptions.ContextException;
 
 import sysADL_Sintax.BlockStatement;
 import sysADL_Sintax.DoStatement;
@@ -26,26 +27,26 @@ import sysADL_Sintax.WhileStatement;
  */
 public abstract class SysADLStatementInterpreter {
 	
-	public void run(Statement s, SysADLContext context) {
+	public void run(Statement s, SysADLContext context) throws ContextException {
 		// Throw an error, invalid kind of statement
 	}
 	
-	public abstract void run(Expression s,SysADLContext context);
+	public abstract void run(Expression s,SysADLContext context) throws ContextException;
 
-	public abstract void run(BlockStatement s,SysADLContext context);
+	public abstract void run(BlockStatement s,SysADLContext context) throws ContextException;
 
-	public abstract void run(VariableDecl s, SysADLContext context);
+	public abstract void run(VariableDecl s, SysADLContext context) throws ContextException;
 
 	// TODO need to be done, will throw an exception that will be handled by the execution engine
-	public abstract void run(ReturnStatement s,SysADLContext context); 
+	public abstract void run(ReturnStatement s,SysADLContext context) throws ContextException; 
 
-	public abstract void run(WhileStatement s,SysADLContext context);
+	public abstract void run(WhileStatement s,SysADLContext context) throws ContextException;
 
-	public abstract void run(DoStatement s,SysADLContext context);
+	public abstract void run(DoStatement s,SysADLContext context) throws ContextException;
 
-	public abstract void run(ForStatement s,SysADLContext context);
+	public abstract void run(ForStatement s,SysADLContext context) throws ContextException;
 
-	public abstract void run(SwitchStatement s, SysADLContext context);
+	public abstract void run(SwitchStatement s, SysADLContext context) throws ContextException;
 	
-	public abstract void run(IfBlockStatement s, SysADLContext context);
+	public abstract void run(IfBlockStatement s, SysADLContext context) throws ContextException;
 }

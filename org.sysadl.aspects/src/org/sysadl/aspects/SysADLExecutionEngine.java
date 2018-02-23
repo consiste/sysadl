@@ -2,8 +2,11 @@ package org.sysadl.aspects;
 
 import org.eclipse.emf.common.util.EList;
 import org.sysad.execution.expression.ExpressionEvaluator;
+import org.sysad.execution.expression.ExpressionEvaluatorImpl;
 import org.sysadl.context.SysADLContext;
 import org.sysadl.context.exceptions.ContextException;
+import org.sysadl.execution.StatementsInterpreterImpl;
+
 import sysADL_Sintax.Executable;
 import sysADL_Sintax.Expression;
 import sysADL_Sintax.NameExpression;
@@ -32,9 +35,6 @@ public class SysADLExecutionEngine {
 	public Object evaluate(Expression e, SysADLContext context) throws ContextException {
 		return evaluator.evaluate(e, context);
 	}
-	
-
-
 
 	/**
 	 * Executes an executable
@@ -62,7 +62,8 @@ public class SysADLExecutionEngine {
 	}
 	
 	private SysADLExecutionEngine() {
-
+		evaluator = new ExpressionEvaluatorImpl();
+		interpreter = new StatementsInterpreterImpl();
 	}
 
 	private static SysADLExecutionEngine instance = new SysADLExecutionEngine();

@@ -18,6 +18,7 @@ import sysADL_Sintax.LogicalExpression;
 import sysADL_Sintax.MultiplicativeExpression;
 import sysADL_Sintax.MultiplicativeOperator;
 import sysADL_Sintax.NameExpression;
+import sysADL_Sintax.NamedElement;
 import sysADL_Sintax.NaturalLiteralExpression;
 import sysADL_Sintax.NumericUnaryOperator;
 import sysADL_Sintax.PropertyAccessExpression;
@@ -266,7 +267,7 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
 	 */
 	@Override
 	public Object evaluate(NameExpression e, SysADLContext context) throws ContextException {
-		return e.getCite();
+		return context.get(e.getCite());
 	}
 
 	/**
@@ -313,16 +314,29 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
 		return null;
 	}
 
+	/**
+	 * AssignmentExpression
+	 * One of the most important kinds of expression, updates the context table
+	 * @TODO only works for default assignment operator: = 
+	 */
 	@Override
 	public Object evaluate(AssignmentExpression e, SysADLContext context) throws ContextException {
-		// TODO Auto-generated method stub
-		return null;
+		NamedElement tar = (NamedElement) evaluate(e.getLhs(), context);
+		Object value = evaluate(e.getV(), context);
+		context.add((NamedElement)tar, value);
+		return value; // beside putting in the table, it returns the value
 	}
 
+	/**
+	 * LeftHandSize
+	 * 
+	 * Can be a property access or a nameExpression, for now, just a name expression
+	 * @TODO implement the other cases
+	 * This is the only evaluate that returns a NamedElement
+	 */
 	@Override
 	public Object evaluate(LeftHandSide e, SysADLContext context) throws ContextException {
-		// TODO Auto-generated method stub
-		return null;
+		return e.getTarget().getCite(); // returns the object itself, not its value
 	}
 
 }

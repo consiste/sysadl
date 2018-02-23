@@ -28,4 +28,6 @@ public interface SysADLContext {
 	public void setThis(Object e);
 	
 	public Object getThis();
+
+	public Object get(NamedElement target);
 }

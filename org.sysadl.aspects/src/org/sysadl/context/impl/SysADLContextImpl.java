@@ -68,4 +68,8 @@ public class SysADLContextImpl implements SysADLContext {
 	public Object getThis() {
 		return thisObj;
 	}
+	
+	public Object get(NamedElement target) {
+		return map.get(target);
+	}
 }

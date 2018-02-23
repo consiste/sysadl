@@ -1,6 +1,7 @@
 package org.sysadl.aspects;
 
 import org.eclipse.emf.common.util.EList;
+import org.sysad.execution.expression.ExpressionEvaluator;
 import org.sysadl.context.SysADLContext;
 import org.sysadl.context.exceptions.ContextException;
 import sysADL_Sintax.Executable;
@@ -18,7 +19,7 @@ import sysADL_Sintax.Statement;
  */
 public class SysADLExecutionEngine {
 	private SysADLStatementInterpreter interpreter;
-
+	private ExpressionEvaluator evaluator;
 	/**
 	 * Evaluate an expression
 	 * 
@@ -29,12 +30,10 @@ public class SysADLExecutionEngine {
 	 * @return result of the evaluation
 	 */
 	public Object evaluate(Expression e, SysADLContext context) throws ContextException {
-		return null;
+		return evaluator.evaluate(e, context);
 	}
 	
-	public Object evaluate(NameExpression n, SysADLContext context) throws ContextException {
-		return context.findByName(n.getCite().getName());
-	}
+
 
 
 	/**

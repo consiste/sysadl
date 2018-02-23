@@ -23,6 +23,7 @@ import sysADL_Sintax.RelationalExpression;
 import sysADL_Sintax.ShiftExpression;
 import sysADL_Sintax.StringLiteralExpression;
 import sysADL_Sintax.ThisExpression;
+import sysADL_Sintax.TypeUse;
 
 public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
 	
@@ -131,10 +132,17 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
 		else return !left.equals(right);
 	}
 
+	/**
+	 * ClassificationExpression
+	 * @returns true if op1 has type defined typeName, false otherwise
+	 */
 	@Override
 	public Object evaluate(ClassificationExpression e, SysADLContext context) throws ContextException {
-		// TODO Auto-generated method stub
-		return null;
+		Object obj = e.getOp();
+		if (obj instanceof TypeUse) {
+			return ((TypeUse) obj).getDefinition().equals(e.getTypeName());
+		}
+		return false;
 	}
 
 	@Override

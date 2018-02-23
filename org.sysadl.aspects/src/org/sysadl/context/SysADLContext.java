@@ -24,4 +24,8 @@ public interface SysADLContext {
 	public int size();
 	
 	public Set<String> keys();
+	
+	public void setThis(Object e);
+	
+	public Object getThis();
 }

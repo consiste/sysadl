@@ -13,6 +13,7 @@ import sysADL_Sintax.NamedElement;
 public class SysADLContextImpl implements SysADLContext {
 
 	private Map<NamedElement, Object> map;
+	private Object thisObj;
 	
 	public SysADLContextImpl() {
 		map = new HashMap<NamedElement,Object>();
@@ -56,5 +57,15 @@ public class SysADLContextImpl implements SysADLContext {
 			s.add(n.getName());
 		}
 		return s;
+	}
+
+	@Override
+	public void setThis(Object e) {
+		this.thisObj = e;
+	}
+
+	@Override
+	public Object getThis() {
+		return thisObj;
 	}
 }

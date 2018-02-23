@@ -273,9 +273,7 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
 
 	@Override
 	public Object evaluate(ThisExpression e, SysADLContext context) throws ContextException {
-		context.findByName("this");
-		// TODO Auto-generated method stub
-		return null;
+		return context.getThis();
 	}
 
 	@Override

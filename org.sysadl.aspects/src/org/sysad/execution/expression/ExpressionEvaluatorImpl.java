@@ -16,8 +16,10 @@ import sysADL_Sintax.FeatureReference;
 import sysADL_Sintax.LeftHandSide;
 import sysADL_Sintax.LogicalExpression;
 import sysADL_Sintax.MultiplicativeExpression;
+import sysADL_Sintax.MultiplicativeOperator;
 import sysADL_Sintax.NameExpression;
 import sysADL_Sintax.NaturalLiteralExpression;
+import sysADL_Sintax.NumericUnaryOperator;
 import sysADL_Sintax.PropertyAccessExpression;
 import sysADL_Sintax.RelationalExpression;
 import sysADL_Sintax.RelationalOperator;
@@ -177,16 +179,60 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
 		return null;
 	}
 
+	/**
+	 * AdditiveExpression
+	 * Sum and subtraction of values. 
+	 * If any of the operands are strings, the operator + performs a concat and - removes a substring if exists
+	 * @returns op1 +/- op2
+	 */
 	@Override
 	public Object evaluate(AdditiveExpression e, SysADLContext context) throws ContextException {
-		// TODO Auto-generated method stub
+		Object left = e.getOp1();
+		Object right = e.getOp2();
+		NumericUnaryOperator op = e.getOperator();
+		switch (op.getValue()) {
+			case NumericUnaryOperator.PLUS:
+				if (left instanceof String || right instanceof String) {
+					return ((String) left).concat(right.toString());
+				} else {
+					if (left instanceof Integer && right instanceof Integer)
+						return (Integer) left + (Integer) right; // @fixme only for integer
+				}
+			case NumericUnaryOperator.MINUS:
+				if (left instanceof String || right instanceof String) {
+					return ((String) left).replace((right.toString()),"");
+				} else {
+					if (left instanceof Integer && right instanceof Integer)
+						return (Integer) left - (Integer) right; // @fixme only for integer
+				}
+			default:
+		}
 		return null;
 	}
 
+	/**
+	 * MultiplicativeExpression
+	 * Multiplication, division and mod
+	 * @fixme Only for integers, for now
+	 * @returns op1 (* | / | %) op2 
+	 */
 	@Override
 	public Object evaluate(MultiplicativeExpression e, SysADLContext context) throws ContextException {
-		// TODO Auto-generated method stub
-		return null;
+		Object op1 = evaluate(e.getOp1(), context);
+		Object op2 = evaluate(e.getOp2(), context);
+		MultiplicativeOperator op = e.getOperator();
+		if (op1 instanceof Integer && op2 instanceof Integer) {
+			switch (op.getValue()) {
+				case MultiplicativeOperator.STAR:
+					return (Integer) op1 * (Integer) op2;
+				case MultiplicativeOperator.SLASH:
+					return (Integer) op1 / (Integer) op2;
+				case MultiplicativeOperator.REM:
+					return (Integer) op1 % (Integer) op2;
+				default:
+			}
+		}
+		return null; // @TODO implement for other types
 	}
 
 	/**
@@ -227,6 +273,7 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
 
 	@Override
 	public Object evaluate(ThisExpression e, SysADLContext context) throws ContextException {
+		context.findByName("this");
 		// TODO Auto-generated method stub
 		return null;
 	}

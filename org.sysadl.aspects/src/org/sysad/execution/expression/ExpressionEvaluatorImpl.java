@@ -10,6 +10,7 @@ import sysADL_Sintax.ClassificationExpression;
 import sysADL_Sintax.ConditionalLogicalExpression;
 import sysADL_Sintax.ConditionalTestExpression;
 import sysADL_Sintax.EqualityExpression;
+import sysADL_Sintax.EqualityOperator;
 import sysADL_Sintax.Expression;
 import sysADL_Sintax.FeatureReference;
 import sysADL_Sintax.LeftHandSide;
@@ -24,10 +25,13 @@ import sysADL_Sintax.StringLiteralExpression;
 import sysADL_Sintax.ThisExpression;
 
 public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
-
+	
+	/**
+	 * Expression is abstract, this method shall never be used
+	 * @returns null, always
+	 */
 	@Override
 	public Object evaluate(Expression e, SysADLContext context) throws ContextException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -111,12 +115,20 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
 	}
 
 	/**
-	 * 
+	 * EqualityExpression
+	 * @returns op1 ==/!= op2
+	 * @fixme probably will need some fixes, this uses the object's equals that shall not work for many cases
 	 */
 	@Override
 	public Object evaluate(EqualityExpression e, SysADLContext context) throws ContextException {
-		// TODO Auto-generated method stub
-		return null;
+		Object left = evaluate(e.getOp1(), context);
+		Object right = evaluate(e.getOp2(), context);
+		// first test, if they have different classes, return false
+		if (left.getClass() != right.getClass()) return false; 
+		if (e.getOperator() == EqualityOperator.EQUAL_LITERAL) {
+			return left.equals(right);
+		}
+		else return !left.equals(right);
 	}
 
 	@Override
@@ -149,28 +161,40 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
 		return null;
 	}
 
+	/**
+	 * NameExpression
+	 * @returns NamedElement, automatically done by Xtext
+	 */
 	@Override
 	public Object evaluate(NameExpression e, SysADLContext context) throws ContextException {
-		// TODO Auto-generated method stub
-		return null;
+		return e.getCite();
 	}
 
+	/**
+	 * BooleanLiteralExpression
+	 * @returns boolean value
+	 */
 	@Override
 	public Object evaluate(BooleanLiteralExpression e, SysADLContext context) throws ContextException {
-		// TODO Auto-generated method stub
-		return null;
+		return e.isIsTrue();
 	}
 
+	/**
+	 * NaturalLiteralExpression
+	 * @returns double value
+	 */
 	@Override
 	public Object evaluate(NaturalLiteralExpression e, SysADLContext context) throws ContextException {
-		// TODO Auto-generated method stub
-		return null;
+		return e.getInt_value();
 	}
 
+	/**
+	 * StringLiteralExpression
+	 * @returns string value
+	 */
 	@Override
 	public Object evaluate(StringLiteralExpression e, SysADLContext context) throws ContextException {
-		// TODO Auto-generated method stub
-		return null;
+		return e.getStr_value();
 	}
 
 	@Override

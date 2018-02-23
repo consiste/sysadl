@@ -20,6 +20,7 @@ import sysADL_Sintax.NameExpression;
 import sysADL_Sintax.NaturalLiteralExpression;
 import sysADL_Sintax.PropertyAccessExpression;
 import sysADL_Sintax.RelationalExpression;
+import sysADL_Sintax.RelationalOperator;
 import sysADL_Sintax.ShiftExpression;
 import sysADL_Sintax.StringLiteralExpression;
 import sysADL_Sintax.ThisExpression;
@@ -145,10 +146,29 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
 		return false;
 	}
 
+	/**
+	 * RelationalExpression
+	 * @returns op1 operator op2, boolean values
+	 * @fixme only works for integers
+	 */
 	@Override
 	public Object evaluate(RelationalExpression e, SysADLContext context) throws ContextException {
-		// TODO Auto-generated method stub
-		return null;
+		Object op1 = evaluate(e.getOp1(), context);
+		Object op2 = evaluate(e.getOp1(), context);
+		if ((op1 instanceof Integer) && (op2 instanceof Integer)) {
+			switch (e.getOperator().getValue()) {
+				case RelationalOperator.GREATER:
+					return (Integer) op1 > (Integer)op2;
+				case RelationalOperator.GREATER_EQUAL:
+					return (Integer) op1 >= (Integer)op2;
+				case RelationalOperator.LESS:
+					return (Integer) op1 < (Integer)op2;
+				case RelationalOperator.LESS_EQUAL:
+					return (Integer) op1 <= (Integer)op2;
+				default:
+			}
+		}
+		return false; // by default it returns false
 	}
 
 	@Override

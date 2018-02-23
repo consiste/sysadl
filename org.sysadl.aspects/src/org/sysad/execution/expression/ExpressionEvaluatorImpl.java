@@ -47,7 +47,10 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
 	@Override
 	public Object evaluate(ConditionalTestExpression e, SysADLContext context) throws ContextException {
 		Object test = evaluate(e.getOp1(), context);
-		if (test instanceof Boolean) return ((Boolean)test ? evaluate(e.getOp2(), context) : evaluate(e.getOp3(), context));
+		Expression ob2 = e.getOp2();
+		if (ob2==null) return test; // if ob2 is null, there is nothing after test
+		
+		if (test instanceof Boolean) return ((Boolean)test ? evaluate(ob2, context) : evaluate(e.getOp3(), context));
 		// case test is not boolean, will always execute the second part
 		else return evaluate(e.getOp3(), context);
 	}
@@ -61,6 +64,8 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
 	public Object evaluate(ConditionalLogicalExpression e, SysADLContext context) throws ContextException {
 		Object leftSide = evaluate(e.getOp1(), context);
 		Expression rightSide = e.getOp2();
+		if (rightSide==null) return leftSide; 
+		
 		String operator = e.getOperator();
 		if (operator.compareTo("&&")==0) { // operator is &&
 			if (leftSide instanceof Boolean && (Boolean) leftSide) { // Right side will only be evaluate if leftSide is true
@@ -88,6 +93,8 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
 	public Object evaluate(LogicalExpression e, SysADLContext context) throws ContextException {
 		Object leftSide = evaluate(e.getOp1(), context);
 		Expression rightSide = e.getOp2();
+		if (rightSide == null) return leftSide;
+		
 		String operator = e.getOperator();
 		if (operator.compareTo("&")==0) { // and
 			if (leftSide instanceof Boolean && (Boolean) leftSide) { // Right side will only be evaluate if leftSide is true
@@ -126,7 +133,10 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
 	@Override
 	public Object evaluate(EqualityExpression e, SysADLContext context) throws ContextException {
 		Object left = evaluate(e.getOp1(), context);
-		Object right = evaluate(e.getOp2(), context);
+		Expression expRight = e.getOp2();
+		if (expRight==null) return left;
+		
+		Object right = evaluate(expRight, context); 
 		// first test, if they have different classes, return false
 		if (left.getClass() != right.getClass()) return false; 
 		if (e.getOperator() == EqualityOperator.EQUAL_LITERAL) {
@@ -141,7 +151,11 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
 	 */
 	@Override
 	public Object evaluate(ClassificationExpression e, SysADLContext context) throws ContextException {
-		Object obj = e.getOp();
+		Expression expr = e.getOp();
+		Object obj = evaluate(expr, context);
+		
+		if (e.getTypeName()==null) return obj;
+		
 		if (obj instanceof TypeUse) {
 			return ((TypeUse) obj).getDefinition().equals(e.getTypeName());
 		}
@@ -156,7 +170,10 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
 	@Override
 	public Object evaluate(RelationalExpression e, SysADLContext context) throws ContextException {
 		Object op1 = evaluate(e.getOp1(), context);
-		Object op2 = evaluate(e.getOp1(), context);
+		Expression expr = e.getOp2();
+		if (expr==null) return op1;
+		Object op2 = evaluate(expr, context);
+		
 		if ((op1 instanceof Integer) && (op2 instanceof Integer)) {
 			switch (e.getOperator().getValue()) {
 				case RelationalOperator.GREATER:
@@ -187,8 +204,13 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
 	 */
 	@Override
 	public Object evaluate(AdditiveExpression e, SysADLContext context) throws ContextException {
-		Object left = e.getOp1();
-		Object right = e.getOp2();
+		Expression exprLeft = e.getOp1();
+		Expression exprRight = e.getOp2();
+		
+		if (exprRight==null) return evaluate(exprLeft, context);
+		Object left = evaluate(exprLeft, context);
+		Object right = evaluate(exprRight, context);
+		
 		NumericUnaryOperator op = e.getOperator();
 		switch (op.getValue()) {
 			case NumericUnaryOperator.PLUS:
@@ -219,7 +241,10 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
 	@Override
 	public Object evaluate(MultiplicativeExpression e, SysADLContext context) throws ContextException {
 		Object op1 = evaluate(e.getOp1(), context);
-		Object op2 = evaluate(e.getOp2(), context);
+		Expression expr2 = e.getOp2();
+		if (expr2==null) return op1;
+		Object op2 = evaluate(expr2, context);
+		
 		MultiplicativeOperator op = e.getOperator();
 		if (op1 instanceof Integer && op2 instanceof Integer) {
 			switch (op.getValue()) {

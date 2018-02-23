@@ -46,6 +46,7 @@ public class SysADLExecutionEngine {
 	 * @return the result of the execution
 	 */
 	public Object execute(Executable e, SysADLContext context) {
+		context.setThis(e); // @fixme the executable will be the this var, this might change
 		EList l = e.getBody();
 		try { // FIXME should this try-catch be here?
 			for (Object s : e.getBody()) {

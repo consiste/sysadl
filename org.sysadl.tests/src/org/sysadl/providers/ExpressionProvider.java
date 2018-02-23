@@ -42,13 +42,21 @@ public class ExpressionProvider {
 		// The following code is supposed to read a string and parse as a xtext model
 		 try {
 			File file = new File("src/main/resources/example.sysadl"); // path to file
-			InputStream targetStream = new FileInputStream(file);
+			InputStream fileStream = new FileInputStream(file);
 			new org.eclipse.emf.mwe.utils.StandaloneSetup().setPlatformUri("../");
 			com.google.inject.Injector injector = new SysADLStandaloneSetup().createInjectorAndDoEMFRegistration();
 			XtextResourceSet resourceSet = injector.getInstance(XtextResourceSet.class);
 			resourceSet.addLoadOption(XtextResource.OPTION_RESOLVE_ALL, Boolean.TRUE);
 			Resource resource = resourceSet.createResource(URI.createURI("dummy:/example.sysadl"));
-			resource.load(targetStream, resourceSet.getLoadOptions());
+			
+			InputStream artificialStream = new ByteArrayInputStream(("model sysadlModel"
+					+"package myPackage { }") // put all the content of a file here 
+					.getBytes());
+
+			resource.load(fileStream, resourceSet.getLoadOptions());
+			// or
+			resource.load(artificialStream, resourceSet.getLoadOptions()); 
+			
 			Model model = (Model) resource.getContents().get(0); // model is a sysadl model
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

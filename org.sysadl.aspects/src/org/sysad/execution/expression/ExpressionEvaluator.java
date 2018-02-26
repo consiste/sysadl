@@ -9,6 +9,7 @@ import sysADL_Sintax.BooleanLiteralExpression;
 import sysADL_Sintax.ClassificationExpression;
 import sysADL_Sintax.ConditionalLogicalExpression;
 import sysADL_Sintax.ConditionalTestExpression;
+import sysADL_Sintax.EnumValueLiteralExpression;
 import sysADL_Sintax.EqualityExpression;
 import sysADL_Sintax.Expression;
 import sysADL_Sintax.FeatureReference;
@@ -38,9 +39,11 @@ public interface ExpressionEvaluator {
 	public Object evaluate(BooleanLiteralExpression e, SysADLContext context) throws ContextException;
 	public Object evaluate(NaturalLiteralExpression e, SysADLContext context) throws ContextException;
 	public Object evaluate(StringLiteralExpression e, SysADLContext context) throws ContextException;
+	public Object evaluate(EnumValueLiteralExpression e, SysADLContext context) throws ContextException;
 	public Object evaluate(ThisExpression e, SysADLContext context) throws ContextException;
 	public Object evaluate(PropertyAccessExpression e, SysADLContext context) throws ContextException;
 	public Object evaluate(FeatureReference e, SysADLContext context) throws ContextException;
 	public Object evaluate(AssignmentExpression e, SysADLContext context) throws ContextException;
 	public Object evaluate(LeftHandSide e, SysADLContext context) throws ContextException;
+
 }

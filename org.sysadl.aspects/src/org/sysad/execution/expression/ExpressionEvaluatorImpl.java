@@ -9,6 +9,7 @@ import sysADL_Sintax.BooleanLiteralExpression;
 import sysADL_Sintax.ClassificationExpression;
 import sysADL_Sintax.ConditionalLogicalExpression;
 import sysADL_Sintax.ConditionalTestExpression;
+import sysADL_Sintax.EnumValueLiteralExpression;
 import sysADL_Sintax.EqualityExpression;
 import sysADL_Sintax.EqualityOperator;
 import sysADL_Sintax.Expression;
@@ -337,6 +338,16 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
 	@Override
 	public Object evaluate(LeftHandSide e, SysADLContext context) throws ContextException {
 		return e.getTarget().getCite(); // returns the object itself, not its value
+	}
+
+	/**
+	 * EnumValueLiteralExpression
+	 * 
+	 * Returns the EnumLiteralValue for the given expression, these are used on attribution or comparison only
+	 */
+	@Override
+	public Object evaluate(EnumValueLiteralExpression e, SysADLContext context) throws ContextException {
+		return e.getEnumValue();
 	}
 
 }

@@ -436,8 +436,14 @@ LiteralExpression returns Expression:
 	| NaturalLiteralExpression  
 	| StringLiteralExpression
 	| EnumValueLiteralExpression
+	| NullLiteralExpression
 ; 
 	
+NullLiteralExpression returns NullLiteralExpression:
+	{NullLiteralExpression}
+	'null'
+;
+
 EnumValueLiteralExpression returns EnumValueLiteralExpression:
 	_enum=[Enumeration|QualifiedName] '::' enumValue=[EnumLiteralValue|ID];
 

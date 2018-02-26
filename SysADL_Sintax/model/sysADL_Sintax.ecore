@@ -403,6 +403,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="enumValue" eType="#//EnumLiteralValue"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="_enum" eType="#//Enumeration"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NullLiteralExpression" eSuperTypes="#//NonNameExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="ThisExpression" eSuperTypes="#//NonNameExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="PropertyAccessExpression" eSuperTypes="#//PrimaryExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="featureRef" eType="#//FeatureReference"

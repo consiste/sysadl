@@ -18,6 +18,7 @@ import sysADL_Sintax.LogicalExpression;
 import sysADL_Sintax.MultiplicativeExpression;
 import sysADL_Sintax.NameExpression;
 import sysADL_Sintax.NaturalLiteralExpression;
+import sysADL_Sintax.NullLiteralExpression;
 import sysADL_Sintax.PropertyAccessExpression;
 import sysADL_Sintax.RelationalExpression;
 import sysADL_Sintax.ShiftExpression;
@@ -40,6 +41,7 @@ public interface ExpressionEvaluator {
 	public Object evaluate(NaturalLiteralExpression e, SysADLContext context) throws ContextException;
 	public Object evaluate(StringLiteralExpression e, SysADLContext context) throws ContextException;
 	public Object evaluate(EnumValueLiteralExpression e, SysADLContext context) throws ContextException;
+	public Object evaluate(NullLiteralExpression e, SysADLContext context) throws ContextException;
 	public Object evaluate(ThisExpression e, SysADLContext context) throws ContextException;
 	public Object evaluate(PropertyAccessExpression e, SysADLContext context) throws ContextException;
 	public Object evaluate(FeatureReference e, SysADLContext context) throws ContextException;

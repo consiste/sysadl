@@ -2,6 +2,7 @@ package org.sysad.execution.expression;
 
 import org.sysadl.context.SysADLContext;
 import org.sysadl.context.exceptions.ContextException;
+import org.sysadl.context.exceptions.InvalidExpression;
 
 import sysADL_Sintax.AdditiveExpression;
 import sysADL_Sintax.AssignmentExpression;
@@ -21,6 +22,7 @@ import sysADL_Sintax.MultiplicativeOperator;
 import sysADL_Sintax.NameExpression;
 import sysADL_Sintax.NamedElement;
 import sysADL_Sintax.NaturalLiteralExpression;
+import sysADL_Sintax.NullLiteralExpression;
 import sysADL_Sintax.NumericUnaryOperator;
 import sysADL_Sintax.PropertyAccessExpression;
 import sysADL_Sintax.RelationalExpression;
@@ -38,7 +40,7 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
 	 */
 	@Override
 	public Object evaluate(Expression e, SysADLContext context) throws ContextException {
-		return null;
+		throw new InvalidExpression(e);
 	}
 
 	/**
@@ -195,7 +197,7 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
 	@Override
 	public Object evaluate(ShiftExpression e, SysADLContext context) throws ContextException {
 		// TODO Auto-generated method stub
-		return null;
+		throw new InvalidExpression(e);
 	}
 
 	/**
@@ -348,6 +350,16 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
 	@Override
 	public Object evaluate(EnumValueLiteralExpression e, SysADLContext context) throws ContextException {
 		return e.getEnumValue();
+	}
+
+	/**
+	 * NullLiteralExpression
+	 * 
+	 * Null values, just return null
+	 */
+	@Override
+	public Object evaluate(NullLiteralExpression e, SysADLContext context) throws ContextException {
+		return null;
 	}
 
 }

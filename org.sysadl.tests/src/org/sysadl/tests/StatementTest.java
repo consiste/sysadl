@@ -9,19 +9,27 @@ import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.sysadl.aspects.SysADLStatementInterpreter;
 import org.sysadl.context.SysADLContext;
+import org.sysadl.context.exceptions.ContextException;
 import org.sysadl.context.exceptions.ContextInvalidKey;
 import org.sysadl.context.impl.SysADLContextImpl;
 
+import sysADL_Sintax.BlockStatement;
+import sysADL_Sintax.BooleanLiteralExpression;
+import sysADL_Sintax.DoStatement;
+import sysADL_Sintax.Expression;
 import sysADL_Sintax.NamedElement;
 import sysADL_Sintax.SysADLFactory;
 import sysADL_Sintax.TypeDef;
 import sysADL_Sintax.TypeUse;
 import sysADL_Sintax.VariableDecl;
+import sysADL_Sintax.WhileStatement;
 import sysADL_Sintax.impl.SysADLFactoryImpl;
 
 class StatementTest {
 	private SysADLStatementInterpreter subject;
 	private SysADLContext context;
+	private TypeDef typeInt;
+	private SysADLFactory factory = SysADLFactory.eINSTANCE;
 	
 	/**
 	 * Init context with this values:
@@ -31,7 +39,7 @@ class StatementTest {
 	 * w = null
 	 * @param target
 	 */
-	private void init(SysADLContext target) {
+	public void init(SysADLContext target) {
 		TypeDef t = SysADLFactory.eINSTANCE.createValueTypeDef();
 		t.setName("Integer");
 		
@@ -62,63 +70,151 @@ class StatementTest {
 	}
 	
 	@Before
-	void init() {
+	public void init() {
 		// init a context model
 		context = new SysADLContextImpl();
 		init(context);
 		
+		typeInt = SysADLFactory.eINSTANCE.createValueTypeDef();
+		typeInt.setName("Integer");
 		// retrieves instance of SysADLStatementInterpreter
 		//subject = new ...
 	}
 	
 	@Test
-	void testVariableDeclaration() {
-		TypeDef t = SysADLFactory.eINSTANCE.createValueTypeDef();
-		t.setName("Integer");
-		VariableDecl a = SysADLFactory.eINSTANCE.createVariableDecl();
+	public void testVariableDeclaration() {
+		VariableDecl a = factory.createVariableDecl();
 		a.setName("newVar");
 		a.setValue(null);
-		a.setDefinition(t);
+		a.setDefinition(typeInt);
 		
-		//this.subject.run(a, this.context);
+		
 		SysADLContext expectedContext = new SysADLContextImpl(); 
 		init(expectedContext);
-		VariableDecl newVar = SysADLFactory.eINSTANCE.createVariableDecl();
+		VariableDecl newVar = factory.createVariableDecl();
 		newVar.setName("newVar");
-		expectedContext.add(newVar, null);
+		newVar.setDefinition(typeInt);
+		newVar.setValue(null);
 
-		assertEquals(expectedContext.size(), context.size());
-		
-		for (String key : context.keys()) {
-			try {
+		expectedContext.add(newVar, null);
+		try {
+			this.subject.run(a, this.context);
+	
+			assertEquals(expectedContext.size(), context.size());
+			
+			for (String key : context.keys()) {
 				Object v = context.findByName(key);
 				assertTrue(context.keys().contains(key));
 				assertEquals(expectedContext.findByName(key), v);
-			} catch (ContextInvalidKey e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
+			} 
+		} catch (ContextException e) {
+			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * Block with a variable decl inside
+	 */
 	@Test
-	void testBlockStatement() {
+	public void testBlockStatement() {
+		VariableDecl a = factory.createVariableDecl();
+		a.setName("newVar");
+		a.setValue(null);
+		a.setDefinition(typeInt);
+		
+		BlockStatement b = factory.createBlockStatement();
+		b.getBody().add(a);
+		
+		SysADLContext expectedContext = new SysADLContextImpl(); 
+		init(expectedContext);
+		VariableDecl newVar = factory.createVariableDecl();
+		newVar.setName("newVar");
+		newVar.setDefinition(typeInt);
+		newVar.setValue(null);
+
+		expectedContext.add(newVar, null);
+
+		try {
+			subject.run(b, context);
+			assertEquals(expectedContext.size(), context.size());
+			for (String key : context.keys()) {
+				Object v = context.findByName(key);
+				assertTrue(context.keys().contains(key));
+				assertEquals(expectedContext.findByName(key), v);
+			}
+		} catch (ContextException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
+	@Test
+	public void testWhileStatement() {
+		WhileStatement w = factory.createWhileStatement();
+		BooleanLiteralExpression condition = factory.createBooleanLiteralExpression();
+		condition.setIsTrue(false);
+		
+		VariableDecl a = factory.createVariableDecl();
+		a.setName("newVar");
+		a.setValue(null);
+		a.setDefinition(typeInt);
+		
+		w.setBody(a);
+		
+		SysADLContext expectedContext = new SysADLContextImpl(); 
+		init(expectedContext);
+		
+		try {
+			subject.run(w, context);
+			assertEquals(expectedContext.size(), context.size());
+			for (String key : context.keys()) {
+				Object v = context.findByName(key);
+				assertTrue(context.keys().contains(key));
+				assertEquals(expectedContext.findByName(key), v);
+			}
+		} catch (ContextException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	
 	@Test
-	void testWhileStatement() {
+	public void testDoStatement() {
+		DoStatement w = factory.createDoStatement();
+		BooleanLiteralExpression condition = factory.createBooleanLiteralExpression();
+		condition.setIsTrue(false);
 		
-	}
-	@Test
-	void testDoStatement() {
+		VariableDecl a = factory.createVariableDecl();
+		a.setName("newVar");
+		a.setValue(null);
+		a.setDefinition(typeInt);
 		
+		w.setBody(a);
+		
+		SysADLContext expectedContext = new SysADLContextImpl(); 
+		init(expectedContext);
+		
+		try {
+			subject.run(w, context);
+			assertEquals(expectedContext.size(), context.size());
+			for (String key : context.keys()) {
+				Object v = context.findByName(key);
+				assertTrue(context.keys().contains(key));
+				assertEquals(expectedContext.findByName(key), v);
+			}
+		} catch (ContextException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
+	
 	@Test
 	void testForStatement() {
-		
+
 	}
+	
 	@Test
 	void testSwitchStatement() {
 		

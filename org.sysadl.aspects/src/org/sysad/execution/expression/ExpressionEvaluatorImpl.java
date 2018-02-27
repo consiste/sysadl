@@ -32,16 +32,7 @@ import sysADL_Sintax.StringLiteralExpression;
 import sysADL_Sintax.ThisExpression;
 import sysADL_Sintax.TypeUse;
 
-public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
-	
-	/**
-	 * Expression is abstract, this method shall never be used
-	 * @returns null, always
-	 */
-	@Override
-	public Object evaluate(Expression e, SysADLContext context) throws ContextException {
-		throw new InvalidExpression(e);
-	}
+public class ExpressionEvaluatorImpl extends ExpressionEvaluator {
 
 	/**
 	 * ConditionalTestExpression

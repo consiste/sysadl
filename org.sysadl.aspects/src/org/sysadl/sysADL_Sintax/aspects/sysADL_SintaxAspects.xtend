@@ -20,36 +20,18 @@ import org.sysadl.context.SysADLContext
 import org.sysadl.engine.SysADLExecutionEngine
 import org.sysadl.context.impl.SysADLContextImpl
 import org.sysadl.engine.ExecutionUtil
+import sysADL_Sintax.DataBuffer
+import java.util.Queue
 
 @Aspect(className=ActivityBody)
 class ActivityBodyAspect {
-
+	private boolean finished
 	/**
 	 * Initialize the model, setting the private attributes and pin values for input
 	 */
 	@InitializeModel
 	def public void init(EList<String> args) {
-		/* Identify PinIn */
-		val pinsIn = (_self.eContainer() as ActivityDef).inParameters
-
-		// Set values for pinIn
-		for (i : pinsIn) {
-			// TODO implement me, ask  the user for the inputs?
-			ActivityFlowableAspect.cvalue(i as Pin, Helper.genValue)
-		}
-
-		/* Select entry points and set values */
-		// Get all delegations
-		val delegations = _self.flows.filter[i|i.class == ActivityDelegation]
-		for (d : delegations) {
-			// If the source of this delegation is a pinIn or a DataObject
-			val source = (d as ActivityDelegation).source
-			if (pinsIn.contains(source)) {
-				// TODO the value of source must be initialized
-				ActivityFlowableAspect.cvalue(source, Helper.genValue)
-			}
-		}
-
+		_self.finished = false;
 	}
 
 	/** 
@@ -58,10 +40,10 @@ class ActivityBodyAspect {
 	@Main
 	def static void main() {
 		// Infinite loop, find a way to make it finite
-		while (true) {
+		while (!_self.finished) {
 			_self.step()
 		}
-//	    println("End of execution")
+	    println("End of execution")
 	}
 
 	/* Step
@@ -72,6 +54,21 @@ class ActivityBodyAspect {
 	 */
 	@Step
 	def void step() {
+		// Setup  pins of activity:
+		_self.stepActivityPins()
+		
+		// Data steps:
+		_self.stepRunData()
+		
+		// Transmit the values over the flows and delegations:
+		_self.stepRunTransmit()
+		
+		// Action steps:
+		_self.stepRunActions()
+	}
+
+	@Step
+	def void stepActivityPins() {
 		// generate values for the activity pins in
 		val act = _self.eContainer.eContainer as ActivityDef
 		for (p : act.inParameters) {
@@ -80,30 +77,31 @@ class ActivityBodyAspect {
 				ActivityFlowableAspect.cvalue(p as Pin, Helper.genValue) // TODO ask the user?
 			}
 		}
-		// Transmit the values over the flows and delegations
-		for (f : _self.flows) {
-			ActivityRelationAspect.run(f as ActivityRelation);
+		
+		// consume the values for the activity pins out
+		for (p : act.outParameters) {
+			ActivityFlowableAspect.cvalue(p as Pin, null)
 		}
-		// Action steps:
-		for (a : _self.actions) { // a is an ActionUse 
-			ActionUseAspect.run(a as ActionUse)
-		}
+	}
 
-		// Data steps:
+	@Step
+	def void stepRunData() {
 		for (d : _self.dataObjects) {
 			DataObjectAspect.run(d as DataObject)
 		}
 	}
-
-	def EList<ActivityRelation> getRelationsBySource(ActivityFlowable obj) {
-		var list = new BasicEList<ActivityRelation>
-
-		val flows = _self.flows
-		for (f : flows) {
-			if(obj == (f as ActivityRelation).source) list.add(f as ActivityRelation)
+	
+	@Step
+	def void stepRunTransmit() {
+		for (f : _self.flows) {
+			ActivityRelationAspect.run(f as ActivityRelation);
 		}
-
-		return list
+	}
+	@Step
+	def void stepRunActions() {
+		for (a : _self.actions) { // a is an ActionUse 
+			ActionUseAspect.run(a as ActionUse)
+		}
 	}
 
 }
@@ -141,32 +139,28 @@ class ActionUseAspect {
 
 @Aspect(className=ActivityRelation)
 class ActivityRelationAspect {
+	@Step
 	def void run() {
 		var src = _self.source
 		var tar = _self.target
 		var srcvalue = ActivityFlowableAspect.cvalue(src);
 		var tarvalue = ActivityFlowableAspect.cvalue(tar);
 		if ((_self instanceof ActivityFlow || (_self.eContainer.eContainer as ActivityDef).inParameters.contains(src)) && tarvalue === null) {
-			
-			if (srcvalue !== null) {
-				var ext = ""
-				if (_self instanceof ActivityDelegation) ext = "(Delegation sc-tar) "
-				println(ext+"Flowing " + srcvalue + " from (" + (src as NamedElement).name + ") to (" + (tar as NamedElement).name +")")
-				// 	Update values from source and target
-				// Target will now have the value of source
-				ActivityFlowableAspect.cvalue(tar, ActivityFlowableAspect.cvalue(src))
-				// Value will be consumed, source is now null
-				ActivityFlowableAspect.cvalue(src, null)
-			}
+			var ext = ""
+			if (_self instanceof ActivityDelegation) ext = "(Delegation sc-tar) "
+			println(ext+"Flowing " + srcvalue + " from (" + (src as NamedElement).name + ") to (" + (tar as NamedElement).name +")")
+			// 	Update values from source and target
+			// Target will now have the value of source
+			ActivityFlowableAspect.cvalue(tar, ActivityFlowableAspect.cvalue(src))
+			// Value will be consumed, source is now null
+			ActivityFlowableAspect.cvalue(src, null)
 		} else if ((_self instanceof ActivityDelegation && (_self.eContainer.eContainer as ActivityDef).outParameters.contains(src)) && srcvalue === null){
-			if (tarvalue !== null) {
-				println("(Delegation tar-src) Flowing " + tarvalue + " from (" + (tar as NamedElement).name + ") to (" +(src as NamedElement).name + ")")
-				// Update values from source and target
-				// Source will now have the value of target
-				ActivityFlowableAspect.cvalue(src, ActivityFlowableAspect.cvalue(tar))
-				// Value will be consumed, target is now null
-				ActivityFlowableAspect.cvalue(tar, null)
-			}
+			println("(Delegation tar-src) Flowing " + tarvalue + " from (" + (tar as NamedElement).name + ") to (" +(src as NamedElement).name + ")")
+			// Update values from source and target
+			// Source will now have the value of target
+			ActivityFlowableAspect.cvalue(src, ActivityFlowableAspect.cvalue(tar))
+			// Value will be consumed, target is now null
+			ActivityFlowableAspect.cvalue(tar, null)
 		}
 	}
 }
@@ -180,9 +174,33 @@ abstract class ActivityFlowableAspect {
 abstract class DataObjectAspect extends ActivityFlowableAspect {
 	// Produces/stores a value
 	@Step
+	def void run()
+}
+
+@Aspect(className=DataBuffer)
+class DataBufferAspect extends DataObjectAspect{
+	Queue<Object> buffer
+	
 	def void run() {
-		// TODO implement me
-		// this method either will store a value or put a new value in the storage
+		val value = ActivityFlowableAspect.cvalue(_self)
+		val top = _self.buffer.peek
+		if (value!=top) {
+			// if value is different it means we should add it to the queue
+			_self.buffer.add(value)
+			ActivityFlowableAspect.cvalue(_self, null)
+		}
+		// if value is empty, it means that:
+		// 1- something pushed a new value and the previous lines added to the line and removed
+		// 2- the previous value was transmited somewhere else
+		// therefore, check the top of the queue and update the value
+		if (value===null) {
+			if (!_self.buffer.isEmpty) { // if queue is empty, do nothing
+				// remove the head of the queue
+				_self.buffer.poll
+				// push the new head to value
+				ActivityFlowableAspect.cvalue(_self, _self.buffer.peek)
+			}
+		}
 	}
 }
 		

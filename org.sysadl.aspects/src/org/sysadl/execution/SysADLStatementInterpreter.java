@@ -30,10 +30,20 @@ import sysADL_Sintax.WhileStatement;
 public abstract class SysADLStatementInterpreter {
 	
 	public void run(Statement s, SysADLContext context) throws ContextException {
-		// Throw an error, invalid kind of statement
+		if (s instanceof Expression) run((Expression)s, context);
+		else if (s instanceof BlockStatement) run((BlockStatement)s, context);
+		else if (s instanceof VariableDecl) run((VariableDecl)s, context);
+		else if (s instanceof ReturnStatement) run((ReturnStatement)s, context);
+		else if (s instanceof WhileStatement) run((WhileStatement)s, context);
+		else if (s instanceof DoStatement) run((DoStatement)s, context);
+		else if (s instanceof ForStatement) run((ForStatement)s, context);
+		else if (s instanceof SwitchStatement) run((SwitchStatement)s, context);
+		else if (s instanceof IfBlockStatement) run((IfBlockStatement)s, context);
 	}
 	
-	public abstract void run(Expression s,SysADLContext context) throws ContextException;
+	public void run(Expression s,SysADLContext context) throws ContextException {
+		SysADLExecutionEngine.getInstance().evaluate(s, context);
+	}
 
 	public abstract void run(BlockStatement s,SysADLContext context) throws ContextException;
 

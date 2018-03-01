@@ -10,18 +10,13 @@ import sysADL_Sintax.Expression;
 import sysADL_Sintax.ForStatement;
 import sysADL_Sintax.IfBlockStatement;
 import sysADL_Sintax.IfStatement;
-import sysADL_Sintax.ReturnStatement;
+import sysADL_Sintax.Statement;
+import sysADL_Sintax.SwitchClause;
 import sysADL_Sintax.SwitchStatement;
 import sysADL_Sintax.VariableDecl;
 import sysADL_Sintax.WhileStatement;
 
 public class StatementsInterpreterImpl extends SysADLStatementInterpreter {
-
-	@Override
-	public void run(Expression s, SysADLContext context) throws ContextException {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public void run(BlockStatement s, SysADLContext context) throws ContextException {
@@ -34,12 +29,6 @@ public class StatementsInterpreterImpl extends SysADLStatementInterpreter {
 	@Override
 	public void run(VariableDecl s, SysADLContext context) throws ContextException {
 		context.add(s, s.getValue());
-
-	}
-
-	@Override
-	public void run(ReturnStatement s, SysADLContext context) throws ContextException {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -69,7 +58,6 @@ public class StatementsInterpreterImpl extends SysADLStatementInterpreter {
 		VariableDecl va = (VariableDecl) s.getControl().getVars().get(0);
 		run(va,context);
 		while(true) {
-			
 				if( a.evaluate((Expression) s.getControl().getVars().get(1), context) instanceof Boolean
 						&& ! (Boolean)a.evaluate(((Expression) s.getControl().getVars().get(1)), context) ) {
 					break;

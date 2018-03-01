@@ -34,7 +34,7 @@ class ActivityBodyAspect {
 
 		// Set values for pinIn
 		for (i : pinsIn) {
-			// TODO implement me
+			// TODO implement me, ask  the user for the inputs?
 			ActivityFlowableAspect.cvalue(i as Pin, Helper.genValue)
 		}
 
@@ -72,35 +72,24 @@ class ActivityBodyAspect {
 	 */
 	@Step
 	def void step() {
-		// Transmit the values over the flows and delegations
+		// generate values for the activity pins in
 		val act = _self.eContainer.eContainer as ActivityDef
 		for (p : act.inParameters) {
 			// if pin values are null, generate a new value
 			if (ActivityFlowableAspect.cvalue(p as Pin)===null) {
-				ActivityFlowableAspect.cvalue(p as Pin, Helper.genValue)
+				ActivityFlowableAspect.cvalue(p as Pin, Helper.genValue) // TODO ask the user?
 			}
 		}
+		// Transmit the values over the flows and delegations
 		for (f : _self.flows) {
 			ActivityRelationAspect.run(f as ActivityRelation);
 		}
 		// Action steps:
 		for (a : _self.actions) { // a is an ActionUse 
-			var canRun = true
-			for (p : (a as ActionUse).pinIn) {
-				if (ActivityFlowableAspect.cvalue(p as Pin) === null) {
-					// Do nothing, action a cannot run yet
-					canRun = false
-					return // break the loop
-				}
-			}
-			// If action can run, run
-			if (canRun) {
-				ActionUseAspect.run(a as ActionUse)
-			}
+			ActionUseAspect.run(a as ActionUse)
 		}
 
 		// Data steps:
-		// The data object produces a value
 		for (d : _self.dataObjects) {
 			DataObjectAspect.run(d as DataObject)
 		}
@@ -189,11 +178,11 @@ abstract class ActivityFlowableAspect {
 
 @Aspect(className=DataObject)
 abstract class DataObjectAspect extends ActivityFlowableAspect {
-	// Produces a value
+	// Produces/stores a value
 	@Step
 	def void run() {
 		// TODO implement me
-		_self.cvalue = Helper.genValue()
+		// this method either will store a value or put a new value in the storage
 	}
 }
 		

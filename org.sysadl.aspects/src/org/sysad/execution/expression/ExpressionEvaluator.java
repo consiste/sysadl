@@ -33,7 +33,8 @@ public abstract class ExpressionEvaluator {
 	 * @returns
 	 */
 	public Object evaluate(Expression e, SysADLContext context) throws ContextException {
-		if (e instanceof ConditionalTestExpression) return evaluate((ConditionalTestExpression) e, context);
+		if (e==null) return null; // null expressions always returns null
+		else if (e instanceof ConditionalTestExpression) return evaluate((ConditionalTestExpression) e, context);
 		else if (e instanceof ConditionalLogicalExpression) return evaluate((ConditionalLogicalExpression) e, context);
 		else if (e instanceof LogicalExpression) return evaluate((LogicalExpression) e, context);
 		else if (e instanceof EqualityExpression) return evaluate((EqualityExpression) e, context);

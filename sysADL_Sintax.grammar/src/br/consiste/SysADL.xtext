@@ -335,7 +335,7 @@ BlockStatement returns BlockStatement:
 	'{'
 		body+=Statement*
 	'}';
-	
+
 //Assignment returns Assignment:
 //	var=[TypeUse|EString] '=' value=Expression
 //;
@@ -465,14 +465,16 @@ ParenthesizedExpression returns Expression:
 	'(' Expression ')'
 ;
 
-PropertyAccessExpression returns PropertyAccessExpression:	
+PropertyAccessExpression returns PropertyAccessExpression:
+	// Access a property for the Executable, corresponding Action, corresponding Activity or corresponding Component	
+	// prop=[Property|QualifiedName] |
 	featureRef=FeatureReference
 ;
 
 FeatureReference returns FeatureReference:
 	//target=FeatureTargetExpression "." field=[NamedElement|ID]
 	(feature=[NamedElement|QualifiedName] | expr=NonNameExpression) '->' field=[NamedElement|ID]
-;
+; 
 
 /*FeatureTargetExpression returns Expression:
 	{Expression} feature=[NamedElement|QualifiedName] | expr=NonNameExpression

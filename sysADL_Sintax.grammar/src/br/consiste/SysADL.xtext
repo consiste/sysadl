@@ -118,8 +118,12 @@ Package returns Package:
 		| architectures+=ArchitectureDef)*
 	'}';
 
+ReqNumber:
+	INT ('.' INT)*
+;
+
 Requirement returns Requirement:
-	'Requirement' name=ID '(' id=EFloat ')'
+	'Requirement' name=ID '(' id=ReqNumber ')'
 	'{'
 		('text' '=' text=EString)?
 		('satisfiedBy' satisfiedBy+=[ElementDef|QualifiedName] ( "," satisfiedBy+=[ElementDef|QualifiedName])* ';')?

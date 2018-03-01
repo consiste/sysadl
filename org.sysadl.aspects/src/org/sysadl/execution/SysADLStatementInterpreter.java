@@ -1,9 +1,11 @@
-package org.sysadl.aspects;
+package org.sysadl.execution;
 
 import java.util.Map;
 
 import org.sysadl.context.SysADLContext;
 import org.sysadl.context.exceptions.ContextException;
+import org.sysadl.engine.SysADLExecutionEngine;
+import org.sysadl.execution.statement.ControlReturnStatement;
 
 import sysADL_Sintax.BlockStatement;
 import sysADL_Sintax.DoStatement;
@@ -38,7 +40,10 @@ public abstract class SysADLStatementInterpreter {
 	public abstract void run(VariableDecl s, SysADLContext context) throws ContextException;
 
 	// TODO need to be done, will throw an exception that will be handled by the execution engine
-	public abstract void run(ReturnStatement s,SysADLContext context) throws ContextException; 
+	public void run(ReturnStatement s,SysADLContext context) throws ContextException {
+		Object value = SysADLExecutionEngine.getInstance().evaluate(s.getValue(), context);
+		throw new ControlReturnStatement(value);
+	}
 
 	public abstract void run(WhileStatement s,SysADLContext context) throws ContextException;
 

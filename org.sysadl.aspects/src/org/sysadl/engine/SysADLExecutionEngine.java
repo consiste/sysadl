@@ -1,4 +1,4 @@
-package org.sysadl.aspects;
+package org.sysadl.engine;
 
 import org.eclipse.emf.common.util.EList;
 import org.sysad.execution.expression.ExpressionEvaluator;
@@ -6,6 +6,9 @@ import org.sysad.execution.expression.ExpressionEvaluatorImpl;
 import org.sysadl.context.SysADLContext;
 import org.sysadl.context.exceptions.ContextException;
 import org.sysadl.execution.StatementsInterpreterImpl;
+import org.sysadl.execution.SysADLStatementInterpreter;
+import org.sysadl.execution.statement.ControlBreakStatement;
+import org.sysadl.execution.statement.ControlReturnStatement;
 
 import sysADL_Sintax.Executable;
 import sysADL_Sintax.Expression;
@@ -50,14 +53,16 @@ public class SysADLExecutionEngine {
 		EList l = e.getBody();
 		try { // FIXME should this try-catch be here?
 			for (Object s : e.getBody()) {
-				if (s instanceof ReturnStatement) { // only returns if find a return statement
-					return evaluate(((ReturnStatement) s).getValue(), context);
-				} else
+				try {
 					interpreter.run((Statement) s, context);
+				} catch (ControlBreakStatement b) {
+					// do nothing
+				}
 			}
-		} catch (ContextException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		} catch (ControlReturnStatement r) {
+			return r.getValue();
+		} catch (ContextException e0) {
+			e0.printStackTrace();
 		}
 		return null;
 	}

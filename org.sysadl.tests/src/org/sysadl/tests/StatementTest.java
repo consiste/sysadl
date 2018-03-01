@@ -7,11 +7,11 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
-import org.sysadl.aspects.SysADLStatementInterpreter;
 import org.sysadl.context.SysADLContext;
 import org.sysadl.context.exceptions.ContextException;
 import org.sysadl.context.exceptions.ContextInvalidKey;
 import org.sysadl.context.impl.SysADLContextImpl;
+import org.sysadl.execution.SysADLStatementInterpreter;
 
 import sysADL_Sintax.BlockStatement;
 import sysADL_Sintax.BooleanLiteralExpression;

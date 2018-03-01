@@ -23,7 +23,9 @@ import sysADL_Sintax.impl.SysADLFactoryImpl;
 
 public class ExpressionProvider {
 	public static Expression exp1 = exp1(); // value: 2
-	
+	public static ConditionalTestExpression conditionalTest1; 
+	public static ConditionalTestExpression conditionalTest2; 
+	public static ConditionalTestExpression conditionalTest3; 
 	
 	private static SysADLFactory factory = SysADLFactoryImpl.eINSTANCE;
 	
@@ -38,6 +40,8 @@ public class ExpressionProvider {
 		return exp;
 	}
 	
+	
+	
 	private static void snippet() {
 		// The following code is supposed to read a string and parse as a xtext model
 		 try {
@@ -49,13 +53,13 @@ public class ExpressionProvider {
 			resourceSet.addLoadOption(XtextResource.OPTION_RESOLVE_ALL, Boolean.TRUE);
 			Resource resource = resourceSet.createResource(URI.createURI("dummy:/example.sysadl"));
 			
-			InputStream artificialStream = new ByteArrayInputStream(("model sysadlModel"
+			/*InputStream artificialStream = new ByteArrayInputStream(("model sysadlModel"
 					+"package myPackage { }") // put all the content of a file here 
-					.getBytes());
+					.getBytes());*/
 
 			resource.load(fileStream, resourceSet.getLoadOptions());
 			// or
-			resource.load(artificialStream, resourceSet.getLoadOptions()); 
+			//resource.load(artificialStream, resourceSet.getLoadOptions()); 
 			
 			Model model = (Model) resource.getContents().get(0); // model is a sysadl model
 		} catch (IOException e) {

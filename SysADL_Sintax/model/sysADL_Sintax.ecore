@@ -27,8 +27,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ElementDef" abstract="true" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="satisfies" ordered="false"
-        eType="#//Requirement" transient="true" unsettable="true" eOpposite="#//Requirement/satisfiedBy"
-        eKeys="#//NamedElement/name"/>
+        upperBound="-1" eType="#//Requirement" transient="true" unsettable="true"
+        eOpposite="#//Requirement/satisfiedBy" eKeys="#//NamedElement/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DataDef" abstract="true" eSuperTypes="#//ElementDef"/>
   <eClassifiers xsi:type="ecore:EClass" name="ConstraintUse">

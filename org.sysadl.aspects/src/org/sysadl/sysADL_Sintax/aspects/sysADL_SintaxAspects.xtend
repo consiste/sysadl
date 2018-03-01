@@ -121,15 +121,17 @@ class ActionUseAspect {
 	def void run() {
 		// TODO implement me
 		println("Running action " + _self.name)
+		
+		// retrieve executable associated to this action
+		// run this executable
 		ActivityFlowableAspect.cvalue(_self, Helper.genValue)
-
+		
 		// Consume values of inputs
 		for (i : _self.pinIn) {
 			// Set previous values as null
 			ActivityFlowableAspect.cvalue(i as Pin, null)
 		}
 	}
-
 }
 
 @Aspect(className=ActivityRelation)

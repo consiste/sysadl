@@ -382,6 +382,9 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PrimaryExpression" abstract="true" interface="true"
       eSuperTypes="#//Expression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="InstanceCreationExpression" eSuperTypes="#//PrimaryExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//TypeDef"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NameExpression" eSuperTypes="#//PrimaryExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="cite" eType="#//NamedElement"
         eKeys="#//NamedElement/name"/>

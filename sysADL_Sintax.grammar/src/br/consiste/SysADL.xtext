@@ -305,7 +305,7 @@ Protocol returns Protocol: // TODO
 ConstraintDef returns ConstraintDef:
 	{ConstraintDef}
 	'constraint'
-	name=ID ('(' inParameters+=Pin (',' inParameters+=Pin)* ')') (':' outParameters+=Pin (',' outParameters+=Pin)*)?  
+	name=ID ('(' ( inParameters+=Pin (',' inParameters+=Pin)* )? ')') (':' outParameters+=Pin (',' outParameters+=Pin)*)? 
 	'{'
 		('equation' '=' equation=Expression)?
 		properties+=Property*
@@ -326,12 +326,12 @@ Executable returns Executable:
  * Executable[STATEMENTS]
  */
 Statement returns Statement:
-	Expression | BlockStatement | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | SwitchStatement
+	Expression | BlockStatement | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | IfBlockStatement | SwitchStatement
 ;
 
 // Same as above, but block statement is not allowed
 NonBlockStatement returns Statement:
-	Expression | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement
+	Expression | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | IfBlockStatement | SwitchStatement
 ;
 
 BlockStatement returns BlockStatement:
@@ -352,9 +352,9 @@ VariableDecl returns VariableDecl:
 
 IfBlockStatement returns IfBlockStatement:
 	main_if=IfStatement
-	('or' paralel_ifs+=IfStatement)* // TODO need to fix it, we need some mechanism to find out the order of the if statements if combining parallel and sequential 
-	('else' sequential_ifs+=IfStatement)* // FIXME will be removed, not necessary
-	(else=ElseStatement)?
+	//('or' paralel_ifs+=IfStatement)* // TODO need to fix it, we need some mechanism to find out the order of the if statements if combining parallel and sequential 
+	//('else' sequential_ifs+=IfStatement)* // FIXME will be removed, not necessary
+	(=>else=ElseStatement)?
 ;
 
 IfStatement returns IfStatement:
@@ -414,11 +414,15 @@ Expression returns Expression:
  * Basic, simplest expressions
  */
 PrimaryExpression returns Expression:
-	NameExpression | NonNameExpression
+	NameExpression | NonNameExpression | InstanceCreationExpression
 ;
 
 NameExpression returns NameExpression:
 	cite=[NamedElement|QualifiedName]
+;
+
+InstanceCreationExpression returns InstanceCreationExpression:
+	'new' type=[TypeDef|QualifiedName]
 ;
 
 NonNameExpression returns Expression:
@@ -655,7 +659,8 @@ enum AssignmentOperator returns AssignmentOperator:
 ;
 
 LeftHandSide returns LeftHandSide: //TODO
-	target=NameExpression (index=Index)? | /*feature=FeatureReference (index=Index)? |*/ "(" LeftHandSide ")"
+	//target=NameExpression (index=Index)? | /*feature=FeatureReference (index=Index)? |*/ "(" LeftHandSide ")"
+	'@'(target=NameExpression (index=Index)?)+
 ;
 
 Index returns Expression:

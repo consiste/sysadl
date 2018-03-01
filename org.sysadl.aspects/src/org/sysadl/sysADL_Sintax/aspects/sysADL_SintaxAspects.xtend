@@ -16,6 +16,10 @@ import sysADL_Sintax.ActivityFlowable
 import sysADL_Sintax.ActivityRelation
 import sysADL_Sintax.ActivityFlow
 import sysADL_Sintax.NamedElement
+import org.sysadl.context.SysADLContext
+import org.sysadl.engine.SysADLExecutionEngine
+import org.sysadl.context.impl.SysADLContextImpl
+import org.sysadl.engine.ExecutionUtil
 
 @Aspect(className=ActivityBody)
 class ActivityBodyAspect {
@@ -119,18 +123,30 @@ class ActivityBodyAspect {
 class ActionUseAspect {
 	@Step
 	def void run() {
-		// TODO implement me
-		println("Running action " + _self.name)
-		
-		// retrieve executable associated to this action
-		// run this executable
-		ActivityFlowableAspect.cvalue(_self, Helper.genValue)
-		
-		// Consume values of inputs
-		for (i : _self.pinIn) {
-			// Set previous values as null
-			ActivityFlowableAspect.cvalue(i as Pin, null)
+		if (_self.canRun()) {
+			println("Running action " + _self.name)
+	
+			// Consume values of inputs to build the context
+			var SysADLContext c = new SysADLContextImpl()
+			for (i : _self.pinIn) {
+				c.add(i as Pin, ActivityFlowableAspect.cvalue(i as Pin)) // add all values in the context
+				// Set previous values as null
+				ActivityFlowableAspect.cvalue(i as Pin, null)
+			}
+			val exec = ExecutionUtil.getExecutablesFor(_self)
+			if (exec===null) println("Unable to find Executables for action "+_self.name)
+			else {
+				val result = SysADLExecutionEngine.instance.execute(exec, c)
+				println("Action " + _self.name + " execution finished, result: "+result)
+				ActivityFlowableAspect.cvalue(_self, result)
+			}
 		}
+	}
+	def boolean canRun() {
+		for (i : _self.pinIn) {
+			if (ActivityFlowableAspect.cvalue(i as Pin)===null) return false;
+		}
+		return true;
 	}
 }
 

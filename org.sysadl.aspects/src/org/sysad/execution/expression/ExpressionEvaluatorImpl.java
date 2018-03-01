@@ -187,7 +187,11 @@ public class ExpressionEvaluatorImpl extends ExpressionEvaluator {
 
 	@Override
 	public Object evaluate(ShiftExpression e, SysADLContext context) throws ContextException {
-		// TODO Auto-generated method stub
+		Expression exprLeft = e.getOp1();
+		Expression exprRight = e.getOp2();
+		
+		if (exprRight==null) return evaluate(exprLeft, context);
+		// TODO implement if exprRight is not null
 		throw new InvalidExpression(e);
 	}
 

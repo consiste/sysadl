@@ -341,9 +341,9 @@ BlockStatement returns BlockStatement:
 //;
 
 VariableDecl returns VariableDecl:
-	'let' name=ID ':' definition=[TypeDef|QualifiedName] '=' value=Expression
+	'let' name=ID ':' definition=[TypeDef|QualifiedName] ('=' value=Expression)?
 	// TODO must add the following line: got a left-reduction conflict
-	//|  definition=[TypeDef|QualifiedName] name=ID '=' value=Expression
+	//|  definition=[TypeDef|QualifiedName] name=ID '=' (value=Expression)?
 ; 
 
 IfBlockStatement returns IfBlockStatement:
@@ -381,9 +381,8 @@ ForControl returns ForControl:
 ;
 
 ForVar returns ForVar:
-	'forvar'
-/* 	var=VariableDecl 'in' expr=Expression
-	| var=VariableDecl ':' expr=Expression*/ // TODO add variable this, got a left-reduction problem
+ 	var=VariableDecl 'in' expr=Expression
+	//| var=VariableDecl ':' expr=Expression // TODO add variable this, got a left-reduction problem
 ;
 
 SwitchStatement returns SwitchStatement:

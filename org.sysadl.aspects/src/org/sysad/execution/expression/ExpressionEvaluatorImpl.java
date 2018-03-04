@@ -15,6 +15,7 @@ import sysADL_Sintax.EqualityExpression;
 import sysADL_Sintax.EqualityOperator;
 import sysADL_Sintax.Expression;
 import sysADL_Sintax.FeatureReference;
+import sysADL_Sintax.InstanceCreationExpression;
 import sysADL_Sintax.LeftHandSide;
 import sysADL_Sintax.LogicalExpression;
 import sysADL_Sintax.MultiplicativeExpression;
@@ -29,8 +30,10 @@ import sysADL_Sintax.RelationalExpression;
 import sysADL_Sintax.RelationalOperator;
 import sysADL_Sintax.ShiftExpression;
 import sysADL_Sintax.StringLiteralExpression;
+import sysADL_Sintax.SysADLFactory;
 import sysADL_Sintax.ThisExpression;
 import sysADL_Sintax.TypeUse;
+import sysADL_Sintax.impl.SysADLFactoryImpl;
 
 public class ExpressionEvaluatorImpl extends ExpressionEvaluator {
 
@@ -355,6 +358,19 @@ public class ExpressionEvaluatorImpl extends ExpressionEvaluator {
 	@Override
 	public Object evaluate(NullLiteralExpression e, SysADLContext context) throws ContextException {
 		return null;
+	}
+
+	/**
+	 * InstanceCreationExpression
+	 * 
+	 * Creates and return a new TypeUse object
+	 */
+	@Override
+	public Object evaluate(InstanceCreationExpression e, SysADLContext context) throws ContextException {
+		TypeUse t = SysADLFactory.eINSTANCE.createTypeUse();
+		t.setDefinition(e.getType());
+		t.setName("new");
+		return t;
 	}
 
 }

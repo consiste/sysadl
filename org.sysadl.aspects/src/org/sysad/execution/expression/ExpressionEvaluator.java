@@ -14,6 +14,7 @@ import sysADL_Sintax.EnumValueLiteralExpression;
 import sysADL_Sintax.EqualityExpression;
 import sysADL_Sintax.Expression;
 import sysADL_Sintax.FeatureReference;
+import sysADL_Sintax.InstanceCreationExpression;
 import sysADL_Sintax.LeftHandSide;
 import sysADL_Sintax.LogicalExpression;
 import sysADL_Sintax.MultiplicativeExpression;
@@ -54,6 +55,7 @@ public abstract class ExpressionEvaluator {
 		else if (e instanceof LeftHandSide) return evaluate((LeftHandSide) e, context);
 		else if (e instanceof EnumValueLiteralExpression) return evaluate((EnumValueLiteralExpression) e, context);
 		else if (e instanceof NullLiteralExpression) return evaluate((NullLiteralExpression) e, context);
+		else if (e instanceof InstanceCreationExpression) return evaluate((InstanceCreationExpression) e, context);
 		throw new InvalidExpression(e);
 	}
 
@@ -77,5 +79,6 @@ public abstract class ExpressionEvaluator {
 	public abstract Object evaluate(FeatureReference e, SysADLContext context) throws ContextException;
 	public abstract Object evaluate(AssignmentExpression e, SysADLContext context) throws ContextException;
 	public abstract Object evaluate(LeftHandSide e, SysADLContext context) throws ContextException;
+	public abstract Object evaluate(InstanceCreationExpression e, SysADLContext context) throws ContextException;
 
 }

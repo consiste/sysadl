@@ -9,6 +9,7 @@ import org.eclipse.sirius.tools.api.ui.IExternalJavaAction;
 
 import sysADL_Sintax.ElementDef;
 import sysADL_Sintax.Model;
+import sysADL_Sintax.Requirement;
 
 public class RequirementDeleteSatisfy extends AbstractExternalJavaAction {
 
@@ -27,7 +28,9 @@ public class RequirementDeleteSatisfy extends AbstractExternalJavaAction {
 		for (EObject arg : arg0) {
 			ElementDef e = (ElementDef) arg;
 			// remove from requirement satisfy list
-			e.getSatisfies().getSatisfiedBy().remove(e);
+			for (Object r : e.getSatisfies()) {
+				((Requirement)r).getSatisfiedBy().remove(e);
+			}
 			// add back to the model involved elements list, so the element will not vanish
 			Model m = getOptionalParameter(arg1, "model", Model.class);
 			m.getInvolvedElements().add(e);

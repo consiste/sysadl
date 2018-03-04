@@ -9,6 +9,7 @@ import org.eclipse.sirius.tools.api.ui.IExternalJavaAction;
 
 import sysADL_Sintax.ElementDef;
 import sysADL_Sintax.Model;
+import sysADL_Sintax.Requirement;
 
 public class RequirementDeleteElement extends AbstractExternalJavaAction {
 
@@ -29,7 +30,9 @@ public class RequirementDeleteElement extends AbstractExternalJavaAction {
 			Model m = getOptionalParameter(arg1, "model", Model.class);
 			m.getInvolvedElements().remove(e);
 			if (e.getSatisfies() != null) {
-				e.getSatisfies().getSatisfiedBy().remove(e);
+				for (Object r : e.getSatisfies()) {
+					((Requirement) r).getSatisfiedBy().remove(e);
+				}
 			}
 		}
 	}

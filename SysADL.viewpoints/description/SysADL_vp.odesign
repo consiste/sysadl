@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:description_2="http://www.eclipse.org/sirius/table/description/1.1.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:tool="http://www.eclipse.org/sirius/diagram/description/tool/1.1.0" xmlns:tool_1="http://www.eclipse.org/sirius/description/tool/1.1.0" xmlns:validation="http://www.eclipse.org/sirius/description/validation/1.1.0" name="SysADL_vp" version="11.1.1.201610211630">
+<description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:description_2="http://www.eclipse.org/sirius/table/description/1.1.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:tool="http://www.eclipse.org/sirius/diagram/description/tool/1.1.0" xmlns:tool_1="http://www.eclipse.org/sirius/description/tool/1.1.0" xmlns:validation="http://www.eclipse.org/sirius/description/validation/1.1.0" name="SysADL_vp" version="12.0.0.2017041100">
   <ownedViewpoints name="SysADL.Structural" label="SysADL Structural Viewpoint" modelFileExtension="sysadl">
     <validationSet name="SysADL.Analysis.Structural">
       <ownedRules xsi:type="validation:SemanticValidationRule" name="Analysis.Struc.Delegation.TypeCompatible" level="ERROR" message="Incompatible Types in Delegation" targetClass="sysADL_Sintax.Delegation">
@@ -890,8 +890,8 @@
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
               </style>
             </subNodeMappings>
-            <subNodeMappings name="BDD.Constraint.Node" semanticCandidatesExpression="var:self" semanticElements="feature:equation" domainClass="ConstraintDef">
-              <style xsi:type="style:DotDescription" showIcon="false" labelExpression="['equation: '+ self.equation.value/]" resizeKind="NSEW">
+            <subNodeMappings name="BDD.Constraint.Node" semanticCandidatesExpression="feature:equation" semanticElements="feature:equation" domainClass="Expression">
+              <style xsi:type="style:DotDescription" showIcon="false" labelExpression="['equation: ' + expValue(self)/]" resizeKind="NSEW">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
@@ -1079,7 +1079,7 @@
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               </style>
             </borderedNodeMappings>
-            <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="['&lt;&lt;Constraint>>\n:'+definition.name+'\n'+definition.equation.value/]" sizeComputationExpression="5" labelPosition="node" resizeKind="NSEW" width="12" height="7" color="//@userColorsPalettes[name='Colors']/@entries[name='BlueBlock']">
+            <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="['&lt;&lt;Constraint>>\n:'+definition.name+'\n'+expValue(definition.equation)/]" sizeComputationExpression="5" labelPosition="node" resizeKind="NSEW" width="12" height="7" color="//@userColorsPalettes[name='Colors']/@entries[name='BlueBlock']">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </style>
@@ -1252,7 +1252,7 @@
         <edgeMappings name="ADNew.Flows.SwitchCase" labelDirectEdit="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@toolSections.1/@ownedTools[name='ADNew.Tools.EditCondition']" semanticCandidatesExpression="[self.flows.targetSwitch.cases/]" semanticElements="feature:condition" sourceMapping="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@containerMappings[name='ADNew.Self']/@subNodeMappings[name='ADNew.Switch']" targetMapping="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@containerMappings[name='ADNew.Self']/@subNodeMappings[name='ADNew.Switch'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@containerMappings[name='ADNew.Self']/@subNodeMappings[name='ADNew.DataBuffer'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@containerMappings[name='ADNew.Self']/@subNodeMappings[name='ADNew.DataStore'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@containerMappings[name='ADNew.Self']/@subContainerMappings[name='ADNew.Actions']/@borderedNodeMappings[name='ADNew.Actions.Input']" targetFinderExpression="feature:target" sourceFinderExpression="feature:eContainer" domainClass="ActivitySwitchCase" useDomainElement="true">
           <style routingStyle="manhattan">
             <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
-            <centerLabelStyleDescription showIcon="false" labelExpression="['case '+condition.value/]">
+            <centerLabelStyleDescription showIcon="false" labelExpression="['case '+expValue(condition)/]">
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </centerLabelStyleDescription>
           </style>
@@ -1276,7 +1276,7 @@
         <edgeMappings name="ADNew.Delegation.SwitchCase" labelDirectEdit="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@toolSections.1/@ownedTools[name='ADNew.Tools.EditCondition']" semanticCandidatesExpression="[self.flows.target/]" sourceMapping="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@containerMappings[name='ADNew.Self']/@subNodeMappings[name='ADNew.Switch']" targetMapping="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@containerMappings[name='ADNew.Self']/@borderedNodeMappings[name='ADNew.Pins.In'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@containerMappings[name='ADNew.Self']/@borderedNodeMappings[name='ADNew.Pins.Out'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@containerMappings[name='ADNew.Self']/@subContainerMappings[name='ADNew.Actions']/@borderedNodeMappings[name='ADNew.Actions.Input'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@containerMappings[name='ADNew.Self']/@subContainerMappings[name='ADNew.Actions']/@borderedNodeMappings[name='ADNew.Actions.Output'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@containerMappings[name='ADNew.Self']/@subNodeMappings[name='ADNew.DataBuffer'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@containerMappings[name='ADNew.Self']/@subNodeMappings[name='ADNew.DataStore']" targetFinderExpression="feature:target" sourceFinderExpression="feature:eContainer" domainClass="sysADL_Sintax.ActivitySwitchCase" useDomainElement="true">
           <style sizeComputationExpression="2">
             <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
-            <centerLabelStyleDescription showIcon="false" labelExpression="['case '+condition.value/]">
+            <centerLabelStyleDescription showIcon="false" labelExpression="['case '+expValue(condition)/]">
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </centerLabelStyleDescription>
           </style>
@@ -1492,6 +1492,7 @@
         </toolSections>
       </defaultLayer>
     </ownedRepresentations>
+    <ownedJavaExtensions qualifiedClassName="sysadl.viewpoints.services.SysADLServices"/>
   </ownedViewpoints>
   <ownedViewpoints name="SysADL.Executable" label="SysADL Executable Viewpoint" modelFileExtension="sysadl">
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="SysADL.Execution.BDD" label="Block Definition Diagram (Execution BDD)" domainClass="sysADL_Sintax.Package">

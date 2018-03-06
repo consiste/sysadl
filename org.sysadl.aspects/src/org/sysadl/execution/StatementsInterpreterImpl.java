@@ -34,8 +34,10 @@ public class StatementsInterpreterImpl extends SysADLStatementInterpreter {
 	@Override
 	public void run(WhileStatement s, SysADLContext context) throws ContextException {
 		SysADLExecutionEngine a = SysADLExecutionEngine.getInstance();
-		while(a.evaluate(s.getCondition(), context) instanceof Boolean && (Boolean)a.evaluate(s.getCondition(), context)) {
+		Object temp = a.evaluate(s.getCondition(), context);
+		while(temp instanceof Boolean && (Boolean)temp) {
 			run(s.getBody(), context);
+			temp = a.evaluate(s.getCondition(), context);
 		}
 	
 	}
@@ -43,10 +45,11 @@ public class StatementsInterpreterImpl extends SysADLStatementInterpreter {
 	@Override
 	public void run(DoStatement s, SysADLContext context) throws ContextException {
 		SysADLExecutionEngine a = SysADLExecutionEngine.getInstance();
-		
+		Object temp = a.evaluate(s.getCondition(), context);
 		do {
+			temp = a.evaluate(s.getCondition(), context);
 			run(s.getBody(), context);
-		}while(a.evaluate(s.getCondition(), context) instanceof Boolean && (Boolean)a.evaluate(s.getCondition(), context));
+		}while(temp instanceof Boolean && (Boolean)temp);
 	}
 
 	@Override
@@ -69,14 +72,15 @@ public class StatementsInterpreterImpl extends SysADLStatementInterpreter {
 
 	@Override
 	public void run(SwitchStatement s, SysADLContext context) throws ContextException {
-		String a = s.getExpr().getValue();
+		SysADLExecutionEngine a = SysADLExecutionEngine.getInstance();
+		Object mainExpResult = a.evaluate(s.getExpr(), context);
 		boolean flag = false;
 		
 		for (Object o : s.getClauses()) {
 			
 			SwitchClause clause = (SwitchClause) o;
 			
-			if(a.equals(clause.getValue().getValue())) {
+			if(mainExpResult.equals( a.evaluate(clause.getValue(),context) )) {
 				flag = true;
 			}
 			if(flag) {

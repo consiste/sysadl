@@ -8,9 +8,12 @@ import java.io.InputStream;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.mwe.internal.core.ast.util.Injector;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.resource.XtextResourceSet;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.console.ConsolePlugin;
 
 import br.consiste.SysADLStandaloneSetup;
 import sysADL_Sintax.ConditionalLogicalExpression;
@@ -40,28 +43,28 @@ public class ExpressionProvider {
 		return exp;
 	}
 	
-	
-	
-	private static void snippet() {
+	public static void snippet() {
 		// The following code is supposed to read a string and parse as a xtext model
 		 try {
-			File file = new File("src/main/resources/example.sysadl"); // path to file
+			 
+			Shell shell = ConsolePlugin.getStandardDisplay().getActiveShell();
+			FileDialog dialog = new FileDialog(shell, SWT.OPEN);
+			dialog.setFilterExtensions(new String [] {"*.sysadl"});
+			String filePath = dialog.open();
+			File file = new File(filePath); // path to file
 			InputStream fileStream = new FileInputStream(file);
 			new org.eclipse.emf.mwe.utils.StandaloneSetup().setPlatformUri("../");
 			com.google.inject.Injector injector = new SysADLStandaloneSetup().createInjectorAndDoEMFRegistration();
 			XtextResourceSet resourceSet = injector.getInstance(XtextResourceSet.class);
 			resourceSet.addLoadOption(XtextResource.OPTION_RESOLVE_ALL, Boolean.TRUE);
 			Resource resource = resourceSet.createResource(URI.createURI("dummy:/example.sysadl"));
-			
-			/*InputStream artificialStream = new ByteArrayInputStream(("model sysadlModel"
-					+"package myPackage { }") // put all the content of a file here 
-					.getBytes());*/
-
+		
 			resource.load(fileStream, resourceSet.getLoadOptions());
-			// or
-			//resource.load(artificialStream, resourceSet.getLoadOptions()); 
+			// 
 			
 			Model model = (Model) resource.getContents().get(0); // model is a sysadl model
+			
+			System.out.println("Loaded model: " + model.getName());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

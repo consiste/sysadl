@@ -29,7 +29,6 @@ public class StatementsInterpreterImpl extends SysADLStatementInterpreter {
 	@Override
 	public void run(VariableDecl s, SysADLContext context) throws ContextException {
 		context.add(s, s.getValue());
-
 	}
 
 	@Override

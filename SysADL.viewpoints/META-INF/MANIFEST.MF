@@ -13,7 +13,8 @@ Require-Bundle: org.eclipse.ui,
  SysADL_Sintax.edit,
  SysADL_Sintax.editor;bundle-version="2.1.0",
  com.google.inject,
- org.eclipse.xtext
+ org.eclipse.xtext,
+ org.eclipse.sirius.diagram
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: org.eclipse.ui.texteditor

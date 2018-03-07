@@ -11,6 +11,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
+import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.XtextResource;
 
@@ -55,5 +56,12 @@ public class SysADLServices {
 	
 	public EObject inferConnectorType(EObject port1, EObject port2) {
 		return null; // TODO
+	}
+	
+	public String expValue(EObject exp) {
+		if (exp==null) return "";
+		INode expNode = NodeModelUtils.getNode(exp);
+		String value = NodeModelUtils.getTokenText(expNode);
+		return  value;
 	}
 }

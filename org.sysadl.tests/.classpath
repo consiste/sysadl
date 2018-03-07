@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.sysadl.aspects"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/SysADL_Sintax"/>
+	<classpathentry kind="lib" path="C:/Users/Eduardo/Desktop/GEMOC Latest/plugins/org.eclipse.emf.ecore_2.13.0.v20170609-0707.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Eduardo/Desktop/GEMOC Latest/plugins/org.eclipse.emf.mwe.core_1.3.21.201705291011.jar" sourcepath="C:/Users/Eduardo/Desktop/GEMOC Latest/plugins/org.eclipse.emf.mwe.core_1.3.21.201705291011.jar">
+		<accessrules>
+			<accessrule kind="accessible" pattern="org/eclipse/emf/mwe/core/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/emf/mwe/core/ant/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/emf/mwe/core/ao/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/emf/mwe/core/config/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/emf/mwe/core/container/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/emf/mwe/core/customizer/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/emf/mwe/core/debug/model/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/emf/mwe/core/debug/processing/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/emf/mwe/core/issues/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/emf/mwe/core/lib/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/emf/mwe/core/monitor/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/emf/mwe/core/resources/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/emf/mwe/internal/core/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/emf/mwe/internal/core/ant/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/emf/mwe/internal/core/ast/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/emf/mwe/internal/core/ast/parser/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/emf/mwe/internal/core/ast/util/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/emf/mwe/internal/core/ast/util/converter/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/emf/mwe/internal/core/debug/communication/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/emf/mwe/internal/core/debug/communication/packages/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/emf/mwe/internal/core/debug/model/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/emf/mwe/internal/core/debug/mwe/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/emf/mwe/internal/core/debug/processing/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/emf/mwe/internal/core/debug/processing/handlers/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/emf/mwe/internal/core/util/*"/>
+			<accessrule ignoreifbetter="true" kind="nonaccessible" pattern="**/*"/>
+		</accessrules>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Eduardo/Desktop/GEMOC Latest/plugins/org.eclipse.emf.common_2.13.0.v20170609-0707.jar" sourcepath="C:/Users/Eduardo/Desktop/GEMOC Latest/plugins/org.eclipse.emf.common.source_2.13.0.v20170609-0707.jar">
+		<accessrules>
+			<accessrule kind="accessible" pattern="org/eclipse/emf/common/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/emf/common/archive/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/emf/common/command/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/emf/common/notify/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/emf/common/notify/impl/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/emf/common/util/*"/>
+			<accessrule ignoreifbetter="true" kind="nonaccessible" pattern="**/*"/>
+		</accessrules>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Eduardo/Desktop/GEMOC Latest/plugins/org.eclipse.xtext_2.12.0.v20170518-0959.jar" sourcepath="C:/Users/Eduardo/Desktop/GEMOC Latest/plugins/org.eclipse.xtext.source_2.12.0.v20170518-0959.jar">
+		<accessrules>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/build/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/common/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/common/parseTreeConstruction/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/common/parser/packrat/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/common/parser/packrat/consumers/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/common/services/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/conversion/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/conversion/impl/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/debug/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/diagnostics/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/documentation/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/documentation/impl/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/findReferences/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/formatting/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/formatting/impl/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/formatting2/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/formatting2/debug/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/formatting2/internal/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/formatting2/regionaccess/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/formatting2/regionaccess/internal/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/generator/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/generator/trace/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/generator/trace/internal/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/generator/trace/node/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/grammaranalysis/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/grammaranalysis/impl/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/impl/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/internal/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/linking/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/linking/impl/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/linking/lazy/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/mwe/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/naming/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/nodemodel/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/nodemodel/impl/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/nodemodel/serialization/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/nodemodel/util/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/parser/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/parser/antlr/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/parser/antlr/internal/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/parser/impl/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/parser/packrat/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/parser/packrat/consumers/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/parser/packrat/debug/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/parser/packrat/internal/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/parser/packrat/matching/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/parser/packrat/tokens/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/parsetree/reconstr/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/parsetree/reconstr/impl/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/preferences/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/resource/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/resource/clustering/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/resource/containers/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/resource/generic/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/resource/impl/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/resource/persistence/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/scoping/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/scoping/impl/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/serializer/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/serializer/acceptor/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/serializer/analysis/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/serializer/diagnostic/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/serializer/impl/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/serializer/sequencer/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/serializer/tokens/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/service/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/services/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/tasks/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/util/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/validation/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/xtext/validation/impl/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/workspace/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/xtext/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/xtext/ecoreInference/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/xtext/xtext/parser/*"/>
+			<accessrule ignoreifbetter="true" kind="nonaccessible" pattern="**/*"/>
+		</accessrules>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Eduardo/Desktop/GEMOC Latest/plugins/org.eclipse.emf.mwe.utils_1.3.21.201705291011.jar" sourcepath="C:/Users/Eduardo/Desktop/GEMOC Latest/plugins/org.eclipse.emf.mwe.utils_1.3.21.201705291011.jar">
+		<accessrules>
+			<accessrule kind="accessible" pattern="org/eclipse/emf/mwe/utils/*"/>
+			<accessrule ignoreifbetter="true" kind="nonaccessible" pattern="**/*"/>
+		</accessrules>
+	</classpathentry>
+	<classpathentry kind="src" path="/sysADL_Sintax.grammar"/>
+	<classpathentry kind="lib" path="C:/Users/Eduardo/Desktop/GEMOC Latest/plugins/com.google.inject_3.0.0.v201312141243.jar" sourcepath="C:/Users/Eduardo/Desktop/GEMOC Latest/plugins/com.google.inject_3.0.0.v201312141243.jar">
+		<accessrules>
+			<accessrule kind="accessible" pattern="com/google/inject/*"/>
+			<accessrule kind="accessible" pattern="com/google/inject/binder/*"/>
+			<accessrule kind="discouraged" pattern="com/google/inject/internal/*"/>
+			<accessrule kind="discouraged" pattern="com/google/inject/internal/util/*"/>
+			<accessrule kind="accessible" pattern="com/google/inject/matcher/*"/>
+			<accessrule kind="accessible" pattern="com/google/inject/name/*"/>
+			<accessrule kind="accessible" pattern="com/google/inject/spi/*"/>
+			<accessrule kind="accessible" pattern="com/google/inject/util/*"/>
+			<accessrule ignoreifbetter="true" kind="nonaccessible" pattern="**/*"/>
+		</accessrules>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

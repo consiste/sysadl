@@ -1,0 +1,11 @@
+/.metadata/
+/SysADL_Sintax/src/
+/*/bin/*
+/*/src-gen/*
+*.gif
+SysADL_Sintax.edit/*
+/*/xtend-gen/*
+/SysADL_Sintax.editor/src/sysADL_Sintax/presentation/SysADLActionBarContributor.java
+/SysADL_Sintax.editor/src/sysADL_Sintax/presentation/SysADLEditor.java
+/SysADL_Sintax.editor/src/sysADL_Sintax/presentation/SysADLEditorPlugin.java
+/sysADL_Sintax.grammar/.antlr-generator-3.2.0-patch.jar

@@ -14,18 +14,18 @@ public class RequirementAssignSatisfy extends AbstractExternalJavaAction {
 
 	@Override
 	public boolean canExecute(Collection<? extends EObject> arg0) {
-		for (EObject e : arg0) {
+		/*for (EObject e : arg0) {
 			if (!(e instanceof ElementDef)) {
 				return false;
 			}
-		}
+		}*/
 		return true; 
 	}
 
 	@Override
 	public void execute(Collection<? extends EObject> arg0, Map<String, Object> arg1) {
-		ElementDef element = getOptionalParameter(arg1, "source", ElementDef.class);
-		Requirement req = getOptionalParameter(arg1, "target", Requirement.class);
+		ElementDef element = getOptionalParameter(arg1, "element", ElementDef.class);
+		Requirement req = getOptionalParameter(arg1, "requirement", Requirement.class);
 		
 		// add element in the requirement satisfiction list
 		req.getSatisfiedBy().add(element);

@@ -1664,7 +1664,7 @@
             </centerLabelStyleDescription>
           </style>
         </edgeMappings>
-        <edgeMappings name="SysADL.Req.Composition" sourceMapping="//@ownedViewpoints[name='SysADL.Requirements']/@ownedRepresentations[name='SysADL.Requirements.Main']/@defaultLayer/@containerMappings[name='SysADL.Req.Self']/@subContainerMappings[name='SysADL.Req.Requirement']" targetMapping="//@ownedViewpoints[name='SysADL.Requirements']/@ownedRepresentations[name='SysADL.Requirements.Main']/@defaultLayer/@containerMappings[name='SysADL.Req.Self']/@subContainerMappings[name='SysADL.Req.Requirement']" targetFinderExpression="feature:composition">
+        <edgeMappings name="SysADL.Req.Composition" deletionDescription="//@ownedViewpoints[name='SysADL.Requirements']/@ownedRepresentations[name='SysADL.Requirements.Main']/@defaultLayer/@toolSections.0/@ownedTools[name='SysADL.Req.Tools.DelComposition']" sourceMapping="//@ownedViewpoints[name='SysADL.Requirements']/@ownedRepresentations[name='SysADL.Requirements.Main']/@defaultLayer/@containerMappings[name='SysADL.Req.Self']/@subContainerMappings[name='SysADL.Req.Requirement']" targetMapping="//@ownedViewpoints[name='SysADL.Requirements']/@ownedRepresentations[name='SysADL.Requirements.Main']/@defaultLayer/@containerMappings[name='SysADL.Req.Self']/@subContainerMappings[name='SysADL.Req.Requirement']" targetFinderExpression="feature:composition">
           <style lineStyle="dash" sourceArrow="FillDiamond" targetArrow="InputFillClosedArrow" sizeComputationExpression="2">
             <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             <centerLabelStyleDescription>
@@ -1787,6 +1787,16 @@
               <firstModelOperations xsi:type="tool_1:ExternalJavaAction" name="org.sysadl.viewpoints.deletesatisfy" id="org.sysadl.viewpoints.deletesatisfy">
                 <parameters name="model" value="[containerView.target/]"/>
                 <parameters name="element" value="var:elementView"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:DeleteElementDescription" name="SysADL.Req.Tools.DelComposition">
+            <element name="element"/>
+            <elementView name="elementView"/>
+            <containerView name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ExternalJavaAction" name="org.sysadl.viewpoints.deletecomposition" id="org.sysadl.viewpoints.deletecomposition">
+                <parameters name="element" value="var:element"/>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>

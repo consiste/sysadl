@@ -9,13 +9,13 @@
    <extension point="org.eclipse.ui.newWizards">
       <!-- @generated sysADL_Sintax -->
       <category
-            id="org.eclipse.emf.ecore.Wizard.category.ID"
-            name="%_UI_Wizard_category"/>
+            id="org.sysadl.category"
+            name="SysADL Studio"/>
       <wizard
             id="sysADL_Sintax.presentation.SysADLModelWizardID"
             name="%_UI_SysADLModelWizard_label"
             class="sysADL_Sintax.presentation.SysADLModelWizard"
-            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            category="org.sysadl.category"
             icon="icons/full/obj16/SysADLModelFile.gif">
          <description>%_UI_SysADLModelWizard_description</description>
          <selection class="org.eclipse.core.resources.IResource"/>

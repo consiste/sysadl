@@ -21,5 +21,9 @@
            actionClass="sysadl.viewpoints.actions.RequirementDeleteElement"
            id="org.sysadl.viewpoints.deleteimported">
      </javaActions>
+     <javaActions
+           actionClass="sysadl.viewpoints.actions.RequirementDeleteComposition"
+           id="org.sysadl.viewpoints.deletecomposition">
+     </javaActions>
   </extension>
 </plugin>

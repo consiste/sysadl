@@ -39,12 +39,6 @@ public class RequirementDeleteElement extends AbstractExternalJavaAction {
 			// also remove from the default list
 			m.getInvolvedElements().remove(e);
 			
-//			m.getInvolvedElements().remove(e);
-//			if (e.getSatisfies() != null) {
-//				for (Object r : e.getSatisfies()) {
-//					((Requirement) r).getSatisfiedBy().remove(e);
-//				}
-//			}
 		}
 	}
 

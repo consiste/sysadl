@@ -28,12 +28,23 @@ public class RequirementDeleteElement extends AbstractExternalJavaAction {
 		for (EObject obj : arg0) {
 			ElementDef e = (ElementDef) obj;
 			Model m = getOptionalParameter(arg1, "model", Model.class);
-			m.getInvolvedElements().remove(e);
-			if (e.getSatisfies() != null) {
-				for (Object r : e.getSatisfies()) {
-					((Requirement) r).getSatisfiedBy().remove(e);
+			// for each requirement, find those
+			for (Object _r : m.getRequirements()) {
+				Requirement r = (Requirement) _r;
+				
+				if (r.getSatisfiedBy().contains(e)) {
+					r.getSatisfiedBy().remove(e);
 				}
 			}
+			// also remove from the default list
+			m.getInvolvedElements().remove(e);
+			
+//			m.getInvolvedElements().remove(e);
+//			if (e.getSatisfies() != null) {
+//				for (Object r : e.getSatisfies()) {
+//					((Requirement) r).getSatisfiedBy().remove(e);
+//				}
+//			}
 		}
 	}
 

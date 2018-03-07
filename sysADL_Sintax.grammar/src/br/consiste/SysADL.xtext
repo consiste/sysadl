@@ -126,7 +126,7 @@ Requirement returns Requirement:
 	'Requirement' name=ID '(' id=ReqNumber ')'
 	'{'
 		('text' '=' text=EString)?
-		('satisfiedBy' satisfiedBy+=[ElementDef|QualifiedName] ( "," satisfiedBy+=[ElementDef|QualifiedName])* ';')?
+		('satisfied' 'by' satisfiedBy+=[ElementDef|QualifiedName] ( "," satisfiedBy+=[ElementDef|QualifiedName])* ';')?
 		('derive' derivedBy+=[Requirement|QualifiedName] ( "," derivedBy+=[Requirement|QualifiedName])* ';' )?
 		(properties+=Property
 		| composition+=Requirement)*

@@ -7,6 +7,7 @@ import org.sysadl.engine.SysADLExecutionEngine;
 import sysADL_Sintax.BlockStatement;
 import sysADL_Sintax.DoStatement;
 import sysADL_Sintax.Expression;
+import sysADL_Sintax.ForControl;
 import sysADL_Sintax.ForStatement;
 import sysADL_Sintax.IfBlockStatement;
 import sysADL_Sintax.IfStatement;
@@ -22,7 +23,10 @@ public class StatementsInterpreterImpl extends SysADLStatementInterpreter {
 	public void run(BlockStatement s, SysADLContext context) throws ContextException {
 		for (Object o : s.getBody()) {
 			Statement a = (Statement) o;
+			if(a != null) {
 				run(a, context);
+			}
+				
 		}
 	}
 
@@ -36,7 +40,9 @@ public class StatementsInterpreterImpl extends SysADLStatementInterpreter {
 		SysADLExecutionEngine a = SysADLExecutionEngine.getInstance();
 		Object temp = a.evaluate(s.getCondition(), context);
 		while(temp instanceof Boolean && (Boolean)temp) {
-			run(s.getBody(), context);
+			if(s.getBody() != null) {
+				run(s.getBody(), context);
+			}
 			temp = a.evaluate(s.getCondition(), context);
 		}
 	
@@ -48,26 +54,36 @@ public class StatementsInterpreterImpl extends SysADLStatementInterpreter {
 		Object temp = a.evaluate(s.getCondition(), context);
 		do {
 			temp = a.evaluate(s.getCondition(), context);
-			run(s.getBody(), context);
+			if(s.getBody() != null) {
+				run(s.getBody(), context);
+			}
 		}while(temp instanceof Boolean && (Boolean)temp);
 	}
 
 	@Override
 	public void run(ForStatement s, SysADLContext context) throws ContextException {
 		SysADLExecutionEngine a = SysADLExecutionEngine.getInstance();
-
-		// TODO Auto-generated method stub
-		VariableDecl va = (VariableDecl) s.getControl().getVars().get(0);
-		run(va,context);
-		while(true) {
-				if( a.evaluate((Expression) s.getControl().getVars().get(1), context) instanceof Boolean
-						&& ! (Boolean)a.evaluate(((Expression) s.getControl().getVars().get(1)), context) ) {
-					break;
-				}
+		
+		ForControl forControl = s.getControl();
+		for (Object iter : forControl.getVars()) {
+			if(s.getBody() != null) {
 				run(s.getBody(), context);
-			Expression st = ((Expression) s.getControl().getVars().get(2));
-			run(st, context);
+			}
 		}
+		
+
+//		// TODO Auto-generated method stub
+//		VariableDecl va = (VariableDecl) s.getControl().getVars().get(0);
+//		run(va,context);
+//		while(true) {
+//				if( a.evaluate((Expression) s.getControl().getVars().get(1), context) instanceof Boolean
+//						&& ! (Boolean)a.evaluate(((Expression) s.getControl().getVars().get(1)), context) ) {
+//					break;
+//				}
+//				run(s.getBody(), context);
+//			Expression st = ((Expression) s.getControl().getVars().get(2));
+//			run(st, context);
+//		}
 	}
 
 	@Override
@@ -84,7 +100,9 @@ public class StatementsInterpreterImpl extends SysADLStatementInterpreter {
 				flag = true;
 			}
 			if(flag) {
+				if(clause.getBody() != null) {
 					run(clause.getBody(), context);
+				}
 			}
 		}
 	}

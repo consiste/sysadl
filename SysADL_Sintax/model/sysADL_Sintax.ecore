@@ -25,7 +25,10 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="allocation" eType="#//AllocationTable"
         derived="true" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ElementDef" abstract="true" eSuperTypes="#//NamedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ElementDef" abstract="true" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="satisfies" eType="#//Requirement"
+        transient="true" eOpposite="#//Requirement/satisfiedBy" eKeys="#//NamedElement/name"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DataDef" abstract="true" eSuperTypes="#//ElementDef"/>
   <eClassifiers xsi:type="ecore:EClass" name="ConstraintUse">
     <eStructuralFeatures xsi:type="ecore:EReference" name="definition" eType="#//ConstraintDef"/>
@@ -536,7 +539,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="composition" upperBound="-1"
         eType="#//Requirement" containment="true" eKeys="#//NamedElement/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="satisfiedBy" upperBound="-1"
-        eType="#//ElementDef" transient="true" eKeys="#//NamedElement/name"/>
+        eType="#//ElementDef" eOpposite="#//ElementDef/satisfies" eKeys="#//NamedElement/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AllocationTable">
     <eStructuralFeatures xsi:type="ecore:EReference" name="allocs" upperBound="-1"

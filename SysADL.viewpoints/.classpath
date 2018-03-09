@@ -3,8 +3,5 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/SysADL_Sintax"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/SysADL_Sintax.edit"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/SysADL_Sintax.editor"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

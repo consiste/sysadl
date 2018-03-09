@@ -261,7 +261,7 @@ ActionDef returns ActionDef:
 ActivityDef returns ActivityDef:
 	{ActivityDef}
 	'activity' 'def'
-	name=ID  ('(' inParameters+=Pin (',' inParameters+=Pin)* ')') (':' outParameters+=Pin (',' outParameters+=Pin)*)?
+	name=ID  ('(' inParameters+=Pin (',' inParameters+=Pin)* ')') (':' '('outParameters+=Pin (',' outParameters+=Pin)* ')')?
 	'{'
 		(properties+=Property
 		| behaDefs+=BehaviorDef
@@ -305,7 +305,7 @@ Protocol returns Protocol: // TODO
 ConstraintDef returns ConstraintDef:
 	{ConstraintDef}
 	'constraint'
-	name=ID ('(' ( inParameters+=Pin (',' inParameters+=Pin)* )? ')') (':' outParameters+=Pin (',' outParameters+=Pin)*)? 
+	name=ID ('(' ( inParameters+=Pin (',' inParameters+=Pin)* )? ')') (':' '(' outParameters+=Pin (',' outParameters+=Pin)* ')')? 
 	'{'
 		('equation' '=' equation=Expression)?
 		properties+=Property*

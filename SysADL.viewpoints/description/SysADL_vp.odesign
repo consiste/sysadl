@@ -887,7 +887,7 @@
               </style>
             </subNodeMappings>
             <subNodeMappings name="BDD.Constraint.Node" semanticCandidatesExpression="feature:equation" semanticElements="feature:equation" domainClass="Expression">
-              <style xsi:type="style:DotDescription" showIcon="false" labelExpression="['equation: ' + expValue(self)/]" resizeKind="NSEW">
+              <style xsi:type="style:DotDescription" showIcon="false" labelExpression="['equation: ' + nodeText(self)/]" resizeKind="NSEW">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
@@ -1074,7 +1074,7 @@
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               </style>
             </borderedNodeMappings>
-            <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="['&lt;&lt;Constraint>>\n:'+definition.name+'\n'+expValue(definition.equation)/]" sizeComputationExpression="5" labelPosition="node" resizeKind="NSEW" width="12" height="7" color="//@userColorsPalettes[name='Colors']/@entries[name='BlueBlock']">
+            <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="service:constraintUseText()" sizeComputationExpression="5" labelPosition="node" resizeKind="NSEW" width="12" height="7" color="//@userColorsPalettes[name='Colors']/@entries[name='BlueBlock']">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </style>
@@ -1510,7 +1510,7 @@
             </subContainerMappings>
             <subContainerMappings name="Execution.CP.Expr" semanticCandidatesExpression="var:self" domainClass="Executable" childrenPresentation="List">
               <subNodeMappings name="Execution.Expression" semanticCandidatesExpression="feature:body" domainClass="Expression">
-                <style xsi:type="style:DotDescription" showIcon="false" labelExpression="feature:value" labelPosition="node" resizeKind="NSEW">
+                <style xsi:type="style:DotDescription" showIcon="false" labelExpression="service:nodeText()" labelPosition="node" resizeKind="NSEW">
                   <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                   <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                   <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
@@ -1604,6 +1604,7 @@
         </toolSections>
       </defaultLayer>
     </ownedRepresentations>
+    <ownedJavaExtensions qualifiedClassName="sysadl.viewpoints.services.SysADLServices"/>
   </ownedViewpoints>
   <ownedViewpoints name="SysADL.Allocation" label="SysADL Allocation Viewpoint" modelFileExtension="sysadl">
     <ownedRepresentations xsi:type="description_2:EditionTableDescription" name="SysADL.Allocation.Table" titleExpression="['Allocation Table for '+self.name/]" initialisation="true" domainClass="Model">

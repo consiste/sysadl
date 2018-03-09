@@ -15,6 +15,8 @@ import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.XtextResource;
 
+import sysADL_Sintax.ConstraintUse;
+
 public class SysADLServices {
 
 	public EObject openTextEditor(EObject any) {
@@ -58,10 +60,14 @@ public class SysADLServices {
 		return null; // TODO
 	}
 	
-	public String expValue(EObject exp) {
+	public String nodeText(EObject exp) {
 		if (exp==null) return "";
 		INode expNode = NodeModelUtils.getNode(exp);
 		String value = NodeModelUtils.getTokenText(expNode);
 		return  value;
+	}
+	
+	public String constraintUseText(ConstraintUse c) {
+		return "<<Constraint>>\n:"+c.getDefinition().getName()+"\n"+nodeText(c.getDefinition().getEquation());
 	}
 }

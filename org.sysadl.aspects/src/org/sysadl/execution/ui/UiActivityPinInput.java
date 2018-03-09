@@ -1,5 +1,7 @@
 package org.sysadl.execution.ui;
 
+import java.util.Map;
+
 import sysADL_Sintax.ActivityDef;
 import sysADL_Sintax.Pin;
 
@@ -15,7 +17,8 @@ public abstract class UiActivityPinInput {
 	 * Save the activity for internal use
 	 * Use activity.getInParameters() to retrieve a list of Pins
 	 */
-	private ActivityDef activity;
+	protected ActivityDef activity;
+	protected Map<Pin, Object> values;
 	
 	public UiActivityPinInput(ActivityDef ac) {
 		this.activity = ac;
@@ -47,5 +50,7 @@ public abstract class UiActivityPinInput {
 	 * @param target pin
 	 * @return value provided for Pin
 	 */
-	public abstract Object inputValueOf(Pin target);
+	public Object inputValueOf(Pin target) {
+		return values.get(target);
+	}
 }

@@ -24,6 +24,7 @@ public abstract class UiActivityPinInput {
 		this.activity = ac;
 	}
 	
+	
 	/**
 	 * Requests input from user
 	 * 
@@ -43,7 +44,8 @@ public abstract class UiActivityPinInput {
 	 * @return true if user provided values for all pins, false otherwise
 	 * Note: The user might not provide all inputs and it will NOT be an error
 	 */
-	public abstract boolean requestInput();
+	public abstract boolean requestInputCMD();
+	public abstract boolean requestInputGUI(String[] args);
 	
 	/**
 	 * 
@@ -53,4 +55,23 @@ public abstract class UiActivityPinInput {
 	public Object inputValueOf(Pin target) {
 		return values.get(target);
 	}
+	
+	public ActivityDef getActivity() {
+		return activity;
+	}
+
+	public void setActivity(ActivityDef activity) {
+		this.activity = activity;
+	}
+
+	public Map<Pin, Object> getValues() {
+		return values;
+	}
+
+	public void setValues(Map<Pin, Object> values) {
+		this.values = values;
+	}
+
+
+	
 }

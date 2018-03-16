@@ -3,6 +3,7 @@ package org.sysadl.execution.ui;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import javafx.application.Application;
 import sysADL_Sintax.ActivityDef;
 import sysADL_Sintax.Pin;
 import sysADL_Sintax.TypeDef;
@@ -15,7 +16,7 @@ public class Inputer extends UiActivityPinInput{
 	}
 
 	@Override
-	public boolean requestInput() {
+	public boolean requestInputCMD() {
 		boolean answeredAll = true;
 
 		for (Object a : this.getActivity().getInParameters()) {
@@ -64,10 +65,20 @@ public class Inputer extends UiActivityPinInput{
 		return answeredAll;
 	}
 	
+	@Override
+	public boolean requestInputGUI(String[] args) {
+        Application.launch(Fx.class, args);
+        return false;
+	}
+	
 	public static void main(String args[]) {
 		ActivityDef ac = TestAd.testActivity();
 		Inputer inputer = new Inputer(ac);
-		inputer.requestInput();
+//		inputer.requestInputCMD();
+		inputer.requestInputGUI(args);
+		
 	}
+
+
 
 }

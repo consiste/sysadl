@@ -11,14 +11,14 @@ public class Inputer extends UiActivityPinInput{
 
 	public Inputer(ActivityDef ac) {
 		super(ac);
-		this.setValues(new HashMap<Pin, Object>());
+		this.values = new HashMap<Pin, Object>();
 	}
 
 	@Override
 	public boolean requestInput() {
 		boolean answeredAll = true;
 
-		for (Object a : this.getActivity().getInParameters()) {
+		for (Object a : this.activity.getInParameters()) {
 			Pin pin = (Pin)a;
 			TypeDef pinType = pin.getDefinition();
 			String typeClassName = pinType.getName();
@@ -38,18 +38,18 @@ public class Inputer extends UiActivityPinInput{
 					}else {
 						if(typeClassName.equals("Int")) {
 							Integer i= Integer.parseInt(valueTyped);
-							this.getValues().put(pin, i);
+							this.values.put(pin, i);
 						}else if(typeClassName.equals("Real")) {
 							Double i = Double.parseDouble(valueTyped);
-							this.getValues().put(pin, i);
+							this.values.put(pin, i);
 						}else if(typeClassName.equals("Boolean")) {
 							Boolean i = Boolean.parseBoolean(valueTyped);
-							this.getValues().put(pin, i);
+							this.values.put(pin, i);
 						}else if(typeClassName.equals("String")) {
-							this.getValues().put(pin, valueTyped);
+							this.values.put(pin, valueTyped);
 						}else if(typeClassName.equals("void")) {
 							//it matters not what the user types. the value will be null.
-							this.getValues().put(pin, null);
+							this.values.put(pin, null);
 						}
 					}
 					break;

@@ -22,6 +22,7 @@ import org.sysadl.context.impl.SysADLContextImpl
 import org.sysadl.engine.ExecutionUtil
 import sysADL_Sintax.DataBuffer
 import java.util.Queue
+import sysADL_Sintax.DataStore
 
 @Aspect(className=ActivityBody)
 class ActivityBodyAspect {
@@ -203,4 +204,24 @@ class DataBufferAspect extends DataObjectAspect{
 		}
 	}
 }
-		
+
+@Aspect(className=DataStore)
+class DataStoreAspect extends DataObjectAspect {
+	private Object store
+	
+	def void run() {
+		if (_self.cvalue===null) { // either the value was consumed, or the store is empty
+			if (_self.store===null) { // the store is empty
+				// do nothing
+			} else { // the value was consumed
+				// copy it from store to cvalue
+				ActivityFlowableAspect.cvalue(_self, _self.store);
+			}
+		} else { // either the value was not consumed or updated
+			if (_self.cvalue!==_self.store) { // value updated
+				_self.store = _self.cvalue;
+			}
+			// else do nothing
+		}
+	}
+}

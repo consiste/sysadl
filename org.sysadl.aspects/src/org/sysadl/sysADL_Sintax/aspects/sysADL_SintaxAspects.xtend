@@ -225,7 +225,7 @@ class DataStoreAspect extends DataObjectAspect {
 			if (_self.cvalue!==_self.store) { // value updated
 				_self.store = _self.cvalue;
 			}
-			// else do nothing
+			// otherwise do nothing
 		}
 	}
 }

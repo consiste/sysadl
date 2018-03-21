@@ -64,7 +64,11 @@ public class SysADLExecutionEngine {
 		} catch (ContextException e0) {
 			e0.printStackTrace();
 		}
-		return null;
+		// FIXME if it comes to this, it means that the executables returned nothing, therefore it might be a Void-type return
+		// How to handle void returns? If use null values, it will be necessary a "empty value" class
+		// If use a specific Null Class, null values can still be used to represent empty values
+		// Apparently is easier to use a NullClass, instead of a EmptyClass
+		return null; 
 	}
 	
 	private SysADLExecutionEngine() {

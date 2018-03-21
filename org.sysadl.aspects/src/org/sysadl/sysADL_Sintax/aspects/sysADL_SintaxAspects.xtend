@@ -148,13 +148,14 @@ class ActivityRelationAspect {
 		var tarvalue = ActivityFlowableAspect.cvalue(tar);
 		if ((_self instanceof ActivityFlow || (_self.eContainer.eContainer as ActivityDef).inParameters.contains(src)) && tarvalue === null) {
 			var ext = ""
-			if (_self instanceof ActivityDelegation) ext = "(Delegation sc-tar) "
+			if (_self instanceof ActivityDelegation) ext = "(Delegation scr-tar) "
 			println(ext+"Flowing " + srcvalue + " from (" + (src as NamedElement).name + ") to (" + (tar as NamedElement).name +")")
 			// 	Update values from source and target
 			// Target will now have the value of source
 			ActivityFlowableAspect.cvalue(tar, ActivityFlowableAspect.cvalue(src))
 			// Value will be consumed, source is now null
 			ActivityFlowableAspect.cvalue(src, null)
+			
 		} else if ((_self instanceof ActivityDelegation && (_self.eContainer.eContainer as ActivityDef).outParameters.contains(src)) && srcvalue === null){
 			println("(Delegation tar-src) Flowing " + tarvalue + " from (" + (tar as NamedElement).name + ") to (" +(src as NamedElement).name + ")")
 			// Update values from source and target
@@ -163,6 +164,10 @@ class ActivityRelationAspect {
 			// Value will be consumed, target is now null
 			ActivityFlowableAspect.cvalue(tar, null)
 		}
+		// no matter what happens, if src or tar are data objects, perform its operations
+		// this will allow multiple flows from the same object in a single step
+		if (src instanceof DataObject) DataObjectAspect.run(src)
+		if (tar instanceof DataObject) DataObjectAspect.run(tar)
 	}
 }
 
@@ -174,7 +179,6 @@ abstract class ActivityFlowableAspect {
 @Aspect(className=DataObject)
 abstract class DataObjectAspect extends ActivityFlowableAspect {
 	// Produces/stores a value
-	@Step
 	def void run()
 }
 

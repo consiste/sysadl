@@ -36,7 +36,7 @@ public class Inputer extends UiActivityPinInput {
 		this.setValues(new HashMap<Pin, Object>());
 	}
 
-	@Override
+	
 	public boolean requestInputCMD() {
 		this.answeredAll = true;
 
@@ -85,7 +85,7 @@ public class Inputer extends UiActivityPinInput {
 	}
 
 	@Override
-	public boolean requestInputGUI(String[] args) {
+	public boolean requestInput() {
 
 		this.answeredAll = true;
 
@@ -93,7 +93,6 @@ public class Inputer extends UiActivityPinInput {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		JFrame guiFrame = new JFrame();
@@ -158,7 +157,10 @@ public class Inputer extends UiActivityPinInput {
 		// set property so that when user clicks the button (or anything else) the
 		// values typed are all saved.
 		table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+		
+		//TODO use a Combopanel to choose from boolean values.
 
+		//creating text space to communicate stuff to the user
 		final JTextArea successMessageTextArea = new JTextArea(1, 0);
 		successMessageTextArea.setEditable(false);
 		final JTextArea valuesMessageTextArea = new JTextArea(2, 0);
@@ -252,161 +254,10 @@ public class Inputer extends UiActivityPinInput {
 		ActivityDef ac = TestAd.testActivity();
 		Inputer inputer = new Inputer(ac);
 		// inputer.requestInputCMD();
-		inputer.requestInputGUI(args);
+		inputer.requestInput();
 
 	}
 
-	// javafx
-	// class FxInner extends Application{
-	//
-	// @Override
-	// public void start(Stage primaryStage) throws Exception {
-	// primaryStage.setTitle("SysADL");
-	// Button btn = new Button();
-	// btn.setText("Say 'Hello World'");
-	// btn.setOnAction(new EventHandler<ActionEvent>() {
-	//
-	// @Override
-	// public void handle(ActionEvent event) {
-	// System.out.println("Hello World!");
-	// }
-	// });
-	//
-	// BorderPane root = new BorderPane();
-	// root.setCenter(btn);
-	// primaryStage.setScene(new Scene(root, 300, 250));
-	// primaryStage.show();
-	//
-	// }
-	// }
 
-	// USING SWING
-	// JFrame guiFrame = new JFrame();
-	//
-	// //make sure the program exits when the frame closes
-	// guiFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	// guiFrame.setTitle("Example GUI");
-	// guiFrame.setSize(300,250);
-	//
-	// //This will center the JFrame in the middle of the screen
-	// guiFrame.setLocationRelativeTo(null);
-	// //Options for the JComboBox
-	// String[] fruitOptions = {"Apple", "Apricot", "Banana"
-	// ,"Cherry", "Date", "Kiwi", "Orange", "Pear", "Strawberry"};
-	//
-	// //Options for the JList
-	// String[] vegOptions = {"Asparagus", "Beans", "Broccoli", "Cabbage"
-	// , "Carrot", "Celery", "Cucumber", "Leek", "Mushroom"
-	// , "Pepper", "Radish", "Shallot", "Spinach", "Swede"
-	// , "Turnip"};
-	//
-	// //The first JPanel contains a JLabel and JCombobox
-	// final JPanel comboPanel = new JPanel();
-	// JLabel comboLbl = new JLabel("Fruits:");
-	// JComboBox fruits = new JComboBox(fruitOptions);
-	//
-	// comboPanel.add(comboLbl);
-	// comboPanel.add(fruits);
-	// //Create the second JPanel. Add a JLabel and JList and
-	// //make use the JPanel is not visible.
-	// final JPanel listPanel = new JPanel();
-	// listPanel.setVisible(false);
-	// JLabel listLbl = new JLabel("Vegetables:");
-	// JList vegs = new JList(vegOptions);
-	// vegs.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-	//
-	// listPanel.add(listLbl);
-	// listPanel.add(vegs);
-	//
-	// JButton vegFruitBut = new JButton( "Fruit or Veg");
-	//
-	// //The ActionListener class is used to handle the
-	// //event that happens when the user clicks the button.
-	// //As there is not a lot that needs to happen we can
-	// //define an anonymous inner class to make the code simpler.
-	// vegFruitBut.addActionListener(new ActionListener()
-	// {
-	// @Override
-	// public void actionPerformed(ActionEvent event)
-	// {
-	// //When the fruit of veg button is pressed
-	// //the setVisible value of the listPanel and
-	// //comboPanel is switched from true to
-	// //value or vice versa.
-	// listPanel.setVisible(!listPanel.isVisible());
-	// comboPanel.setVisible(!comboPanel.isVisible());
-	//
-	// }
-	// });
-	//
-	// //The JFrame uses the BorderLayout layout manager.
-	// //Put the two JPanels and JButton in different areas.
-	// guiFrame.add(comboPanel, BorderLayout.NORTH);
-	// guiFrame.add(listPanel, BorderLayout.CENTER);
-	// guiFrame.add(vegFruitBut,BorderLayout.SOUTH);
-	//
-	// //make sure the JFrame is visible
-	// guiFrame.setVisible(true);
-	//
-	// return false;
-
-	// EXEMPLO USANDO SWING
-
-	// if(false) {
-	// //Options for the JComboBox
-	// String[] fruitOptions = {"Apple", "Apricot", "Banana"
-	// ,"Cherry", "Date", "Kiwi", "Orange", "Pear", "Strawberry"};
-	//
-	// //Options for the JList
-	// String[] vegOptions = {"Asparagus", "Beans", "Broccoli", "Cabbage"
-	// , "Carrot", "Celery", "Cucumber", "Leek", "Mushroom"
-	// , "Pepper", "Radish", "Shallot", "Spinach", "Swede"
-	// , "Turnip"};
-	//
-	// //The first JPanel contains a JLabel and JCombobox
-	// final JPanel comboPanel = new JPanel();
-	// JLabel comboLbl = new JLabel("Fruits:");
-	// JComboBox fruits = new JComboBox(fruitOptions);
-	//
-	// comboPanel.add(comboLbl);
-	// comboPanel.add(fruits);
-	// //Create the second JPanel. Add a JLabel and JList and
-	// //make use the JPanel is not visible.
-	// final JPanel listPanel = new JPanel();
-	// listPanel.setVisible(false);
-	// JLabel listLbl = new JLabel("Vegetables:");
-	// JList vegs = new JList(vegOptions);
-	// vegs.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-	//
-	// listPanel.add(listLbl);
-	// listPanel.add(vegs);
-	//
-	// JButton vegFruitBut = new JButton( "Fruit or Veg");
-	//
-	// //The ActionListener class is used to handle the
-	// //event that happens when the user clicks the button.
-	// //As there is not a lot that needs to happen we can
-	// //define an anonymous inner class to make the code simpler.
-	// vegFruitBut.addActionListener(new ActionListener()
-	// {
-	// @Override
-	// public void actionPerformed(ActionEvent event)
-	// {
-	// //When the fruit of veg button is pressed
-	// //the setVisible value of the listPanel and
-	// //comboPanel is switched from true to
-	// //value or vice versa.
-	// listPanel.setVisible(!listPanel.isVisible());
-	// comboPanel.setVisible(!comboPanel.isVisible());
-	//
-	// }
-	// });
-	//
-	// //The JFrame uses the BorderLayout layout manager.
-	// //Put the two JPanels and JButton in different areas.
-	// guiFrame.add(comboPanel, BorderLayout.NORTH);
-	// guiFrame.add(listPanel, BorderLayout.CENTER);
-	// guiFrame.add(vegFruitBut,BorderLayout.SOUTH);
-	// }
 
 }

@@ -44,8 +44,8 @@ public abstract class UiActivityPinInput {
 	 * @return true if user provided values for all pins, false otherwise
 	 * Note: The user might not provide all inputs and it will NOT be an error
 	 */
-	public abstract boolean requestInputCMD();
-	public abstract boolean requestInputGUI(String[] args);
+
+	public abstract boolean requestInput();
 	
 	/**
 	 * 

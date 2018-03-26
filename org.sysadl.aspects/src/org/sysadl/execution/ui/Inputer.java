@@ -24,6 +24,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import org.sysadl.execution.value.Values;
+
 import sysADL_Sintax.ActivityDef;
 import sysADL_Sintax.Pin;
 import sysADL_Sintax.TypeDef;
@@ -53,7 +55,8 @@ public class Inputer extends UiActivityPinInput {
 				String valueTyped = sc.nextLine();
 
 				try {
-					if (valueTyped.equals("") && !typeClassName.equals("Void")) { // check if should be lowercase
+					// removed the check for type void [Eduardo]
+					if (valueTyped.equals("")) { // && !typeClassName.equals("Void")) { // check if should be lowercase
 						answeredAll = false;
 						System.out.println("skkiped one");
 					} else {
@@ -70,7 +73,8 @@ public class Inputer extends UiActivityPinInput {
 							this.values.put(pin, valueTyped);
 						} else if (typeClassName.equals("void")) {
 							// it matters not what the user types. the value will be null.
-							this.values.put(pin, null);
+							// now it is VOID [Eduardo]
+							this.values.put(pin, Values.VOID);
 						}
 					}
 					break;

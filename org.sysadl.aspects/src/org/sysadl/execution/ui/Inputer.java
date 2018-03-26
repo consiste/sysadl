@@ -34,7 +34,6 @@ public class Inputer extends UiActivityPinInput {
 
 	public Inputer(ActivityDef ac) {
 		super(ac);
-		this.values = new HashMap<Pin, Object>();
 	}
 
 	
@@ -86,7 +85,7 @@ public class Inputer extends UiActivityPinInput {
 	}
 
 	@Override
-	public boolean requestInput() {
+	public void requestInput() {
 
 		this.answeredAll = true;
 
@@ -195,18 +194,18 @@ public class Inputer extends UiActivityPinInput {
 						} else {
 							if (typeClassName.equals("Int")) {
 								Integer i = Integer.parseInt(valueTyped);
-								Inputer.this.getValues().put(pin, i);
+								Inputer.this.values.put(pin, i);
 							} else if (typeClassName.equals("Real")) {
 								Double i = Double.parseDouble(valueTyped);
-								Inputer.this.getValues().put(pin, i);
+								Inputer.this.values.put(pin, i);
 							} else if (typeClassName.equals("Boolean")) {
 								Boolean i = Boolean.parseBoolean(valueTyped);
-								Inputer.this.getValues().put(pin, i);
+								Inputer.this.values.put(pin, i);
 							} else if (typeClassName.equals("String")) {
-								Inputer.this.getValues().put(pin, valueTyped);
+								Inputer.this.values.put(pin, valueTyped);
 							} else if (typeClassName.equals("void")) {
 								// it matters not what the user types. the value will be null.
-								Inputer.this.getValues().put(pin, null);
+								Inputer.this.values.put(pin, null);
 							}
 						}
 
@@ -216,7 +215,7 @@ public class Inputer extends UiActivityPinInput {
 								"One or more values provided are not coherent \n with the pin's type. Try Again.");
 						successMessageTextArea.setText("The values you typed where not saved.");
 						ex.printStackTrace();
-						Inputer.this.getValues().clear();
+						Inputer.this.values.clear();
 						noErros = false;
 						break;
 					}
@@ -226,7 +225,7 @@ public class Inputer extends UiActivityPinInput {
 				if(noErros) {
 					System.out.println("map after the click: ");
 					//for (Inputer.this.getValues())(Inputer.this.getValues());
-					for (Map.Entry entry : Inputer.this.getValues().entrySet()) {
+					for (Map.Entry entry : Inputer.this.values.entrySet()) {
 						System.out.println(((Pin)entry.getKey()).getName() +" : "+entry.getValue() +" ("+entry.getValue().getClass().getName()+")");
 					}
 					valuesMessageTextArea.setText("");
@@ -251,8 +250,6 @@ public class Inputer extends UiActivityPinInput {
 
 		// make sure the JFrame is visible
 		guiFrame.setVisible(true);
-
-		return false;
 	}
 
 	public static void main(String args[]) {
@@ -261,6 +258,13 @@ public class Inputer extends UiActivityPinInput {
 		// inputer.requestInputCMD();
 		inputer.requestInput();
 
+	}
+
+
+	@Override
+	public void mapChanged() {
+		// TODO Auto-generated method stub
+		
 	}
 
 

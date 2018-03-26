@@ -23,15 +23,19 @@ import org.sysadl.engine.ExecutionUtil
 import sysADL_Sintax.DataBuffer
 import java.util.Queue
 import sysADL_Sintax.DataStore
+import org.sysadl.execution.ui.Inputer
+import org.sysadl.execution.ui.UiActivityPinInput
 
 @Aspect(className=ActivityBody)
 class ActivityBodyAspect {
 	private boolean finished
+	private UiActivityPinInput input
 	/**
 	 * Initialize the model, setting the private attributes and pin values for input
 	 */
 	@InitializeModel
 	def public void init(EList<String> args) {
+		_self.input = new Inputer(_self.eContainer as ActivityDef)
 		_self.finished = false;
 	}
 
@@ -72,10 +76,17 @@ class ActivityBodyAspect {
 	def void stepActivityPins() {
 		// generate values for the activity pins in
 		val act = _self.eContainer.eContainer as ActivityDef
-		for (p : act.inParameters) {
-			// if pin values are null, generate a new value
-			if (ActivityFlowableAspect.cvalue(p as Pin)===null) {
-				ActivityFlowableAspect.cvalue(p as Pin, Helper.genValue) // TODO ask the user?
+		
+		_self.input.requestInput // request input
+		
+		for (i : act.inParameters) { // remove values from the list that were consumed
+			val pinValue = _self.input.values.get(i as Pin)
+			if (ActivityFlowableAspect.cvalue(i as Pin)===null && pinValue!==null) {
+				_self.input.values.remove(i as Pin);
+			} else {
+				if (pinValue!==null) {
+					ActivityFlowableAspect.cvalue(i as Pin, pinValue)
+				}
 			}
 		}
 		

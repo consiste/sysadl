@@ -1412,12 +1412,7 @@
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="source" valueExpression="var:source"/>
                     <subModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.ActivitySwitch" referenceName="targetSwitch" variableName="switch">
                       <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:switch">
-                        <subModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.ActivitySwitchCase" referenceName="cases" variableName="case">
-                          <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:case">
-                            <subModelOperations xsi:type="tool_1:SetValue" featureName="target" valueExpression="var:target"/>
-                            <subModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.Expression" referenceName="condition" variableName="expression"/>
-                          </subModelOperations>
-                        </subModelOperations>
+                        <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="service:createCase(target)"/>
                       </subModelOperations>
                     </subModelOperations>
                   </subModelOperations>

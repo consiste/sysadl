@@ -144,6 +144,7 @@ class ActionUseAspect {
 	}
 	def boolean canRun() {
 		for (i : _self.pinIn) {
+			
 			if (ActivityFlowableAspect.cvalue(i as Pin)===null) return false;
 		}
 		return true;

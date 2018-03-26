@@ -1,12 +1,12 @@
 package org.sysadl.engine;
 
 import org.eclipse.emf.common.util.EList;
-import org.sysad.execution.expression.ExpressionEvaluator;
-import org.sysad.execution.expression.ExpressionEvaluatorImpl;
 import org.sysadl.context.SysADLContext;
 import org.sysadl.context.exceptions.ContextException;
 import org.sysadl.execution.StatementsInterpreterImpl;
 import org.sysadl.execution.SysADLStatementInterpreter;
+import org.sysadl.execution.expression.ExpressionEvaluator;
+import org.sysadl.execution.expression.ExpressionEvaluatorImpl;
 import org.sysadl.execution.statement.ControlBreakStatement;
 import org.sysadl.execution.statement.ControlReturnStatement;
 
@@ -64,7 +64,11 @@ public class SysADLExecutionEngine {
 		} catch (ContextException e0) {
 			e0.printStackTrace();
 		}
-		return null;
+		// FIXME if it comes to this, it means that the executables returned nothing, therefore it might be a Void-type return
+		// How to handle void returns? If use null values, it will be necessary a "empty value" class
+		// If use a specific Null Class, null values can still be used to represent empty values
+		// Apparently is easier to use a NullClass, instead of a EmptyClass
+		return null; 
 	}
 	
 	private SysADLExecutionEngine() {

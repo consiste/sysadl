@@ -54,7 +54,7 @@ public class PinTableGUI implements ValueChangedListener{
 		// make sure the program exits when the frame closes
 		guiFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		guiFrame.setTitle("Please insert values for the pins");
-		guiFrame.setSize(400, 400);
+		guiFrame.setSize(410, 410);
 		// This will center the JFrame in the middle of the screen
 		guiFrame.setLocationRelativeTo(null);
 		
@@ -119,7 +119,9 @@ public class PinTableGUI implements ValueChangedListener{
 		final JTextArea successMessageTextArea = new JTextArea(1, 0);
 		successMessageTextArea.setEditable(false);
 		final JTextArea valuesMessageTextArea = new JTextArea(2, 0);
-		successMessageTextArea.setEditable(false);
+		valuesMessageTextArea.setEditable(false);
+		final JTextArea ValueErrorMessageTextArea = new JTextArea(1, 0);
+		ValueErrorMessageTextArea.setEditable(false);
 
 		// creating the button and specifying its behavior when clicked
 		JButton button = new JButton("Confirm");
@@ -166,18 +168,18 @@ public class PinTableGUI implements ValueChangedListener{
 
 					} catch (Exception ex) {
 						System.out.println("log: wrong type! try again.");
-						valuesMessageTextArea.setText(
-								"One or more values provided are not coherent \n with the pin's type. Try Again.");
-						successMessageTextArea.setText("The values you typed where not saved.");
+						ValueErrorMessageTextArea.setText(
+								"One or more values provided where not coherent \nwith the pin's type. These values where ignored.");
+						//successMessageTextArea.setText("The values you typed where not saved.");
 						ex.printStackTrace();
-						PinTableGUI.this.values.clear();
+						//PinTableGUI.this.values.clear();
 						noErros = false;
-						break;
+						//break;
 					}
 
 				}
 
-				if(noErros) {
+				if(true) {
 					System.out.println("map after the click: ");
 					//for (PinTableGUI.this.getValues())(PinTableGUI.this.getValues());
 					for (Map.Entry entry : PinTableGUI.this.values.entrySet()) {
@@ -194,10 +196,11 @@ public class PinTableGUI implements ValueChangedListener{
 		});
 
 		JPanel panel = new JPanel();
-		GridLayout grid = new GridLayout(3, 1);
+		GridLayout grid = new GridLayout(4, 1);
 		panel.setLayout(grid);
 		panel.add(valuesMessageTextArea);
 		panel.add(successMessageTextArea);
+		panel.add(ValueErrorMessageTextArea);
 		panel.add(button);
 
 		guiFrame.add(panel, BorderLayout.SOUTH);
@@ -224,7 +227,7 @@ public class PinTableGUI implements ValueChangedListener{
 			String tablePinName = (String)table.getModel().getValueAt(rowIndex, 0);
 			if(pin.getName().equals(tablePinName)) {
 				Object obj = values.get(pin);
-				table.getModel().setValueAt(values.get(pin), rowIndex, 2);
+				table.getModel().setValueAt(values.get(pin).toString(), rowIndex, 2);
 				break;
 			}
 			

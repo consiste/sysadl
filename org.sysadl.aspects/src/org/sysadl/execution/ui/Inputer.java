@@ -121,6 +121,9 @@ public class Inputer extends UiActivityPinInput  {
 		Inputer inputer = new Inputer(ac);
 		// inputer.requestInputCMD();
 		inputer.requestInput();
+
+		
+		//simulando que o mapa mudou
 		try {
 			TimeUnit.SECONDS.sleep(10);
 		} catch (InterruptedException e) {
@@ -128,7 +131,7 @@ public class Inputer extends UiActivityPinInput  {
 			e.printStackTrace();
 		}
 		System.out.println("CAHNGED");
-		inputer.getValues().put((Pin) ac.getInParameters().get(0), 99);
+		inputer.getValues().put((Pin) ac.getInParameters().get(0), "99");
 
 	}
 

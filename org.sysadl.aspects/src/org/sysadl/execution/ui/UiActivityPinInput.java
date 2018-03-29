@@ -19,13 +19,13 @@ public abstract class UiActivityPinInput {
 	 * Use activity.getInParameters() to retrieve a list of Pins
 	 */
 	protected ActivityDef activity;
-	protected Map<Pin, Object> values;
+	protected CustomListenerHashMap<Pin, Object> values;
 	
 	public UiActivityPinInput(ActivityDef ac) {
 		this.activity = ac;
 
 		// avoid rehashing, calculate initial capacity
-		this.values = new HashMap<Pin, Object>((int) ((ac.getInParameters().size()/0.75)+1));
+		this.values = new CustomListenerHashMap<Pin, Object>((int) ((ac.getInParameters().size()/0.75)+1));
 	}
 	
 	

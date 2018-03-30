@@ -76,19 +76,25 @@ class ActivityBodyAspect {
 	def void stepActivityPins() {
 		// generate values for the activity pins in
 		val act = _self.eContainer.eContainer as ActivityDef
-		
+
 		_self.input.requestInput // request input
 		
+		var changed = false
 		for (i : act.inParameters) { // remove values from the list that were consumed
 			val pinValue = _self.input.values.get(i as Pin)
 			if (ActivityFlowableAspect.cvalue(i as Pin)===null && pinValue!==null) {
-				_self.input.values.remove(i as Pin);
+				_self.input.values.remove(i as Pin); // remove or set null?
+				_self.input.values.put(i as Pin, null);
+				changed = true
 			} else {
 				if (pinValue!==null) {
 					ActivityFlowableAspect.cvalue(i as Pin, pinValue)
 				}
 			}
 		}
+		
+		// update table values on input
+		if (changed) _self.input.mapChanged
 		
 		// consume the values for the activity pins out
 		for (p : act.outParameters) {

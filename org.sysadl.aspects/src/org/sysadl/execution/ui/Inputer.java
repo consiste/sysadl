@@ -76,7 +76,7 @@ public class Inputer extends UiActivityPinInput  {
 							this.values.put(pin, i);
 						} else if (typeClassName.equals("String")) {
 							this.values.put(pin, valueTyped);
-						} else if (typeClassName.equals("void")) {
+						} else if (typeClassName.equals("Void")) {
 							// it matters not what the user types. the value will be null.
 							// now it is VOID [Eduardo]
 							this.values.put(pin, Values.VOID);
@@ -109,7 +109,7 @@ public class Inputer extends UiActivityPinInput  {
 	}
 	
 	private void buildGUI() {
-		this.gui = new PinTableGUI(this.values, this.activity);
+		this.gui = new PinTableGUI((CustomListenerHashMap<Pin, Object>) this.values, this.activity);
 		
 	}
 	

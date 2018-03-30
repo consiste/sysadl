@@ -17,6 +17,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import org.sysadl.execution.value.Values;
+
 import sysADL_Sintax.ActivityDef;
 import sysADL_Sintax.Pin;
 import sysADL_Sintax.TypeDef;
@@ -160,9 +162,9 @@ public class PinTableGUI implements ValueChangedListener{
 								PinTableGUI.this.values.put(pin, i);
 							} else if (typeClassName.equals("String")) {
 								PinTableGUI.this.values.put(pin, valueTyped);
-							} else if (typeClassName.equals("void")) {
+							} else if (typeClassName.equals("Void")) {
 								// it matters not what the user types. the value will be null.
-								PinTableGUI.this.values.put(pin, null);
+								PinTableGUI.this.values.put(pin, Values.VOID);
 							}
 						}
 

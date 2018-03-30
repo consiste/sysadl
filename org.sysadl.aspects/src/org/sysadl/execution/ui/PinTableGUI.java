@@ -232,7 +232,6 @@ public class PinTableGUI implements ValueChangedListener{
 				table.getModel().setValueAt(values.get(pin).toString(), rowIndex, 2);
 				break;
 			}
-			// this pin might not be necessary, since u're checking the whole table, why not redraw it completely?
 			
 		}
 

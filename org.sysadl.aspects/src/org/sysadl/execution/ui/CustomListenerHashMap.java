@@ -12,9 +12,10 @@ public class CustomListenerHashMap<Pin, String> extends HashMap<Pin,String>{
 	}
 
 	public String put(Pin key, String value) {
+		Object oldValue = this.get(key);
 		String s = super.put(key, value);
 		//if we already have that pin for a key, call the event!
-		if(this.valueChangedListener != null && this.get(key) != null) {
+		if(this.valueChangedListener != null && oldValue != null) {
 			valueChangedListener.onChangedValue( (sysADL_Sintax.Pin) key);
 		}
 		

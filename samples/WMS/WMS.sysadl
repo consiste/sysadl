@@ -1,0 +1,480 @@
+Model SysADLArchitecture;
+package SysADL.types {
+	value type Int {
+	}
+	value type Boolean {
+	}
+	value type String {
+	}
+	value type Void {
+	}
+	value type Real {
+	}
+dimension Pressure dimension Temperature unit Celsius {
+		dimension = Temperature } unit Fahrenheit {
+			dimension = Temperature } unit Atm {
+				dimension = Pressure } dimension RelativeHumidity unit percentage {
+					dimension = RelativeHumidity } value type TemperatureSuperType {
+						dimension = Temperature
+					}
+					value type CelsiusTemperature extends TemperatureSuperType {
+						unit = Celsius dimension = Temperature
+					}
+					value type FahrenheitTemperature extends TemperatureSuperType {
+						unit = Fahrenheit dimension = Temperature
+					}
+					value type AtmPressure {
+						unit = Atm dimension = Pressure
+					}
+					value type Humidity {
+						unit = percentage dimension = RelativeHumidity
+					}
+					datatype WeatherStation {
+						attributes id : Int l : Location t : TemperatureSuperType h : Humidity p
+						: AtmPressure
+					}
+					datatype WeatherStationDT {
+						attributes ws : WeatherStation
+					}
+					datatype Location {
+						attributes latitude : Real longitude : Real
+					}
+				}
+				package ComponentsWMS {
+					import ConnectorsWMS;
+					import PortsWMS;
+					import SysADL.types;
+					component def Arch1 {
+						configuration {
+							components:
+							wps : WeatherProcessingSubSystemCP {
+								using ports ip : PortsWMS.WeatherStationDTIPT {
+								}
+								tp : PortsWMS.TemperatureOPT {
+								}
+								hp : PortsWMS.HumidityOPT {
+								}
+								ap : PortsWMS.AtmPressureOPT {
+								}
+							}
+							ws3 : WeatherStationCP {
+								using ports ip : PortsWMS.WeatherStationDTIPT {
+								}
+								op : PortsWMS.WeatherStationDTOPT {
+								}
+							}
+							ws2 : WeatherStationCP {
+								using ports ip : PortsWMS.WeatherStationDTIPT {
+								}
+								op : PortsWMS.WeatherStationDTOPT {
+								}
+							}
+							ws1 : WeatherStationCP {
+								using ports ip : PortsWMS.WeatherStationDTIPT {
+								}
+								op : PortsWMS.WeatherStationDTOPT {
+								}
+							}
+							d : DisplayCP {
+								using ports t : PortsWMS.TemperatureIPT {
+								}
+								h : PortsWMS.HumidityIPT {
+								}
+								ap : PortsWMS.AtmPressureIPT {
+								}
+							}
+							connectors:
+							wscn3 : ConnectorsWMS.WatherStationDTCN bindings ws3.op = ws2.ip wscn2
+							: ConnectorsWMS.WatherStationDTCN bindings ws2.op = ws1.ip wscn1 :
+							ConnectorsWMS.WatherStationDTCN bindings ws1.op = wps.ip
+						apCN :
+							ConnectorsWMS.AtmPressureCN bindings wps.ap = d.ap hCN :
+							ConnectorsWMS.HumidityCN bindings wps.hp = d.h tCN :
+							ConnectorsWMS.TemperatureCN bindings wps.tp = d.t
+						}
+					}
+					component def WeatherProcessingSubSystemCP {
+						ports ip : PortsWMS.WeatherStationDTIPT [ 1, 2 ] {
+						}
+						tp : PortsWMS.TemperatureOPT {
+						}
+						hp : PortsWMS.HumidityOPT {
+						}
+						ap : PortsWMS.AtmPressureOPT {
+						}
+					}
+					component def WeatherStationCP {
+						ports ip : PortsWMS.WeatherStationDTIPT {
+						}
+						op : PortsWMS.WeatherStationDTOPT {
+						}
+						configuration {
+							components:
+							ts : TemperatureSensorCP {
+								using ports tp : PortsWMS.TemperatureOPT {
+								}
+							}
+							hs : HumiditySensorCP {
+								using ports hp : PortsWMS.HumidityOPT {
+								}
+							}
+							aps : AtmPressureSensorCP {
+								using ports ap : PortsWMS.AtmPressureOPT {
+								}
+							}
+							WSDA : WSDataAggregatorCP {
+								using ports ap : PortsWMS.AtmPressureIPT {
+								}
+								hp : PortsWMS.HumidityIPT {
+								}
+								tp : PortsWMS.TemperatureIPT {
+								}
+								op : PortsWMS.WeatherStationDTOPT {
+								}
+								ip : PortsWMS.WeatherStationDTIPT {
+								}
+							}
+							connectors:
+							hcn : ConnectorsWMS.HumidityCN bindings hs.hp = WSDA.hp apcn :
+							ConnectorsWMS.AtmPressureCN bindings aps.ap = WSDA.ap tcn :
+							ConnectorsWMS.TemperatureCN bindings ts.tp = WSDA.tp delegations:
+							WSDA.op to op WSDA.ip to ip
+						}
+					}
+					component def WSDataAggregatorCP {
+						ports ap : PortsWMS.AtmPressureIPT {
+						}
+						hp : PortsWMS.HumidityIPT {
+						}
+						tp : PortsWMS.TemperatureIPT {
+						}
+						op : PortsWMS.WeatherStationDTOPT [ 1, 1 ] {
+						}
+						ip : PortsWMS.WeatherStationDTIPT [ 1, 1 ] {
+						}
+					}
+					boundary component def TemperatureSensorCP {
+						ports tp : PortsWMS.TemperatureOPT {
+						}
+					}
+					boundary component def HumiditySensorCP {
+						ports hp : PortsWMS.HumidityOPT {
+						}
+					}
+					boundary component def AtmPressureSensorCP {
+						ports ap : PortsWMS.AtmPressureOPT {
+						}
+					}
+					component def Arch3 {
+						configuration {
+							components:
+							ws3 : WeatherStationCP {
+								using ports ip : PortsWMS.WeatherStationDTIPT {
+								}
+								op : PortsWMS.WeatherStationDTOPT {
+								}
+							}
+							ws2 : WeatherStationCP {
+								using ports ip : PortsWMS.WeatherStationDTIPT {
+								}
+								op : PortsWMS.WeatherStationDTOPT {
+								}
+							}
+							ws1 : WeatherStationCP {
+								using ports ip : PortsWMS.WeatherStationDTIPT {
+								}
+								op : PortsWMS.WeatherStationDTOPT {
+								}
+							}
+							wps : WeatherProcessingSubSystemCP {
+								using ports ip1 : PortsWMS.WeatherStationDTIPT {
+								}
+								ip2 : PortsWMS.WeatherStationDTIPT {
+								}
+								tp : PortsWMS.TemperatureOPT {
+								}
+								hp : PortsWMS.HumidityOPT {
+								}
+								ap : PortsWMS.AtmPressureOPT {
+								}
+							}
+							ws6 : WeatherStationCP {
+								using ports ip : PortsWMS.WeatherStationDTIPT {
+								}
+								op : PortsWMS.WeatherStationDTOPT {
+								}
+							}
+							ws5 : WeatherStationCP {
+								using ports ip : PortsWMS.WeatherStationDTIPT {
+								}
+								op : PortsWMS.WeatherStationDTOPT {
+								}
+							}
+							ws4 : WeatherStationCP {
+								using ports ip : PortsWMS.WeatherStationDTIPT {
+								}
+								op : PortsWMS.WeatherStationDTOPT {
+								}
+							}
+							d : DisplayCP {
+								using ports t : PortsWMS.TemperatureIPT {
+								}
+								h : PortsWMS.HumidityIPT {
+								}
+								ap : PortsWMS.AtmPressureIPT {
+								}
+							}
+							connectors:
+							wscn1 : ConnectorsWMS.WatherStationDTCN bindings ws1.op = wps.ip1 wscn2
+							: ConnectorsWMS.WatherStationDTCN bindings ws2.op = ws1.ip wscn3 :
+							ConnectorsWMS.WatherStationDTCN bindings ws3.op = ws2.ip wscn6 :
+							ConnectorsWMS.WatherStationDTCN bindings ws6.op = ws5.ip wscn5 :
+							ConnectorsWMS.WatherStationDTCN bindings ws5.op = ws4.ip
+						wscn4 : ConnectorsWMS.WatherStationDTCN bindings ws4.op = wps.ip2
+						apCN :
+							ConnectorsWMS.AtmPressureCN bindings wps.ap = d.ap hCN :
+							ConnectorsWMS.HumidityCN bindings wps.hp = d.h tCN :
+							ConnectorsWMS.TemperatureCN bindings wps.tp = d.t
+						}
+					}
+				component def Arch2 {
+						configuration {
+							components:
+							ws3 : WeatherStationCP {
+								using ports ip : PortsWMS.WeatherStationDTIPT {
+								}
+								op : PortsWMS.WeatherStationDTOPT {
+								}
+							}
+							ws1 : WeatherStationCP {
+								using ports ip : PortsWMS.WeatherStationDTIPT {
+								}
+								op : PortsWMS.WeatherStationDTOPT {
+								}
+							}
+							ws4 : WeatherStationCP {
+								using ports ip : PortsWMS.WeatherStationDTIPT {
+								}
+								op : PortsWMS.WeatherStationDTOPT {
+								}
+							}
+							wps : WeatherProcessingSubSystemCP {
+								using ports ip : PortsWMS.WeatherStationDTIPT {
+								}
+								tp : PortsWMS.TemperatureOPT {
+								}
+								hp : PortsWMS.HumidityOPT {
+								}
+								ap : PortsWMS.AtmPressureOPT {
+								}
+							}
+							ws5 : WeatherStationCP {
+								using ports ip : PortsWMS.WeatherStationDTIPT {
+								}
+								op : PortsWMS.WeatherStationDTOPT {
+								}
+							}
+							ws2 : WeatherStationCP {
+								using ports ip : PortsWMS.WeatherStationDTIPT {
+								}
+								op : PortsWMS.WeatherStationDTOPT {
+								}
+							}
+							ws6 : WeatherStationCP {
+								using ports ip : PortsWMS.WeatherStationDTIPT {
+								}
+								op : PortsWMS.WeatherStationDTOPT {
+								}
+							}
+							d : DisplayCP {
+								using ports t : PortsWMS.TemperatureIPT {
+								}
+								h : PortsWMS.HumidityIPT {
+								}
+								ap : PortsWMS.AtmPressureIPT {
+								}
+							}
+							connectors:
+							wscn6 : ConnectorsWMS.WatherStationDTCN bindings ws6.op = ws5.ip wscn3
+							: ConnectorsWMS.WatherStationDTCN bindings ws3.op = ws2.ip wscn5 :
+							ConnectorsWMS.WatherStationDTCN bindings ws5.op = ws4.ip wscn1 :
+							ConnectorsWMS.WatherStationDTCN_2 bindings ws1.op = wps.ip wscn2 :
+							ConnectorsWMS.WatherStationDTCN bindings ws2.op = ws1.ip wscn4 :
+							ConnectorsWMS.WatherStationDTCN_2 bindings ws4.op = wps.ip
+						apCN :
+							ConnectorsWMS.AtmPressureCN bindings wps.ap = d.ap tCN :
+							ConnectorsWMS.TemperatureCN bindings wps.tp = d.t hCN :
+							ConnectorsWMS.HumidityCN bindings wps.hp = d.h
+						}
+					}
+					activity def WeatherProcessingSubSystemAC ( ip :
+					SysADL.types.WeatherStationDT ) : ( tp :
+					SysADL.types.TemperatureSuperType, hp : SysADL.types.Humidity, ap :
+					SysADL.types.AtmPressure ) {
+						body {
+						actions : wpst : WeatherPS_TemperatureAN {
+								using pins ip : SysADL.types.WeatherStationDT
+							}
+							wpsh : WeatherPS_HumidityAN {
+								using pins ip : SysADL.types.WeatherStationDT
+							}
+							wpsap : WeatherPS_AtmPressureAN {
+								using pins ip : SysADL.types.WeatherStationDT
+							}
+							delegate tp to wpst delegate hp to wpsh delegate ap to wpsap delegate ip
+							to wpst.ip delegate ip to wpsh.ip delegate ip to wpsap.ip
+						}
+					}
+					activity def WSDataAggregatorAC ( t : SysADL.types.TemperatureSuperType,
+					h : SysADL.types.Humidity, ap : SysADL.types.AtmPressure, wsData :
+					SysADL.types.WeatherStationDT ) : ( newWSData :
+					SysADL.types.WeatherStationDT ) {
+						body {
+						actions : wsda : WSDataAggregatorAN {
+								using pins ap : SysADL.types.AtmPressure wsData :
+								SysADL.types.WeatherStationDT h : SysADL.types.Humidity t :
+								SysADL.types.TemperatureSuperType
+							}
+							delegate newWSData to wsda delegate t to wsda.t delegate h to wsda.h
+							delegate ap to wsda.ap delegate wsData to wsda.wsData
+						}
+					}
+					action def WSDataAggregatorAN ( t : SysADL.types.TemperatureSuperType, h
+					: SysADL.types.Humidity, ap : SysADL.types.AtmPressure, wsData :
+					SysADL.types.WeatherStationDT ) : SysADL.types.WeatherStationDT {
+					post-condition WSDataAggregatorEQ ( )
+					delegate WSDataAggregatorAN to WSDataAggregatorEQ.newWSData delegate t to
+						WSDataAggregatorEQ.t delegate h to WSDataAggregatorEQ.h delegate ap to
+						WSDataAggregatorEQ.ap delegate wsData to WSDataAggregatorEQ.wsData
+					}
+					action def WeatherPS_TemperatureAN ( ip : SysADL.types.WeatherStationDT )
+					: SysADL.types.TemperatureSuperType {
+					post-condition WeatherPS_TemperatureEQ ( )
+					delegate WeatherPS_TemperatureAN to WeatherPS_TemperatureEQ.t delegate ip
+						to WeatherPS_TemperatureEQ.ip
+					}
+					action def WeatherPS_HumidityAN ( ip : SysADL.types.WeatherStationDT ) :
+					SysADL.types.Humidity {
+					post-condition WeatherPS_HumidityEQ ( )
+					delegate WeatherPS_HumidityAN to WeatherPS_HumidityEQ.h delegate ip to
+						WeatherPS_HumidityEQ.ip
+					}
+					action def WeatherPS_AtmPressureAN ( ip : SysADL.types.WeatherStationDT )
+					: SysADL.types.AtmPressure {
+					post-condition WeatherPS_AtmPressureEQ ( )
+					delegate WeatherPS_AtmPressureAN to WeatherPS_AtmPressureEQ.ap delegate ip
+						to WeatherPS_AtmPressureEQ.ip
+					}
+					constraint WeatherPS_TemperatureEQ ( ip : SysADL.types.WeatherStationDT )
+					: ( t : SysADL.types.TemperatureSuperType ) {
+						equation = t == "ip.t"
+					}
+				constraint WeatherPS_HumidityEQ ( ip : SysADL.types.WeatherStationDT ) : ( h
+					: SysADL.types.Humidity ) {
+						equation = h == "ip.h"
+					}
+					constraint WeatherPS_AtmPressureEQ ( ip : SysADL.types.WeatherStationDT )
+					: ( ap : SysADL.types.AtmPressure ) {
+						equation = ap == "ip.p"
+					}
+				constraint WSDataAggregatorEQ ( t : SysADL.types.TemperatureSuperType, h :
+					SysADL.types.Humidity, ap : SysADL.types.AtmPressure, wsData :
+					SysADL.types.WeatherStationDT ) : ( newWSData :
+					SysADL.types.WeatherStationDT ) {
+						equation = "newWSData.t" == (t + "wsData.t") && "newWSData.h" == (h + "wsData.h") && "newWSData.p" == (ap + "wsData.p")
+					}
+				executable def WSDataAggregatorEX ( in t :
+					SysADL.types.TemperatureSuperType, in wsData :
+					SysADL.types.WeatherStationDT, in h : SysADL.types.Humidity, in ap :
+					SysADL.types.AtmPressure ) : out SysADL.types.WeatherStationDT {
+						'let newWS : SysADL.types.WeatherStationDT newWS.t = (t + wsData.t) newWS.h = (h + wsData.h) newWS.p = (ap + wsData.p)' return 'newWS'
+					}
+					executable def WeatherPS_TemperatureEX ( in ip :
+					SysADL.types.WeatherStationDT ) : out SysADL.types.TemperatureSuperType {
+						return 'ip.t'
+					}
+					executable def WeatherPS_HumidityEX ( in ip :
+					SysADL.types.WeatherStationDT ) : out SysADL.types.Humidity {
+						return 'ip.h'
+					}
+					executable def WeatherPS_AtmPressureEX ( in ip :
+					SysADL.types.WeatherStationDT ) : out SysADL.types.AtmPressure {
+						return 'ip.p'
+					}
+				boundary component def DisplayCP {
+						ports t : PortsWMS.TemperatureIPT {
+						}
+						h : PortsWMS.HumidityIPT {
+						}
+						ap : PortsWMS.AtmPressureIPT {
+						}
+					}
+				}
+				package ConnectorsWMS {
+					import SysADL.types;
+					import PortsWMS;
+					connector def TemperatureCN {
+						participants ~ t_out : PortsWMS.TemperatureOPT {
+						}
+						~ t_in : PortsWMS.TemperatureIPT {
+						}
+						flows SysADL.types.TemperatureSuperType from t_out to t_in
+					}
+					connector def HumidityCN {
+						participants ~ h_out : PortsWMS.HumidityOPT {
+						}
+						~ h_in : PortsWMS.HumidityIPT {
+						}
+						flows SysADL.types.Humidity from h_out to h_in
+					}
+					connector def AtmPressureCN {
+						participants ~ ap_out : PortsWMS.AtmPressureOPT {
+						}
+						~ ap_in : PortsWMS.AtmPressureIPT {
+						}
+						flows SysADL.types.AtmPressure from ap_out to ap_in
+					}
+					connector def WatherStationDTCN {
+						participants ~ op : PortsWMS.WeatherStationDTOPT {
+						}
+						~ ip : PortsWMS.WeatherStationDTIPT {
+						}
+						flows SysADL.types.WeatherStationDT from op to ip
+					}
+					connector def FahrenheitToCelsiusCN {
+					}
+					connector def WatherStationDTCN_2 {
+					participants ~ op : PortsWMS.WeatherStationDTOPT [ 1, -1 ] {
+						}
+						~ ip : PortsWMS.WeatherStationDTIPT {
+						}
+						flows SysADL.types.WeatherStationDT from op to ip
+					}
+				}
+				package PortsWMS {
+					import SysADL.types;
+					port def TemperatureIPT {
+						flow in SysADL.types.TemperatureSuperType
+					}
+					port def TemperatureOPT {
+						flow out SysADL.types.TemperatureSuperType
+					}
+					port def HumidityIPT {
+						flow in SysADL.types.Humidity
+					}
+					port def HumidityOPT {
+						flow out SysADL.types.Humidity
+					}
+					port def AtmPressureIPT {
+						flow in SysADL.types.AtmPressure
+					}
+					port def AtmPressureOPT {
+						flow out SysADL.types.AtmPressure
+					}
+					port def WeatherStationDTIPT {
+						flow in SysADL.types.WeatherStationDT
+					}
+					port def WeatherStationDTOPT {
+						flow out SysADL.types.WeatherStationDT
+					}
+				}

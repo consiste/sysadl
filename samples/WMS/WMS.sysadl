@@ -479,10 +479,40 @@ dimension Pressure dimension Temperature unit Celsius {
 					SysADL.types.WeatherStation, in ip2 : SysADL.types.WeatherStation ) : out SysADL.types.AtmPressure {
 						return (('ip1.p' / 'ip1.ct') + ('ip2.p' / 'ip2.ct')) / 2
 					}
+					executable def  WatherStationCN_2EX (in ip :
+					SysADL.types.WeatherStation) : out SysADL.types.WeatherStation {
+						return ip
+					}
+				component def WatherStationCN_2 {
+						ports op : PortsWMS.WeatherStationOPT {
+						}
+						ip : PortsWMS.WeatherStationIPT [ 1, 2 ] {
+						}
+					}
+					activity def WatherStationCN_2AC ( ip1 : SysADL.types.WeatherStation, ip2
+					: SysADL.types.WeatherStation ) : ( op : SysADL.types.WeatherStation ) {
+						body {
+							actions : ws_2 : WatherStationCN_2AN {
+								using pins ip : SysADL.types.WeatherStation
+							}
+							delegate op to ws_2 delegate ip1 to ws_2.ip delegate ip2 to ws_2.ip
+						}
+					}
+					action def WatherStationCN_2AN ( ip : SysADL.types.WeatherStation ) :
+					SysADL.types.WeatherStation {
+						post-condition WatherStationCN_2EQ ( )
+					delegate WatherStationCN_2AN to WatherStationCN_2EQ.op delegate ip to
+						WatherStationCN_2EQ.ip
+					}
+					constraint WatherStationCN_2EQ ( ip : SysADL.types.WeatherStation ) : ( op
+					: SysADL.types.WeatherStation ) {
+						equation = op == ip
+					}
 				}
 				package ConnectorsWMS {
 					import SysADL.types;
 					import PortsWMS;
+					import ComponentsWMS;
 					connector def TemperatureCN {
 						participants ~ t_out : PortsWMS.TemperatureOPT {
 						}
@@ -514,13 +544,22 @@ dimension Pressure dimension Temperature unit Celsius {
 					connector def FahrenheitToCelsiusCN {
 					}
 					connector def WatherStationCN_2 {
-					participants ~ op : PortsWMS.WeatherStationOPT [ 1, -1 ] {
+					participants ~ op : PortsWMS.WeatherStationOPT [ 1, 2 ] {
 						}
 						~ ip : PortsWMS.WeatherStationIPT {
 						}
 						configuration {
+						components:
+							ws_2 : ComponentsWMS.WatherStationCN_2 {
+								using ports op : PortsWMS.WeatherStationOPT {
+								}
+								ip : PortsWMS.WeatherStationIPT [ 1, 2 ] {
+								}
+							}
+							delegations:
+							ws_2.ip to op ws_2.op to ip
 						}
-					flows SysADL.types.WeatherStation from op to ip
+					flows 
 					}
 				}
 				package PortsWMS {
@@ -549,4 +588,27 @@ dimension Pressure dimension Temperature unit Celsius {
 					port def WeatherStationOPT {
 						flow out SysADL.types.WeatherStation
 					}
+				}
+				allocations {
+					activity ComponentsWMS.WeatherProcessingSubSystemAC to
+					ComponentsWMS.WeatherProcessingSubSystemCP activity
+					ComponentsWMS.WeatherProcessingSubSystemARCH3AC to
+					ComponentsWMS.WeatherProcessingSubSystemCP activity
+					ComponentsWMS.WSDataAggregatorAC to ComponentsWMS.WSDataAggregatorCP
+					activity ComponentsWMS.WatherStationCN_2AC to
+					ComponentsWMS.WatherStationCN_2
+					executable ComponentsWMS.WeatherPS_TemperatureEX to
+					ComponentsWMS.WeatherPS_TemperatureAN executable
+					ComponentsWMS.WeatherPS_HumidityEX to ComponentsWMS.WeatherPS_HumidityAN
+					executable ComponentsWMS.WeatherPS_AtmPressureEX to
+					ComponentsWMS.WeatherPS_AtmPressureAN executable
+					ComponentsWMS.WeatherPS_TemperatureARCH3EX to
+					ComponentsWMS.WeatherPS_TemperatureARCH3AN executable
+					ComponentsWMS.WeatherPS_HumidityARCH3EX to
+					ComponentsWMS.WeatherPS_HumidityARCH3AN executable
+					ComponentsWMS.WeatherPS_AtmPressureARCH3EX to
+					ComponentsWMS.WeatherPS_AtmPressureARCH3AN executable
+					ComponentsWMS.WSDataAggregatorEX to ComponentsWMS.WSDataAggregatorAN
+					executable ComponentsWMS.WatherStationCN_2EX to
+					ComponentsWMS.WatherStationCN_2AN
 				}

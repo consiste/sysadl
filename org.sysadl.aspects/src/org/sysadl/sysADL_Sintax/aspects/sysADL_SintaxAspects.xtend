@@ -25,6 +25,7 @@ import java.util.Queue
 import sysADL_Sintax.DataStore
 import org.sysadl.execution.ui.Inputer
 import org.sysadl.execution.ui.UiActivityPinInput
+import org.sysadl.execution.value.Values
 
 @Aspect(className=ActivityBody)
 class ActivityBodyAspect {
@@ -239,11 +240,16 @@ class DataStoreAspect extends DataObjectAspect {
 				// copy it from store to cvalue
 				ActivityFlowableAspect.cvalue(_self, _self.store);
 			}
+			// important situation: void stores shall always have a void value
+			if (Values.isVoidType(_self.type)) {
+				_self.cvalue = Values.VOID 
+			}
 		} else { // either the value was not consumed or updated
 			if (_self.cvalue!==_self.store) { // value updated
 				_self.store = _self.cvalue;
 			}
 			// otherwise do nothing
 		}
+		
 	}
 }

@@ -5,11 +5,10 @@ package br.consiste.scoping
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import sysADL_Sintax.SysADLPackage
-import sysADL_Sintax.DataTypeAccessExpression
 import org.eclipse.xtext.scoping.Scopes
-import java.util.List
+import sysADL_Sintax.DataTypeAccessExpression
 import sysADL_Sintax.DataTypeDef
+import sysADL_Sintax.SysADLPackage
 
 /**
  * This class contains custom scoping description.

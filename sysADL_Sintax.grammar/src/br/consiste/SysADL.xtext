@@ -430,6 +430,7 @@ NonNameExpression returns Expression:
 	| ThisExpression 
 	| ParenthesizedExpression 
 	//| PropertyAccessExpression // TODO left-recursion problem 
+	| DataTypeAccessExpression
 	//| InvocationExpression
 	//| InstanceCreationExpression 
 	//| LinkOperationExpression 

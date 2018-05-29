@@ -3,6 +3,9 @@
  */
 package br.consiste.scoping
 
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EReference
+import sysADL_Sintax.SysADLPackage
 
 /**
  * This class contains custom scoping description.
@@ -11,5 +14,7 @@ package br.consiste.scoping
  * on how and when to use it.
  */
 class SysADLScopeProvider extends AbstractSysADLScopeProvider {
-
+	override getScope(EObject context, EReference ref) {
+		//if (context instanceof DataTypeAccessExpression && ref == SysADLPackage.Literals)
+	}
 }

@@ -6,6 +6,10 @@ package br.consiste.scoping
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import sysADL_Sintax.SysADLPackage
+import sysADL_Sintax.DataTypeAccessExpression
+import org.eclipse.xtext.scoping.Scopes
+import java.util.List
+import sysADL_Sintax.DataTypeDef
 
 /**
  * This class contains custom scoping description.
@@ -15,6 +19,14 @@ import sysADL_Sintax.SysADLPackage
  */
 class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 	override getScope(EObject context, EReference ref) {
-		//if (context instanceof DataTypeAccessExpression && ref == SysADLPackage.Literals)
+		if (context instanceof DataTypeAccessExpression && ref == SysADLPackage.eINSTANCE.dataTypeAccessExpression_Attr) {
+			return scope_DataTypeAccessExpression_Attr(context as DataTypeAccessExpression);
+		}
+		return super.getScope(context, ref)
 	}
+	
+	def scope_DataTypeAccessExpression_Attr(DataTypeAccessExpression a) {
+		Scopes.scopeFor((a.datatype as DataTypeDef).dataTypeAttributes);
+	}
+	
 }

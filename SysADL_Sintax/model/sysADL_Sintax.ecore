@@ -407,6 +407,12 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="featureRef" eType="#//FeatureReference"
         containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DataTypeAccessExpression" eSuperTypes="#//PrimaryExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attr" eType="#//TypeUse"
+        eKeys="#//NamedElement/name"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="datatype" eType="#//DataTypeDef"
+        eKeys="#//NamedElement/name"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FeatureReference">
     <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="#//NamedElement"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="field" eType="#//NamedElement"/>

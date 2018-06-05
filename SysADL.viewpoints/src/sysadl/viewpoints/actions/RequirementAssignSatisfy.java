@@ -9,6 +9,7 @@ import org.eclipse.sirius.business.api.action.AbstractExternalJavaAction;
 import sysADL_Sintax.ElementDef;
 import sysADL_Sintax.Model;
 import sysADL_Sintax.Requirement;
+import sysADL_Sintax.util.SysADLCreationTools;
 
 public class RequirementAssignSatisfy extends AbstractExternalJavaAction {
 
@@ -31,7 +32,7 @@ public class RequirementAssignSatisfy extends AbstractExternalJavaAction {
 		req.getSatisfiedBy().add(element);
 		
 		// remove the element from the involvedElements list
-		Model m = ((Model) req.eContainer());
+		Model m = SysADLCreationTools.getModel(req);
 		m.getInvolvedElements().remove(element);
 	}
 

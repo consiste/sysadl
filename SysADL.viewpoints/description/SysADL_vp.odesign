@@ -536,6 +536,7 @@
       </defaultLayer>
     </ownedRepresentations>
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="SysADL.IBD" label="Internal Block Diagram (Structural IBD)" domainClass="Configuration">
+      <metamodel href="../../SysADL_Sintax/model/sysADL_Sintax.ecore#/"/>
       <defaultLayer name="IBD.DefaultLayer">
         <edgeMappings name="IBD.Connectors" semanticCandidatesExpression="feature:connectors" sourceMapping="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@subNodeMappings[name='IBD.Component%20']/@borderedNodeMappings[name='IBD.Component.PortUse']" targetMapping="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@subNodeMappings[name='IBD.Component%20']/@borderedNodeMappings[name='IBD.Component.PortUse']" targetFinderExpression="[self.bindings.secondPort/]" sourceFinderExpression="[self.bindings.firstPort/]" domainClass="ConnectorUse" useDomainElement="true">
           <style sizeComputationExpression="2">
@@ -544,6 +545,14 @@
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </centerLabelStyleDescription>
           </style>
+          <conditionnalStyles predicateExpression="[not(self.oclAsType(ConnectorUse).definition.composite.oclIsInvalid())/]">
+            <style targetArrow="NoDecoration" sizeComputationExpression="3">
+              <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+              <centerLabelStyleDescription>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </centerLabelStyleDescription>
+            </style>
+          </conditionnalStyles>
         </edgeMappings>
         <edgeMappings name="IBD.Delegation" semanticCandidatesExpression="feature:delegations" sourceMapping="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@subNodeMappings[name='IBD.Component%20']/@borderedNodeMappings[name='IBD.Component.PortUse']" targetMapping="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@borderedNodeMappings[name='IBD.Ports'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@borderedNodeMappings[name='IBD.Ports']/@borderedNodeMappings[name='IBD.Ports.Composite']" targetFinderExpression="[self.portProxy/]" sourceFinderExpression="[self.fullPort/]" domainClass="Delegation" useDomainElement="true">
           <style lineStyle="dash" targetArrow="NoDecoration" sizeComputationExpression="2">

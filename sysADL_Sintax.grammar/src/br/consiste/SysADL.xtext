@@ -28,13 +28,8 @@ TypeDef returns TypeDef:
 TypeUse returns TypeUse:
 	TypeUse_Impl;
 
-
-
-
-
 NamedElement returns NamedElement:
 	Package | Model | DataTypeDef | DimensionDef | TypeUse_Impl | UnitDef | ValueTypeDef | Enumeration | ArchitectureDef | ComponentUse | ConnectorDef | ConnectorUse | CompositePortDef | SimplePortDef | PortUse | ActionDef | ActionUse | ActivityDef | DataStore | DataBuffer | Protocol | ConstraintDef | Executable | Requirement;
-
 
 
 StructuralDef returns StructuralDef:
@@ -42,7 +37,6 @@ StructuralDef returns StructuralDef:
 
 DataDef returns DataDef:
 	DataTypeDef | DimensionDef | UnitDef | ValueTypeDef | Enumeration;
-
 
 ComponentDef returns ComponentDef:
 	(isBoundary?='boundary')? 'component' 'def' name=ID 
@@ -422,7 +416,7 @@ NameExpression returns NameExpression:
 ;
 
 InstanceCreationExpression returns InstanceCreationExpression:
-	'new' type=[TypeDef|QualifiedName]
+	'new' type=[TypeDef|QualifiedName] 
 ;
 
 NonNameExpression returns Expression:
@@ -435,15 +429,31 @@ NonNameExpression returns Expression:
 	//| InstanceCreationExpression 
 	//| LinkOperationExpression 
 	//| ClassExtentExpression 
-	//| SequenceConstructionExpression 
+	| SequenceConstructionExpression 
 	//| SequenceAccessExpression
+;
+
+SequenceConstructionExpression returns SequenceConstructionExpression:
+	('[' ']')'{' elements=SequenceElements '}'
+;
+
+SequenceElements returns SequenceElements:
+	SequenceExpressionList | SequenceRange
+;
+
+SequenceExpressionList returns SequenceExpressionList:
+ 	( element+=LiteralExpression (',' element+=LiteralExpression)* (',')? )?
+;
+
+SequenceRange returns SequenceRange:
+	rangeLower=NaturalLiteralExpression '..' rangeUpper=NaturalLiteralExpression
 ;
 
 DataTypeAccessExpression returns DataTypeAccessExpression:
 	datatype=[DataTypeDef|QualifiedName] '->' attr=[TypeUse|ID]
 ; 
 
-LiteralExpression returns Expression:
+LiteralExpression returns LiteralExpression:
 	BooleanLiteralExpression 
 	| NaturalLiteralExpression  
 	| StringLiteralExpression

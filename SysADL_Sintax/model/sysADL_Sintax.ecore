@@ -331,6 +331,22 @@
   <eClassifiers xsi:type="ecore:EClass" name="EqualityExpression" eSuperTypes="#//BinaryExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//EqualityOperator"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SequenceConstructionExpression" eSuperTypes="#//Expression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//TypeDef"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" eType="#//SequenceElements"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SequenceElements"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SequenceExpressionList" eSuperTypes="#//SequenceElements">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="element" upperBound="-1"
+        eType="#//LiteralExpression" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SequenceRange" eSuperTypes="#//SequenceElements">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rangeLower" eType="#//NaturalLiteralExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rangeUpper" eType="#//NaturalLiteralExpression"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="NumericUnaryOperator">
     <eLiterals name="plus"/>
     <eLiterals name="minus" value="1"/>
@@ -385,23 +401,24 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NonNameExpression" abstract="true" interface="true"
       eSuperTypes="#//PrimaryExpression"/>
-  <eClassifiers xsi:type="ecore:EClass" name="BooleanLiteralExpression" eSuperTypes="#//NonNameExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="BooleanLiteralExpression" eSuperTypes="#//LiteralExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isTrue" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NaturalLiteralExpression" eSuperTypes="#//NonNameExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="NaturalLiteralExpression" eSuperTypes="#//LiteralExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="int_value" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="StringLiteralExpression" eSuperTypes="#//NonNameExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="StringLiteralExpression" eSuperTypes="#//LiteralExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="str_value" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EnumValueLiteralExpression" eSuperTypes="#//NonNameExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="EnumValueLiteralExpression" eSuperTypes="#//LiteralExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="enumValue" eType="#//EnumLiteralValue"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="_enum" eType="#//Enumeration"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NullLiteralExpression" eSuperTypes="#//NonNameExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="NullLiteralExpression" eSuperTypes="#//LiteralExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="LiteralExpression" eSuperTypes="#//NonNameExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="ThisExpression" eSuperTypes="#//NonNameExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="PropertyAccessExpression" eSuperTypes="#//PrimaryExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="featureRef" eType="#//FeatureReference"

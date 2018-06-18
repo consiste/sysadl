@@ -67,7 +67,7 @@ PortDef returns PortDef:
 
 Pin returns Pin:
 	{Pin}
-	name=ID ':' (isFlow?='flow')? definition=[TypeDef|QualifiedName]
+	name=ID ':' (isFlow?='flow')? definition=[TypeDef|QualifiedName] (index=Index)?
 	//('{' properties+=Property* '}' )?
 	;
 
@@ -155,7 +155,7 @@ Enumeration returns Enumeration:
 	'}';
 
 TypeUse_Impl returns TypeUse:
-	name=ID ':' definition=[TypeDef|QualifiedName] 
+	name=ID ':' definition=[TypeDef|QualifiedName] (index=Index)?
 		('{' properties+=Property* '}' )?
 	;
 
@@ -221,7 +221,7 @@ CompositePortDef returns CompositePortDef:
 SimplePortDef returns SimplePortDef:
 	'port' 'def' name=ID
 	'{'
-		'flow' flowProperties=FlowProperty flowType=[TypeDef|QualifiedName] 
+		'flow' flowProperties=FlowProperty flowType=[TypeDef|QualifiedName] (index=Index)?
 		(properties+=Property
 		| archDefs+=StructuralDef
 		| dataDefs+=DataDef)*
@@ -267,20 +267,19 @@ ActivityDef returns ActivityDef:
 
 DataStore returns DataStore:
 	'datastore'
-	name=ID ':' type=[TypeDef|QualifiedName]
+	name=ID ':' type=[TypeDef|QualifiedName] (index=Index)?
 	'{'
 		
 		properties+=Property*
-		('initial' 'value' '=' initValue=Expression)?
+		('initial' 'value' '=' initValue=Expression ';')?
 	'}';
 
 DataBuffer returns DataBuffer:
-	'buffer'
-	name=ID
+	'databuffer'
+	name=ID ':' type=[TypeDef|QualifiedName] (index=Index)?
 	'{'
-		'type' type=[TypeDef|QualifiedName]
-		('properties' '{' properties+=Property ( "," properties+=Property)* '}' )?
-		('initValue' initValue=Expression)?
+		properties+=Property*
+		('initial' 'value' '=' initValue=Expression ';')?
 	'}';
 
 Protocol returns Protocol: // TODO
@@ -320,12 +319,12 @@ Executable returns Executable:
  * Executable[STATEMENTS]
  */
 Statement returns Statement:
-	Expression | BlockStatement | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | IfBlockStatement | SwitchStatement
+	Expression ';' | BlockStatement | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | IfBlockStatement | SwitchStatement
 ;
 
 // Same as above, but block statement is not allowed
 NonBlockStatement returns Statement:
-	Expression | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | IfBlockStatement | SwitchStatement
+	Expression ';' | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | IfBlockStatement | SwitchStatement
 ;
 
 BlockStatement returns BlockStatement:
@@ -339,7 +338,7 @@ BlockStatement returns BlockStatement:
 //;
 
 VariableDecl returns VariableDecl:
-	'let' name=ID ':' definition=[TypeDef|QualifiedName] ('=' value=Expression)?
+	'let' name=ID ':' definition=[TypeDef|QualifiedName] ('=' value=Expression)? ';'
 	// TODO must add the following line: got a left-reduction conflict
 	//|  definition=[TypeDef|QualifiedName] name=ID '=' (value=Expression)?
 ; 
@@ -359,7 +358,7 @@ ElseStatement returns ElseStatement:
 ;
 
 ReturnStatement returns ReturnStatement:
-	'return' value=Expression
+	'return' value=Expression ';'
 ;
 
 WhileStatement returns WhileStatement:
@@ -412,11 +411,7 @@ PrimaryExpression returns Expression:
 ;
 
 NameExpression returns NameExpression:
-	cite=[NamedElement|QualifiedName]
-;
-
-InstanceCreationExpression returns InstanceCreationExpression:
-	'new' type=[TypeDef|QualifiedName] 
+	cite=[NamedElement|QualifiedName] //("[" INT "]")?
 ;
 
 NonNameExpression returns Expression:
@@ -430,11 +425,15 @@ NonNameExpression returns Expression:
 	//| LinkOperationExpression 
 	//| ClassExtentExpression 
 	| SequenceConstructionExpression 
-	//| SequenceAccessExpression
+	| SequenceAccessExpression // TODO left-recursion problem
+;
+
+InstanceCreationExpression returns InstanceCreationExpression:
+	'new' type=[TypeDef|QualifiedName] (index=Index)? 
 ;
 
 SequenceConstructionExpression returns SequenceConstructionExpression:
-	('[' ']')'{' elements=SequenceElements '}'
+	'{' elements=SequenceElements '}'
 ;
 
 SequenceElements returns SequenceElements:
@@ -447,6 +446,10 @@ SequenceExpressionList returns SequenceExpressionList:
 
 SequenceRange returns SequenceRange:
 	rangeLower=NaturalLiteralExpression '..' rangeUpper=NaturalLiteralExpression
+;
+
+SequenceAccessExpression returns SequenceAccessExpression:
+	primary=NameExpression index=NonEmptyIndex
 ;
 
 DataTypeAccessExpression returns DataTypeAccessExpression:
@@ -648,12 +651,16 @@ ConditionalOrExpression returns ConditionalLogicalExpression:
 	 op1=ConditionalAndExpression ({ConditionalLogicalExpression.op1=current} operator="||" op2=ConditionalAndExpression)*
 ;
 
+ConditionalImpliesExpression returns ConditionalLogicalExpression:
+	op1=ConditionalOrExpression ({ConditionalLogicalExpression.op1=current} operator="implies" op2=ConditionalOrExpression)*
+;
+
 /**
  * Conditional (ternary operation) expressions
  */
 ConditionalExpression returns ConditionalTestExpression:
 	//ConditionalOrExpression	| ConditionalTestExpression
-	op1=ConditionalOrExpression ({ConditionalTestExpression.op1=current} "?" op2=Expression ":" op3=ConditionalOrExpression)*
+	op1=ConditionalImpliesExpression ({ConditionalTestExpression.op1=current} "?" op2=Expression ":" op3=ConditionalImpliesExpression)*
 ;
 
 //ConditionalTestExpression returns ConditionalTestExpression:
@@ -678,8 +685,12 @@ LeftHandSide returns LeftHandSide: //TODO
 	'@'(target=NameExpression (index=Index)?)+
 ;
 
-Index returns Expression:
-	"[" Expression "]"
+Index returns Index:
+	"[" expression=Expression? "]"
+;
+
+NonEmptyIndex returns Index:
+	"[" expression=Expression "]"
 ;
 
 /**

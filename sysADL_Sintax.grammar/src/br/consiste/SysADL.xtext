@@ -338,7 +338,7 @@ BlockStatement returns BlockStatement:
 //;
 
 VariableDecl returns VariableDecl:
-	'let' name=ID ':' definition=[TypeDef|QualifiedName] ('=' value=Expression)? ';'
+	'let' name=ID ':' definition=[TypeDef|QualifiedName] (index=Index)? ('=' value=Expression)? ';'
 	// TODO must add the following line: got a left-reduction conflict
 	//|  definition=[TypeDef|QualifiedName] name=ID '=' (value=Expression)?
 ; 
@@ -686,11 +686,11 @@ LeftHandSide returns LeftHandSide: //TODO
 ;
 
 Index returns Index:
-	"[" expression=Expression? "]"
+	("[" expression+=Expression? "]")+
 ;
 
 NonEmptyIndex returns Index:
-	"[" expression=Expression "]"
+	("[" expression+=Expression "]")+
 ;
 
 /**

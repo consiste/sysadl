@@ -411,7 +411,7 @@ PrimaryExpression returns Expression:
 ;
 
 NameExpression returns NameExpression:
-	cite=[NamedElement|QualifiedName] //("[" INT "]")?
+	cite=[NamedElement|QualifiedName]
 ;
 
 NonNameExpression returns Expression:
@@ -548,8 +548,15 @@ enum AffixOperator returns AffixOperator:
  * Unary expressions
  */
 UnaryExpression returns Expression:
-	PrimaryExpression | /*IncrementOrDecrementExpression |*/ BooleanUnaryExpression |
-	BitStringUnaryExpression /* | NumericUnaryExpression | CastExpression*/ | IsolationExpression
+	=> PrimaryExpression | BooleanUnaryExpression | ToStringExpression | ToIntExpression |
+	BitStringUnaryExpression | IsolationExpression | IncrementOrDecrementExpression //| CastExpression | NumericUnaryExpression
+;
+
+ToStringExpression returns UnaryExpression:
+	operator="toString" "(" op=UnaryExpression ")"
+;
+ToIntExpression returns UnaryExpression:
+	operator="toInt" "(" op=StringLiteralExpression ")"
 ;
 
 BooleanUnaryExpression returns BooleanUnaryExpression:
@@ -560,13 +567,13 @@ BitStringUnaryExpression returns BitStringUnaryExpression:
 	operator="~" op=UnaryExpression
 ;
 
-/*NumericUnaryExpression returns NumericUnaryExpression:
-	operator=NumericUnaryOperator op=UnaryExpression
+IsolationExpression returns IsolationExpression:
+	operator='$' op=UnaryExpression
 ;
-*/
-enum NumericUnaryOperator returns NumericUnaryOperator:
-	plus = "+" | minus = "-"
-;
+
+//NumericUnaryExpression returns NumericUnaryExpression: //descobrir para que serve
+//	operator='+'|'-' op=UnaryExpression
+//;
 
 //TODO 
 //CastExpression returns CastExpression:
@@ -577,10 +584,6 @@ enum NumericUnaryOperator returns NumericUnaryOperator:
 //	PrimaryExpression | PostfixExpression | BooleanUnaryExpression | 
 //	BitStringUnaryExpression | CastExpression | IsolationExpression
 //;
-
-IsolationExpression returns IsolationExpression:
-	operator='$' op=UnaryExpression
-;
 
 /**
  * Binary Expressions
@@ -597,7 +600,11 @@ enum MultiplicativeOperator returns MultiplicativeOperator:
 ;
 
 AdditiveExpression returns AdditiveExpression:
-	op1=MultiplicativeExpression ({AdditiveExpression.op1=current} operator=NumericUnaryOperator op2=MultiplicativeExpression)*
+	op1=MultiplicativeExpression ({AdditiveExpression.op1=current} operator=AdditiveOperator op2=MultiplicativeExpression)*
+;
+
+enum AdditiveOperator returns AdditiveOperator:
+	plus = "+" | minus = "-"
 ;
 
 ShiftExpression returns ShiftExpression:
@@ -681,8 +688,8 @@ enum AssignmentOperator returns AssignmentOperator:
 ;
 
 LeftHandSide returns LeftHandSide: //TODO
-	//target=NameExpression (index=Index)? | /*feature=FeatureReference (index=Index)? |*/ "(" LeftHandSide ")"
-	'@'(target=NameExpression (index=Index)?)+
+	target=NameExpression (index=Index)? | feature=DataTypeAccessExpression (index=Index)? |
+	feature=EnumValueLiteralExpression | "(" LeftHandSide ")"
 ;
 
 Index returns Index:

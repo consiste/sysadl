@@ -332,7 +332,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//MultiplicativeOperator"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AdditiveExpression" eSuperTypes="#//BinaryExpression">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//NumericUnaryOperator"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//AdditiveOperator"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EqualityExpression" eSuperTypes="#//BinaryExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//EqualityOperator"/>
@@ -363,7 +363,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="rangeUpper" eType="#//NaturalLiteralExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="NumericUnaryOperator">
+  <eClassifiers xsi:type="ecore:EEnum" name="AdditiveOperator">
     <eLiterals name="plus"/>
     <eLiterals name="minus" value="1"/>
   </eClassifiers>
@@ -454,8 +454,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//Expression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IncrementOrDecrementExpression" abstract="true"
-      eSuperTypes="#//Expression">
+  <eClassifiers xsi:type="ecore:EClass" name="IncrementOrDecrementExpression" eSuperTypes="#//Expression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="operand" eType="#//LeftHandSide"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//AffixOperator"/>
@@ -497,7 +496,7 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//Index"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="#//FeatureReference"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="#//PrimaryExpression"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VariableDecl" eSuperTypes="#//Statement #//TypeUse">

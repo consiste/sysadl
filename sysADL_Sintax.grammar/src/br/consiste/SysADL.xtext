@@ -430,6 +430,7 @@ NonNameExpression returns Expression:
 	| ThisExpression 
 	| ParenthesizedExpression 
 	//| PropertyAccessExpression // TODO left-recursion problem 
+	| DataTypeAccessExpression
 	//| InvocationExpression
 	//| InstanceCreationExpression 
 	//| LinkOperationExpression 
@@ -437,6 +438,10 @@ NonNameExpression returns Expression:
 	//| SequenceConstructionExpression 
 	//| SequenceAccessExpression
 ;
+
+DataTypeAccessExpression returns DataTypeAcessExpression:
+	datatype=[DataTypeDef|QualifiedName] '->' attr=[TypeUse|ID]
+; 
 
 LiteralExpression returns Expression:
 	BooleanLiteralExpression 

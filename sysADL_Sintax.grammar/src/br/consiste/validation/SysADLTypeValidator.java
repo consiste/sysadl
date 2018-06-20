@@ -15,7 +15,7 @@ public class SysADLTypeValidator {
 	public static boolean areTypesCompatible(TypeDef source, TypeDef target) {
 		List<String> basicTypes = new ArrayList<String>(Arrays.asList("Int","String", "Boolean","Real"));
 		// before any test, is the name of the types are equal, end of story
-		if (target.getName().equals(source.getName())) return true;
+		if (target.equals(source)) return true;
 		
 		if (basicTypes.contains(source.getName())) {
 			// t1 is basic type

@@ -161,7 +161,7 @@ TypeUse_Impl returns TypeUse:
 
 
 EnumLiteralValue returns EnumLiteralValue:
- 	key=EString;
+ 	name=ID;
 
 DimensionDef returns DimensionDef:
 	{DimensionDef}
@@ -548,8 +548,8 @@ enum AffixOperator returns AffixOperator:
  * Unary expressions
  */
 UnaryExpression returns Expression:
-	=> PrimaryExpression | BooleanUnaryExpression | ToStringExpression | ToIntExpression |
-	BitStringUnaryExpression | IsolationExpression | IncrementOrDecrementExpression //| CastExpression | NumericUnaryExpression
+	BooleanUnaryExpression | ToStringExpression | ToIntExpression | BitStringUnaryExpression | 
+	IsolationExpression | =>IncrementOrDecrementExpression | PrimaryExpression //| CastExpression | NumericUnaryExpression
 ;
 
 ToStringExpression returns UnaryExpression:
@@ -688,11 +688,12 @@ enum AssignmentOperator returns AssignmentOperator:
 ;
 
 LeftHandSide returns LeftHandSide: //TODO
-	target=NameExpression (index=Index)? | feature=DataTypeAccessExpression (index=Index)? |
+	target=NameExpression (index=NonEmptyIndex)? | feature=DataTypeAccessExpression (index=NonEmptyIndex)? |
 	feature=EnumValueLiteralExpression | "(" LeftHandSide ")"
 ;
 
 Index returns Index:
+	{Index}
 	("[" expression+=Expression? "]")+
 ;
 

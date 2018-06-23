@@ -9,6 +9,8 @@ import org.eclipse.xtext.scoping.Scopes
 import sysADL_Sintax.DataTypeAccessExpression
 import sysADL_Sintax.DataTypeDef
 import sysADL_Sintax.SysADLPackage
+import sysADL_Sintax.EnumValueLiteralExpression
+import sysADL_Sintax.Enumeration
 
 /**
  * This class contains custom scoping description.
@@ -21,11 +23,18 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 		if (context instanceof DataTypeAccessExpression && ref == SysADLPackage.eINSTANCE.dataTypeAccessExpression_Attr) {
 			return scope_DataTypeAccessExpression_Attr(context as DataTypeAccessExpression);
 		}
+		if (context instanceof EnumValueLiteralExpression && ref == SysADLPackage.eINSTANCE.enumValueLiteralExpression_EnumValue) {
+			return scope_EnumValueLiteralExpression_EnumValue(context as EnumValueLiteralExpression);
+		}
 		return super.getScope(context, ref)
 	}
 	
 	def scope_DataTypeAccessExpression_Attr(DataTypeAccessExpression a) {
 		Scopes.scopeFor((a.datatype as DataTypeDef).dataTypeAttributes);
+	}
+	
+	def scope_EnumValueLiteralExpression_EnumValue(EnumValueLiteralExpression a) {
+		Scopes.scopeFor((a._enum as Enumeration).literals);
 	}
 	
 }

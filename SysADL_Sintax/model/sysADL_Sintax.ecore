@@ -445,7 +445,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="DataTypeAccessExpression" eSuperTypes="#//PrimaryExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="attr" eType="#//TypeUse"
         eKeys="#//NamedElement/name"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="datatype" eType="#//DataTypeDef"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dataType" eType="#//TypeUse"
         eKeys="#//NamedElement/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FeatureReference">

@@ -6,11 +6,12 @@ package br.consiste.scoping
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.scoping.Scopes
-import sysADL_Sintax.DataTypeAccessExpression
-import sysADL_Sintax.DataTypeDef
+
 import sysADL_Sintax.SysADLPackage
 import sysADL_Sintax.EnumValueLiteralExpression
 import sysADL_Sintax.Enumeration
+import sysADL_Sintax.DataTypeAccessExpression
+import sysADL_Sintax.DataTypeDef
 
 /**
  * This class contains custom scoping description.
@@ -30,7 +31,7 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 	}
 	
 	def scope_DataTypeAccessExpression_Attr(DataTypeAccessExpression a) {
-		Scopes.scopeFor((a.datatype as DataTypeDef).dataTypeAttributes);
+		Scopes.scopeFor((a.dataType.definition as DataTypeDef).dataTypeAttributes);
 	}
 	
 	def scope_EnumValueLiteralExpression_EnumValue(EnumValueLiteralExpression a) {

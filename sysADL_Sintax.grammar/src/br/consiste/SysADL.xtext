@@ -319,12 +319,12 @@ Executable returns Executable:
  * Executable[STATEMENTS]
  */
 Statement returns Statement:
-	Expression ';' | BlockStatement | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | IfBlockStatement | SwitchStatement
+	Expression /* ';' */ | BlockStatement | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | IfBlockStatement | SwitchStatement
 ;
 
 // Same as above, but block statement is not allowed
 NonBlockStatement returns Statement:
-	Expression ';' | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | IfBlockStatement | SwitchStatement
+	Expression /* ';' */ | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | IfBlockStatement | SwitchStatement
 ;
 
 BlockStatement returns BlockStatement:
@@ -400,7 +400,7 @@ DefaultSwitchClause returns DefaultSwitchClause:
  */
 Expression returns Expression:
 	//value=EString // FIXME Removal caused problems in behavioral diagram   
-	ConditionalExpression | AssignmentExpression
+	ConditionalExpression | AssignmentExpression ';' //substituí o ';' de Statement e NonBlockStatement por este aqui
 ;
 
 /**
@@ -453,8 +453,8 @@ SequenceAccessExpression returns SequenceAccessExpression:
 ;
 
 DataTypeAccessExpression returns DataTypeAccessExpression:
-	datatype=[DataTypeDef|QualifiedName] '->' attr=[TypeUse|ID]
-; 
+	dataType=[TypeUse|QualifiedName] '->' attr=[TypeUse|ID]
+;
 
 LiteralExpression returns LiteralExpression:
 	BooleanLiteralExpression 
@@ -678,7 +678,8 @@ ConditionalExpression returns ConditionalTestExpression:
  * Assignment expressions (TODO check AssignmentStatement)
  */
 AssignmentExpression returns AssignmentExpression: 
-	=>lhs=LeftHandSide operator=AssignmentOperator v=Expression
+	//=>lhs=LeftHandSide 
+	operator=AssignmentOperator v=Expression
 ;
 
 enum AssignmentOperator returns AssignmentOperator:

@@ -447,6 +447,8 @@
         eKeys="#//NamedElement/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="dataType" eType="#//TypeUse"
         eKeys="#//NamedElement/name"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//Index"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FeatureReference">
     <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="#//NamedElement"/>

@@ -12,6 +12,8 @@ import sysADL_Sintax.EnumValueLiteralExpression
 import sysADL_Sintax.Enumeration
 import sysADL_Sintax.DataTypeAccessExpression
 import sysADL_Sintax.DataTypeDef
+import sysADL_Sintax.util.SysADLUtil
+import sysADL_Sintax.ComponentUse
 
 /**
  * This class contains custom scoping description.
@@ -36,6 +38,10 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 	
 	def scope_EnumValueLiteralExpression_EnumValue(EnumValueLiteralExpression a) {
 		Scopes.scopeFor((a._enum as Enumeration).literals);
+	}
+	
+	def scope(ComponentUse u) {
+		SysADLUtil.upToPackage(u).architectures;
 	}
 	
 }

@@ -318,13 +318,13 @@ Executable returns Executable:
 /**
  * Executable[STATEMENTS]
  */
-Statement returns Statement:
-	Expression /* ';' */ | BlockStatement | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | IfBlockStatement | SwitchStatement
+Statement returns Statement: //TODO substituir AssignmentExpression por Expressione tratar o erro em Expression
+	AssignmentExpression ';' | BlockStatement | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | IfBlockStatement | SwitchStatement
 ;
 
 // Same as above, but block statement is not allowed
-NonBlockStatement returns Statement:
-	Expression /* ';' */ | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | IfBlockStatement | SwitchStatement
+NonBlockStatement returns Statement: //TODO substituir AssignmentExpression por Expression e tratar o erro em Expression
+	AssignmentExpression ';' | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | IfBlockStatement | SwitchStatement
 ;
 
 BlockStatement returns BlockStatement:
@@ -400,7 +400,7 @@ DefaultSwitchClause returns DefaultSwitchClause:
  */
 Expression returns Expression:
 	//value=EString // FIXME Removal caused problems in behavioral diagram   
-	ConditionalExpression | AssignmentExpression ';' //substituí o ';' de Statement e NonBlockStatement por este aqui
+	ConditionalExpression | =>AssignmentExpression //TODO resolver o problema de estar entrando em ConditionalExpression em todos os casos e nunca em AssignmentExpression  
 ;
 
 /**
@@ -453,7 +453,7 @@ SequenceAccessExpression returns SequenceAccessExpression:
 ;
 
 DataTypeAccessExpression returns DataTypeAccessExpression:
-	dataType=[TypeUse|QualifiedName] '->' attr=[TypeUse|ID]
+	dataType=[TypeUse|QualifiedName] '->' attr=[TypeUse|ID] (index=NonEmptyIndex)?
 ;
 
 LiteralExpression returns LiteralExpression:
@@ -678,8 +678,7 @@ ConditionalExpression returns ConditionalTestExpression:
  * Assignment expressions (TODO check AssignmentStatement)
  */
 AssignmentExpression returns AssignmentExpression: 
-	//=>lhs=LeftHandSide 
-	operator=AssignmentOperator v=Expression
+	lhs=LeftHandSide operator=AssignmentOperator v=Expression
 ;
 
 enum AssignmentOperator returns AssignmentOperator:
@@ -689,7 +688,7 @@ enum AssignmentOperator returns AssignmentOperator:
 ;
 
 LeftHandSide returns LeftHandSide: //TODO
-	target=NameExpression (index=NonEmptyIndex)? | feature=DataTypeAccessExpression (index=NonEmptyIndex)? |
+	target=NameExpression (index=NonEmptyIndex)? | feature=DataTypeAccessExpression |
 	feature=EnumValueLiteralExpression | "(" LeftHandSide ")"
 ;
 

@@ -398,9 +398,8 @@ DefaultSwitchClause returns DefaultSwitchClause:
  * Executable[EXPRESSIONS]
  * Expressions are divided into 6 groups of expressions
  */
-Expression returns Expression:
-	//value=EString // FIXME Removal caused problems in behavioral diagram   
-	ConditionalExpression | =>AssignmentExpression //TODO resolver o problema de estar entrando em ConditionalExpression em todos os casos e nunca em AssignmentExpression  
+Expression returns Expression: //TODO resolver o problema de estar entrando em ConditionalExpression em todos os casos e nunca em AssignmentExpression
+	ConditionalExpression | =>AssignmentExpression   
 ;
 
 /**
@@ -425,7 +424,7 @@ NonNameExpression returns Expression:
 	//| LinkOperationExpression 
 	//| ClassExtentExpression 
 	| SequenceConstructionExpression 
-	| SequenceAccessExpression // TODO left-recursion problem
+	| SequenceAccessExpression
 ;
 
 InstanceCreationExpression returns InstanceCreationExpression:
@@ -441,6 +440,7 @@ SequenceElements returns SequenceElements:
 ;
 
 SequenceExpressionList returns SequenceExpressionList:
+	{SequenceExpressionList}
  	( element+=LiteralExpression (',' element+=LiteralExpression)* (',')? )?
 ;
 
@@ -675,7 +675,7 @@ ConditionalExpression returns ConditionalTestExpression:
 //;
 
 /**
- * Assignment expressions (TODO check AssignmentStatement)
+ * Assignment expressions
  */
 AssignmentExpression returns AssignmentExpression: 
 	lhs=LeftHandSide operator=AssignmentOperator v=Expression
@@ -687,7 +687,7 @@ enum AssignmentOperator returns AssignmentOperator:
 	shiftLeftEqual = "<<=" | shiftRightEqual = ">>=" | shiftRightDoubledEqual = ">>>="
 ;
 
-LeftHandSide returns LeftHandSide: //TODO
+LeftHandSide returns LeftHandSide:
 	target=NameExpression (index=NonEmptyIndex)? | feature=DataTypeAccessExpression |
 	feature=EnumValueLiteralExpression | "(" LeftHandSide ")"
 ;

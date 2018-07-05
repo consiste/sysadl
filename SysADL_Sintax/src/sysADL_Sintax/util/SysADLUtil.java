@@ -1,8 +1,6 @@
 package sysADL_Sintax.util;
 
-import java.util.LinkedList;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;

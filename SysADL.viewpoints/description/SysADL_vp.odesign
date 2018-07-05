@@ -536,6 +536,7 @@
       </defaultLayer>
     </ownedRepresentations>
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="SysADL.IBD" label="Internal Block Diagram (Structural IBD)" domainClass="Configuration">
+      <metamodel href="../../SysADL_Sintax/model/sysADL_Sintax.ecore#/"/>
       <defaultLayer name="IBD.DefaultLayer">
         <edgeMappings name="IBD.Connectors" semanticCandidatesExpression="feature:connectors" sourceMapping="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@subNodeMappings[name='IBD.Component%20']/@borderedNodeMappings[name='IBD.Component.PortUse']" targetMapping="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@subNodeMappings[name='IBD.Component%20']/@borderedNodeMappings[name='IBD.Component.PortUse']" targetFinderExpression="[self.bindings.secondPort/]" sourceFinderExpression="[self.bindings.firstPort/]" domainClass="ConnectorUse" useDomainElement="true">
           <style sizeComputationExpression="2">
@@ -544,6 +545,14 @@
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </centerLabelStyleDescription>
           </style>
+          <conditionnalStyles predicateExpression="[not(self.oclAsType(ConnectorUse).definition.composite.oclIsInvalid())/]">
+            <style targetArrow="NoDecoration" sizeComputationExpression="3">
+              <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+              <centerLabelStyleDescription showIcon="false" labelExpression="[self.name+' : '+self.definition.name/]">
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </centerLabelStyleDescription>
+            </style>
+          </conditionnalStyles>
         </edgeMappings>
         <edgeMappings name="IBD.Delegation" semanticCandidatesExpression="feature:delegations" sourceMapping="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@subNodeMappings[name='IBD.Component%20']/@borderedNodeMappings[name='IBD.Component.PortUse']" targetMapping="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@borderedNodeMappings[name='IBD.Ports'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@borderedNodeMappings[name='IBD.Ports']/@borderedNodeMappings[name='IBD.Ports.Composite']" targetFinderExpression="[self.portProxy/]" sourceFinderExpression="[self.fullPort/]" domainClass="Delegation" useDomainElement="true">
           <style lineStyle="dash" targetArrow="NoDecoration" sizeComputationExpression="2">
@@ -728,6 +737,20 @@
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="flowType" valueExpression="[source.definition.oclAsType(SimplePortDef).flowType/]"/>
                   </subModelOperations>
                 </subModelOperations>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="IBD.Tool.Connectors" label="Connector (java call)" precondition="[(preSource.eContainer().oclIsKindOf(PortDef)._and(preTarget.eContainer().oclIsKindOf(PortDef)))._or(preSource.eContainer().oclIsTypeOf(ComponentUse)._and(preTarget.eContainer().oclIsTypeOf(ComponentUse)))/]" edgeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@edgeMappings[name='IBD.Connectors'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@edgeMappings[name='IBD.Connectors.Composite']">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ExternalJavaAction" name="IBD.Tools.Connector.Java" forceRefresh="true" id="org.sysadl.viewpoints.ibd.addConnector">
+                <parameters name="targetView" value="var:targetView"/>
+                <parameters name="sourceView" value="var:sourceView"/>
+                <parameters name="source" value="var:source"/>
+                <parameters name="target" value="var:target"/>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
@@ -1412,12 +1435,7 @@
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="source" valueExpression="var:source"/>
                     <subModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.ActivitySwitch" referenceName="targetSwitch" variableName="switch">
                       <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:switch">
-                        <subModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.ActivitySwitchCase" referenceName="cases" variableName="case">
-                          <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:case">
-                            <subModelOperations xsi:type="tool_1:SetValue" featureName="target" valueExpression="var:target"/>
-                            <subModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.Expression" referenceName="condition" variableName="expression"/>
-                          </subModelOperations>
-                        </subModelOperations>
+                        <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="service:createCase(target)"/>
                       </subModelOperations>
                     </subModelOperations>
                   </subModelOperations>
@@ -1643,7 +1661,7 @@
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="SysADL.Requirements.Main" label="Requirements Diagram" initialisation="true" domainClass="Model">
       <validationSet name="Requirements Completeness Validation">
         <ownedRules xsi:type="validation:SemanticValidationRule" name="Requirements.Validation.Simple" label="Requirement Satisfability" level="WARNING" message="Unsatisfied Requirement" targetClass="sysADL_Sintax.Requirement">
-          <audits auditExpression="[self.isValid()/]"/>
+          <audits auditExpression="service:isReqSatisfied()"/>
         </ownedRules>
       </validationSet>
       <defaultLayer name="Default">
@@ -1672,7 +1690,7 @@
           </style>
         </edgeMappings>
         <containerMappings name="SysADL.Req.Self" semanticCandidatesExpression="var:self" domainClass="Model">
-          <subNodeMappings name="SysADL.Req.Imports.Element" deletionDescription="//@ownedViewpoints[name='SysADL.Requirements']/@ownedRepresentations[name='SysADL.Requirements.Main']/@defaultLayer/@toolSections.0/@ownedTools[name='SysADL.Req.Tools.DelImport']" semanticCandidatesExpression="[self.involvedElements->union(self.requirements.satisfiedBy->asSet())/]" domainClass="ElementDef">
+          <subNodeMappings name="SysADL.Req.Imports.Element" deletionDescription="//@ownedViewpoints[name='SysADL.Requirements']/@ownedRepresentations[name='SysADL.Requirements.Main']/@defaultLayer/@toolSections.0/@ownedTools[name='SysADL.Req.Tools.DelImport']" semanticCandidatesExpression="service:allElements()" domainClass="ElementDef">
             <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="['&lt;&lt;'+self.eClass().name.replace('Def','')+'>>\n'+self.name/]" labelPosition="node" resizeKind="NSEW" color="//@userColorsPalettes[name='Colors']/@entries[name='BlueBlock']">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
@@ -1704,7 +1722,7 @@
             <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
-            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
+            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
             <labelBorderStyle href="environment:/viewpoint#//@labelBorderStyles/@labelBorderStyleDescriptions.0"/>
           </style>
         </containerMappings>
@@ -1824,6 +1842,7 @@
         </toolSections>
       </additionalLayers>
     </ownedRepresentations>
+    <ownedJavaExtensions qualifiedClassName="sysadl.viewpoints.services.SysADLServices"/>
   </ownedViewpoints>
   <userColorsPalettes name="Colors">
     <entries xsi:type="description:UserFixedColor" red="255" green="228" blue="130" name="DefColor"/>

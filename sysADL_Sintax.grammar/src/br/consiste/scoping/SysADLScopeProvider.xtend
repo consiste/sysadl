@@ -12,7 +12,7 @@ import sysADL_Sintax.EnumValueLiteralExpression
 import sysADL_Sintax.Enumeration
 import sysADL_Sintax.DataTypeAccessExpression
 import sysADL_Sintax.DataTypeDef
-import sysADL_Sintax.util.SysADLUtil
+//import sysADL_Sintax.util.SysADLUtil
 import sysADL_Sintax.ComponentUse
 
 /**
@@ -33,7 +33,7 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 	}
 	
 	def scope_DataTypeAccessExpression_Attr(DataTypeAccessExpression a) {
-		Scopes.scopeFor((a.dataType.definition as DataTypeDef).dataTypeAttributes);
+		Scopes.scopeFor((a.datatype as DataTypeDef).dataTypeAttributes);
 	}
 	
 	def scope_EnumValueLiteralExpression_EnumValue(EnumValueLiteralExpression a) {
@@ -41,7 +41,7 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 	}
 	
 	def scope(ComponentUse u) {
-		SysADLUtil.upToPackage(u).architectures;
+		//SysADLUtil.upToPackage(u).architectures;
 	}
 	
 }

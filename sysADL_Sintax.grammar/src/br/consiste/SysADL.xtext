@@ -453,7 +453,7 @@ SequenceAccessExpression returns SequenceAccessExpression:
 ;
 
 DataTypeAccessExpression returns DataTypeAccessExpression:
-	dataType=[TypeUse|QualifiedName] '->' attr=[TypeUse|ID] (index=NonEmptyIndex)?
+	datatype=[TypeUse|QualifiedName] '->' attr=[TypeUse|ID] (index=NonEmptyIndex)?
 ;
 
 LiteralExpression returns LiteralExpression:

@@ -30,6 +30,16 @@ import sysADL_Sintax.Configuration
 import sysADL_Sintax.ConnectorBinding
 import sysADL_Sintax.Flow
 import sysADL_Sintax.TypeDef
+import sysADL_Sintax.SimplePortDef
+import sysADL_Sintax.TypeUse
+import sysADL_Sintax.DataStore
+import java.awt.image.DataBuffer
+import sysADL_Sintax.ClassificationExpression
+import sysADL_Sintax.Executable
+import sysADL_Sintax.VariableDecl
+import sysADL_Sintax.InstanceCreationExpression
+import sysADL_Sintax.Property
+import sysADL_Sintax.Pin
 
 /**
  * This class contains custom scoping description.
@@ -55,24 +65,34 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 			|| ref == SysADLPackage.eINSTANCE.connectorBinding_SecondPort)) {
 			return scope_ConnectorBinding(context as ConnectorBinding);
 		}
-		if (context instanceof Flow && ref == SysADLPackage.eINSTANCE.flow_FlowType) {
-			return scope_Flow_FlowType(context as Flow);
+		if ((context instanceof Flow && ref == SysADLPackage.eINSTANCE.flow_FlowType) ||
+			(context instanceof SimplePortDef && ref == SysADLPackage.eINSTANCE.simplePortDef_FlowType) ||
+			(context instanceof Property && ref == SysADLPackage.eINSTANCE.property_Type) ||
+			((context instanceof TypeUse || context instanceof Pin || context instanceof VariableDecl) && ref == SysADLPackage.eINSTANCE.typeUse_Definition) ||
+			(context instanceof ActionDef && ref == SysADLPackage.eINSTANCE.actionDef_ReturnType) ||
+			(context instanceof DataStore && ref == SysADLPackage.eINSTANCE.dataObject_Type) ||
+			(context instanceof DataBuffer && ref == SysADLPackage.eINSTANCE.dataObject_Type) ||
+			(context instanceof ClassificationExpression && ref == SysADLPackage.eINSTANCE.classificationExpression_TypeName) ||
+			(context instanceof Executable && ref == SysADLPackage.eINSTANCE.executable_ReturnType) ||
+			(context instanceof InstanceCreationExpression && ref == SysADLPackage.eINSTANCE.instanceCreationExpression_Type) ||
+			(context instanceof EnumValueLiteralExpression && ref == SysADLPackage.eINSTANCE.enumValueLiteralExpression__enum)) {
+			return scope_TypeDef(context);
 		}
 		if (context instanceof Flow && (ref == SysADLPackage.eINSTANCE.flow_Source ||
 			ref == SysADLPackage.eINSTANCE.flow_Destination)) {
-			return Scopes.scopeFor((context.eContainer as ConnectorDef).ports);
+			return scope_Flow_Source_Destination(context as Flow);
 		}
 		if (context instanceof PortUse && ref == SysADLPackage.eINSTANCE.portUse_Definition) {
 			return scope_PortUse_Definition(context as PortUse);
-		}
-		if (context instanceof ActionUse && ref == SysADLPackage.eINSTANCE.actionUse_Definition) {
-			return scope_ActionUse_Definition(context as ActionUse);
 		}
 		if (context instanceof Delegation && ref == SysADLPackage.eINSTANCE.delegation_PortProxy) {
 			return scope_Delegation_PortProxy(context as Delegation);
 		}
 		if (context instanceof Delegation && ref == SysADLPackage.eINSTANCE.delegation_FullPort) {
 			return scope_Delegation_FullPort(context as Delegation);
+		}
+		if (context instanceof ActionUse && ref == SysADLPackage.eINSTANCE.actionUse_Definition) {
+			return scope_ActionUse_Definition(context as ActionUse);
 		}
 		return super.getScope(context, ref)
 	}
@@ -158,10 +178,10 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 		Scopes.scopeFor(portList as Iterable<PortUse>);
 	}
 	
-	def scope_Flow_FlowType(Flow f){
+	def scope_TypeDef(EObject x){
 		var typeDefList = new ArrayList();
 		
-		val p = SysADLUtil.upToPackage(f);
+		val p = SysADLUtil.upToPackage(x);
 		val pList = SysADLUtil.importedPackages(p);
 		
 		pList.add(p);
@@ -174,7 +194,17 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 			}
 		}
 		
-		Scopes.scopeFor(typeDefList);
+		var existingScope = Scopes.scopeFor(typeDefList);
+		
+		if(x.eContainer instanceof DataTypeDef){
+			existingScope = new FilteringScope(existingScope, [getEObjectOrProxy != x.eContainer])
+		}
+			
+		return existingScope;
+	}
+	
+	def scope_Flow_Source_Destination(Flow f){
+		Scopes.scopeFor((f.eContainer as ConnectorDef).ports);
 	}
 	
 	def scope_PortUse_Definition(PortUse u) {
@@ -201,28 +231,16 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 		
 		return existingScope;
 	}
-	
-	def scope_ActionUse_Definition(ActionUse u) {
-		var actionDefList = new ArrayList();
 		
-		val p = SysADLUtil.upToPackage(u);
-		val pList = SysADLUtil.importedPackages(p);
+	def scope_Delegation_PortProxy(Delegation d){
+		var ports = new ArrayList<PortUse>();
 		
-		pList.add(p);
-		
-		for (pac : pList){
-			for (e : pac.architectures){
-				if(e instanceof ActionDef){
-					actionDefList.add(e as ActionDef);
-				}
-			}
+		if(d.eContainer.eContainer instanceof ComponentDef){
+			ports.addAll((d.eContainer.eContainer as ComponentDef).ports);
+		}else if(d.eContainer.eContainer instanceof ConnectorDef){
+			ports.addAll((d.eContainer.eContainer as ConnectorDef).ports);
 		}
 		
-		Scopes.scopeFor(actionDefList);
-	}
-	
-	def scope_Delegation_PortProxy(Delegation d){
-		val ports = (d.eContainer.eContainer as ComponentDef).ports;
 		var portList = new ArrayList<PortUse>(ports);
 		
 		for (p : ports) {
@@ -243,5 +261,24 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 		}
 		
 		Scopes.scopeFor(portList as Iterable<PortUse>);
+	}
+	
+	def scope_ActionUse_Definition(ActionUse u) {
+		var actionDefList = new ArrayList();
+		
+		val p = SysADLUtil.upToPackage(u);
+		val pList = SysADLUtil.importedPackages(p);
+		
+		pList.add(p);
+		
+		for (pac : pList){
+			for (e : pac.architectures){
+				if(e instanceof ActionDef){
+					actionDefList.add(e as ActionDef);
+				}
+			}
+		}
+		
+		Scopes.scopeFor(actionDefList);
 	}
 }

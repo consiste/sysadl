@@ -40,6 +40,16 @@ import sysADL_Sintax.VariableDecl
 import sysADL_Sintax.InstanceCreationExpression
 import sysADL_Sintax.Property
 import sysADL_Sintax.Pin
+import sysADL_Sintax.ValueTypeDef
+import sysADL_Sintax.ExecutableAllocation
+import sysADL_Sintax.Model
+import sysADL_Sintax.Package
+import sysADL_Sintax.ActivityAllocation
+import sysADL_Sintax.ActivityDef
+import sysADL_Sintax.ConstraintUse
+import sysADL_Sintax.ConstraintDef
+import sysADL_Sintax.ActivityDelegation
+import sysADL_Sintax.ActivityBody
 
 /**
  * This class contains custom scoping description.
@@ -54,6 +64,10 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 		}
 		if (context instanceof EnumValueLiteralExpression && ref == SysADLPackage.eINSTANCE.enumValueLiteralExpression_EnumValue) {
 			return scope_EnumValueLiteralExpression_EnumValue(context as EnumValueLiteralExpression);
+		}
+		if ((context instanceof DataTypeDef && ref == SysADLPackage.eINSTANCE.dataTypeDef_SuperType) ||
+			(context instanceof ValueTypeDef && ref == SysADLPackage.eINSTANCE.valueTypeDef_SuperType)) {
+			return scope_DataTypeDef_ValueTypeDef_SuperType(context, ref);
 		}
 		if (context instanceof ComponentUse && ref == SysADLPackage.eINSTANCE.componentUse_Definition) {
 			return scope_ComponentUse_Definition(context as ComponentUse);
@@ -94,6 +108,27 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 		if (context instanceof ActionUse && ref == SysADLPackage.eINSTANCE.actionUse_Definition) {
 			return scope_ActionUse_Definition(context as ActionUse);
 		}
+		if (context instanceof ConstraintUse && ref == SysADLPackage.eINSTANCE.constraintUse_Definition) {
+			return scope_ConstraintUse_Definition(context as ConstraintUse);
+		}
+		if (context instanceof ActivityDelegation && ref == SysADLPackage.eINSTANCE.activityRelation_Source) {
+			return scope_ActivityDelegation_Source(context as ActivityDelegation);
+		}
+		if (context instanceof ActivityDelegation && ref == SysADLPackage.eINSTANCE.activityRelation_Target) {
+			return scope_ActivityDelegation_Target(context as ActivityDelegation);
+		}
+		if (context instanceof ExecutableAllocation && ref == SysADLPackage.eINSTANCE.executableAllocation_Source) {
+			return scope_ExecutableAllocation_Source(context as ExecutableAllocation);
+		}
+		if (context instanceof ExecutableAllocation && ref == SysADLPackage.eINSTANCE.executableAllocation_Target) {
+			return scope_ExecutableAllocation_Target(context as ExecutableAllocation);
+		}
+		if (context instanceof ActivityAllocation && ref == SysADLPackage.eINSTANCE.activityAllocation_Source) {
+			return scope_ActivityAllocation_Source(context as ActivityAllocation);
+		}
+		if (context instanceof ActivityAllocation && ref == SysADLPackage.eINSTANCE.activityAllocation_Target) {
+			return scope_ActivityAllocation_Target(context as ActivityAllocation);
+		}
 		return super.getScope(context, ref)
 	}
 	
@@ -103,6 +138,10 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 	
 	def scope_EnumValueLiteralExpression_EnumValue(EnumValueLiteralExpression v) {
 		Scopes.scopeFor((v._enum as Enumeration).literals);
+	}
+	
+	def scope_DataTypeDef_ValueTypeDef_SuperType(EObject c, EReference ref) {
+		new FilteringScope(delegateGetScope(c, ref),[getEObjectOrProxy != c]);
 	}
 	
 	def scope_ComponentUse_Definition(ComponentUse u) {
@@ -178,10 +217,10 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 		Scopes.scopeFor(portList as Iterable<PortUse>);
 	}
 	
-	def scope_TypeDef(EObject x){
+	def scope_TypeDef(EObject c){
 		var typeDefList = new ArrayList();
 		
-		val p = SysADLUtil.upToPackage(x);
+		val p = SysADLUtil.upToPackage(c);
 		val pList = SysADLUtil.importedPackages(p);
 		
 		pList.add(p);
@@ -196,8 +235,8 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 		
 		var existingScope = Scopes.scopeFor(typeDefList);
 		
-		if(x.eContainer instanceof DataTypeDef){
-			existingScope = new FilteringScope(existingScope, [getEObjectOrProxy != x.eContainer])
+		if(c.eContainer instanceof DataTypeDef){
+			existingScope = new FilteringScope(existingScope, [getEObjectOrProxy != c.eContainer])
 		}
 			
 		return existingScope;
@@ -280,5 +319,116 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 		}
 		
 		Scopes.scopeFor(actionDefList);
+	}
+	
+	def scope_ConstraintUse_Definition(ConstraintUse c){
+		var constraintDefList = new ArrayList();
+		
+		val p = SysADLUtil.upToPackage(c);
+		val pList = SysADLUtil.importedPackages(p);
+		
+		pList.add(p);
+		
+		for (pac : pList){
+			for (e : pac.architectures){
+				if(e instanceof ConstraintDef){
+					constraintDefList.add(e as ConstraintDef);
+				}
+			}
+		}
+		
+		Scopes.scopeFor(constraintDefList);
+	}
+	
+	def scope_ActivityDelegation_Source(ActivityDelegation a){
+		var params = new ArrayList();
+		
+		if(a.eContainer instanceof ActionDef){
+			params.add(a.eContainer as ActionDef);
+			params.addAll((a.eContainer as ActionDef).inParameters);
+		}else{
+			params.addAll((a.eContainer.eContainer as ActivityDef).inParameters);
+			params.addAll((a.eContainer.eContainer as ActivityDef).outParameters);
+		}
+		
+		Scopes.scopeFor(params as Iterable);
+	}
+	
+	def scope_ActivityDelegation_Target(ActivityDelegation a){
+		var params = new ArrayList();
+		
+		if(a.eContainer instanceof ActionDef){
+			for (c : (a.eContainer as ActionDef).constraints) {
+				params.addAll(((c as ConstraintUse).definition as ConstraintDef).inParameters);
+				params.addAll(((c as ConstraintUse).definition as ConstraintDef).outParameters);
+			}
+		}else{
+			params.addAll((a.eContainer as ActivityBody).dataObjects);
+			for (act : (a.eContainer as ActivityBody).actions) {
+				params.add(act as ActionUse);
+				params.addAll((act as ActionUse).pinIn);
+			}
+		}
+		
+		Scopes.scopeFor(params as Iterable);
+	}
+	
+	def scope_ExecutableAllocation_Source(ExecutableAllocation e){
+		var executableList = new ArrayList();
+		
+		for (p : (e.eContainer.eContainer as Model).packages) {
+			for (a : (p as Package).architectures) {
+				if(a instanceof Executable){
+					executableList.add(a as Executable);
+				}
+			}
+		}
+		
+		Scopes.scopeFor(executableList);
+	}
+	
+	def scope_ExecutableAllocation_Target(ExecutableAllocation e){
+		var actionList = new ArrayList();
+		
+		for (p : (e.eContainer.eContainer as Model).packages) {
+			for (a : (p as Package).architectures) {
+				if(a instanceof ActionDef){
+					actionList.add(a as ActionDef);
+				}
+			}
+		}
+		
+		Scopes.scopeFor(actionList);
+	}
+	
+	def scope_ActivityAllocation_Source(ActivityAllocation act){
+		var activityList = new ArrayList();
+		
+		for (p : (act.eContainer.eContainer as Model).packages) {
+			for (a : (p as Package).architectures) {
+				if(a instanceof ActivityDef){
+					activityList.add(a as ActivityDef);
+				}
+			}
+		}
+		
+		Scopes.scopeFor(activityList);
+	}
+	
+	def scope_ActivityAllocation_Target(ActivityAllocation act){
+		var componentsList = new ArrayList();
+		
+		for (p : (act.eContainer.eContainer as Model).packages) {
+			for (a : (p as Package).architectures) {
+				if(a instanceof ComponentDef){
+					componentsList.add(a as ComponentDef);
+				}
+				else if(a instanceof ConnectorDef){ //ver com os profs se deve deixar conectores ou não
+					componentsList.add(a as ConnectorDef);
+				}
+			}
+		}
+		
+		Scopes.scopeFor(componentsList);
 	}
 }

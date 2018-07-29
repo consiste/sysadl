@@ -757,7 +757,7 @@ enum FlowProperty returns FlowProperty:
 
 ConstraintUse returns ConstraintUse:
 	{ConstraintUse}
-	kind=ConstraintKind	(definition=[ConstraintDef|QualifiedName]) '(' (params+=[TypeUse|QualifiedName] ( "," params+=[TypeUse|QualifiedName])*)? ')'
+	kind=ConstraintKind	(definition=[ConstraintDef|QualifiedName])
 	;
 
 ActivityDelegation returns ActivityDelegation:

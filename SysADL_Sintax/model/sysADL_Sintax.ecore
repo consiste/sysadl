@@ -31,8 +31,6 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="definition" eType="#//ConstraintDef"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" eType="#//ConstraintKind"
         defaultValueLiteral="postCondition"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"
-        eType="#//TypeUse" eKeys="#//NamedElement/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DataTypeDef" eSuperTypes="#//TypeDef">
     <eStructuralFeatures xsi:type="ecore:EReference" name="dataTypeAttributes" upperBound="-1"

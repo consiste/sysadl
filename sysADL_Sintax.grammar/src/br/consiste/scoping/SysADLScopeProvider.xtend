@@ -50,6 +50,12 @@ import sysADL_Sintax.ConstraintUse
 import sysADL_Sintax.ConstraintDef
 import sysADL_Sintax.ActivityDelegation
 import sysADL_Sintax.ActivityBody
+import sysADL_Sintax.ActivityFlow
+import sysADL_Sintax.ActivitySwitchCase
+import sysADL_Sintax.ActionReceive
+import sysADL_Sintax.Protocol
+import sysADL_Sintax.ActionSend
+import sysADL_Sintax.Requirement
 
 /**
  * This class contains custom scoping description.
@@ -66,7 +72,8 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 			return scope_EnumValueLiteralExpression_EnumValue(context as EnumValueLiteralExpression);
 		}
 		if ((context instanceof DataTypeDef && ref == SysADLPackage.eINSTANCE.dataTypeDef_SuperType) ||
-			(context instanceof ValueTypeDef && ref == SysADLPackage.eINSTANCE.valueTypeDef_SuperType)) {
+			(context instanceof ValueTypeDef && ref == SysADLPackage.eINSTANCE.valueTypeDef_SuperType) ||
+			(context instanceof Requirement && ref == SysADLPackage.eINSTANCE.requirement_DerivedBy)) {
 			return scope_DataTypeDef_ValueTypeDef_SuperType(context, ref);
 		}
 		if (context instanceof ComponentUse && ref == SysADLPackage.eINSTANCE.componentUse_Definition) {
@@ -114,8 +121,17 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 		if (context instanceof ActivityDelegation && ref == SysADLPackage.eINSTANCE.activityRelation_Source) {
 			return scope_ActivityDelegation_Source(context as ActivityDelegation);
 		}
-		if (context instanceof ActivityDelegation && ref == SysADLPackage.eINSTANCE.activityRelation_Target) {
-			return scope_ActivityDelegation_Target(context as ActivityDelegation);
+		if ((context instanceof ActivityDelegation && ref == SysADLPackage.eINSTANCE.activityRelation_Target) ||
+			(context instanceof ActivityFlow && (ref == SysADLPackage.eINSTANCE.activityRelation_Source ||
+			ref == SysADLPackage.eINSTANCE.activityRelation_Target)) ||
+			(context instanceof ActivitySwitchCase && ref == SysADLPackage.eINSTANCE.activitySwitchCase_Target)) {
+			return scope_ActivityDelegation_Target_ActivityFlow_SourceTarget(context);
+		}
+		if (context instanceof ActionReceive && ref == SysADLPackage.eINSTANCE.actionReceive_FlowTo) {
+			return scope_ActionReceive_FlowTo(context as ActionReceive);
+		}
+		if (context instanceof ActionSend && ref == SysADLPackage.eINSTANCE.actionSend_FlowTo) {
+			return scope_ActionSend_FlowTo(context as ActionSend);
 		}
 		if (context instanceof ExecutableAllocation && ref == SysADLPackage.eINSTANCE.executableAllocation_Source) {
 			return scope_ExecutableAllocation_Source(context as ExecutableAllocation);
@@ -354,7 +370,7 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 		Scopes.scopeFor(params as Iterable);
 	}
 	
-	def scope_ActivityDelegation_Target(ActivityDelegation a){
+	def scope_ActivityDelegation_Target_ActivityFlow_SourceTarget(EObject a){
 		var params = new ArrayList();
 		
 		if(a.eContainer instanceof ActionDef){
@@ -363,14 +379,28 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 				params.addAll(((c as ConstraintUse).definition as ConstraintDef).outParameters);
 			}
 		}else{
-			params.addAll((a.eContainer as ActivityBody).dataObjects);
-			for (act : (a.eContainer as ActivityBody).actions) {
+			var element = a.eContainer;
+			
+			if(a instanceof ActivitySwitchCase){
+				element = a.eContainer.eContainer.eContainer;
+			}
+			
+			params.addAll((element as ActivityBody).dataObjects);
+			for (act : (element as ActivityBody).actions) {
 				params.add(act as ActionUse);
 				params.addAll((act as ActionUse).pinIn);
 			}
 		}
 		
 		Scopes.scopeFor(params as Iterable);
+	}
+	
+	def scope_ActionReceive_FlowTo(ActionReceive a){
+		Scopes.scopeFor((a.eContainer.eContainer as Protocol).inParameters);
+	}
+	
+	def scope_ActionSend_FlowTo(ActionSend a){
+		Scopes.scopeFor((a.eContainer.eContainer as Protocol).outParameters);
 	}
 	
 	def scope_ExecutableAllocation_Source(ExecutableAllocation e){

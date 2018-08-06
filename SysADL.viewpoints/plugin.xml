@@ -25,5 +25,9 @@
            actionClass="sysadl.viewpoints.actions.RequirementDeleteComposition"
            id="org.sysadl.viewpoints.deletecomposition">
      </javaActions>
+     <javaActions
+           actionClass="sysadl.viewpoints.actions.IBDAddConnector"
+           id="org.sysadl.viewpoints.ibd.addConnector">
+     </javaActions>
   </extension>
 </plugin>

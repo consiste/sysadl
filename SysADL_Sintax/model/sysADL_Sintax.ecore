@@ -31,8 +31,6 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="definition" eType="#//ConstraintDef"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" eType="#//ConstraintKind"
         defaultValueLiteral="postCondition"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"
-        eType="#//TypeUse" eKeys="#//NamedElement/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DataTypeDef" eSuperTypes="#//TypeDef">
     <eStructuralFeatures xsi:type="ecore:EReference" name="dataTypeAttributes" upperBound="-1"
@@ -46,6 +44,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="TypeUse" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="definition" lowerBound="1"
         eType="#//TypeDef" eKeys="#//NamedElement/name"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//Index"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UnitDef" eSuperTypes="#//DataDef">
     <eStructuralFeatures xsi:type="ecore:EReference" name="dimension" eType="#//DimensionDef"/>
@@ -63,12 +63,12 @@
   <eClassifiers xsi:type="ecore:EClass" name="Enumeration" eSuperTypes="#//TypeDef">
     <eStructuralFeatures xsi:type="ecore:EReference" name="literals" upperBound="-1"
         eType="#//EnumLiteralValue" containment="true" eOpposite="#//EnumLiteralValue/enum"
-        eKeys="#//EnumLiteralValue/key"/>
+        eKeys="#//EnumLiteralValue/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EnumLiteralValue">
     <eStructuralFeatures xsi:type="ecore:EReference" name="enum" lowerBound="1" eType="#//Enumeration"
         eOpposite="#//Enumeration/literals"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Property">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -143,6 +143,8 @@
         eType="#//FlowProperty" defaultValueLiteral="in"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="flowType" lowerBound="1"
         eType="#//TypeDef"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//Index"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PortUse" eSuperTypes="#//StructuralUse">
     <eStructuralFeatures xsi:type="ecore:EReference" name="definition" lowerBound="1"
@@ -236,6 +238,8 @@
         eKeys="#//NamedElement/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="initValue" eType="#//Expression"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//Index"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DataStore" eSuperTypes="#//DataObject"/>
   <eClassifiers xsi:type="ecore:EClass" name="DataBuffer" eSuperTypes="#//DataObject"/>
@@ -326,12 +330,38 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//MultiplicativeOperator"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AdditiveExpression" eSuperTypes="#//BinaryExpression">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//NumericUnaryOperator"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//AdditiveOperator"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EqualityExpression" eSuperTypes="#//BinaryExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//EqualityOperator"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="NumericUnaryOperator">
+  <eClassifiers xsi:type="ecore:EClass" name="SequenceConstructionExpression" eSuperTypes="#//Expression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//TypeDef"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" eType="#//SequenceElements"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SequenceAccessExpression" eSuperTypes="#//Expression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="primary" eType="#//Expression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//Index"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Index">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" upperBound="-1"
+        eType="#//Expression" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SequenceElements"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SequenceExpressionList" eSuperTypes="#//SequenceElements">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="element" upperBound="-1"
+        eType="#//LiteralExpression" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SequenceRange" eSuperTypes="#//SequenceElements">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rangeLower" eType="#//NaturalLiteralExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rangeUpper" eType="#//NaturalLiteralExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="AdditiveOperator">
     <eLiterals name="plus"/>
     <eLiterals name="minus" value="1"/>
   </eClassifiers>
@@ -378,6 +408,8 @@
       eSuperTypes="#//Expression"/>
   <eClassifiers xsi:type="ecore:EClass" name="InstanceCreationExpression" eSuperTypes="#//PrimaryExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//TypeDef"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//Index"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NameExpression" eSuperTypes="#//PrimaryExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="cite" eType="#//NamedElement"
@@ -385,33 +417,36 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NonNameExpression" abstract="true" interface="true"
       eSuperTypes="#//PrimaryExpression"/>
-  <eClassifiers xsi:type="ecore:EClass" name="BooleanLiteralExpression" eSuperTypes="#//NonNameExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="BooleanLiteralExpression" eSuperTypes="#//LiteralExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isTrue" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NaturalLiteralExpression" eSuperTypes="#//NonNameExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="NaturalLiteralExpression" eSuperTypes="#//LiteralExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="int_value" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="StringLiteralExpression" eSuperTypes="#//NonNameExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="StringLiteralExpression" eSuperTypes="#//LiteralExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="str_value" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EnumValueLiteralExpression" eSuperTypes="#//NonNameExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="EnumValueLiteralExpression" eSuperTypes="#//LiteralExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="enumValue" eType="#//EnumLiteralValue"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="_enum" eType="#//Enumeration"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NullLiteralExpression" eSuperTypes="#//NonNameExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="NullLiteralExpression" eSuperTypes="#//LiteralExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="LiteralExpression" eSuperTypes="#//NonNameExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="ThisExpression" eSuperTypes="#//NonNameExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="PropertyAccessExpression" eSuperTypes="#//PrimaryExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="featureRef" eType="#//FeatureReference"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="DataTypeAcessExpression" eSuperTypes="#//PrimaryExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="DataTypeAccessExpression" eSuperTypes="#//PrimaryExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="attr" eType="#//TypeUse"
         eKeys="#//NamedElement/name"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="datatype" eType="#//NamedElement"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="datatype" eType="#//TypeUse"
         eKeys="#//NamedElement/name"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//Index"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FeatureReference">
     <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="#//NamedElement"/>
@@ -419,8 +454,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//Expression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IncrementOrDecrementExpression" abstract="true"
-      eSuperTypes="#//Expression">
+  <eClassifiers xsi:type="ecore:EClass" name="IncrementOrDecrementExpression" eSuperTypes="#//Expression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="operand" eType="#//LeftHandSide"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//AffixOperator"/>
@@ -460,9 +494,9 @@
   <eClassifiers xsi:type="ecore:EClass" name="LeftHandSide">
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//NameExpression"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//Expression"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//Index"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="#//FeatureReference"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="#//PrimaryExpression"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VariableDecl" eSuperTypes="#//Statement #//TypeUse">

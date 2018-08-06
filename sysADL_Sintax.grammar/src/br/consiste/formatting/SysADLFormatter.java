@@ -33,6 +33,7 @@ public class SysADLFormatter extends AbstractDeclarativeFormatter {
 			c.setLinewrap().after(semicolon);
 		}
 		for(Pair<Keyword,Keyword> pairs: f.findKeywordPairs("components", ":")) {
+			c.setLinewrap().before(pairs.getFirst());
 			c.setNoSpace().after(pairs.getFirst());
 			c.setLinewrap().after(pairs.getSecond());
 		}

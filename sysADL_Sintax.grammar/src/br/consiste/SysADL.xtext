@@ -28,13 +28,8 @@ TypeDef returns TypeDef:
 TypeUse returns TypeUse:
 	TypeUse_Impl;
 
-
-
-
-
 NamedElement returns NamedElement:
 	Package | Model | DataTypeDef | DimensionDef | TypeUse_Impl | UnitDef | ValueTypeDef | Enumeration | ArchitectureDef | ComponentUse | ConnectorDef | ConnectorUse | CompositePortDef | SimplePortDef | PortUse | ActionDef | ActionUse | ActivityDef | DataStore | DataBuffer | Protocol | ConstraintDef | Executable | Requirement;
-
 
 
 StructuralDef returns StructuralDef:
@@ -42,7 +37,6 @@ StructuralDef returns StructuralDef:
 
 DataDef returns DataDef:
 	DataTypeDef | DimensionDef | UnitDef | ValueTypeDef | Enumeration;
-
 
 ComponentDef returns ComponentDef:
 	(isBoundary?='boundary')? 'component' 'def' name=ID 
@@ -73,7 +67,7 @@ PortDef returns PortDef:
 
 Pin returns Pin:
 	{Pin}
-	name=ID ':' (isFlow?='flow')? definition=[TypeDef|QualifiedName]
+	name=ID ':' (isFlow?='flow')? definition=[TypeDef|QualifiedName] (index=Index)?
 	//('{' properties+=Property* '}' )?
 	;
 
@@ -161,13 +155,13 @@ Enumeration returns Enumeration:
 	'}';
 
 TypeUse_Impl returns TypeUse:
-	name=ID ':' definition=[TypeDef|QualifiedName] 
+	name=ID ':' definition=[TypeDef|QualifiedName] (index=Index)?
 		('{' properties+=Property* '}' | ';' )
 	;
 
 
 EnumLiteralValue returns EnumLiteralValue:
- 	key=EString;
+ 	name=ID;
 
 DimensionDef returns DimensionDef:
 	{DimensionDef}
@@ -227,7 +221,7 @@ CompositePortDef returns CompositePortDef:
 SimplePortDef returns SimplePortDef:
 	'port' 'def' name=ID
 	'{'
-		'flow' flowProperties=FlowProperty flowType=[TypeDef|QualifiedName] 
+		'flow' flowProperties=FlowProperty flowType=[TypeDef|QualifiedName] (index=Index)?
 		(properties+=Property
 		| archDefs+=StructuralDef
 		| dataDefs+=DataDef)*
@@ -273,20 +267,19 @@ ActivityDef returns ActivityDef:
 
 DataStore returns DataStore:
 	'datastore'
-	name=ID ':' type=[TypeDef|QualifiedName]
+	name=ID ':' type=[TypeDef|QualifiedName] (index=Index)?
 	'{'
 		
 		properties+=Property*
-		('initial' 'value' '=' initValue=Expression)?
+		('initial' 'value' '=' initValue=Expression ';')?
 	'}';
 
 DataBuffer returns DataBuffer:
-	'buffer'
-	name=ID
+	'databuffer'
+	name=ID ':' type=[TypeDef|QualifiedName] (index=Index)?
 	'{'
-		'type' type=[TypeDef|QualifiedName]
-		('properties' '{' properties+=Property ( "," properties+=Property)* '}' )?
-		('initValue' initValue=Expression)?
+		properties+=Property*
+		('initial' 'value' '=' initValue=Expression ';')?
 	'}';
 
 Protocol returns Protocol: // TODO
@@ -325,13 +318,13 @@ Executable returns Executable:
 /**
  * Executable[STATEMENTS]
  */
-Statement returns Statement:
-	Expression | BlockStatement | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | IfBlockStatement | SwitchStatement
+Statement returns Statement: //TODO substituir AssignmentExpression por Expressione tratar o erro em Expression
+	AssignmentExpression ';' | BlockStatement | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | IfBlockStatement | SwitchStatement
 ;
 
 // Same as above, but block statement is not allowed
-NonBlockStatement returns Statement:
-	Expression | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | IfBlockStatement | SwitchStatement
+NonBlockStatement returns Statement: //TODO substituir AssignmentExpression por Expression e tratar o erro em Expression
+	AssignmentExpression ';' | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | IfBlockStatement | SwitchStatement
 ;
 
 BlockStatement returns BlockStatement:
@@ -345,7 +338,7 @@ BlockStatement returns BlockStatement:
 //;
 
 VariableDecl returns VariableDecl:
-	'let' name=ID ':' definition=[TypeDef|QualifiedName] ('=' value=Expression)?
+	'let' name=ID ':' definition=[TypeDef|QualifiedName] (index=Index)? ('=' value=Expression)? ';'
 	// TODO must add the following line: got a left-reduction conflict
 	//|  definition=[TypeDef|QualifiedName] name=ID '=' (value=Expression)?
 ; 
@@ -365,7 +358,7 @@ ElseStatement returns ElseStatement:
 ;
 
 ReturnStatement returns ReturnStatement:
-	'return' value=Expression
+	'return' value=Expression ';'
 ;
 
 WhileStatement returns WhileStatement:
@@ -405,9 +398,8 @@ DefaultSwitchClause returns DefaultSwitchClause:
  * Executable[EXPRESSIONS]
  * Expressions are divided into 6 groups of expressions
  */
-Expression returns Expression:
-	//value=EString // FIXME Removal caused problems in behavioral diagram   
-	ConditionalExpression | AssignmentExpression
+Expression returns Expression: //TODO resolver o problema de estar entrando em ConditionalExpression em todos os casos e nunca em AssignmentExpression
+	ConditionalExpression | =>AssignmentExpression   
 ;
 
 /**
@@ -421,10 +413,6 @@ NameExpression returns NameExpression:
 	cite=[NamedElement|QualifiedName]
 ;
 
-InstanceCreationExpression returns InstanceCreationExpression:
-	'new' type=[TypeDef|QualifiedName]
-;
-
 NonNameExpression returns Expression:
 	LiteralExpression 
 	| ThisExpression 
@@ -435,15 +423,40 @@ NonNameExpression returns Expression:
 	//| InstanceCreationExpression 
 	//| LinkOperationExpression 
 	//| ClassExtentExpression 
-	//| SequenceConstructionExpression 
-	//| SequenceAccessExpression
+	| SequenceConstructionExpression 
+	| SequenceAccessExpression
 ;
 
-DataTypeAccessExpression returns DataTypeAcessExpression:
-	datatype=[DataTypeDef|QualifiedName] '->' attr=[TypeUse|ID]
-; 
+InstanceCreationExpression returns InstanceCreationExpression:
+	'new' type=[TypeDef|QualifiedName] (index=Index)? 
+;
 
-LiteralExpression returns Expression:
+SequenceConstructionExpression returns SequenceConstructionExpression:
+	'{' elements=SequenceElements '}'
+;
+
+SequenceElements returns SequenceElements:
+	SequenceExpressionList | SequenceRange
+;
+
+SequenceExpressionList returns SequenceExpressionList:
+	{SequenceExpressionList}
+ 	( element+=LiteralExpression (',' element+=LiteralExpression)* (',')? )?
+;
+
+SequenceRange returns SequenceRange:
+	rangeLower=NaturalLiteralExpression '..' rangeUpper=NaturalLiteralExpression
+;
+
+SequenceAccessExpression returns SequenceAccessExpression:
+	primary=NameExpression index=NonEmptyIndex
+;
+
+DataTypeAccessExpression returns DataTypeAccessExpression:
+	datatype=[TypeUse|QualifiedName] '->' attr=[TypeUse|ID] (index=NonEmptyIndex)?
+;
+
+LiteralExpression returns LiteralExpression:
 	BooleanLiteralExpression 
 	| NaturalLiteralExpression  
 	| StringLiteralExpression
@@ -535,8 +548,15 @@ enum AffixOperator returns AffixOperator:
  * Unary expressions
  */
 UnaryExpression returns Expression:
-	PrimaryExpression | /*IncrementOrDecrementExpression |*/ BooleanUnaryExpression |
-	BitStringUnaryExpression /* | NumericUnaryExpression | CastExpression*/ | IsolationExpression
+	BooleanUnaryExpression | ToStringExpression | ToIntExpression | BitStringUnaryExpression | 
+	IsolationExpression | =>IncrementOrDecrementExpression | PrimaryExpression //| CastExpression | NumericUnaryExpression
+;
+
+ToStringExpression returns UnaryExpression:
+	operator="toString" "(" op=UnaryExpression ")"
+;
+ToIntExpression returns UnaryExpression:
+	operator="toInt" "(" op=StringLiteralExpression ")"
 ;
 
 BooleanUnaryExpression returns BooleanUnaryExpression:
@@ -547,13 +567,13 @@ BitStringUnaryExpression returns BitStringUnaryExpression:
 	operator="~" op=UnaryExpression
 ;
 
-/*NumericUnaryExpression returns NumericUnaryExpression:
-	operator=NumericUnaryOperator op=UnaryExpression
+IsolationExpression returns IsolationExpression:
+	operator='$' op=UnaryExpression
 ;
-*/
-enum NumericUnaryOperator returns NumericUnaryOperator:
-	plus = "+" | minus = "-"
-;
+
+//NumericUnaryExpression returns NumericUnaryExpression: //descobrir para que serve
+//	operator='+'|'-' op=UnaryExpression
+//;
 
 //TODO 
 //CastExpression returns CastExpression:
@@ -564,10 +584,6 @@ enum NumericUnaryOperator returns NumericUnaryOperator:
 //	PrimaryExpression | PostfixExpression | BooleanUnaryExpression | 
 //	BitStringUnaryExpression | CastExpression | IsolationExpression
 //;
-
-IsolationExpression returns IsolationExpression:
-	operator='$' op=UnaryExpression
-;
 
 /**
  * Binary Expressions
@@ -584,7 +600,11 @@ enum MultiplicativeOperator returns MultiplicativeOperator:
 ;
 
 AdditiveExpression returns AdditiveExpression:
-	op1=MultiplicativeExpression ({AdditiveExpression.op1=current} operator=NumericUnaryOperator op2=MultiplicativeExpression)*
+	op1=MultiplicativeExpression ({AdditiveExpression.op1=current} operator=AdditiveOperator op2=MultiplicativeExpression)*
+;
+
+enum AdditiveOperator returns AdditiveOperator:
+	plus = "+" | minus = "-"
 ;
 
 ShiftExpression returns ShiftExpression:
@@ -638,12 +658,16 @@ ConditionalOrExpression returns ConditionalLogicalExpression:
 	 op1=ConditionalAndExpression ({ConditionalLogicalExpression.op1=current} operator="||" op2=ConditionalAndExpression)*
 ;
 
+ConditionalImpliesExpression returns ConditionalLogicalExpression:
+	op1=ConditionalOrExpression ({ConditionalLogicalExpression.op1=current} operator="implies" op2=ConditionalOrExpression)*
+;
+
 /**
  * Conditional (ternary operation) expressions
  */
 ConditionalExpression returns ConditionalTestExpression:
 	//ConditionalOrExpression	| ConditionalTestExpression
-	op1=ConditionalOrExpression ({ConditionalTestExpression.op1=current} "?" op2=Expression ":" op3=ConditionalOrExpression)*
+	op1=ConditionalImpliesExpression ({ConditionalTestExpression.op1=current} "?" op2=Expression ":" op3=ConditionalImpliesExpression)*
 ;
 
 //ConditionalTestExpression returns ConditionalTestExpression:
@@ -651,10 +675,10 @@ ConditionalExpression returns ConditionalTestExpression:
 //;
 
 /**
- * Assignment expressions (TODO check AssignmentStatement)
+ * Assignment expressions
  */
 AssignmentExpression returns AssignmentExpression: 
-	=>lhs=LeftHandSide operator=AssignmentOperator v=Expression
+	lhs=LeftHandSide operator=AssignmentOperator v=Expression
 ;
 
 enum AssignmentOperator returns AssignmentOperator:
@@ -663,13 +687,18 @@ enum AssignmentOperator returns AssignmentOperator:
 	shiftLeftEqual = "<<=" | shiftRightEqual = ">>=" | shiftRightDoubledEqual = ">>>="
 ;
 
-LeftHandSide returns LeftHandSide: //TODO
-	//target=NameExpression (index=Index)? | /*feature=FeatureReference (index=Index)? |*/ "(" LeftHandSide ")"
-	'@'(target=NameExpression (index=Index)?)+
+LeftHandSide returns LeftHandSide:
+	target=NameExpression (index=NonEmptyIndex)? | feature=DataTypeAccessExpression |
+	feature=EnumValueLiteralExpression | "(" LeftHandSide ")"
 ;
 
-Index returns Expression:
-	"[" Expression "]"
+Index returns Index:
+	{Index}
+	("[" expression+=Expression? "]")+
+;
+
+NonEmptyIndex returns Index:
+	("[" expression+=Expression "]")+
 ;
 
 /**
@@ -728,7 +757,7 @@ enum FlowProperty returns FlowProperty:
 
 ConstraintUse returns ConstraintUse:
 	{ConstraintUse}
-	kind=ConstraintKind	(definition=[ConstraintDef|QualifiedName]) '(' (params+=[TypeUse|QualifiedName] ( "," params+=[TypeUse|QualifiedName])*)? ')'
+	kind=ConstraintKind	(definition=[ConstraintDef|QualifiedName])
 	;
 
 ActivityDelegation returns ActivityDelegation:

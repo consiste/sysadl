@@ -131,7 +131,7 @@ DataTypeDef returns DataTypeDef:
 	'datatype'
 	name=ID ('extends' superType=[DataTypeDef|QualifiedName])?
 	'{'
-		('attributes' dataTypeAttributes+=TypeUse*)?
+		('attributes' ':' dataTypeAttributes+=TypeUse*)?
 		properties+=Property*
 	'}';
 
@@ -156,7 +156,7 @@ Enumeration returns Enumeration:
 
 TypeUse_Impl returns TypeUse:
 	name=ID ':' definition=[TypeDef|QualifiedName] (index=Index)?
-		('{' properties+=Property* '}' )?
+		('{' properties+=Property* '}' | ';' )
 	;
 
 

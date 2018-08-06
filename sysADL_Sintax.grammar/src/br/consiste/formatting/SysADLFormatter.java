@@ -5,6 +5,7 @@ package br.consiste.formatting;
 
 import org.eclipse.xtext.formatting.impl.AbstractDeclarativeFormatter;
 import org.eclipse.xtext.formatting.impl.FormattingConfig;
+import org.eclipse.emf.ecore.xml.type.internal.RegEx.RegularExpression;
 import org.eclipse.xtext.Keyword;
 import org.eclipse.xtext.util.Pair;
 
@@ -21,12 +22,6 @@ public class SysADLFormatter extends AbstractDeclarativeFormatter {
 	@Override
 	protected void configureFormatting(FormattingConfig c) {
 		br.consiste.services.SysADLGrammarAccess f = (br.consiste.services.SysADLGrammarAccess) getGrammarAccess();
-		for(Pair<Keyword, Keyword> pair: f.findKeywordPairs("{", "}")) {
-			c.setIndentation(pair.getFirst(), pair.getSecond());
-			c.setLinewrap(1).after(pair.getFirst());
-			c.setLinewrap(1).before(pair.getSecond());
-			c.setLinewrap(1).after(pair.getSecond());
-		}
 		for(Keyword comma: f.findKeywords(",")) {
 			c.setNoLinewrap().before(comma);
 			c.setNoSpace().before(comma);
@@ -50,6 +45,46 @@ public class SysADLFormatter extends AbstractDeclarativeFormatter {
 			c.setNoSpace().after(pairs.getFirst());
 			c.setLinewrap().after(pairs.getSecond());
 		}
+		for(Pair<Keyword,Keyword> pairs: f.findKeywordPairs("attributes",":")) {
+			c.setLinewrap().before(pairs.getFirst());
+			c.setLinewrap().after(pairs.getSecond());
+		}
+		for(Keyword dimension: f.findKeywords("dimension")) {
+			c.setLinewrap().before(dimension);
+		}
+		for(Keyword unit: f.findKeywords("unit")) {
+			c.setLinewrap().before(unit);
+		}
+		for(Keyword participants: f.findKeywords("participants")) {
+			c.setLinewrap().before(participants);
+			c.setLinewrap().after(participants);
+		}
+		for(Keyword ports: f.findKeywords("ports")) {
+			c.setLinewrap().before(ports);
+			c.setLinewrap().after(ports);
+		}
+		for(Pair<Keyword, Keyword> pairs: f.findKeywordPairs("using","ports")) {
+			c.setLinewrap().before(pairs.getFirst());
+			c.setNoLinewrap().after(pairs.getFirst());
+			c.setLinewrap().after(pairs.getSecond());
+		}
+		for(Keyword delegate: f.findKeywords("delegate")) {
+			c.setLinewrap().before(delegate);
+		}
+		for(Keyword bindings: f.findKeywords("bindings")) {
+			//c.setLinewrap().before(bindings);
+			//c.setLinewrap().after(bindings);
+		}
+		for(Pair<Keyword, Keyword> pair: f.findKeywordPairs("{", "}")) {
+			c.setIndentation(pair.getFirst(), pair.getSecond());
+			//c.setLinewrap(1).before(pair.getFirst());
+			c.setLinewrap(1).after(pair.getFirst());
+			c.setLinewrap(1).before(pair.getSecond());
+			c.setLinewrap(1).after(pair.getSecond());
+		}
+		for(Pair<Keyword, Keyword> pair: f.findKeywordPairs("value", "type")) {
+			c.setLinewrap(1).before(pair.getFirst());
+		}		
 		c.setLinewrap(0, 1, 2).before(f.getSL_COMMENTRule());
 		c.setLinewrap(0, 1, 2).before(f.getML_COMMENTRule());
 		c.setLinewrap(0, 1, 1).after(f.getML_COMMENTRule());

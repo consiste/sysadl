@@ -49,6 +49,11 @@ public class SysADLFormatter extends AbstractDeclarativeFormatter {
 			c.setNoSpace().after(pairs.getFirst());
 			c.setLinewrap().after(pairs.getSecond());
 		}
+		for(Pair<Keyword,Keyword> pairs: f.findKeywordPairs("flows",":")) {
+			c.setLinewrap().before(pairs.getFirst());
+			c.setNoSpace().after(pairs.getFirst());
+			c.setLinewrap().after(pairs.getSecond());
+		}
 		for(Keyword dimension: f.findKeywords("dimension")) {
 			c.setLinewrap().before(dimension);
 		}
@@ -72,6 +77,10 @@ public class SysADLFormatter extends AbstractDeclarativeFormatter {
 		}*/
 		for(Keyword delegate: f.findKeywords("delegate")) {
 			c.setLinewrap().before(delegate);
+		}
+		for(Keyword neg: f.findKeywords("~")) {
+			c.setLinewrap().before(neg);
+			c.setNoSpace().after(neg);
 		}
 		for(Keyword arrow: f.findKeywords("->")) {
 			c.setNoLinewrap().before(arrow);

@@ -1,0 +1,797 @@
+Model SysADLArchitecture;
+using ComponentsAGV.StartMoving;
+using ComponentsAGV.Motor;
+using ComponentsAGV.ArrivalSensor;
+using ComponentsAGV.CheckStation;
+using ComponentsAGV.ControlArm;
+using ComponentsAGV.VehicleTimer;
+using ComponentsAGV.RobotArm;
+package SysADL.types {
+	value type Int {
+	}
+	value type Boolean {
+	}
+	value type String {
+	}
+	value type Void {
+	}
+	value type Real {
+	}
+	enum NotificationToSupervisory {
+		departed, arrived, passed, traveling
+	}
+	enum NotificationFromArm {
+		loaded, unloaded
+	}
+	enum CommandToArm {
+		load, unload, idle
+	}
+	enum NotificationFromMotor {
+		started, stopped
+	}
+	enum CommandToMotor {
+		start, stop
+	}
+	datatype Status {
+		attributes location : Location destination : Location command : CommandToArm
+	}
+	datatype Location {
+		attributes location : SysADL.types.String
+	}
+	datatype VehicleData {
+		attributes destination : Location command : CommandToArm
+	}
+}
+package PortsAGV {
+	import SysADL.types;
+	port def inLocation {
+		flow in SysADL.types.Location
+	}
+	port def outLocation {
+		flow out SysADL.types.Location
+	}
+	port def inStatus {
+		flow in SysADL.types.Status
+	}
+	port def outStatus {
+		flow out SysADL.types.Status
+	}
+	port def inVehicleData {
+		flow in SysADL.types.VehicleData
+	}
+	port def outVehicleData {
+		flow out SysADL.types.VehicleData
+	}
+	port def inNotificationFromMotor {
+		flow in SysADL.types.NotificationFromMotor
+	}
+	port def outNotificationFromMotor {
+		flow out SysADL.types.NotificationFromMotor
+	}
+	port def inCommandToMotor {
+		flow in SysADL.types.CommandToMotor
+	}
+	port def outCommandToMotor {
+		flow out SysADL.types.CommandToMotor
+	}
+	port def inNotificationFromArm {
+		flow in SysADL.types.NotificationFromArm
+	}
+	port def outNotificationFromArm {
+		flow out SysADL.types.NotificationFromArm
+	}
+	port def inCommandToArm {
+		flow in SysADL.types.CommandToArm
+	}
+	port def outCommandToArm {
+		flow out SysADL.types.CommandToArm
+	}
+	port def inNotificationToSupervisory {
+		flow in SysADL.types.NotificationToSupervisory
+	}
+	port def outNotificationToSupervisory {
+		flow out SysADL.types.NotificationToSupervisory
+	}
+	port def IAGVSystem {
+		ports inMoveToStation : inVehicleData {
+		}
+		outNotifications : outNotificationToSupervisory {
+		}
+	}
+	port def ISupervisorySystem {
+		ports outMoveToStation : outVehicleData {
+		}
+		inNotifications : inNotificationToSupervisory {
+		}
+	}
+}
+package ConnectorsAGV {
+	import PortsAGV;
+	import SysADL.types;
+	connector def notifySupervisory {
+		participants ~ nsIPT : PortsAGV.inNotificationToSupervisory {
+		}
+		~ nsOPT : PortsAGV.outNotificationToSupervisory {
+		}
+		flows SysADL.types.NotificationToSupervisory from nsOPT to nsIPT
+	}
+	connector def sendVehicleData {
+		participants ~ vdOPT : PortsAGV.outVehicleData {
+		}
+		~ vdIPT : PortsAGV.inVehicleData {
+		}
+		flows SysADL.types.VehicleData from vdOPT to vdIPT
+	}
+	connector def notificationMotor {
+		participants ~ nmOPT : PortsAGV.outNotificationFromMotor {
+		}
+		~ nmIPT : PortsAGV.inNotificationFromMotor {
+		}
+		flows 
+	SysADL.types.NotificationFromMotor from nmOPT to nmIPT
+	}
+	connector def commandArm {
+		participants ~ caOPT : PortsAGV.outCommandToArm {
+		}
+		~ caIPT : PortsAGV.inCommandToArm {
+		}
+		flows SysADL.types.CommandToArm from caOPT to caIPT
+	}
+	connector def notificationArm {
+		participants ~ naIPT : PortsAGV.inNotificationFromArm {
+		}
+		~ naOPT : PortsAGV.outNotificationFromArm {
+		}
+		flows SysADL.types.NotificationFromArm from naOPT to naIPT
+	}
+	connector def commandMotor {
+		participants ~ cmOPT : PortsAGV.outCommandToMotor {
+		}
+		~ cmIPT : PortsAGV.inCommandToMotor {
+		}
+		flows SysADL.types.CommandToMotor from cmOPT to cmIPT
+	}
+	connector def interactionAGVAndSupervisory {
+		participants ~ iagvs : PortsAGV.IAGVSystem {
+		}
+		~ iss : PortsAGV.ISupervisorySystem {
+		}
+		configuration {
+			connectors:
+			nS : notifySupervisory bindings PortsAGV.IAGVSystem.outNotifications =
+			PortsAGV.ISupervisorySystem.inNotifications sVD : sendVehicleData bindings
+			PortsAGV.ISupervisorySystem.outMoveToStation =
+			PortsAGV.IAGVSystem.inMoveToStation
+		}
+	}
+	connector def locationVehicle {
+		participants ~ lOPT : PortsAGV.outLocation {
+		}
+		~ lIPT : PortsAGV.inLocation {
+		}
+		flows SysADL.types.Location from lOPT to lIPT
+	}
+	connector def status {
+		participants ~ sOPT : PortsAGV.outStatus {
+		}
+		~ sIPT : PortsAGV.inStatus {
+		}
+		flows SysADL.types.Status from sOPT to sIPT
+	}
+}
+package ComponentsAGV {
+	import PortsAGV;
+	import ConnectorsAGV;
+	import SysADL.types;
+	component def FactoryAutomationSystem {
+		configuration {
+			components:
+			ss : SupervisorySystem {
+				using ports in_outData : PortsAGV.ISupervisorySystem {
+				}
+			}
+			agvs : AGVSystem [ 1, -1 ] {
+				using ports sendStatus : PortsAGV.outStatus {
+				}
+				in_outData : PortsAGV.IAGVSystem {
+				}
+			}
+			ds : DisplaySystem {
+				using ports receiveStatus : PortsAGV.inStatus {
+				}
+			}
+			connectors:
+			dataExchange : ConnectorsAGV.interactionAGVAndSupervisory bindings
+			ss.in_outData = agvs.in_outData updateStatus : ConnectorsAGV.status bindings
+			agvs.sendStatus = ds.receiveStatus
+		}
+	}
+	boundary component def DisplaySystem {
+		ports receiveStatus : PortsAGV.inStatus {
+		}
+	}
+	boundary component def SupervisorySystem {
+		ports in_outData : PortsAGV.ISupervisorySystem {
+		}
+	}
+	component def AGVSystem {
+		ports sendStatus : PortsAGV.outStatus {
+		}
+		in_outData : PortsAGV.IAGVSystem {
+		}
+		configuration {
+			components:
+			m : Motor {
+				using ports start_stop : PortsAGV.inCommandToMotor {
+				}
+				started_stopped : PortsAGV.outNotificationFromMotor {
+				}
+			}
+			as : ArrivalSensor {
+				using ports arrivalDetected : PortsAGV.outLocation {
+				}
+			}
+			ra : RobotArm {
+				using ports start : PortsAGV.inCommandToArm {
+				}
+				started : PortsAGV.outNotificationFromArm {
+				}
+			}
+			vc : VehicleControl {
+				using ports sendStatus : PortsAGV.outStatus {
+				}
+				arrivalDetected : PortsAGV.inLocation {
+				}
+				startArm : PortsAGV.outCommandToArm {
+				}
+				startedArm : PortsAGV.inNotificationFromArm {
+				}
+				started_stopped : PortsAGV.inNotificationFromMotor {
+				}
+				start_stop : PortsAGV.outCommandToMotor {
+				}
+				in_outData : PortsAGV.IAGVSystem {
+				}
+			}
+			connectors:
+			arrived : ConnectorsAGV.locationVehicle bindings as.arrivalDetected =
+			vc.arrivalDetected ackArm : ConnectorsAGV.notificationArm bindings
+			ra.started = vc.startedArm cmdArm : ConnectorsAGV.commandArm bindings
+			vc.startArm = ra.start ackMotor : ConnectorsAGV.notificationMotor
+			bindings m.started_stopped = vc.started_stopped cmdMotor :
+			ConnectorsAGV.commandMotor bindings vc.start_stop = m.start_stop
+			delegations:
+			vc.sendStatus to sendStatus vc.in_outData to in_outData
+		}
+	}
+	boundary component def RobotArm {
+		ports start : PortsAGV.inCommandToArm {
+		}
+		started : PortsAGV.outNotificationFromArm {
+		}
+	}
+	boundary component def Motor {
+		ports start_stop : PortsAGV.inCommandToMotor {
+		}
+		started_stopped : PortsAGV.outNotificationFromMotor {
+		}
+	}
+	boundary component def ArrivalSensor {
+		ports arrivalDetected : PortsAGV.outLocation {
+		}
+	}
+	component def VehicleControl {
+		ports sendStatus : PortsAGV.outStatus {
+		}
+		arrivalDetected : PortsAGV.inLocation {
+		}
+		startArm : PortsAGV.outCommandToArm {
+		}
+		startedArm : PortsAGV.inNotificationFromArm {
+		}
+		started_stopped : PortsAGV.inNotificationFromMotor {
+		}
+		start_stop : PortsAGV.outCommandToMotor {
+		}
+		in_outData : PortsAGV.IAGVSystem {
+		}
+		configuration {
+			components:
+			cs : CheckStation {
+				using ports ack : PortsAGV.inNotificationFromMotor {
+				}
+				location : PortsAGV.outLocation {
+				}
+				destination : PortsAGV.inLocation {
+				}
+				stop : PortsAGV.outCommandToMotor {
+				}
+				arrivalDetected : PortsAGV.inLocation {
+				}
+				passed : PortsAGV.outNotificationToSupervisory {
+				}
+			}
+			ca : ControlArm {
+				using ports cmd : PortsAGV.inCommandToArm {
+				}
+				ack : PortsAGV.inNotificationFromMotor {
+				}
+				startArm : PortsAGV.outCommandToArm {
+				}
+			}
+			nm : NotifierMotor {
+				using ports inAck : PortsAGV.inNotificationFromMotor {
+				}
+				ack : PortsAGV.outNotificationToSupervisory {
+				}
+				outAck : PortsAGV.outNotificationFromMotor {
+				}
+			}
+			sm : StartMoving {
+				using ports move : PortsAGV.inVehicleData {
+				}
+				cmd : PortsAGV.outCommandToArm {
+				}
+				destination : PortsAGV.outLocation {
+				}
+				start : PortsAGV.outCommandToMotor {
+				}
+			}
+			na : NotifierArm {
+				using ports arrivedStatus : PortsAGV.outNotificationToSupervisory {
+				}
+				loaded_unloaded : PortsAGV.inNotificationFromArm {
+				}
+			}
+			vt : VehicleTimer {
+				using ports AGVStatus : PortsAGV.outStatus {
+				}
+				location : PortsAGV.inLocation {
+				}
+				destination : PortsAGV.inLocation {
+				}
+				cmd : PortsAGV.inCommandToArm {
+				}
+			}
+			connectors:
+			destinationStation : ConnectorsAGV.locationVehicle bindings sm.destination = vt.destination 
+			destinationStation : ConnectorsAGV.locationVehicle bindings sm.destination = cs.destination
+			command : ConnectorsAGV.commandArm bindings sm.cmd = vt.cmd
+			command : ConnectorsAGV.commandArm bindings sm.cmd = ca.cmd
+			currentLocation : ConnectorsAGV.locationVehicle bindings cs.location = vt.location
+			sendNotificationMotor : ConnectorsAGV.notificationMotor bindings nm.outAck = ca.ack
+			sendNotificationMotor : ConnectorsAGV.notificationMotor bindings nm.outAck =
+			cs.ack delegations:
+			na.loaded_unloaded to startedArm nm.inAck to started_stopped
+			nm.ack to PortsAGV.IAGVSystem.outNotifications na.arrivedStatus to
+			PortsAGV.IAGVSystem.outNotifications sm.move to
+			PortsAGV.IAGVSystem.inMoveToStation ca.startArm to startArm vt.AGVStatus to
+			sendStatus sm.start to start_stop cs.stop to start_stop cs.arrivalDetected
+			to arrivalDetected cs.passed to PortsAGV.IAGVSystem.outNotifications
+		}
+	}
+	component def VehicleTimer {
+		ports AGVStatus : PortsAGV.outStatus {
+		}
+		location : PortsAGV.inLocation {
+		}
+		destination : PortsAGV.inLocation {
+		}
+		cmd : PortsAGV.inCommandToArm {
+		}
+	}
+	component def NotifierArm {
+		ports arrivedStatus : PortsAGV.outNotificationToSupervisory {
+		}
+		loaded_unloaded : PortsAGV.inNotificationFromArm {
+		}
+	}
+	component def ControlArm {
+		ports cmd : PortsAGV.inCommandToArm {
+		}
+		ack : PortsAGV.inNotificationFromMotor {
+		}
+		startArm : PortsAGV.outCommandToArm {
+		}
+	}
+	component def CheckStation {
+		ports ack : PortsAGV.inNotificationFromMotor {
+		}
+		location : PortsAGV.outLocation {
+		}
+		destination : PortsAGV.inLocation {
+		}
+		stop : PortsAGV.outCommandToMotor {
+		}
+		arrivalDetected : PortsAGV.inLocation {
+		}
+		passed : PortsAGV.outNotificationToSupervisory {
+		}
+	}
+	component def NotifierMotor {
+		ports inAck : PortsAGV.inNotificationFromMotor {
+		}
+		ack : PortsAGV.outNotificationToSupervisory {
+		}
+		outAck : PortsAGV.outNotificationFromMotor {
+		}
+	}
+	component def StartMoving {
+		ports move : PortsAGV.inVehicleData {
+		}
+		cmd : PortsAGV.outCommandToArm {
+		}
+		destination : PortsAGV.outLocation {
+		}
+		start : PortsAGV.outCommandToMotor {
+		}
+	}
+activity def StartMovingAC ( move : SysADL.types.VehicleData) : (cmd :
+	SysADL.types.CommandToArm, destination :
+	SysADL.types.Location, start : SysADL.types.CommandToMotor) {
+		body {
+		actions : sc : SendCommandAN {
+				using pins move : SysADL.types.VehicleData
+			}
+			sd : SendDestinationAN {
+				using pins move : SysADL.types.VehicleData
+			}
+			ssm : SendStartMotorAN {
+				using pins move : SysADL.types.VehicleData
+			}
+			delegate destination to sc delegate cmd to sd delegate start to ssm
+			delegate move to sd.move delegate move to sc.move delegate move to ssm.move
+		}
+	}
+action def SendStartMotorAN ( move : SysADL.types.VehicleData ) :
+	SysADL.types.CommandToMotor {
+	post-condition SendStartMotorEQ ( )
+	delegate SendStartMotorAN to SendStartMotorEQ.cmd
+	}
+	action def SendCommandAN ( move : SysADL.types.VehicleData ) :
+	SysADL.types.CommandToArm {
+	post-condition SendCommandEQ ( )
+	delegate SendCommandAN to SendCommandEQ.cmd delegate move to SendCommandEQ.move
+	}
+	action def SendDestinationAN ( move : SysADL.types.VehicleData ) :
+	SysADL.types.Location {
+	post-condition SendDestinationEQ ( )
+	delegate SendDestinationAN to SendDestinationEQ.destination delegate move to
+		SendDestinationEQ.move
+	}
+	activity def NotifierMotorAC ( inStatusMotor :
+	SysADL.types.NotificationFromMotor ) : (outStatusMotor :
+	SysADL.types.NotificationFromMotor, ack :
+	SysADL.types.NotificationToSupervisory) {
+		body {
+		actions : nagvm : NotifyAGVFromMotorAN {
+				using pins statusMotor : SysADL.types.NotificationFromMotor
+			}
+			nsm : NotifySupervisoryFromMotorAN {
+				using pins statusMotor : SysADL.types.NotificationFromMotor
+			}
+			delegate outStatusMotor to nagvm delegate ack to nsm delegate inStatusMotor
+			to nagvm.statusMotor delegate inStatusMotor to nsm.statusMotor
+		}
+	}
+	action def NotifyAGVFromMotorAN ( statusMotor :
+	SysADL.types.NotificationFromMotor ) : SysADL.types.NotificationFromMotor {
+	post-condition NotifyAGVFromMotorEQ ( )
+	delegate NotifyAGVFromMotorAN to NotifyAGVFromMotorEQ.outStatusMotor delegate
+		statusMotor to NotifyAGVFromMotorEQ.inStatusMotor
+	}
+	action def NotifySupervisoryFromMotorAN ( statusMotor :
+	SysADL.types.NotificationFromMotor ) : SysADL.types.NotificationToSupervisory
+	{
+	post-condition NotifySupervisoryFromMotorEQ ( )
+	delegate NotifySupervisoryFromMotorAN to NotifySupervisoryFromMotorEQ.ack
+		delegate statusMotor to NotifySupervisoryFromMotorEQ.statusMotor
+	}
+	activity def CheckStationAC ( statusMotor :
+	SysADL.types.NotificationFromMotor, destination : SysADL.types.Location,
+	inLocation : SysADL.types.Location ) : (stopMotor :
+	SysADL.types.CommandToMotor, outLocation : SysADL.types.Location, passed :
+	SysADL.types.NotificationToSupervisory) {
+		body {
+		actions : cs : CompareStationsAN {
+				using pins statusMotor : SysADL.types.NotificationFromMotor destination :
+				SysADL.types.Location location : SysADL.types.Location
+			}
+			scl : SendCurrentLocationAN {
+				using pins location : SysADL.types.Location
+			}
+			sm : StopMotorAN {
+				using pins comparisonResult : SysADL.types.Boolean
+			}
+			pm : PassedMotorAN {
+				using pins comparisonResult : SysADL.types.Boolean
+			}
+			delegate statusMotor to NotificationsMotor delegate destination to
+			Destinations flow from NotificationsMotor to cs.statusMotor flow from
+			Destinations to cs.destination delegate inLocation to cs.location delegate
+			outLocation to scl delegate inLocation to scl.location delegate stopMotor
+			to sm delegate passed to pm flow from cs to sm.comparisonResult flow from
+			cs to pm.comparisonResult datastore NotificationsMotor :
+			SysADL.types.NotificationFromMotor {
+			}
+			datastore Destinations : SysADL.types.Location {
+			}
+		}
+	}
+	action def CompareStationsAN ( statusMotor :
+	SysADL.types.NotificationFromMotor, destination : SysADL.types.Location,
+	location : SysADL.types.Location ) : SysADL.types.Boolean {
+	post-condition CompareStationsEQ ( ) pre-condition NotificationMotorIsStartedEQ
+		( )
+	delegate CompareStationsAN to CompareStationsEQ.result delegate location to
+		CompareStationsEQ.loc delegate destination to CompareStationsEQ.dest
+		delegate statusMotor to NotificationMotorIsStartedEQ.statusMotor
+	}
+	action def StopMotorAN ( comparisonResult : SysADL.types.Boolean ) :
+	SysADL.types.CommandToMotor {
+	post-condition StopMotorEQ ( )
+	delegate comparisonResult to StopMotorEQ.result delegate StopMotorAN to
+		StopMotorEQ.cmd
+	}
+	action def PassedMotorAN ( comparisonResult : SysADL.types.Boolean ) :
+	SysADL.types.NotificationToSupervisory {
+	post-condition PassedMotorEQ ( )
+	delegate PassedMotorAN to PassedMotorEQ.ack delegate comparisonResult to
+		PassedMotorEQ.result
+	}
+	action def SendCurrentLocationAN ( location : SysADL.types.Location ) :
+	SysADL.types.Location {
+	post-condition SendCurrentLocationEQ ( )
+	delegate location to SendCurrentLocationEQ.inLocation delegate
+		SendCurrentLocationAN to SendCurrentLocationEQ.outLocation
+	}
+	activity def ControlArmAC ( cmd : SysADL.types.CommandToArm, statusMotor :
+	SysADL.types.NotificationFromMotor ) : (startArm : SysADL.types.CommandToArm) {
+		body {
+		actions : ca : ControlArmAN {
+				using pins cmd : SysADL.types.CommandToArm statusMotor :
+				SysADL.types.NotificationFromMotor
+			}
+			delegate startArm to ca delegate cmd to ca.cmd delegate statusMotor to
+			ca.statusMotor
+		}
+	}
+	activity def NotifierArmAC ( statusArm : SysADL.types.NotificationFromArm ) :
+	(ack : SysADL.types.NotificationToSupervisory) {
+		body {
+		actions : na : NotifierArmAN {
+				using pins statusArm : SysADL.types.NotificationFromArm
+			}
+			delegate ack to na delegate statusArm to na.statusArm
+		}
+	}
+	activity def VehicleTimerAC ( destination : SysADL.types.Location, location :
+	SysADL.types.Location, cmd : SysADL.types.CommandToArm ) : (status :
+	SysADL.types.Status) {
+		body {
+		actions : vt : VehicleTimerAN {
+				using pins cmd : SysADL.types.CommandToArm destination :
+				SysADL.types.Location location : SysADL.types.Location
+			}
+			delegate status to vt delegate cmd to vt.cmd delegate destination to
+			vt.destination delegate location to vt.location
+		}
+	}
+	action def ControlArmAN ( cmd : SysADL.types.CommandToArm, statusMotor :
+	SysADL.types.NotificationFromMotor ) : SysADL.types.CommandToArm {
+	post-condition ControlArmEQ ( )
+	delegate ControlArmAN to ControlArmEQ.startArm delegate statusMotor to
+		ControlArmEQ.statusMotor delegate cmd to ControlArmEQ.cmd
+	}
+	action def NotifierArmAN ( statusArm : SysADL.types.NotificationFromArm ) :
+	SysADL.types.NotificationToSupervisory {
+	post-condition NotifierArmEQ ( )
+	delegate NotifierArmAN to NotifierArmEQ.ack
+	}
+	action def VehicleTimerAN ( destination : SysADL.types.Location, location :
+	SysADL.types.Location, cmd : SysADL.types.CommandToArm ) :
+	SysADL.types.Status {
+	post-condition VehicleTimerEQ ( )
+	delegate VehicleTimerAN to VehicleTimerEQ.s delegate location to
+		VehicleTimerEQ.loc delegate destination to VehicleTimerEQ.dest delegate cmd
+		to VehicleTimerEQ.cmd
+	}
+	constraint SendStartMotorEQ () : 
+		(cmd : SysADL.types.CommandToMotor) {
+			equation = cmd == 'SysADL.types.CommandToMotor::start'
+		}
+	constraint SendDestinationEQ ( move : SysADL.types.VehicleData ) :
+		(destination : SysADL.types.Location) {
+			equation = destination == 'move.destination'
+		}
+	constraint NotifyAGVFromMotorEQ ( inStatusMotor : SysADL.types.NotificationFromMotor ) :
+		(outStatusMotor : SysADL.types.NotificationFromMotor) {
+			equation = outStatusMotor == inStatusMotor
+		}
+	constraint SendCommandEQ ( move : SysADL.types.VehicleData ) :
+		(cmd : SysADL.types.CommandToArm) {
+			equation = cmd == 'move.command'
+		}
+	constraint NotifySupervisoryFromMotorEQ ( statusMotor : SysADL.types.NotificationFromMotor ) :
+		(ack : SysADL.types.NotificationToSupervisory) {
+			equation = statusMotor == 'SysADL.types.NotificationFromMotor::started' ? 
+			ack == 'SysADL.types.NotificationToSupervisory::departed' : 
+			ack == 'SysADL.types.NotificationToSupervisory::traveling'
+		}
+	constraint NotificationMotorIsStartedEQ (statusMotor : SysADL.types.NotificationFromMotor) {
+			equation = statusMotor == 'SysADL.types.NotificationFromMotor::started'
+		}
+	constraint CompareStationsEQ ( dest : SysADL.types.Location, loc : SysADL.types.Location ) :
+		(result : SysADL.types.Boolean) {
+			equation = dest == loc ? result == true : result == false
+		}
+	constraint StopMotorEQ ( result : SysADL.types.Boolean ) :
+		(cmd : SysADL.types.CommandToMotor) {
+			equation = result == true ? cmd == 'SysADL.types.CommandToMotor::stop' : cmd == SysADL.types.Void
+		}
+	constraint PassedMotorEQ ( result : SysADL.types.Boolean ) :
+		(ack : SysADL.types.NotificationToSupervisory) {
+			equation = result == false ? ack == 'SysADL.types.NotificationToSupervisory::passed' : ack == SysADL.types.Void
+		}
+	constraint SendCurrentLocationEQ ( inLocation : SysADL.types.Location ) :
+		(outLocation : SysADL.types.Location) {
+			equation = outLocation == inLocation
+		}
+	constraint ControlArmEQ ( cmd : SysADL.types.CommandToArm, statusMotor : SysADL.types.NotificationFromMotor ) :
+		(startArm : SysADL.types.CommandToArm) {
+			equation = statusMotor == 'SysADL.types.NotificationFromMotor::stopped' ?
+			startArm == cmd : startArm == 'SysADL.types.CommandToArm::idle'
+		}
+	constraint NotifierArmEQ () :
+		(ack : SysADL.types.NotificationToSupervisory) {
+			equation = ack == 'SysADL.types.NotificationToSupervisory::arrived'
+		}
+	constraint VehicleTimerEQ ( dest : SysADL.types.Location, loc : SysADL.types.Location, cmd : SysADL.types.CommandToArm ) :
+		(s : SysADL.types.Status) {
+			equation = 's.destination == dest && s.location == loc && s.cmd == cmd'
+		}
+	executable def SendStartMotorEX ( in move : SysADL.types.VehicleData ) : out
+	SysADL.types.CommandToMotor {
+		return 'SysADL.types.CommandToMotor::start'
+	}
+	executable def SendCommandEX ( in move : SysADL.types.VehicleData ) : out
+	SysADL.types.CommandToArm {
+		return 'move.command'
+	}
+	executable def SendDestinationEX ( in move : SysADL.types.VehicleData ) : out
+	SysADL.types.Location {
+		return 'move.destination'
+	}
+	executable def NotifyAGVFromMotorEX ( in statusMotor : SysADL.types.NotificationFromMotor ) : 
+	out SysADL.types.NotificationFromMotor{
+		return statusMotor
+	}
+	executable def NotifySupervisoryFromMotorEX ( in statusMotor : SysADL.types.NotificationFromMotor ) : 
+		out	SysADL.types.NotificationToSupervisory {
+		if (statusMotor == 'SysADL.types.NotificationFromMotor::started') 
+			return 'SysADL.types.NotificationToSupervisory::departed'
+		else
+			return 'SysADL.types.NotificationToSupervisory::traveling'
+	}
+	executable def CompareStationsEX ( in destination : SysADL.types.Location, in location : SysADL.types.Location, 
+		in statusMotor : SysADL.types.NotificationFromMotor) : 	out SysADL.types.Boolean {
+		if(statusMotor == 'SysADL.types.NotificationFromMotor::started' && destination == location)
+			return true
+		else
+			return false
+	}
+	executable def StopMotorEX ( in comparisonResult : SysADL.types.Boolean ) :
+	out SysADL.types.CommandToMotor {
+		if(comparisonResult == true)
+			return 'SysADL.types.CommandToMotor::stop'
+		else
+			return null
+	}
+	executable def PassedMotorEX ( in comparisonResult : SysADL.types.Boolean ) :
+	out SysADL.types.NotificationToSupervisory {
+		if(comparisonResult == false)
+			return 'SysADL.types.NotificationToSupervisory::passed'
+		else
+			return null
+	}
+	executable def SendCurrentLocationEX ( in location : SysADL.types.Location )
+	: out SysADL.types.Location {
+		return location
+	}
+	executable def ControlArmEX ( in statusMotor : SysADL.types.NotificationFromMotor, 
+		in cmd : SysADL.types.CommandToArm) : out SysADL.types.CommandToArm {
+		if(statusMotor == 'SysADL.types.NotificationFromMotor::stopped')
+			return cmd
+		else
+			return 'SysADL.types.CommandToArm::idle'
+	}
+	executable def NotifierArmEX ( in statusArm : SysADL.types.NotificationFromArm ) : 
+	out	SysADL.types.NotificationToSupervisory {
+		return 'SysADL.types.NotificationToSupervisory::arrived'
+	}
+	executable def VehicleTimerEX ( in location : SysADL.types.Location, in cmd : SysADL.types.CommandToArm, 
+		in destination : SysADL.types.Location ) : out	SysADL.types.Status {
+		'let s : SysADL.types.Status
+		s.destination = destination
+		s.location = location
+		s.cmd = cmd'
+		new SysADL.types.Status
+	}
+}
+Requirement RequestMove ( 1.0 ) {
+	text =
+	"The external Supervisory System sends a \"Move\" command to the AGV System requesting it to move to a factory station and load/unload a part."
+}
+Requirement ReceiveNotifications ( 1.1 ) {
+	text = "The Supervisory System should receive the AGV system notifications." 
+}
+Requirement ControlLoadingUnloading ( 2.0 ) {
+	text =
+		"The AGV system must control the loading and unloading of parts between stations factory, interacting with Supervisory and Display Systems."
+	Requirement MoveToStation ( 2.1 ) {
+		text = "An AGV can move along a track in the factory in a clockwise direction, and start and stop at factory stations."
+		Requirement CommandMotorStartMove ( 2.2 ) {
+			text = "The AGV System sends a \"Start Motor\" command to Motor to start moving."
+		}
+		Requirement SendStartedAcknowledgement ( 2.3 ) {
+			text = "Motor sends \"Started\" acknowledge message to AGV System."
+		}
+		Requirement DetectArrived ( 2.4 ) {
+			text = "The arrival sensor must detect that it has arrived at the factory station and notifies the AGV System."
+		}
+		Requirement CheckDestination ( 2.5 ) {
+			text = "The AGV System checks if the current station is the arrival station."
+		}
+		Requirement CommandMotorStopMove ( 2.6 ) {
+			text = "If this station is the destination station, the AGV System sends \"Stop Moto\" message to Motor, else the vehicle passes the station without stopping."
+		}
+		Requirement SendStoppedAcknowledgement ( 2.7 ) {
+			text = "Motor sends \"Stopped\" acknowledge message to AGV System."
+		}
+		Requirement CommandLoadUnload ( 2.8 ) {
+			text = "The AGV System sends \"Load/Unload\" message to Robot Arm."
+		}
+		Requirement SendAcknowledgement ( 2.9 ) {
+			text = "Robot Arm sends;Load/Unload acknowledge message to AGV System indicating that the arm has finished."
+		}
+		Requirement NotifySupervisorySystem ( 2.10 ) {
+			text = "The AGV System must notify the supervisory system when the vehicle start moving or get to a station."
+		}
+	}
+	Requirement SendVehicleStatus ( 2.13 ) {
+		text = "The AGV system should send vehicle status to an external Display System every 30 seconds."
+	}
+}
+Requirement NotifyFromMotor ( 2.11 ) {
+	text = "The AGV System must send a \"Departed\" message to the Supervisory System when vehicle start moving and a \"Passed\" message when vehicle come to a different station of destination station."
+derive ControlLoadingUnloading.MoveToStation.NotifySupervisorySystem;
+}
+Requirement NotifyFromArm ( 2.12 ) {
+	text = "The AGV System must send a \"Arrived\" message when the part has been loaded/unloaded."
+derive ControlLoadingUnloading.MoveToStation.NotifySupervisorySystem;
+}
+Requirement ReceiveVehicleStatus ( 3.0 ) {
+	text = "The Display System must receive of AGV system the vehicle status."
+}
+  
+allocations {
+	activity ComponentsAGV.CheckStationAC to ComponentsAGV.CheckStation activity
+	ComponentsAGV.ControlArmAC to ComponentsAGV.ControlArm activity
+	ComponentsAGV.NotifierArmAC to ComponentsAGV.NotifierArm activity
+	ComponentsAGV.NotifierMotorAC to ComponentsAGV.NotifierMotor activity
+	ComponentsAGV.StartMovingAC to ComponentsAGV.StartMoving activity
+	ComponentsAGV.VehicleTimerAC to ComponentsAGV.VehicleTimer executable
+	ComponentsAGV.CompareStationsEX to ComponentsAGV.CompareStationsAN executable
+	ComponentsAGV.ControlArmEX to ComponentsAGV.ControlArmAN executable
+	ComponentsAGV.NotifierArmEX to ComponentsAGV.NotifierArmAN executable
+	ComponentsAGV.NotifyAGVFromMotorEX to ComponentsAGV.NotifyAGVFromMotorAN
+	executable ComponentsAGV.NotifySupervisoryFromMotorEX to
+	ComponentsAGV.NotifySupervisoryFromMotorAN executable
+	ComponentsAGV.PassedMotorEX to ComponentsAGV.PassedMotorAN executable
+	ComponentsAGV.SendCommandEX to ComponentsAGV.SendCommandAN executable
+	ComponentsAGV.SendCurrentLocationEX to ComponentsAGV.SendCurrentLocationAN
+	executable ComponentsAGV.SendDestinationEX to ComponentsAGV.SendDestinationAN
+	executable ComponentsAGV.SendStartMotorEX to ComponentsAGV.SendStartMotorAN
+	executable ComponentsAGV.StopMotorEX to ComponentsAGV.StopMotorAN executable
+	ComponentsAGV.VehicleTimerEX to ComponentsAGV.VehicleTimerAN
+}

@@ -405,7 +405,7 @@ Expression returns Expression: //TODO resolver o problema de estar entrando em C
  * Basic, simplest expressions
  */
 PrimaryExpression returns Expression:
-	NameExpression | NonNameExpression | InstanceCreationExpression
+	NameExpression | NonNameExpression// | InstanceCreationExpression
 ;
 
 NameExpression returns NameExpression:
@@ -419,15 +419,13 @@ NonNameExpression returns Expression:
 	//| PropertyAccessExpression // TODO left-recursion problem 
 	| DataTypeAccessExpression
 	//| InvocationExpression
-	//| InstanceCreationExpression 
+	| InstanceCreationExpression 
 	//| LinkOperationExpression 
 	//| ClassExtentExpression 
 	| SequenceConstructionExpression 
 	| SequenceAccessExpression
 ;
 
-DataTypeAccessExpression returns DataTypeAccessExpression:
-	datatype=[TypeUse|QualifiedName] '->' attr=[TypeUse|ID]
 InstanceCreationExpression returns InstanceCreationExpression:
 	'new' type=[TypeDef|QualifiedName] (index=Index)? 
 ;

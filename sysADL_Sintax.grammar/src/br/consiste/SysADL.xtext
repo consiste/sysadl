@@ -189,12 +189,12 @@ UnitDef returns UnitDef:
 
 ComponentUse returns ComponentUse:
 	name=ID ':' definition=[ComponentDef|QualifiedName] ('[' lowerBound=EInt ',' upperBound=EInt ']')?
-	'{'
+	('{'
 		
 		('using' 'ports' ':' ports+=PortUse*)?
 		properties+=Property*
 		
-	'}';
+	'}' | ';');
 
 ConnectorDef returns ConnectorDef:
 	'connector' 'def' name=ID
@@ -213,7 +213,7 @@ ConnectorUse returns ConnectorUse:
 	('{'
 		'ports' ':' ports+=PortUse_Reverse*
 		properties+=Property*
-	'}')?;
+	'}' | ';');
 
 CompositePortDef returns CompositePortDef:
 	'port' 'def' name=ID

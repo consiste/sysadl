@@ -82,6 +82,7 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 		if (context instanceof ConnectorUse && ref == SysADLPackage.eINSTANCE.connectorUse_Definition) {
 			return scope_ConnectorUse_Definition(context as ConnectorUse);
 		}
+		// FIXME it is wrong
 		if (context instanceof ConnectorBinding && (ref == SysADLPackage.eINSTANCE.connectorBinding_FirstPort
 			|| ref == SysADLPackage.eINSTANCE.connectorBinding_SecondPort)) {
 			return scope_ConnectorBinding(context as ConnectorBinding);

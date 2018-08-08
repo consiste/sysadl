@@ -3,6 +3,59 @@
  */
 package br.consiste.scoping
 
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EReference
+import org.eclipse.xtext.scoping.Scopes
+import org.eclipse.xtext.scoping.impl.FilteringScope
+
+import java.util.ArrayList
+
+import sysADL_Sintax.util.SysADLUtil
+import sysADL_Sintax.SysADLPackage
+import sysADL_Sintax.EnumValueLiteralExpression
+import sysADL_Sintax.Enumeration
+import sysADL_Sintax.DataTypeAccessExpression
+import sysADL_Sintax.DataTypeDef
+import sysADL_Sintax.ComponentUse
+import sysADL_Sintax.ComponentDef
+import sysADL_Sintax.ConnectorUse
+import sysADL_Sintax.ConnectorDef
+import sysADL_Sintax.PortUse
+import sysADL_Sintax.PortDef
+import sysADL_Sintax.ActionUse
+import sysADL_Sintax.ActionDef
+import sysADL_Sintax.Delegation
+import sysADL_Sintax.CompositePortDef
+import sysADL_Sintax.Configuration
+import sysADL_Sintax.ConnectorBinding
+import sysADL_Sintax.Flow
+import sysADL_Sintax.TypeDef
+import sysADL_Sintax.SimplePortDef
+import sysADL_Sintax.TypeUse
+import sysADL_Sintax.DataStore
+import java.awt.image.DataBuffer
+import sysADL_Sintax.ClassificationExpression
+import sysADL_Sintax.Executable
+import sysADL_Sintax.VariableDecl
+import sysADL_Sintax.InstanceCreationExpression
+import sysADL_Sintax.Property
+import sysADL_Sintax.Pin
+import sysADL_Sintax.ValueTypeDef
+import sysADL_Sintax.ExecutableAllocation
+import sysADL_Sintax.Model
+import sysADL_Sintax.Package
+import sysADL_Sintax.ActivityAllocation
+import sysADL_Sintax.ActivityDef
+import sysADL_Sintax.ConstraintUse
+import sysADL_Sintax.ConstraintDef
+import sysADL_Sintax.ActivityDelegation
+import sysADL_Sintax.ActivityBody
+import sysADL_Sintax.ActivityFlow
+import sysADL_Sintax.ActivitySwitchCase
+import sysADL_Sintax.ActionReceive
+import sysADL_Sintax.Protocol
+import sysADL_Sintax.ActionSend
+import sysADL_Sintax.Requirement
 
 /**
  * This class contains custom scoping description.
@@ -11,5 +64,401 @@ package br.consiste.scoping
  * on how and when to use it.
  */
 class SysADLScopeProvider extends AbstractSysADLScopeProvider {
-
+	override getScope(EObject context, EReference ref) {
+		if (context instanceof DataTypeAccessExpression && ref == SysADLPackage.eINSTANCE.dataTypeAccessExpression_Attr) {
+			return scope_DataTypeAccessExpression_Attr(context as DataTypeAccessExpression);
+		}
+		if (context instanceof EnumValueLiteralExpression && ref == SysADLPackage.eINSTANCE.enumValueLiteralExpression_EnumValue) {
+			return scope_EnumValueLiteralExpression_EnumValue(context as EnumValueLiteralExpression);
+		}
+		if ((context instanceof DataTypeDef && ref == SysADLPackage.eINSTANCE.dataTypeDef_SuperType) ||
+			(context instanceof ValueTypeDef && ref == SysADLPackage.eINSTANCE.valueTypeDef_SuperType) ||
+			(context instanceof Requirement && ref == SysADLPackage.eINSTANCE.requirement_DerivedBy)) {
+			return scope_DataTypeDef_ValueTypeDef_SuperType(context, ref);
+		}
+		if (context instanceof ComponentUse && ref == SysADLPackage.eINSTANCE.componentUse_Definition) {
+			return scope_ComponentUse_Definition(context as ComponentUse);
+		}
+		if (context instanceof ConnectorUse && ref == SysADLPackage.eINSTANCE.connectorUse_Definition) {
+			return scope_ConnectorUse_Definition(context as ConnectorUse);
+		}
+		if (context instanceof ConnectorBinding && (ref == SysADLPackage.eINSTANCE.connectorBinding_FirstPort
+			|| ref == SysADLPackage.eINSTANCE.connectorBinding_SecondPort)) {
+			return scope_ConnectorBinding(context as ConnectorBinding);
+		}
+		if ((context instanceof Flow && ref == SysADLPackage.eINSTANCE.flow_FlowType) ||
+			(context instanceof SimplePortDef && ref == SysADLPackage.eINSTANCE.simplePortDef_FlowType) ||
+			(context instanceof Property && ref == SysADLPackage.eINSTANCE.property_Type) ||
+			((context instanceof TypeUse || context instanceof Pin || context instanceof VariableDecl) && ref == SysADLPackage.eINSTANCE.typeUse_Definition) ||
+			(context instanceof ActionDef && ref == SysADLPackage.eINSTANCE.actionDef_ReturnType) ||
+			(context instanceof DataStore && ref == SysADLPackage.eINSTANCE.dataObject_Type) ||
+			(context instanceof DataBuffer && ref == SysADLPackage.eINSTANCE.dataObject_Type) ||
+			(context instanceof ClassificationExpression && ref == SysADLPackage.eINSTANCE.classificationExpression_TypeName) ||
+			(context instanceof Executable && ref == SysADLPackage.eINSTANCE.executable_ReturnType) ||
+			(context instanceof InstanceCreationExpression && ref == SysADLPackage.eINSTANCE.instanceCreationExpression_Type) ||
+			(context instanceof EnumValueLiteralExpression && ref == SysADLPackage.eINSTANCE.enumValueLiteralExpression__enum)) {
+			return scope_TypeDef(context);
+		}
+		if (context instanceof Flow && (ref == SysADLPackage.eINSTANCE.flow_Source ||
+			ref == SysADLPackage.eINSTANCE.flow_Destination)) {
+			return scope_Flow_Source_Destination(context as Flow);
+		}
+		if (context instanceof PortUse && ref == SysADLPackage.eINSTANCE.portUse_Definition) {
+			return scope_PortUse_Definition(context as PortUse);
+		}
+		if (context instanceof Delegation && ref == SysADLPackage.eINSTANCE.delegation_PortProxy) {
+			return scope_Delegation_PortProxy(context as Delegation);
+		}
+		if (context instanceof Delegation && ref == SysADLPackage.eINSTANCE.delegation_FullPort) {
+			return scope_Delegation_FullPort(context as Delegation);
+		}
+		if (context instanceof ActionUse && ref == SysADLPackage.eINSTANCE.actionUse_Definition) {
+			return scope_ActionUse_Definition(context as ActionUse);
+		}
+		if (context instanceof ConstraintUse && ref == SysADLPackage.eINSTANCE.constraintUse_Definition) {
+			return scope_ConstraintUse_Definition(context as ConstraintUse);
+		}
+		if (context instanceof ActivityDelegation && ref == SysADLPackage.eINSTANCE.activityRelation_Source) {
+			return scope_ActivityDelegation_Source(context as ActivityDelegation);
+		}
+		if ((context instanceof ActivityDelegation && ref == SysADLPackage.eINSTANCE.activityRelation_Target) ||
+			(context instanceof ActivityFlow && (ref == SysADLPackage.eINSTANCE.activityRelation_Source ||
+			ref == SysADLPackage.eINSTANCE.activityRelation_Target)) ||
+			(context instanceof ActivitySwitchCase && ref == SysADLPackage.eINSTANCE.activitySwitchCase_Target)) {
+			return scope_ActivityDelegation_Target_ActivityFlow_SourceTarget(context);
+		}
+		if (context instanceof ActionReceive && ref == SysADLPackage.eINSTANCE.actionReceive_FlowTo) {
+			return scope_ActionReceive_FlowTo(context as ActionReceive);
+		}
+		if (context instanceof ActionSend && ref == SysADLPackage.eINSTANCE.actionSend_FlowTo) {
+			return scope_ActionSend_FlowTo(context as ActionSend);
+		}
+		if (context instanceof ExecutableAllocation && ref == SysADLPackage.eINSTANCE.executableAllocation_Source) {
+			return scope_ExecutableAllocation_Source(context as ExecutableAllocation);
+		}
+		if (context instanceof ExecutableAllocation && ref == SysADLPackage.eINSTANCE.executableAllocation_Target) {
+			return scope_ExecutableAllocation_Target(context as ExecutableAllocation);
+		}
+		if (context instanceof ActivityAllocation && ref == SysADLPackage.eINSTANCE.activityAllocation_Source) {
+			return scope_ActivityAllocation_Source(context as ActivityAllocation);
+		}
+		if (context instanceof ActivityAllocation && ref == SysADLPackage.eINSTANCE.activityAllocation_Target) {
+			return scope_ActivityAllocation_Target(context as ActivityAllocation);
+		}
+		return super.getScope(context, ref)
+	}
+	
+	def scope_DataTypeAccessExpression_Attr(DataTypeAccessExpression a) {
+		Scopes.scopeFor((a.datatype.definition as DataTypeDef).dataTypeAttributes);
+	}
+	
+	def scope_EnumValueLiteralExpression_EnumValue(EnumValueLiteralExpression v) {
+		Scopes.scopeFor((v._enum as Enumeration).literals);
+	}
+	
+	def scope_DataTypeDef_ValueTypeDef_SuperType(EObject c, EReference ref) {
+		new FilteringScope(delegateGetScope(c, ref),[getEObjectOrProxy != c]);
+	}
+	
+	def scope_ComponentUse_Definition(ComponentUse u) {
+		var componentDefList = new ArrayList();
+		
+		val p = SysADLUtil.upToPackage(u);
+		val pList = SysADLUtil.importedPackages(p);
+		
+		pList.add(p);
+		
+		for (pac : pList){
+			for (e : pac.architectures){
+				if(e instanceof ComponentDef){
+					componentDefList.add(e as ComponentDef);
+				}
+			}
+		}
+		
+		var existingScope = Scopes.scopeFor(componentDefList);
+		
+		if(u.eContainer.eContainer instanceof ComponentDef){
+			existingScope = new FilteringScope(existingScope, [getEObjectOrProxy != u.eContainer.eContainer])
+		}
+		
+		return existingScope;
+	}
+	
+	def scope_ConnectorUse_Definition(ConnectorUse u) {
+		var connectorDefList = new ArrayList();
+		
+		val p = SysADLUtil.upToPackage(u);
+		val pList = SysADLUtil.importedPackages(p);
+		
+		pList.add(p);
+		
+		for (pac : pList){
+			for (e : pac.architectures){
+				if(e instanceof ConnectorDef){
+					connectorDefList.add(e as ConnectorDef);
+				}
+			}
+		}
+		
+		var existingScope = Scopes.scopeFor(connectorDefList);
+		
+		if(u.eContainer.eContainer instanceof ConnectorDef){
+			existingScope = new FilteringScope(existingScope, [getEObjectOrProxy != u.eContainer.eContainer])
+		}
+		
+		return existingScope;
+	}
+	
+	def scope_ConnectorBinding(ConnectorBinding b){
+		var portList = new ArrayList<PortUse>();
+		
+		if(b.eContainer.eContainer.eContainer instanceof ConnectorDef){
+			val ports = (b.eContainer.eContainer.eContainer as ConnectorDef).ports;
+			
+			for (p : ports) {
+				//na configuration do conector composto bindings só conectam subportas de portas compostas
+				if((p as PortUse).definition instanceof CompositePortDef){
+					portList.addAll(((p as PortUse).definition as CompositePortDef).ports);
+				}
+			}
+		}else{
+			val components = (b.eContainer.eContainer as Configuration).components;
+				
+			for (c : components) {
+				portList.addAll((c as ComponentUse).ports);	
+			}
+		}
+				
+		Scopes.scopeFor(portList as Iterable<PortUse>);
+	}
+	
+	def scope_TypeDef(EObject c){
+		var typeDefList = new ArrayList();
+		
+		val p = SysADLUtil.upToPackage(c);
+		val pList = SysADLUtil.importedPackages(p);
+		
+		pList.add(p);
+		
+		for (pac : pList){
+			for (e : pac.architectures){
+				if(e instanceof TypeDef){
+					typeDefList.add(e as TypeDef);
+				}
+			}
+		}
+		
+		var existingScope = Scopes.scopeFor(typeDefList);
+		
+		if(c.eContainer instanceof DataTypeDef){
+			existingScope = new FilteringScope(existingScope, [getEObjectOrProxy != c.eContainer])
+		}
+			
+		return existingScope;
+	}
+	
+	def scope_Flow_Source_Destination(Flow f){
+		Scopes.scopeFor((f.eContainer as ConnectorDef).ports);
+	}
+	
+	def scope_PortUse_Definition(PortUse u) {
+		var portDefList = new ArrayList();
+		
+		val p = SysADLUtil.upToPackage(u);
+		val pList = SysADLUtil.importedPackages(p);
+		
+		pList.add(p);
+		
+		for (pac : pList){
+			for (e : pac.architectures){
+				if(e instanceof PortDef){
+					portDefList.add(e as PortDef);
+				}
+			}
+		}
+		
+		var existingScope = Scopes.scopeFor(portDefList);
+		
+		if(u.eContainer instanceof PortDef){
+			existingScope = new FilteringScope(existingScope, [getEObjectOrProxy != u.eContainer])
+		}
+		
+		return existingScope;
+	}
+		
+	def scope_Delegation_PortProxy(Delegation d){
+		var ports = new ArrayList<PortUse>();
+		
+		if(d.eContainer.eContainer instanceof ComponentDef){
+			ports.addAll((d.eContainer.eContainer as ComponentDef).ports);
+		}else if(d.eContainer.eContainer instanceof ConnectorDef){
+			ports.addAll((d.eContainer.eContainer as ConnectorDef).ports);
+		}
+		
+		var portList = new ArrayList<PortUse>(ports);
+		
+		for (p : ports) {
+			if((p as PortUse).definition instanceof CompositePortDef){
+				portList.addAll(((p as PortUse).definition as CompositePortDef).ports);
+			}
+		}
+		
+		Scopes.scopeFor(portList as Iterable<PortUse>);
+	}
+	
+	def scope_Delegation_FullPort(Delegation d){
+		val components = (d.eContainer as Configuration).components;
+		var portList = new ArrayList<PortUse>();
+		
+		for (c : components) {
+			portList.addAll((c as ComponentUse).ports);	
+		}
+		
+		Scopes.scopeFor(portList as Iterable<PortUse>);
+	}
+	
+	def scope_ActionUse_Definition(ActionUse u) {
+		var actionDefList = new ArrayList();
+		
+		val p = SysADLUtil.upToPackage(u);
+		val pList = SysADLUtil.importedPackages(p);
+		
+		pList.add(p);
+		
+		for (pac : pList){
+			for (e : pac.architectures){
+				if(e instanceof ActionDef){
+					actionDefList.add(e as ActionDef);
+				}
+			}
+		}
+		
+		Scopes.scopeFor(actionDefList);
+	}
+	
+	def scope_ConstraintUse_Definition(ConstraintUse c){
+		var constraintDefList = new ArrayList();
+		
+		val p = SysADLUtil.upToPackage(c);
+		val pList = SysADLUtil.importedPackages(p);
+		
+		pList.add(p);
+		
+		for (pac : pList){
+			for (e : pac.architectures){
+				if(e instanceof ConstraintDef){
+					constraintDefList.add(e as ConstraintDef);
+				}
+			}
+		}
+		
+		Scopes.scopeFor(constraintDefList);
+	}
+	
+	def scope_ActivityDelegation_Source(ActivityDelegation a){
+		var params = new ArrayList();
+		
+		if(a.eContainer instanceof ActionDef){
+			params.add(a.eContainer as ActionDef);
+			params.addAll((a.eContainer as ActionDef).inParameters);
+		}else{
+			params.addAll((a.eContainer.eContainer as ActivityDef).inParameters);
+			params.addAll((a.eContainer.eContainer as ActivityDef).outParameters);
+		}
+		
+		Scopes.scopeFor(params as Iterable);
+	}
+	
+	def scope_ActivityDelegation_Target_ActivityFlow_SourceTarget(EObject a){
+		var params = new ArrayList();
+		
+		if(a.eContainer instanceof ActionDef){
+			for (c : (a.eContainer as ActionDef).constraints) {
+				params.addAll(((c as ConstraintUse).definition as ConstraintDef).inParameters);
+				params.addAll(((c as ConstraintUse).definition as ConstraintDef).outParameters);
+			}
+		}else{
+			var element = a.eContainer;
+			
+			if(a instanceof ActivitySwitchCase){
+				element = a.eContainer.eContainer.eContainer;
+			}
+			
+			params.addAll((element as ActivityBody).dataObjects);
+			for (act : (element as ActivityBody).actions) {
+				params.add(act as ActionUse);
+				params.addAll((act as ActionUse).pinIn);
+			}
+		}
+		
+		Scopes.scopeFor(params as Iterable);
+	}
+	
+	def scope_ActionReceive_FlowTo(ActionReceive a){
+		Scopes.scopeFor((a.eContainer.eContainer as Protocol).inParameters);
+	}
+	
+	def scope_ActionSend_FlowTo(ActionSend a){
+		Scopes.scopeFor((a.eContainer.eContainer as Protocol).outParameters);
+	}
+	
+	def scope_ExecutableAllocation_Source(ExecutableAllocation e){
+		var executableList = new ArrayList();
+		
+		for (p : (e.eContainer.eContainer as Model).packages) {
+			for (a : (p as Package).architectures) {
+				if(a instanceof Executable){
+					executableList.add(a as Executable);
+				}
+			}
+		}
+		
+		Scopes.scopeFor(executableList);
+	}
+	
+	def scope_ExecutableAllocation_Target(ExecutableAllocation e){
+		var actionList = new ArrayList();
+		
+		for (p : (e.eContainer.eContainer as Model).packages) {
+			for (a : (p as Package).architectures) {
+				if(a instanceof ActionDef){
+					actionList.add(a as ActionDef);
+				}
+			}
+		}
+		
+		Scopes.scopeFor(actionList);
+	}
+	
+	def scope_ActivityAllocation_Source(ActivityAllocation act){
+		var activityList = new ArrayList();
+		
+		for (p : (act.eContainer.eContainer as Model).packages) {
+			for (a : (p as Package).architectures) {
+				if(a instanceof ActivityDef){
+					activityList.add(a as ActivityDef);
+				}
+			}
+		}
+		
+		Scopes.scopeFor(activityList);
+	}
+	
+	def scope_ActivityAllocation_Target(ActivityAllocation act){
+		var componentsList = new ArrayList();
+		
+		for (p : (act.eContainer.eContainer as Model).packages) {
+			for (a : (p as Package).architectures) {
+				if(a instanceof ComponentDef){
+					componentsList.add(a as ComponentDef);
+				}
+				else if(a instanceof ConnectorDef){ //ver com os profs se deve deixar conectores ou não
+					componentsList.add(a as ConnectorDef);
+				}
+			}
+		}
+		
+		Scopes.scopeFor(componentsList);
+	}
 }

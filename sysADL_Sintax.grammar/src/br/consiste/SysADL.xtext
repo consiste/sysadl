@@ -437,9 +437,9 @@ NonNameExpression returns Expression:
 	//| SequenceAccessExpression
 ;
 
-DataTypeAccessExpression returns DataTypeAcessExpression:
-	datatype=[DataTypeDef|QualifiedName] '->' attr=[TypeUse|ID]
-; 
+DataTypeAccessExpression returns DataTypeAccessExpression:
+	datatype=[TypeUse|QualifiedName] '->' attr=[TypeUse|ID]
+;
 
 LiteralExpression returns Expression:
 	BooleanLiteralExpression 

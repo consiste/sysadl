@@ -740,20 +740,6 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:EdgeCreationDescription" name="IBD.Tool.Connectors" label="Connector (java call)" precondition="[(preSource.eContainer().oclIsKindOf(PortDef)._and(preTarget.eContainer().oclIsKindOf(PortDef)))._or(preSource.eContainer().oclIsTypeOf(ComponentUse)._and(preTarget.eContainer().oclIsTypeOf(ComponentUse)))/]" edgeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@edgeMappings[name='IBD.Connectors'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@edgeMappings[name='IBD.Connectors.Composite']">
-            <sourceVariable name="source"/>
-            <targetVariable name="target"/>
-            <sourceViewVariable name="sourceView"/>
-            <targetViewVariable name="targetView"/>
-            <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ExternalJavaAction" name="IBD.Tools.Connector.Java" forceRefresh="true" id="org.sysadl.viewpoints.ibd.addConnector">
-                <parameters name="targetView" value="var:targetView"/>
-                <parameters name="sourceView" value="var:sourceView"/>
-                <parameters name="source" value="var:source"/>
-                <parameters name="target" value="var:target"/>
-              </firstModelOperations>
-            </initialOperation>
-          </ownedTools>
         </toolSections>
       </defaultLayer>
     </ownedRepresentations>

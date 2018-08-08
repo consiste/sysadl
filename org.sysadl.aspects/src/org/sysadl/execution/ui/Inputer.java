@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -24,12 +23,11 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-
 import org.sysadl.execution.value.Values;
-
 import sysADL_Sintax.ActivityDef;
 import sysADL_Sintax.Pin;
 import sysADL_Sintax.TypeDef;
+
 
 public class Inputer extends UiActivityPinInput  {
 
@@ -41,8 +39,6 @@ public class Inputer extends UiActivityPinInput  {
 		buildGUI();
 		
 	}
-	
-
 
 	public boolean requestInputCMD() {
 		this.answeredAll = true;
@@ -84,6 +80,7 @@ public class Inputer extends UiActivityPinInput  {
 					}
 					break;
 				} catch (Exception e) {
+
 					System.out.println("wrong type! try again.");
 					e.printStackTrace();
 				}
@@ -112,10 +109,7 @@ public class Inputer extends UiActivityPinInput  {
 		this.gui = new PinTableGUI((CustomListenerHashMap<Pin, Object>) this.values, this.activity);
 		
 	}
-	
-
-
-
+  
 	public static void main(String args[]) {
 		ActivityDef ac = TestAd.testActivity();
 		Inputer inputer = new Inputer(ac);
@@ -134,15 +128,4 @@ public class Inputer extends UiActivityPinInput  {
 		inputer.getValues().put((Pin) ac.getInParameters().get(0), "99");
 
 	}
-
-
-
-
-
-
-
-
-
-
-
 }

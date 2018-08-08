@@ -162,7 +162,7 @@ Enumeration returns Enumeration:
 
 TypeUse_Impl returns TypeUse:
 	name=ID ':' definition=[TypeDef|QualifiedName] 
-		('{' properties+=Property* '}' )?
+		('{' properties+=Property* '}' | ';')
 	;
 
 

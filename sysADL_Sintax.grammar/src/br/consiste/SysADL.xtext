@@ -47,7 +47,7 @@ DataDef returns DataDef:
 ComponentDef returns ComponentDef:
 	(isBoundary?='boundary')? 'component' 'def' name=ID 
 	'{'
-		('ports' ports+=PortUse*)?
+		('ports' ':' ports+=PortUse*)?
 		(properties+=Property
 		| archDefs+=StructuralDef
 		| dataDefs+=DataDef)*
@@ -60,7 +60,7 @@ ArchitectureDef returns ComponentDef:
 	// alternatively, a component might be an architecture 
 	'architecture' 'def' name=ID 
 	'{'
-		'ports' ports+=PortUse*
+		'ports' ':' ports+=PortUse*
 		properties+=Property*
 		(composite=Configuration)
 	'}'
@@ -88,7 +88,7 @@ ActivityFlowable returns ActivityFlowable:
 ActionUse returns ActionUse:
 	{ActionUse}
 	name=ID ':' definition=[ActionDef|QualifiedName] ('{'
-		('using' 'pins' (pinIn+=Pin ';')* )?
+		('using' 'pins' ':' (pinIn+=Pin ';')* )?
 		properties+=Property*
 	'}' | ';');
 
@@ -137,7 +137,7 @@ DataTypeDef returns DataTypeDef:
 	'datatype'
 	name=ID ('extends' superType=[DataTypeDef|QualifiedName])?
 	'{'
-		('attributes' dataTypeAttributes+=TypeUse*)?
+		('attributes' ':' dataTypeAttributes+=TypeUse*)?
 		properties+=Property*
 	'}';
 

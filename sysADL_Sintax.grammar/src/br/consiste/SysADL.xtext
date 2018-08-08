@@ -181,17 +181,17 @@ UnitDef returns UnitDef:
 	{UnitDef}
 	'unit'
 	name=ID
-	'{'
+	('{'
 		('dimension' '=' dimension=[DimensionDef|QualifiedName])?
 		(properties+=Property ( "," properties+=Property)* '}' )?
-	'}';
+	'}')?;
 
 
 ComponentUse returns ComponentUse:
 	name=ID ':' definition=[ComponentDef|QualifiedName] ('[' lowerBound=EInt ',' upperBound=EInt ']')?
 	'{'
 		
-		('using' 'ports' ports+=PortUse*)?
+		('using' 'ports' ':' ports+=PortUse*)?
 		properties+=Property*
 		
 	'}';
@@ -199,9 +199,9 @@ ComponentUse returns ComponentUse:
 ConnectorDef returns ConnectorDef:
 	'connector' 'def' name=ID
 	'{'
-		('participants' ports+=PortUse_Reverse*)?
+		('participants' ':' ports+=PortUse_Reverse*)?
 		(composite=Configuration)?
-		('flows' flows+=Flow*)?
+		('flows' ':' flows+=Flow*)?
 
 		(properties+=Property
 		| archDefs+=StructuralDef
@@ -211,14 +211,14 @@ ConnectorDef returns ConnectorDef:
 ConnectorUse returns ConnectorUse:
 	name=ID ':' definition=[ConnectorDef|QualifiedName] ('[' lowerBound=EInt ',' upperBound=EInt ']')? ('bindings' bindings+=ConnectorBinding ( "," bindings+=ConnectorBinding)* )? 
 	('{'
-		'ports' ports+=PortUse_Reverse*
+		'ports' ':' ports+=PortUse_Reverse*
 		properties+=Property*
 	'}')?;
 
 CompositePortDef returns CompositePortDef:
 	'port' 'def' name=ID
 	'{'
-		'ports' ports+=PortUse*
+		'ports' ':' ports+=PortUse*
 		(properties+=Property
 		| archDefs+=StructuralDef
 		| dataDefs+=DataDef)*
@@ -235,27 +235,26 @@ SimplePortDef returns SimplePortDef:
 
 PortUse returns PortUse:
 	name=ID ':' definition=[PortDef|QualifiedName] ('[' lowerBound=EInt ',' upperBound=EInt ']')?
-	'{'
+	('{'
 		properties+=Property*
-	'}';
+	'}' | ';');
 
 PortUse_Reverse returns PortUse:
 	'~' name=ID ':' definition=[PortDef|QualifiedName] ('[' lowerBound=EInt ',' upperBound=EInt ']')?
-	'{'
+	('{'
 		properties+=Property*
-	'}';
+	'}' | ';');
 
 ActionDef returns ActionDef:
 	{ActionDef}
 	'action' 'def'
 	name=ID '(' inParameters+=Pin ( "," inParameters+=Pin)* ')' ':' returnType=[TypeDef|QualifiedName]
 	'{'
-		(constraints+=ConstraintUse 
-		| delegations+=ActivityDelegation	
-		| properties+=Property
+		(properties+=Property
 		| behaDefs+=BehaviorDef
-		| dataDefs+=DataDef)*
-		
+		| dataDefs+=DataDef)* 
+		('constraint' ':' constraints+=ConstraintUse*)?
+		delegations+=ActivityDelegation*
 	'}';
 
 ActivityDef returns ActivityDef:
@@ -274,20 +273,19 @@ ActivityDef returns ActivityDef:
 DataStore returns DataStore:
 	'datastore'
 	name=ID ':' type=[TypeDef|QualifiedName]
-	'{'
+	('{'
 		
 		properties+=Property*
 		('initial' 'value' '=' initValue=Expression)?
-	'}';
+	'}')?;
 
 DataBuffer returns DataBuffer:
 	'buffer'
-	name=ID
-	'{'
-		'type' type=[TypeDef|QualifiedName]
-		('properties' '{' properties+=Property ( "," properties+=Property)* '}' )?
-		('initValue' initValue=Expression)?
-	'}';
+	name=ID ':' type=[TypeDef|QualifiedName]
+	('{'	
+		properties+=Property*
+		('initial' 'value' '=' initValue=Expression)?
+	'}')?;
 
 Protocol returns Protocol: // TODO
 	'protocol'

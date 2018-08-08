@@ -5,6 +5,7 @@ package br.consiste.formatting;
 
 import org.eclipse.xtext.formatting.impl.AbstractDeclarativeFormatter;
 import org.eclipse.xtext.formatting.impl.FormattingConfig;
+import org.eclipse.emf.ecore.xml.type.internal.RegEx.RegularExpression;
 import org.eclipse.xtext.Keyword;
 import org.eclipse.xtext.util.Pair;
 
@@ -70,10 +71,10 @@ public class SysADLFormatter extends AbstractDeclarativeFormatter {
 		for(Keyword delegate: f.findKeywords("delegate")) {
 			c.setLinewrap().before(delegate);
 		}
-		/*for(Keyword bindings: f.findKeywords("bindings")) {
+		for(Keyword bindings: f.findKeywords("bindings")) {
 			//c.setLinewrap().before(bindings);
 			//c.setLinewrap().after(bindings);
-		}*/
+		}
 		for(Pair<Keyword, Keyword> pair: f.findKeywordPairs("{", "}")) {
 			c.setIndentation(pair.getFirst(), pair.getSecond());
 			//c.setLinewrap(1).before(pair.getFirst());

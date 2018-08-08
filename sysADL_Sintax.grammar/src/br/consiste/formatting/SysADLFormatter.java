@@ -5,7 +5,6 @@ package br.consiste.formatting;
 
 import org.eclipse.xtext.formatting.impl.AbstractDeclarativeFormatter;
 import org.eclipse.xtext.formatting.impl.FormattingConfig;
-import org.eclipse.emf.ecore.xml.type.internal.RegEx.RegularExpression;
 import org.eclipse.xtext.Keyword;
 import org.eclipse.xtext.util.Pair;
 
@@ -55,26 +54,28 @@ public class SysADLFormatter extends AbstractDeclarativeFormatter {
 		for(Keyword unit: f.findKeywords("unit")) {
 			c.setLinewrap().before(unit);
 		}
-		for(Keyword participants: f.findKeywords("participants")) {
-			c.setLinewrap().before(participants);
-			c.setLinewrap().after(participants);
+		for(Pair<Keyword, Keyword> participants: f.findKeywordPairs("participants",":")) {
+			c.setLinewrap().before(participants.getFirst());
+			c.setNoSpace().after(participants.getFirst());
+			c.setLinewrap().after(participants.getSecond());
 		}
-		for(Keyword ports: f.findKeywords("ports")) {
-			c.setLinewrap().before(ports);
-			c.setLinewrap().after(ports);
+		for(Pair<Keyword, Keyword> ports: f.findKeywordPairs("ports",":")) {
+			c.setLinewrap().before(ports.getFirst());
+			c.setNoSpace().after(ports.getFirst());
+			c.setLinewrap().after(ports.getSecond());
 		}
-		for(Pair<Keyword, Keyword> pairs: f.findKeywordPairs("using","ports")) {
+		/*for(Pair<Keyword, Keyword> pairs: f.findKeywordPairs("using","ports")) {
 			c.setLinewrap().before(pairs.getFirst());
 			c.setNoLinewrap().after(pairs.getFirst());
 			c.setLinewrap().after(pairs.getSecond());
-		}
+		}*/
 		for(Keyword delegate: f.findKeywords("delegate")) {
 			c.setLinewrap().before(delegate);
 		}
-		for(Keyword bindings: f.findKeywords("bindings")) {
+		/*for(Keyword bindings: f.findKeywords("bindings")) {
 			//c.setLinewrap().before(bindings);
 			//c.setLinewrap().after(bindings);
-		}
+		}*/
 		for(Pair<Keyword, Keyword> pair: f.findKeywordPairs("{", "}")) {
 			c.setIndentation(pair.getFirst(), pair.getSecond());
 			//c.setLinewrap(1).before(pair.getFirst());

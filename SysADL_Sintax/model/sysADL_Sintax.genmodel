@@ -24,9 +24,9 @@
       <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//ProtocolControl/perhaps"/>
       <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//ProtocolControl/always"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysADL_Sintax.ecore#//NumericUnaryOperator">
-      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//NumericUnaryOperator/plus"/>
-      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//NumericUnaryOperator/minus"/>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysADL_Sintax.ecore#//AdditiveOperator">
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//AdditiveOperator/plus"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//AdditiveOperator/minus"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysADL_Sintax.ecore#//MultiplicativeOperator">
       <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//MultiplicativeOperator/star"/>
@@ -90,7 +90,6 @@
     <genClasses ecoreClass="sysADL_Sintax.ecore#//ConstraintUse">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ConstraintUse/definition"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//ConstraintUse/kind"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ConstraintUse/params"/>
     </genClasses>
     <genClasses ecoreClass="sysADL_Sintax.ecore#//DataTypeDef">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//DataTypeDef/dataTypeAttributes"/>
@@ -102,6 +101,7 @@
     </genClasses>
     <genClasses ecoreClass="sysADL_Sintax.ecore#//TypeUse">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//TypeUse/definition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//TypeUse/index"/>
     </genClasses>
     <genClasses ecoreClass="sysADL_Sintax.ecore#//UnitDef">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//UnitDef/dimension"/>
@@ -116,7 +116,7 @@
     </genClasses>
     <genClasses ecoreClass="sysADL_Sintax.ecore#//EnumLiteralValue">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//EnumLiteralValue/enum"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//EnumLiteralValue/key"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//EnumLiteralValue/name"/>
     </genClasses>
     <genClasses ecoreClass="sysADL_Sintax.ecore#//Property">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//Property/name"/>
@@ -167,6 +167,7 @@
     <genClasses ecoreClass="sysADL_Sintax.ecore#//SimplePortDef">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//SimplePortDef/flowProperties"/>
       <genFeatures children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//SimplePortDef/flowType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//SimplePortDef/index"/>
     </genClasses>
     <genClasses ecoreClass="sysADL_Sintax.ecore#//PortUse">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//PortUse/definition"/>
@@ -229,6 +230,7 @@
     <genClasses image="false" ecoreClass="sysADL_Sintax.ecore#//DataObject">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//DataObject/type"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//DataObject/initValue"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//DataObject/index"/>
     </genClasses>
     <genClasses ecoreClass="sysADL_Sintax.ecore#//DataStore"/>
     <genClasses ecoreClass="sysADL_Sintax.ecore#//DataBuffer"/>
@@ -293,6 +295,25 @@
     <genClasses ecoreClass="sysADL_Sintax.ecore#//EqualityExpression">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//EqualityExpression/operator"/>
     </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//SequenceConstructionExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//SequenceConstructionExpression/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//SequenceConstructionExpression/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//SequenceAccessExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//SequenceAccessExpression/primary"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//SequenceAccessExpression/index"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//Index">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Index/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//SequenceElements"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//SequenceExpressionList">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//SequenceExpressionList/element"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//SequenceRange">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//SequenceRange/rangeLower"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//SequenceRange/rangeUpper"/>
+    </genClasses>
     <genClasses ecoreClass="sysADL_Sintax.ecore#//UnaryExpression">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//UnaryExpression/op"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//UnaryExpression/operator"/>
@@ -310,6 +331,7 @@
     <genClasses image="false" ecoreClass="sysADL_Sintax.ecore#//PrimaryExpression"/>
     <genClasses ecoreClass="sysADL_Sintax.ecore#//InstanceCreationExpression">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//InstanceCreationExpression/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//InstanceCreationExpression/index"/>
     </genClasses>
     <genClasses ecoreClass="sysADL_Sintax.ecore#//NameExpression">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//NameExpression/cite"/>
@@ -329,6 +351,7 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//EnumValueLiteralExpression/_enum"/>
     </genClasses>
     <genClasses ecoreClass="sysADL_Sintax.ecore#//NullLiteralExpression"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//LiteralExpression"/>
     <genClasses ecoreClass="sysADL_Sintax.ecore#//ThisExpression"/>
     <genClasses ecoreClass="sysADL_Sintax.ecore#//PropertyAccessExpression">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//PropertyAccessExpression/featureRef"/>
@@ -336,6 +359,7 @@
     <genClasses ecoreClass="sysADL_Sintax.ecore#//DataTypeAccessExpression">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//DataTypeAccessExpression/attr"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//DataTypeAccessExpression/datatype"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//DataTypeAccessExpression/index"/>
     </genClasses>
     <genClasses ecoreClass="sysADL_Sintax.ecore#//FeatureReference">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//FeatureReference/feature"/>

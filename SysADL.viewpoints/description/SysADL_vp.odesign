@@ -977,7 +977,6 @@
               <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="ConstraintDef" referenceName="architectures">
                 <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                   <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newConstraint"/>
-                  <subModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.Expression" referenceName="equation"/>
                 </subModelOperations>
               </firstModelOperations>
             </initialOperation>

@@ -1,967 +1,455 @@
-<?xml version="1.0" encoding="ASCII"?>
-<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/SysADL_Sintax/src" modelPluginID="SysADL_Sintax" modelName="SysADL" importerID="org.eclipse.emf.importer.ecore" copyrightFields="false">
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/SysADL_Sintax/src" modelPluginID="SysADL_Sintax"
+    modelName="SysADL" importerID="org.eclipse.emf.importer.ecore" copyrightFields="false">
   <foreignModel>sysADL_Sintax.ecore</foreignModel>
-  <genPackages prefix="SysADL" disposableProviderFactory="true" fileExtensions="sysadl">
-    <ecorePackage href="sysADL_Sintax.ecore#/"/>
-    <genEnums typeSafeEnumCompatible="false">
-      <ecoreEnum href="sysADL_Sintax.ecore#//ConstraintKind"/>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//ConstraintKind/preCondition"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//ConstraintKind/postCondition"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//ConstraintKind/invariant"/>
-      </genEnumLiterals>
+  <genPackages prefix="SysADL" disposableProviderFactory="true" fileExtensions="sysadl"
+      ecorePackage="sysADL_Sintax.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysADL_Sintax.ecore#//ConstraintKind">
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//ConstraintKind/preCondition"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//ConstraintKind/postCondition"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//ConstraintKind/invariant"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false">
-      <ecoreEnum href="sysADL_Sintax.ecore#//FlowProperty"/>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//FlowProperty/in"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//FlowProperty/out"/>
-      </genEnumLiterals>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysADL_Sintax.ecore#//FlowProperty">
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//FlowProperty/in"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//FlowProperty/out"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false">
-      <ecoreEnum href="sysADL_Sintax.ecore#//ProtocolAlternativeType"/>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//ProtocolAlternativeType/alternative"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//ProtocolAlternativeType/complimentary"/>
-      </genEnumLiterals>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysADL_Sintax.ecore#//ProtocolAlternativeType">
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//ProtocolAlternativeType/alternative"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//ProtocolAlternativeType/complimentary"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false">
-      <ecoreEnum href="sysADL_Sintax.ecore#//ProtocolControl"/>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//ProtocolControl/several"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//ProtocolControl/once"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//ProtocolControl/perhaps"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//ProtocolControl/always"/>
-      </genEnumLiterals>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysADL_Sintax.ecore#//ProtocolControl">
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//ProtocolControl/several"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//ProtocolControl/once"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//ProtocolControl/perhaps"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//ProtocolControl/always"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false">
-      <ecoreEnum href="sysADL_Sintax.ecore#//NumericUnaryOperator"/>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//NumericUnaryOperator/plus"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//NumericUnaryOperator/minus"/>
-      </genEnumLiterals>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysADL_Sintax.ecore#//AdditiveOperator">
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//AdditiveOperator/plus"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//AdditiveOperator/minus"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false">
-      <ecoreEnum href="sysADL_Sintax.ecore#//MultiplicativeOperator"/>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//MultiplicativeOperator/star"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//MultiplicativeOperator/slash"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//MultiplicativeOperator/rem"/>
-      </genEnumLiterals>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysADL_Sintax.ecore#//MultiplicativeOperator">
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//MultiplicativeOperator/star"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//MultiplicativeOperator/slash"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//MultiplicativeOperator/rem"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false">
-      <ecoreEnum href="sysADL_Sintax.ecore#//ShiftOperator"/>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//ShiftOperator/lshift"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//ShiftOperator/rshift"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//ShiftOperator/urshift"/>
-      </genEnumLiterals>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysADL_Sintax.ecore#//ShiftOperator">
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//ShiftOperator/lshift"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//ShiftOperator/rshift"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//ShiftOperator/urshift"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false">
-      <ecoreEnum href="sysADL_Sintax.ecore#//RelationalOperator"/>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//RelationalOperator/less"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//RelationalOperator/greater"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//RelationalOperator/less_equal"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//RelationalOperator/greater_equal"/>
-      </genEnumLiterals>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysADL_Sintax.ecore#//RelationalOperator">
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//RelationalOperator/less"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//RelationalOperator/greater"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//RelationalOperator/less_equal"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//RelationalOperator/greater_equal"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false">
-      <ecoreEnum href="sysADL_Sintax.ecore#//ClassificationOperator"/>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//ClassificationOperator/instanceof"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//ClassificationOperator/hastype"/>
-      </genEnumLiterals>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysADL_Sintax.ecore#//ClassificationOperator">
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//ClassificationOperator/instanceof"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//ClassificationOperator/hastype"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false">
-      <ecoreEnum href="sysADL_Sintax.ecore#//EqualityOperator"/>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//EqualityOperator/equal"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//EqualityOperator/different"/>
-      </genEnumLiterals>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysADL_Sintax.ecore#//EqualityOperator">
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//EqualityOperator/equal"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//EqualityOperator/different"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false">
-      <ecoreEnum href="sysADL_Sintax.ecore#//AffixOperator"/>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//AffixOperator/incr"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//AffixOperator/decr"/>
-      </genEnumLiterals>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysADL_Sintax.ecore#//AffixOperator">
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//AffixOperator/incr"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//AffixOperator/decr"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false">
-      <ecoreEnum href="sysADL_Sintax.ecore#//AssignmentOperator"/>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//AssignmentOperator/equal"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//AssignmentOperator/plusEqual"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//AssignmentOperator/minusEqual"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//AssignmentOperator/starEqual"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//AssignmentOperator/modEqual"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//AssignmentOperator/divEqual"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//AssignmentOperator/andEqual"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//AssignmentOperator/orEqual"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//AssignmentOperator/powerEqual"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//AssignmentOperator/shiftLeftEqual"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//AssignmentOperator/shiftRightEqual"/>
-      </genEnumLiterals>
-      <genEnumLiterals>
-        <ecoreEnumLiteral href="sysADL_Sintax.ecore#//AssignmentOperator/shiftRightDoubledEqual"/>
-      </genEnumLiterals>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysADL_Sintax.ecore#//AssignmentOperator">
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//AssignmentOperator/equal"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//AssignmentOperator/plusEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//AssignmentOperator/minusEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//AssignmentOperator/starEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//AssignmentOperator/modEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//AssignmentOperator/divEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//AssignmentOperator/andEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//AssignmentOperator/orEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//AssignmentOperator/powerEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//AssignmentOperator/shiftLeftEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//AssignmentOperator/shiftRightEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="sysADL_Sintax.ecore#//AssignmentOperator/shiftRightDoubledEqual"/>
     </genEnums>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//NamedElement"/>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//NamedElement/name"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//NamedElement/properties"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//Package"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//Package/imports"/>
-      </genFeatures>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//Package/elementImports"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//Package/architectures"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//Model"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//Model/packages"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//Model/requirements"/>
-      </genFeatures>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//Model/involvedElements"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//Model/allocation"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ElementDef"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ElementDef/satisfies"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses image="false">
-      <ecoreClass href="sysADL_Sintax.ecore#//DataDef"/>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ConstraintUse"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ConstraintUse/definition"/>
-      </genFeatures>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//ConstraintUse/kind"/>
-      </genFeatures>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ConstraintUse/params"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//DataTypeDef"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//DataTypeDef/dataTypeAttributes"/>
-      </genFeatures>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//DataTypeDef/superType"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//DimensionDef"/>
-    </genClasses>
-    <genClasses image="false">
-      <ecoreClass href="sysADL_Sintax.ecore#//TypeDef"/>
-      <genOperations>
-        <ecoreOperation href="sysADL_Sintax.ecore#//TypeDef/isCompatible"/>
-      </genOperations>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//TypeUse"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//TypeUse/definition"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//UnitDef"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//UnitDef/dimension"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ValueTypeDef"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ValueTypeDef/unit"/>
-      </genFeatures>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ValueTypeDef/dimension"/>
-      </genFeatures>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ValueTypeDef/superType"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//Enumeration"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//Enumeration/literals"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//EnumLiteralValue"/>
-      <genFeatures property="None" notify="false" createChild="false">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//EnumLiteralValue/enum"/>
-      </genFeatures>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//EnumLiteralValue/key"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//Property"/>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//Property/name"/>
-      </genFeatures>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//Property/type"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//Property/value"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses image="false">
-      <ecoreClass href="sysADL_Sintax.ecore#//StructuralDef"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//StructuralDef/archDefs"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//StructuralDef/dataDefs"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses image="false">
-      <ecoreClass href="sysADL_Sintax.ecore#//StructuralUse"/>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//StructuralUse/lowerBound"/>
-      </genFeatures>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//StructuralUse/upperBound"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ComponentDef"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ComponentDef/ports"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ComponentDef/composite"/>
-      </genFeatures>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//ComponentDef/isBoundary"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ComponentUse"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ComponentUse/definition"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ComponentUse/ports"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ConnectorDef"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ConnectorDef/ports"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ConnectorDef/flows"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ConnectorDef/composite"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ConnectorUse"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ConnectorUse/definition"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ConnectorUse/ports"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ConnectorUse/bindings"/>
-      </genFeatures>
-      <genOperations>
-        <ecoreOperation href="sysADL_Sintax.ecore#//ConnectorUse/allPorts"/>
-      </genOperations>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//Configuration"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//Configuration/components"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//Configuration/delegations"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//Configuration/connectors"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//Delegation"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//Delegation/portProxy"/>
-      </genFeatures>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//Delegation/fullPort"/>
-      </genFeatures>
-      <genOperations>
-        <ecoreOperation href="sysADL_Sintax.ecore#//Delegation/checkCompatibility"/>
-      </genOperations>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//CompositePortDef"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//CompositePortDef/ports"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//SimplePortDef"/>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//SimplePortDef/flowProperties"/>
-      </genFeatures>
-      <genFeatures children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//SimplePortDef/flowType"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//PortUse"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//PortUse/definition"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ConnectorBinding"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ConnectorBinding/firstPort"/>
-      </genFeatures>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ConnectorBinding/secondPort"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//Flow"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//Flow/flowType"/>
-      </genFeatures>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//Flow/source"/>
-      </genFeatures>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//Flow/destination"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//BehaviorDef"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//BehaviorDef/inParameters"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//BehaviorDef/outParameters"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//BehaviorDef/behaDefs"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//BehaviorDef/dataDefs"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//BehaviorDef/constraints"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//BehaviorDef/delegations"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ActionDef"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ActionDef/returnType"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ActionUse"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ActionUse/definition"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ActionUse/pinIn"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ActivityBody"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ActivityBody/actions"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ActivityBody/flows"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ActivityBody/dataObjects"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses image="false">
-      <ecoreClass href="sysADL_Sintax.ecore#//PortDef"/>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ActivityDef"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ActivityDef/acbody"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ActivityRelation"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ActivityRelation/source"/>
-      </genFeatures>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ActivityRelation/target"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ActivityRelation/targetSwitch"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ActivityDelegation"/>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ActivityFlow"/>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ActivitySwitch"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ActivitySwitch/cases"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ActivitySwitchCase"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ActivitySwitchCase/condition"/>
-      </genFeatures>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ActivitySwitchCase/target"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses image="false">
-      <ecoreClass href="sysADL_Sintax.ecore#//ActivityFlowable"/>
-    </genClasses>
-    <genClasses image="false">
-      <ecoreClass href="sysADL_Sintax.ecore#//Pin"/>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//Pin/isFlow"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ActionPin"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ActionPin/pinName"/>
-      </genFeatures>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ActionPin/pinValue"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses image="false">
-      <ecoreClass href="sysADL_Sintax.ecore#//DataObject"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//DataObject/type"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//DataObject/initValue"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//DataStore"/>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//DataBuffer"/>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ProtocolBody"/>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//ProtocolBody/recControl"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ProtocolBody/body"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ProtocolBody/recursive"/>
-      </genFeatures>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//ProtocolBody/recType"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses image="false">
-      <ecoreClass href="sysADL_Sintax.ecore#//ProtocolBodyInternal"/>
-    </genClasses>
-    <genClasses image="false">
-      <ecoreClass href="sysADL_Sintax.ecore#//PredefinedAction"/>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ActionSend"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ActionSend/expr"/>
-      </genFeatures>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ActionSend/flowTo"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ActionReceive"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ActionReceive/var"/>
-      </genFeatures>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ActionReceive/flowTo"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//Protocol"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//Protocol/body"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ConstraintDef"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ConstraintDef/equation"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//Executable"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//Executable/body"/>
-      </genFeatures>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//Executable/returnType"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//Executable/params"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses image="false">
-      <ecoreClass href="sysADL_Sintax.ecore#//Statement"/>
-      <genOperations>
-        <ecoreOperation href="sysADL_Sintax.ecore#//Statement/run"/>
-      </genOperations>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//Expression"/>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//Expression/value"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ConditionalTestExpression"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ConditionalTestExpression/op1"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ConditionalTestExpression/op2"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ConditionalTestExpression/op3"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//BinaryExpression"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//BinaryExpression/op1"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//BinaryExpression/op2"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ConditionalLogicalExpression"/>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//ConditionalLogicalExpression/operator"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//LogicalExpression"/>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//LogicalExpression/operator"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//RelationalExpression"/>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//RelationalExpression/operator"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ShiftExpression"/>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//ShiftExpression/operator"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//MultiplicativeExpression"/>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//MultiplicativeExpression/operator"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//AdditiveExpression"/>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//AdditiveExpression/operator"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//EqualityExpression"/>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//EqualityExpression/operator"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//UnaryExpression"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//UnaryExpression/op"/>
-      </genFeatures>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//UnaryExpression/operator"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//BooleanUnaryExpression"/>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//BitStringUnaryExpression"/>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//NumericUnaryExpression"/>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//CastExpression"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//CastExpression/typeName"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//IsolationExpression"/>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ClassificationExpression"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ClassificationExpression/typeName"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses image="false">
-      <ecoreClass href="sysADL_Sintax.ecore#//PrimaryExpression"/>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//NameExpression"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//NameExpression/cite"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses image="false">
-      <ecoreClass href="sysADL_Sintax.ecore#//NonNameExpression"/>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//BooleanLiteralExpression"/>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//BooleanLiteralExpression/isTrue"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//NaturalLiteralExpression"/>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//NaturalLiteralExpression/int_value"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//StringLiteralExpression"/>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//StringLiteralExpression/str_value"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ThisExpression"/>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//PropertyAccessExpression"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//PropertyAccessExpression/featureRef"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//FeatureReference"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//FeatureReference/feature"/>
-      </genFeatures>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//FeatureReference/field"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//FeatureReference/expr"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses image="false">
-      <ecoreClass href="sysADL_Sintax.ecore#//IncrementOrDecrementExpression"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//IncrementOrDecrementExpression/operand"/>
-      </genFeatures>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//IncrementOrDecrementExpression/operator"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//PrefixExpression"/>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//PostfixExpression"/>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//BlockStatement"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//BlockStatement/body"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//AssignmentExpression"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//AssignmentExpression/lhs"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//AssignmentExpression/v"/>
-      </genFeatures>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//AssignmentExpression/operator"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//LeftHandSide"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//LeftHandSide/target"/>
-      </genFeatures>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//LeftHandSide/index"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//LeftHandSide/feature"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//VariableDecl"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//VariableDecl/value"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//IfBlockStatement"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//IfBlockStatement/main_if"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//IfBlockStatement/paralel_ifs"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//IfBlockStatement/sequential_ifs"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//IfBlockStatement/final"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//IfBlockStatement/else"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//IfStatement"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//IfStatement/condition"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//IfStatement/body"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ElseStatement"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ElseStatement/body"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ReturnStatement"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ReturnStatement/value"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses image="false">
-      <ecoreClass href="sysADL_Sintax.ecore#//LoopStatement"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//LoopStatement/condition"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//LoopStatement/body"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//WhileStatement"/>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//DoStatement"/>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ForStatement"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ForStatement/body"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ForStatement/control"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ForControl"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ForControl/vars"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ForVar"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ForVar/var"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ForVar/expr"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//SwitchStatement"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//SwitchStatement/expr"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//SwitchStatement/clauses"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//SwitchClause"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//SwitchClause/value"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//SwitchClause/body"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//DefaultSwitchClause"/>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//Requirement"/>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//Requirement/id"/>
-      </genFeatures>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="sysADL_Sintax.ecore#//Requirement/text"/>
-      </genFeatures>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//Requirement/derivedBy"/>
-      </genFeatures>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//Requirement/composition"/>
-      </genFeatures>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//Requirement/satisfiedBy"/>
-      </genFeatures>
-      <genOperations>
-        <ecoreOperation href="sysADL_Sintax.ecore#//Requirement/isValid"/>
-      </genOperations>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//AllocationTable"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//AllocationTable/allocs"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//Allocation"/>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ExecutableAllocation"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ExecutableAllocation/source"/>
-      </genFeatures>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ExecutableAllocation/target"/>
-      </genFeatures>
-    </genClasses>
-    <genClasses>
-      <ecoreClass href="sysADL_Sintax.ecore#//ActivityAllocation"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ActivityAllocation/source"/>
-      </genFeatures>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="sysADL_Sintax.ecore#//ActivityAllocation/target"/>
-      </genFeatures>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//NamedElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//NamedElement/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//NamedElement/properties"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//Package">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Package/imports"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Package/elementImports"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Package/architectures"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//Model">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Model/packages"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Model/requirements"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Model/involvedElements"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Model/allocation"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ElementDef"/>
+    <genClasses image="false" ecoreClass="sysADL_Sintax.ecore#//DataDef"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ConstraintUse">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ConstraintUse/definition"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//ConstraintUse/kind"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//DataTypeDef">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//DataTypeDef/dataTypeAttributes"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//DataTypeDef/superType"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//DimensionDef"/>
+    <genClasses image="false" ecoreClass="sysADL_Sintax.ecore#//TypeDef">
+      <genOperations ecoreOperation="sysADL_Sintax.ecore#//TypeDef/isCompatible"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//TypeUse">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//TypeUse/definition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//TypeUse/index"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//UnitDef">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//UnitDef/dimension"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ValueTypeDef">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ValueTypeDef/unit"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ValueTypeDef/dimension"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ValueTypeDef/superType"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//Enumeration">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Enumeration/literals"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//EnumLiteralValue">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//EnumLiteralValue/enum"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//EnumLiteralValue/name"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//Property">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//Property/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Property/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Property/value"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysADL_Sintax.ecore#//StructuralDef">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//StructuralDef/archDefs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//StructuralDef/dataDefs"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysADL_Sintax.ecore#//StructuralUse">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//StructuralUse/lowerBound"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//StructuralUse/upperBound"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ComponentDef">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ComponentDef/ports"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ComponentDef/composite"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//ComponentDef/isBoundary"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ComponentUse">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ComponentUse/definition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ComponentUse/ports"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ConnectorDef">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ConnectorDef/ports"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ConnectorDef/flows"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ConnectorDef/composite"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ConnectorUse">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ConnectorUse/definition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ConnectorUse/ports"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ConnectorUse/bindings"/>
+      <genOperations ecoreOperation="sysADL_Sintax.ecore#//ConnectorUse/allPorts"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//Configuration">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Configuration/components"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Configuration/delegations"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Configuration/connectors"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//Delegation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Delegation/portProxy"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Delegation/fullPort"/>
+      <genOperations ecoreOperation="sysADL_Sintax.ecore#//Delegation/checkCompatibility"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//CompositePortDef">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//CompositePortDef/ports"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//SimplePortDef">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//SimplePortDef/flowProperties"/>
+      <genFeatures children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//SimplePortDef/flowType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//SimplePortDef/index"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//PortUse">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//PortUse/definition"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ConnectorBinding">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ConnectorBinding/firstPort"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ConnectorBinding/secondPort"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//Flow">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Flow/flowType"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Flow/source"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Flow/destination"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//BehaviorDef">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//BehaviorDef/inParameters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//BehaviorDef/outParameters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//BehaviorDef/behaDefs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//BehaviorDef/dataDefs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//BehaviorDef/constraints"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//BehaviorDef/delegations"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ActionDef">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ActionDef/returnType"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ActionUse">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ActionUse/definition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ActionUse/pinIn"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ActivityBody">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ActivityBody/actions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ActivityBody/flows"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ActivityBody/dataObjects"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysADL_Sintax.ecore#//PortDef"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ActivityDef">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ActivityDef/acbody"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ActivityRelation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ActivityRelation/source"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ActivityRelation/target"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ActivityRelation/targetSwitch"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ActivityDelegation"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ActivityFlow"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ActivitySwitch">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ActivitySwitch/cases"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ActivitySwitchCase">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ActivitySwitchCase/condition"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ActivitySwitchCase/target"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysADL_Sintax.ecore#//ActivityFlowable"/>
+    <genClasses image="false" ecoreClass="sysADL_Sintax.ecore#//Pin">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//Pin/isFlow"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ActionPin">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ActionPin/pinName"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ActionPin/pinValue"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysADL_Sintax.ecore#//DataObject">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//DataObject/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//DataObject/initValue"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//DataObject/index"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//DataStore"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//DataBuffer"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ProtocolBody">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//ProtocolBody/recControl"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ProtocolBody/body"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ProtocolBody/recursive"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//ProtocolBody/recType"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysADL_Sintax.ecore#//ProtocolBodyInternal"/>
+    <genClasses image="false" ecoreClass="sysADL_Sintax.ecore#//PredefinedAction"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ActionSend">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ActionSend/expr"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ActionSend/flowTo"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ActionReceive">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ActionReceive/var"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ActionReceive/flowTo"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//Protocol">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Protocol/body"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ConstraintDef">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ConstraintDef/equation"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//Executable">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Executable/body"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Executable/returnType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Executable/params"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysADL_Sintax.ecore#//Statement">
+      <genOperations ecoreOperation="sysADL_Sintax.ecore#//Statement/run"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//Expression"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ConditionalTestExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ConditionalTestExpression/op1"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ConditionalTestExpression/op2"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ConditionalTestExpression/op3"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//BinaryExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//BinaryExpression/op1"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//BinaryExpression/op2"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ConditionalLogicalExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//ConditionalLogicalExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//LogicalExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//LogicalExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//RelationalExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//RelationalExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ShiftExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//ShiftExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//MultiplicativeExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//MultiplicativeExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//AdditiveExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//AdditiveExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//EqualityExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//EqualityExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//SequenceConstructionExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//SequenceConstructionExpression/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//SequenceConstructionExpression/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//SequenceAccessExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//SequenceAccessExpression/primary"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//SequenceAccessExpression/index"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//Index">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Index/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//SequenceElements"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//SequenceExpressionList">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//SequenceExpressionList/element"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//SequenceRange">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//SequenceRange/rangeLower"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//SequenceRange/rangeUpper"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//UnaryExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//UnaryExpression/op"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//UnaryExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//BooleanUnaryExpression"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//BitStringUnaryExpression"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//NumericUnaryExpression"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//CastExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//CastExpression/typeName"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//IsolationExpression"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ClassificationExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ClassificationExpression/typeName"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysADL_Sintax.ecore#//PrimaryExpression"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//InstanceCreationExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//InstanceCreationExpression/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//InstanceCreationExpression/index"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//NameExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//NameExpression/cite"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysADL_Sintax.ecore#//NonNameExpression"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//BooleanLiteralExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//BooleanLiteralExpression/isTrue"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//NaturalLiteralExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//NaturalLiteralExpression/int_value"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//StringLiteralExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//StringLiteralExpression/str_value"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//EnumValueLiteralExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//EnumValueLiteralExpression/enumValue"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//EnumValueLiteralExpression/_enum"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//NullLiteralExpression"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//LiteralExpression"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ThisExpression"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//PropertyAccessExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//PropertyAccessExpression/featureRef"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//DataTypeAccessExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//DataTypeAccessExpression/attr"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//DataTypeAccessExpression/datatype"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//DataTypeAccessExpression/index"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//FeatureReference">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//FeatureReference/feature"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//FeatureReference/field"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//FeatureReference/expr"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysADL_Sintax.ecore#//IncrementOrDecrementExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//IncrementOrDecrementExpression/operand"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//IncrementOrDecrementExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//PrefixExpression"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//PostfixExpression"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//BlockStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//BlockStatement/body"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//AssignmentExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//AssignmentExpression/lhs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//AssignmentExpression/v"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//AssignmentExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//LeftHandSide">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//LeftHandSide/target"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//LeftHandSide/index"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//LeftHandSide/feature"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//VariableDecl">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//VariableDecl/value"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//IfBlockStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//IfBlockStatement/main_if"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//IfBlockStatement/paralel_ifs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//IfBlockStatement/sequential_ifs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//IfBlockStatement/final"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//IfBlockStatement/else"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//IfStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//IfStatement/condition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//IfStatement/body"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ElseStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ElseStatement/body"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ReturnStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ReturnStatement/value"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysADL_Sintax.ecore#//LoopStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//LoopStatement/condition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//LoopStatement/body"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//WhileStatement"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//DoStatement"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ForStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ForStatement/body"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ForStatement/control"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ForControl">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ForControl/vars"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ForVar">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ForVar/var"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ForVar/expr"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//SwitchStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//SwitchStatement/expr"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//SwitchStatement/clauses"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//SwitchClause">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//SwitchClause/value"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//SwitchClause/body"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//DefaultSwitchClause"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//Requirement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//Requirement/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//Requirement/text"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Requirement/derivedBy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Requirement/composition"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Requirement/satisfiedBy"/>
+      <genOperations ecoreOperation="sysADL_Sintax.ecore#//Requirement/isValid"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//AllocationTable">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//AllocationTable/allocs"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//Allocation"/>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ExecutableAllocation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ExecutableAllocation/source"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ExecutableAllocation/target"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ActivityAllocation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ActivityAllocation/source"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ActivityAllocation/target"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

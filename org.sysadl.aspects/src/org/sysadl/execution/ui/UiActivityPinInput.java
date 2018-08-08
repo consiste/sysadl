@@ -1,5 +1,6 @@
 package org.sysadl.execution.ui;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import sysADL_Sintax.ActivityDef;
@@ -18,11 +19,15 @@ public abstract class UiActivityPinInput {
 	 * Use activity.getInParameters() to retrieve a list of Pins
 	 */
 	protected ActivityDef activity;
-	protected Map<Pin, Object> values;
+	protected CustomListenerHashMap<Pin, Object> values;
 	
 	public UiActivityPinInput(ActivityDef ac) {
 		this.activity = ac;
+
+		// avoid rehashing, calculate initial capacity
+		this.values = new CustomListenerHashMap<Pin, Object>((int) ((ac.getInParameters().size()/0.75)+1));
 	}
+	
 	
 	/**
 	 * Requests input from user
@@ -43,14 +48,25 @@ public abstract class UiActivityPinInput {
 	 * @return true if user provided values for all pins, false otherwise
 	 * Note: The user might not provide all inputs and it will NOT be an error
 	 */
-	public abstract boolean requestInput();
+
+	public abstract void requestInput();
 	
-	/**
-	 * 
-	 * @param target pin
-	 * @return value provided for Pin
-	 */
-	public Object inputValueOf(Pin target) {
-		return values.get(target);
+	public Map<Pin, Object> getValues() {
+		return this.values;
 	}
+	
+	public ActivityDef getActivity() {
+		return activity;
+	}
+
+	public void setActivity(ActivityDef activity) {
+		this.activity = activity;
+	}
+
+	/**
+	 * Notify the Ui that the map changed
+	 * This will be invoked when some values are removed from the map
+	 */
+	public abstract void mapChanged();
+	
 }

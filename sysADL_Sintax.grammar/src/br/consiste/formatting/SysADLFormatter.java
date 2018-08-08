@@ -21,12 +21,6 @@ public class SysADLFormatter extends AbstractDeclarativeFormatter {
 	@Override
 	protected void configureFormatting(FormattingConfig c) {
 		br.consiste.services.SysADLGrammarAccess f = (br.consiste.services.SysADLGrammarAccess) getGrammarAccess();
-		for(Pair<Keyword, Keyword> pair: f.findKeywordPairs("{", "}")) {
-			c.setIndentation(pair.getFirst(), pair.getSecond());
-			c.setLinewrap(1).after(pair.getFirst());
-			c.setLinewrap(1).before(pair.getSecond());
-			c.setLinewrap(1).after(pair.getSecond());
-		}
 		for(Keyword comma: f.findKeywords(",")) {
 			c.setNoLinewrap().before(comma);
 			c.setNoSpace().before(comma);
@@ -38,6 +32,7 @@ public class SysADLFormatter extends AbstractDeclarativeFormatter {
 			c.setLinewrap().after(semicolon);
 		}
 		for(Pair<Keyword,Keyword> pairs: f.findKeywordPairs("components", ":")) {
+			c.setLinewrap().before(pairs.getFirst());
 			c.setNoSpace().after(pairs.getFirst());
 			c.setLinewrap().after(pairs.getSecond());
 		}
@@ -49,6 +44,64 @@ public class SysADLFormatter extends AbstractDeclarativeFormatter {
 			c.setNoSpace().after(pairs.getFirst());
 			c.setLinewrap().after(pairs.getSecond());
 		}
+		for(Pair<Keyword,Keyword> pairs: f.findKeywordPairs("attributes",":")) {
+			c.setLinewrap().before(pairs.getFirst());
+			c.setNoSpace().after(pairs.getFirst());
+			c.setLinewrap().after(pairs.getSecond());
+		}
+		for(Pair<Keyword,Keyword> pairs: f.findKeywordPairs("flows",":")) {
+			c.setLinewrap().before(pairs.getFirst());
+			c.setNoSpace().after(pairs.getFirst());
+			c.setLinewrap().after(pairs.getSecond());
+		}
+		for(Keyword dimension: f.findKeywords("dimension")) {
+			c.setLinewrap().before(dimension);
+		}
+		for(Keyword unit: f.findKeywords("unit")) {
+			c.setLinewrap().before(unit);
+		}
+		for(Pair<Keyword, Keyword> participants: f.findKeywordPairs("participants",":")) {
+			c.setLinewrap().before(participants.getFirst());
+			c.setNoSpace().after(participants.getFirst());
+			c.setLinewrap().after(participants.getSecond());
+		}
+		for(Pair<Keyword, Keyword> ports: f.findKeywordPairs("ports",":")) {
+			c.setLinewrap().before(ports.getFirst());
+			c.setNoSpace().after(ports.getFirst());
+			c.setLinewrap().after(ports.getSecond());
+		}
+		/*for(Pair<Keyword, Keyword> pairs: f.findKeywordPairs("using","ports")) {
+			c.setLinewrap().before(pairs.getFirst());
+			c.setNoLinewrap().after(pairs.getFirst());
+			c.setLinewrap().after(pairs.getSecond());
+		}*/
+		for(Keyword delegate: f.findKeywords("delegate")) {
+			c.setLinewrap().before(delegate);
+		}
+		for(Keyword neg: f.findKeywords("~")) {
+			c.setLinewrap().before(neg);
+			c.setNoSpace().after(neg);
+		}
+		for(Keyword arrow: f.findKeywords("->")) {
+			c.setNoLinewrap().before(arrow);
+			c.setNoLinewrap().after(arrow);
+			c.setNoSpace().before(arrow);
+			c.setNoSpace().after(arrow);
+		}
+		/*for(Keyword bindings: f.findKeywords("bindings")) {
+			//c.setLinewrap().before(bindings);
+			//c.setLinewrap().after(bindings);
+		}*/
+		for(Pair<Keyword, Keyword> pair: f.findKeywordPairs("{", "}")) {
+			c.setIndentation(pair.getFirst(), pair.getSecond());
+			//c.setLinewrap(1).before(pair.getFirst());
+			c.setLinewrap(1).after(pair.getFirst());
+			c.setLinewrap(1).before(pair.getSecond());
+			c.setLinewrap(1).after(pair.getSecond());
+		}
+		for(Pair<Keyword, Keyword> pair: f.findKeywordPairs("value", "type")) {
+			c.setLinewrap(1).before(pair.getFirst());
+		}		
 		c.setLinewrap(0, 1, 2).before(f.getSL_COMMENTRule());
 		c.setLinewrap(0, 1, 2).before(f.getML_COMMENTRule());
 		c.setLinewrap(0, 1, 1).after(f.getML_COMMENTRule());

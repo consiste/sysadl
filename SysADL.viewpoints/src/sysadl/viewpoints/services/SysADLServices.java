@@ -17,9 +17,15 @@ import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.XtextResource;
 
+import sysADL_Sintax.ActivityFlowable;
+import sysADL_Sintax.ActivitySwitch;
+import sysADL_Sintax.ActivitySwitchCase;
 import sysADL_Sintax.ConstraintUse;
+import sysADL_Sintax.Expression;
 import sysADL_Sintax.Model;
 import sysADL_Sintax.Requirement;
+import sysADL_Sintax.SysADLFactory;
+import sysADL_Sintax.util.SysADLCreationTools;
 
 public class SysADLServices {
 
@@ -113,5 +119,21 @@ public class SysADLServices {
 			}
 		}
 		return true;
+	}
+	
+	public Expression createNullExpression() {
+		return SysADLCreationTools.createNullExpression();
+	}
+	
+	public void setupCase(ActivitySwitchCase a, ActivityFlowable tar) {
+		a.setTarget(tar);
+		a.setCondition(createNullExpression());
+	}
+	
+	public EObject createCase(ActivitySwitch s, ActivityFlowable tar) {
+		ActivitySwitchCase c = SysADLFactory.eINSTANCE.createActivitySwitchCase();
+		setupCase(c, tar);
+		s.getCases().add(c);
+		return c;
 	}
 }

@@ -87,10 +87,10 @@ ActivityFlowable returns ActivityFlowable:
 
 ActionUse returns ActionUse:
 	{ActionUse}
-	name=ID ':' definition=[ActionDef|QualifiedName] '{'
-		('using' 'pins' pinIn+=Pin* )?
+	name=ID ':' definition=[ActionDef|QualifiedName] ('{'
+		('using' 'pins' (pinIn+=Pin ';')* )?
 		properties+=Property*
-	'}';
+	'}' | ';');
 
 ActivityRelation returns ActivityRelation:
 	ActivityDelegation | ActivityFlow;

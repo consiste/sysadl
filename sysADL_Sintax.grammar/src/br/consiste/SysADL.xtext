@@ -149,10 +149,10 @@ Enumeration returns Enumeration:
 	{Enumeration}
 	'enum'
 	name=ID
-	'{'
+	('{'
 		properties+=Property*
 		literals+=EnumLiteralValue ("," literals+=EnumLiteralValue)*
-	'}';
+	'}') | ';';
 
 TypeUse_Impl returns TypeUse:
 	name=ID ':' definition=[TypeDef|QualifiedName] (index=Index)?

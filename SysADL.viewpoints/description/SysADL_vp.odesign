@@ -200,7 +200,7 @@
           </subContainerMappings>
           <subContainerMappings name="BDD.Enum" semanticCandidatesExpression="feature:architectures" domainClass="Enumeration" childrenPresentation="List">
             <subNodeMappings name="BDD.Enum.Elements" semanticCandidatesExpression="feature:literals" domainClass="EnumLiteralValue">
-              <style xsi:type="style:DotDescription" showIcon="false" labelExpression="[self.key/]" resizeKind="NSEW">
+              <style xsi:type="style:DotDescription" showIcon="false" labelExpression="[self.name/]" resizeKind="NSEW">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
@@ -423,8 +423,7 @@
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="EnumLiteralValue" referenceName="literals">
                 <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
-                  <subModelOperations xsi:type="tool_1:SetValue" featureName="key" valueExpression="value"/>
-                  <subModelOperations xsi:type="tool_1:SetValue" featureName="index" valueExpression="0"/>
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="value"/>
                 </subModelOperations>
               </firstModelOperations>
             </initialOperation>

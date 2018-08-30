@@ -2,7 +2,9 @@
 <feature
       id="org.sysadl.feature.diagrams"
       label="SysADL Diagrams"
-      version="2.5.0">
+      version="2.5.1"
+      license-feature="org.sysadl.feature.core"
+      license-feature-version="2.5.1">
 
    <description url="http://sysadl.imd.ufrn.br/">
       SysADL Studio Diagrams
@@ -14,7 +16,7 @@ Includes diagram editors for SysADL Models.
       [Enter Copyright Description here.]
    </copyright>
 
-   <license url="http://www.example.com/license">
+   <license url="">
       Eclipse Public License - v 2.0
 
     THE ACCOMPANYING PROGRAM IS PROVIDED UNDER THE TERMS OF THIS ECLIPSE

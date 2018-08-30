@@ -2,7 +2,7 @@
 <feature
       id="org.sysadl.feature.core"
       label="SysADL Studio"
-      version="2.5.0">
+      version="2.5.1">
 
    <description url="http://sysadl.imd.ufrn.br/">
       SysADL Studio Core

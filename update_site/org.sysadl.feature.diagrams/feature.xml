@@ -2,7 +2,7 @@
 <feature
       id="org.sysadl.feature.diagrams"
       label="SysADL Diagrams"
-      version="2.5.0">
+      version="2.5.1">
 
    <description url="http://sysadl.imd.ufrn.br/">
       SysADL Studio Diagrams

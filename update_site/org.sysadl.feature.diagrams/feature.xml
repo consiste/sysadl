@@ -317,35 +317,6 @@ You may add additional accurate notices of copyright ownership.
       <import feature="org.eclipse.sirius.runtime.aql" version="5.1.0.201710261549"/>
       <import feature="org.eclipse.sirius.runtime.ide.ui" version="5.1.0.201710261549"/>
       <import feature="org.eclipse.sirius.runtime.ide.xtext" version="5.1.0.201710261549"/>
-      <import plugin="org.eclipse.sirius.common"/>
-      <import plugin="org.eclipse.sirius.common.acceleo.aql"/>
-      <import plugin="org.eclipse.sirius.common.acceleo.aql.ide"/>
-      <import plugin="org.eclipse.sirius.common.acceleo.mtl.ide"/>
-      <import plugin="org.eclipse.sirius.common.interpreter"/>
-      <import plugin="org.eclipse.sirius.common.ui"/>
-      <import plugin="org.eclipse.sirius.common.ui.ext"/>
-      <import plugin="org.eclipse.sirius.common.xtext"/>
-      <import plugin="org.eclipse.sirius.editor.properties"/>
-      <import plugin="org.eclipse.sirius.editor.properties.ext.widgets.reference"/>
-      <import plugin="org.eclipse.sirius.editor.sequence"/>
-      <import plugin="org.eclipse.sirius.editor.table"/>
-      <import plugin="org.eclipse.sirius.editor.tree"/>
-      <import plugin="org.eclipse.sirius.interpreter"/>
-      <import plugin="org.eclipse.sirius.properties"/>
-      <import plugin="org.eclipse.sirius.properties.core"/>
-      <import plugin="org.eclipse.sirius.properties.defaultrules"/>
-      <import plugin="org.eclipse.sirius.properties.edit"/>
-      <import plugin="org.eclipse.sirius.properties.ext.widgets.reference"/>
-      <import plugin="org.eclipse.sirius.properties.ext.widgets.reference.edit"/>
-      <import plugin="org.eclipse.sirius.synchronizer"/>
-      <import plugin="org.eclipse.sirius.table"/>
-      <import plugin="org.eclipse.sirius.table.ui"/>
-      <import plugin="org.eclipse.sirius.table.ui.ext"/>
-      <import plugin="org.eclipse.sirius.ui"/>
-      <import plugin="org.eclipse.sirius.ui.editor"/>
-      <import plugin="org.eclipse.sirius.ui.ext"/>
-      <import plugin="org.eclipse.sirius.ui.properties"/>
-      <import plugin="org.eclipse.sirius.ui.properties.ext.widgets.reference"/>
       <import feature="org.eclipse.sirius.properties.feature" version="5.1.0.201710261549"/>
    </requires>
 

@@ -14,14 +14,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
  org.eclipse.emf.edit.ui;visibility:=reexport,
  org.eclipse.ui.ide;visibility:=reexport,
- org.eclipse.sirius,
  org.eclipse.equinox.registry,
  SysADL_Sintax
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
-Import-Package: org.eclipse.sirius.business.api.componentization;version="2.0.4",
- org.eclipse.sirius.business.api.modelingproject;version="2.0.4",
- org.eclipse.sirius.business.internal.movida;version="2.0.4",
- org.eclipse.sirius.business.internal.movida.registry;version="2.0.4",
- org.eclipse.sirius.viewpoint.description,
- sysADL_Sintax
+Import-Package: sysADL_Sintax

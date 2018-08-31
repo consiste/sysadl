@@ -50,12 +50,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.ProgressMonitorPart;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.sirius.business.api.componentization.ViewpointRegistry;
-import org.eclipse.sirius.business.api.modelingproject.ModelingProject;
-import org.eclipse.sirius.business.api.session.Session;
-import org.eclipse.sirius.business.api.session.SessionManager;
-import org.eclipse.sirius.business.internal.movida.ViewpointSelection;
-import org.eclipse.sirius.viewpoint.description.Viewpoint;
+
 import org.eclipse.swt.SWT;
 
 import org.eclipse.swt.events.ModifyListener;
@@ -178,7 +173,7 @@ public class SysADLModelWizard extends Wizard implements INewWizard {
 
 	private SysADLModelWizardNewProjectCreationPage newProjectCreationPage;
 
-	private ViewpointSelection viewpointSelectionPage;
+	//private ViewpointSelection viewpointSelectionPage;
 
 	/**
 	 * This just records the information.

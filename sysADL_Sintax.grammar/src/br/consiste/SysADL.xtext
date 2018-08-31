@@ -307,8 +307,13 @@ ConstraintDef returns ConstraintDef:
 /*
  * Executable Viewpoint 
  */
+TypeUse_NoSemicolon returns TypeUse:
+	name=ID ':' definition=[TypeDef|QualifiedName] (index=Index)?
+			('{' properties+=Property* '}')?
+;
+
 Executable returns Executable:
-	'executable' 'def' name=ID '(' ('in' params+=TypeUse (',' 'in' params+=TypeUse)*)? ')' ':' 'out' returnType=[TypeDef|QualifiedName]
+	'executable' 'def' name=ID '(' ('in' params+=TypeUse_NoSemicolon (',' 'in' params+=TypeUse_NoSemicolon)*)? ')' ':' 'out' returnType=[TypeDef|QualifiedName]
 	'{'
 		body+=NonBlockStatement*
 	'}';

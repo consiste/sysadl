@@ -10,605 +10,604 @@ package SysADL.types {
 	}
 	value type Real {
 	}
-dimension Pressure dimension Temperature unit Celsius {
-		dimension = Temperature } unit Fahrenheit {
-			dimension = Temperature } unit Atm {
-				dimension = Pressure } dimension RelativeHumidity unit percentage {
-					dimension = RelativeHumidity } value type LocalTemperature {
-						dimension = Temperature
+	dimension Pressure
+	dimension Temperature
+	dimension RelativeHumidity
+	unit Celsius {
+		dimension = Temperature 
+	} 
+	unit Fahrenheit {
+		dimension = Temperature 
+	} 
+	unit Atm {
+		dimension = Pressure 
+	} 
+	unit percentage {
+		dimension = RelativeHumidity 
+	} 
+	value type LocalTemperature {
+		dimension = Temperature
+	}
+	value type CelsiusTemperature extends LocalTemperature {
+		unit = Celsius dimension = Temperature
+	}
+	value type FahrenheitTemperature extends LocalTemperature {
+		unit = Fahrenheit dimension = Temperature
+	}
+	value type AtmPressure {
+		unit = Atm dimension = Pressure
+	}
+	value type Humidity {
+		unit = percentage dimension = RelativeHumidity
+	}
+	datatype WeatherStation {
+		attributes: ct : Int;
+		l : Location;
+		t : LocalTemperature;
+		h : Humidity;
+		p : AtmPressure;
+	}
+	datatype Location {
+		attributes: latitude : Real; 
+		longitude : Real;
+	}
+}
+package PortsWMS {
+	import SysADL.types;
+	port def TemperatureIPT {
+		flow in LocalTemperature
+	}
+	port def TemperatureOPT {
+		flow out LocalTemperature
+	}
+	port def HumidityIPT {
+		flow in Humidity
+	}
+	port def HumidityOPT {
+		flow out Humidity
+	}
+	port def AtmPressureIPT {
+		flow in AtmPressure
+	}
+	port def AtmPressureOPT {
+		flow out AtmPressure
+	}
+	port def WeatherStationIPT {
+		flow in WeatherStation
+	}
+	port def WeatherStationOPT {
+		flow out WeatherStation
+	}
+}
+package ConnectorsWMS {
+	import SysADL.types;
+	import PortsWMS;
+	import ComponentsWMS;
+	connector def TemperatureCN {
+		participants: ~ t_out : TemperatureOPT {
+		}
+		~ t_in : TemperatureIPT {
+		}
+		flows: LocalTemperature from t_out to t_in
+	}
+	connector def HumidityCN {
+		participants: ~ h_out : HumidityOPT {
+		}
+		~ h_in : HumidityIPT {
+		}
+		flows: Humidity from h_out to h_in
+	}
+	connector def AtmPressureCN {
+		participants: ~ ap_out : AtmPressureOPT {
+		}
+		~ ap_in : AtmPressureIPT {
+		}
+		flows: AtmPressure from ap_out to ap_in
+	}
+	connector def WatherStationCN {
+		participants: ~ op : WeatherStationOPT {
+		}
+		~ ip : WeatherStationIPT {
+		}
+		flows: WeatherStation from op to ip
+	}
+	connector def FahrenheitToCelsiusCN {
+	}
+	connector def WatherStationCN_2 {
+		participants: ~ op_CN2 : WeatherStationOPT [ 1, 2 ] {
+			}
+			~ ip_CN2 : WeatherStationIPT {
+			}
+		configuration {
+			components:
+				ws_2 : WatherStationCN_2 {
+					using ports: op : WeatherStationOPT {
 					}
-					value type CelsiusTemperature extends LocalTemperature {
-						unit = Celsius dimension = Temperature
-					}
-					value type FahrenheitTemperature extends LocalTemperature {
-						unit = Fahrenheit dimension = Temperature
-					}
-					value type AtmPressure {
-						unit = Atm dimension = Pressure
-					}
-					value type Humidity {
-						unit = percentage dimension = RelativeHumidity
-					}
-					datatype WeatherStation {
-						attributes ct : Int l : Location t : LocalTemperature h : Humidity p
-						: AtmPressure
-					}
-					
-					datatype Location {
-						attributes latitude : Real longitude : Real
-					}
-				}
-				package ComponentsWMS {
-					import ConnectorsWMS;
-					import PortsWMS;
-					import SysADL.types;
-					component def Arch1 {
-						configuration {
-							components:
-							wps : WeatherProcessingSubSystemCP {
-								using ports ip : PortsWMS.WeatherStationIPT {
-								}
-								tp : PortsWMS.TemperatureOPT {
-								}
-								hp : PortsWMS.HumidityOPT {
-								}
-								ap : PortsWMS.AtmPressureOPT {
-								}
-							}
-							ws3 : WeatherStationCP {
-								using ports ip : PortsWMS.WeatherStationIPT {
-								}
-								op : PortsWMS.WeatherStationOPT {
-								}
-							}
-							ws2 : WeatherStationCP {
-								using ports ip : PortsWMS.WeatherStationIPT {
-								}
-								op : PortsWMS.WeatherStationOPT {
-								}
-							}
-							ws1 : WeatherStationCP {
-								using ports ip : PortsWMS.WeatherStationIPT {
-								}
-								op : PortsWMS.WeatherStationOPT {
-								}
-							}
-							d : DisplayCP {
-								using ports t : PortsWMS.TemperatureIPT {
-								}
-								h : PortsWMS.HumidityIPT {
-								}
-								ap : PortsWMS.AtmPressureIPT {
-								}
-							}
-							connectors:
-							wscn3 : ConnectorsWMS.WatherStationCN bindings ws3.op = ws2.ip wscn2
-							: ConnectorsWMS.WatherStationCN bindings ws2.op = ws1.ip wscn1 :
-							ConnectorsWMS.WatherStationCN bindings ws1.op = wps.ip
-						apCN :
-							ConnectorsWMS.AtmPressureCN bindings wps.ap = d.ap hCN :
-							ConnectorsWMS.HumidityCN bindings wps.hp = d.h tCN :
-							ConnectorsWMS.TemperatureCN bindings wps.tp = d.t
-						}
-					}
-					component def WeatherProcessingSubSystemCP {
-						ports ip : PortsWMS.WeatherStationIPT [ 1, 2 ] {
-						}
-						tp : PortsWMS.TemperatureOPT {
-						}
-						hp : PortsWMS.HumidityOPT {
-						}
-						ap : PortsWMS.AtmPressureOPT {
-						}
-					}
-					boundary component def DisplayCP {
-						ports t : PortsWMS.TemperatureIPT {
-						}
-						h : PortsWMS.HumidityIPT {
-						}
-						ap : PortsWMS.AtmPressureIPT {
-						}
-					}
-					component def WeatherStationCP {
-						ports ip : PortsWMS.WeatherStationIPT {
-						}
-						op : PortsWMS.WeatherStationOPT {
-						}
-						configuration {
-							components:
-							ts : TemperatureSensorCP {
-								using ports tp : PortsWMS.TemperatureOPT {
-								}
-							}
-							hs : HumiditySensorCP {
-								using ports hp : PortsWMS.HumidityOPT {
-								}
-							}
-							aps : AtmPressureSensorCP {
-								using ports ap : PortsWMS.AtmPressureOPT {
-								}
-							}
-							WSDA : WSDataAggregatorCP {
-								using ports ap : PortsWMS.AtmPressureIPT {
-								}
-								hp : PortsWMS.HumidityIPT {
-								}
-								tp : PortsWMS.TemperatureIPT {
-								}
-								op : PortsWMS.WeatherStationOPT {
-								}
-								ip : PortsWMS.WeatherStationIPT {
-								}
-							}
-							connectors:
-							hcn : ConnectorsWMS.HumidityCN bindings hs.hp = WSDA.hp apcn :
-							ConnectorsWMS.AtmPressureCN bindings aps.ap = WSDA.ap tcn :
-							ConnectorsWMS.TemperatureCN bindings ts.tp = WSDA.tp delegations:
-							WSDA.op to op WSDA.ip to ip
-						}
-					}
-					component def WSDataAggregatorCP {
-						ports ap : PortsWMS.AtmPressureIPT {
-						}
-						hp : PortsWMS.HumidityIPT {
-						}
-						tp : PortsWMS.TemperatureIPT {
-						}
-						op : PortsWMS.WeatherStationOPT [ 1, 1 ] {
-						}
-						ip : PortsWMS.WeatherStationIPT [ 1, 1 ] {
-						}
-					}
-					boundary component def TemperatureSensorCP {
-						ports tp : PortsWMS.TemperatureOPT {
-						}
-					}
-					boundary component def HumiditySensorCP {
-						ports hp : PortsWMS.HumidityOPT {
-						}
-					}
-					boundary component def AtmPressureSensorCP {
-						ports ap : PortsWMS.AtmPressureOPT {
-						}
-					}
-					component def Arch3 {
-						configuration {
-							components:
-							ws3 : WeatherStationCP {
-								using ports ip : PortsWMS.WeatherStationIPT {
-								}
-								op : PortsWMS.WeatherStationOPT {
-								}
-							}
-							ws2 : WeatherStationCP {
-								using ports ip : PortsWMS.WeatherStationIPT {
-								}
-								op : PortsWMS.WeatherStationOPT {
-								}
-							}
-							ws1 : WeatherStationCP {
-								using ports ip : PortsWMS.WeatherStationIPT {
-								}
-								op : PortsWMS.WeatherStationOPT {
-								}
-							}
-							wps : WeatherProcessingSubSystemCP {
-								using ports ip1 : PortsWMS.WeatherStationIPT {
-								}
-								ip2 : PortsWMS.WeatherStationIPT {
-								}
-								tp : PortsWMS.TemperatureOPT {
-								}
-								hp : PortsWMS.HumidityOPT {
-								}
-								ap : PortsWMS.AtmPressureOPT {
-								}
-							}
-							ws6 : WeatherStationCP {
-								using ports ip : PortsWMS.WeatherStationIPT {
-								}
-								op : PortsWMS.WeatherStationOPT {
-								}
-							}
-							ws5 : WeatherStationCP {
-								using ports ip : PortsWMS.WeatherStationIPT {
-								}
-								op : PortsWMS.WeatherStationOPT {
-								}
-							}
-							ws4 : WeatherStationCP {
-								using ports ip : PortsWMS.WeatherStationIPT {
-								}
-								op : PortsWMS.WeatherStationOPT {
-								}
-							}
-							d : DisplayCP {
-								using ports t : PortsWMS.TemperatureIPT {
-								}
-								h : PortsWMS.HumidityIPT {
-								}
-								ap : PortsWMS.AtmPressureIPT {
-								}
-							}
-							connectors:
-							wscn1 : ConnectorsWMS.WatherStationCN bindings ws1.op = wps.ip1 wscn2
-							: ConnectorsWMS.WatherStationCN bindings ws2.op = ws1.ip wscn3 :
-							ConnectorsWMS.WatherStationCN bindings ws3.op = ws2.ip wscn6 :
-							ConnectorsWMS.WatherStationCN bindings ws6.op = ws5.ip wscn5 :
-							ConnectorsWMS.WatherStationCN bindings ws5.op = ws4.ip
-						wscn4 : ConnectorsWMS.WatherStationCN bindings ws4.op = wps.ip2
-						apCN :
-							ConnectorsWMS.AtmPressureCN bindings wps.ap = d.ap hCN :
-							ConnectorsWMS.HumidityCN bindings wps.hp = d.h tCN :
-							ConnectorsWMS.TemperatureCN bindings wps.tp = d.t
-						}
-					}
-				component def Arch2 {
-						configuration {
-							components:
-							ws3 : WeatherStationCP {
-								using ports ip : PortsWMS.WeatherStationIPT {
-								}
-								op : PortsWMS.WeatherStationOPT {
-								}
-							}
-							ws1 : WeatherStationCP {
-								using ports ip : PortsWMS.WeatherStationIPT {
-								}
-								op : PortsWMS.WeatherStationOPT {
-								}
-							}
-							ws4 : WeatherStationCP {
-								using ports ip : PortsWMS.WeatherStationIPT {
-								}
-								op : PortsWMS.WeatherStationOPT {
-								}
-							}
-							wps : WeatherProcessingSubSystemCP {
-								using ports ip : PortsWMS.WeatherStationIPT {
-								}
-								tp : PortsWMS.TemperatureOPT {
-								}
-								hp : PortsWMS.HumidityOPT {
-								}
-								ap : PortsWMS.AtmPressureOPT {
-								}
-							}
-							ws5 : WeatherStationCP {
-								using ports ip : PortsWMS.WeatherStationIPT {
-								}
-								op : PortsWMS.WeatherStationOPT {
-								}
-							}
-							ws2 : WeatherStationCP {
-								using ports ip : PortsWMS.WeatherStationIPT {
-								}
-								op : PortsWMS.WeatherStationOPT {
-								}
-							}
-							ws6 : WeatherStationCP {
-								using ports ip : PortsWMS.WeatherStationIPT {
-								}
-								op : PortsWMS.WeatherStationOPT {
-								}
-							}
-							d : DisplayCP {
-								using ports t : PortsWMS.TemperatureIPT {
-								}
-								h : PortsWMS.HumidityIPT {
-								}
-								ap : PortsWMS.AtmPressureIPT {
-								}
-							}
-							connectors:
-							wscn6 : ConnectorsWMS.WatherStationCN bindings ws6.op = ws5.ip wscn3
-							: ConnectorsWMS.WatherStationCN bindings ws3.op = ws2.ip wscn5 :
-							ConnectorsWMS.WatherStationCN bindings ws5.op = ws4.ip wscn1 :
-							ConnectorsWMS.WatherStationCN_2 bindings ws1.op = wps.ip wscn2 :
-							ConnectorsWMS.WatherStationCN bindings ws2.op = ws1.ip wscn4 :
-							ConnectorsWMS.WatherStationCN_2 bindings ws4.op = wps.ip
-						apCN :
-							ConnectorsWMS.AtmPressureCN bindings wps.ap = d.ap tCN :
-							ConnectorsWMS.TemperatureCN bindings wps.tp = d.t hCN :
-							ConnectorsWMS.HumidityCN bindings wps.hp = d.h
-						}
-					}
-					activity def WeatherProcessingSubSystemAC ( ip :
-					SysADL.types.WeatherStation ) : ( tp :
-					SysADL.types.LocalTemperature, hp : SysADL.types.Humidity, ap :
-					SysADL.types.AtmPressure ) {
-						body {
-						actions : wpst : WeatherPS_TemperatureAN {
-								using pins ip : SysADL.types.WeatherStation
-							}
-							wpsh : WeatherPS_HumidityAN {
-								using pins ip : SysADL.types.WeatherStation
-							}
-							wpsap : WeatherPS_AtmPressureAN {
-								using pins ip : SysADL.types.WeatherStation
-							}
-							delegate tp to wpst delegate hp to wpsh delegate ap to wpsap delegate ip
-							to wpst.ip delegate ip to wpsh.ip delegate ip to wpsap.ip
-						}
-					}
-					activity def WSDataAggregatorAC ( t : SysADL.types.LocalTemperature,
-					h : SysADL.types.Humidity, ap : SysADL.types.AtmPressure, wsData :
-					SysADL.types.WeatherStation ) : ( newWSData :
-					SysADL.types.WeatherStation ) {
-						body {
-						actions : wsda : WSDataAggregatorAN {
-								using pins ap : SysADL.types.AtmPressure wsData :
-								SysADL.types.WeatherStation h : SysADL.types.Humidity t :
-								SysADL.types.LocalTemperature
-							}
-							delegate newWSData to wsda delegate t to wsda.t delegate h to wsda.h
-							delegate ap to wsda.ap delegate wsData to wsda.wsData
-						}
-					}
-					action def WSDataAggregatorAN ( t : SysADL.types.LocalTemperature, h
-					: SysADL.types.Humidity, ap : SysADL.types.AtmPressure, wsData :
-					SysADL.types.WeatherStation ) : SysADL.types.WeatherStation {
-					post-condition WSDataAggregatorEQ ( )
-					delegate WSDataAggregatorAN to WSDataAggregatorEQ.newWSData delegate t to
-						WSDataAggregatorEQ.t delegate h to WSDataAggregatorEQ.h delegate ap to
-						WSDataAggregatorEQ.ap delegate wsData to WSDataAggregatorEQ.wsData
-					}
-					action def WeatherPS_TemperatureAN ( ip : SysADL.types.WeatherStation )
-					: SysADL.types.LocalTemperature {
-					post-condition WeatherPS_TemperatureEQ ( )
-					delegate WeatherPS_TemperatureAN to WeatherPS_TemperatureEQ.t delegate ip
-						to WeatherPS_TemperatureEQ.ip
-					}
-					action def WeatherPS_HumidityAN ( ip : SysADL.types.WeatherStation ) :
-					SysADL.types.Humidity {
-					post-condition WeatherPS_HumidityEQ ( )
-					delegate WeatherPS_HumidityAN to WeatherPS_HumidityEQ.h delegate ip to
-						WeatherPS_HumidityEQ.ip
-					}
-					action def WeatherPS_AtmPressureAN ( ip : SysADL.types.WeatherStation )
-					: SysADL.types.AtmPressure {
-					post-condition WeatherPS_AtmPressureEQ ( )
-					delegate WeatherPS_AtmPressureAN to WeatherPS_AtmPressureEQ.ap delegate ip
-						to WeatherPS_AtmPressureEQ.ip
-					}
-					constraint WeatherPS_TemperatureEQ ( ip : SysADL.types.WeatherStation )
-					: ( t : SysADL.types.LocalTemperature ) {
-						equation = t == 'ip.t' / 'ip.ct'
-					}
-				constraint WeatherPS_HumidityEQ ( ip : SysADL.types.WeatherStation ) : ( h
-					: SysADL.types.Humidity ) {
-						equation = h == 'ip.h' / 'ip.ct'
-					}
-					constraint WeatherPS_AtmPressureEQ ( ip : SysADL.types.WeatherStation )
-					: ( ap : SysADL.types.AtmPressure ) {
-						equation = ap == 'ip.p' / 'ip.ct'
-					}
-				constraint WSDataAggregatorEQ ( t : SysADL.types.LocalTemperature, h :
-					SysADL.types.Humidity, ap : SysADL.types.AtmPressure, wsData :
-					SysADL.types.WeatherStation ) : ( newWSData :
-					SysADL.types.WeatherStation ) {
-						equation = 'newWSData.t' == (t + 'wsData.t') && 'newWSData.h' == (h + 'wsData.h') && 'newWSData.p' == (ap + 'wsData.p') && 'newWSData.ct' == ('wsData.ct' + 1)
-					}
-				activity def WeatherProcessingSubSystemARCH3AC ( ip1 :
-					SysADL.types.WeatherStation, ip2 : SysADL.types.WeatherStation ) : ( tp :
-					SysADL.types.LocalTemperature, hp : SysADL.types.Humidity, ap :
-					SysADL.types.AtmPressure ) {
-						body {
-						actions : wpst : WeatherPS_TemperatureARCH3AN {
-								using pins ip1 : SysADL.types.WeatherStation ip2 :
-								SysADL.types.WeatherStation
-							}
-							wpsh : WeatherPS_HumidityARCH3AN {
-								using pins ip1 : SysADL.types.WeatherStation ip2 :
-								SysADL.types.WeatherStation
-							}
-							wpsap : WeatherPS_AtmPressureARCH3AN {
-								using pins ip1 : SysADL.types.WeatherStation ip2 :
-								SysADL.types.WeatherStation
-							}
-							delegate tp to wpst delegate hp to wpsh delegate ap to wpsap delegate
-							ip1 to wpst.ip1 delegate ip1 to wpsh.ip1 delegate ip1 to wpsap.ip1
-							delegate ip2 to wpsap.ip2 delegate ip2 to wpsh.ip2 delegate ip2 to
-							wpst.ip2
-						}
-					}
-					action def WeatherPS_TemperatureARCH3AN ( ip1 :
-					SysADL.types.WeatherStation, ip2 : SysADL.types.WeatherStation ) :
-					SysADL.types.LocalTemperature {
-						post-condition WeatherPS_TemperatureARCH3EQ ( )
-					delegate WeatherPS_TemperatureARCH3AN to WeatherPS_TemperatureARCH3EQ.t
-						delegate ip1 to WeatherPS_TemperatureARCH3EQ.ip1 delegate ip2 to
-						WeatherPS_TemperatureARCH3EQ.ip2
-					}
-					action def WeatherPS_HumidityARCH3AN ( ip1 : SysADL.types.WeatherStation,
-					ip2 : SysADL.types.WeatherStation ) : SysADL.types.Humidity {
-						post-condition WeatherPS_HumidityARCH3EQ ( )
-					delegate ip1 to WeatherPS_HumidityARCH3EQ.ip1 delegate ip2 to
-						WeatherPS_HumidityARCH3EQ.ip2 delegate WeatherPS_HumidityARCH3AN to
-						WeatherPS_HumidityARCH3EQ.h
-					}
-					action def WeatherPS_AtmPressureARCH3AN ( ip1 :
-					SysADL.types.WeatherStation, ip2 : SysADL.types.WeatherStation ) :
-					SysADL.types.AtmPressure {
-						post-condition WeatherPS_AtmPressureARCH3EQ ( )
-					delegate ip1 to WeatherPS_AtmPressureARCH3EQ.ip1 delegate ip2 to
-						WeatherPS_AtmPressureARCH3EQ.ip2 delegate WeatherPS_AtmPressureARCH3AN to
-						WeatherPS_AtmPressureARCH3EQ.ap
-					}
-					constraint WeatherPS_TemperatureARCH3EQ ( ip1 :
-					SysADL.types.WeatherStation, ip2 : SysADL.types.WeatherStation ) : ( t :
-					SysADL.types.LocalTemperature ) {
-						equation = t == (('ip1.t' / 'ip1.ct') + ('ip2.t' / 'ip2.ct')) / 2
-					}
-					constraint WeatherPS_HumidityARCH3EQ ( ip1 : SysADL.types.WeatherStation,
-					ip2 : SysADL.types.WeatherStation ) : ( h : SysADL.types.Humidity ) {
-						equation = h == (('ip1.h' / 'ip1.ct') + ('ip2.h' / 'ip2.ct')) / 2
-					}
-					constraint WeatherPS_AtmPressureARCH3EQ ( ip1 :
-					SysADL.types.WeatherStation, ip2 : SysADL.types.WeatherStation ) : ( ap :
-					SysADL.types.AtmPressure ) {
-						equation = ap == (('ip1.p' / 'ip1.ct') + ('ip2.p' / 'ip2.ct')) / 2
-					}
-					executable def WSDataAggregatorEX ( in t :
-					SysADL.types.LocalTemperature, in wsData :
-					SysADL.types.WeatherStation, in h : SysADL.types.Humidity, in ap :
-					SysADL.types.AtmPressure ) : out SysADL.types.WeatherStation {
-						'let newWS : SysADL.types.WeatherStation newWS.t = (t + wsData.t) newWS.h = (h + wsData.h) newWS.p = (ap + wsData.p) newWS.ct = (wsData.ct + 1)' return 'newWS'
-					}
-					executable def WeatherPS_TemperatureEX ( in ip :
-					SysADL.types.WeatherStation ) : out SysADL.types.LocalTemperature {
-						return 'ip.t' / 'ip.ct'
-					}
-					executable def WeatherPS_HumidityEX ( in ip :
-					SysADL.types.WeatherStation ) : out SysADL.types.Humidity {
-						return 'ip.h' / 'ip.ct'
-					}
-					executable def WeatherPS_AtmPressureEX ( in ip :
-					SysADL.types.WeatherStation ) : out SysADL.types.AtmPressure {
-						return 'ip.p' / 'ip.ct'
-					}
-					executable def WeatherPS_TemperatureARCH3EX ( in ip1 :
-					SysADL.types.WeatherStation, in ip2 : SysADL.types.WeatherStation) : out SysADL.types.LocalTemperature {
-						return (('ip1.t' / 'ip1.ct') + ('ip2.t' / 'ip2.ct')) / 2
-					}
-					executable def WeatherPS_HumidityARCH3EX ( in ip1 :
-					SysADL.types.WeatherStation, in ip2 : SysADL.types.WeatherStation ) : out SysADL.types.Humidity {
-						return (('ip1.h' / 'ip1.ct') + ('ip2.h' / 'ip2.ct')) / 2
-					}
-					executable def WeatherPS_AtmPressureARCH3EX ( in ip1 :
-					SysADL.types.WeatherStation, in ip2 : SysADL.types.WeatherStation ) : out SysADL.types.AtmPressure {
-						return (('ip1.p' / 'ip1.ct') + ('ip2.p' / 'ip2.ct')) / 2
-					}
-					executable def  WatherStationCN_2EX (in ip :
-					SysADL.types.WeatherStation) : out SysADL.types.WeatherStation {
-						return ip
-					}
-				component def WatherStationCN_2 {
-						ports op : PortsWMS.WeatherStationOPT {
-						}
-						ip : PortsWMS.WeatherStationIPT [ 1, 2 ] {
-						}
-					}
-					activity def WatherStationCN_2AC ( ip1 : SysADL.types.WeatherStation, ip2
-					: SysADL.types.WeatherStation ) : ( op : SysADL.types.WeatherStation ) {
-						body {
-							actions : ws_2 : WatherStationCN_2AN {
-								using pins ip : SysADL.types.WeatherStation
-							}
-							delegate op to ws_2 delegate ip1 to ws_2.ip delegate ip2 to ws_2.ip
-						}
-					}
-					action def WatherStationCN_2AN ( ip : SysADL.types.WeatherStation ) :
-					SysADL.types.WeatherStation {
-						post-condition WatherStationCN_2EQ ( )
-					delegate WatherStationCN_2AN to WatherStationCN_2EQ.op delegate ip to
-						WatherStationCN_2EQ.ip
-					}
-					constraint WatherStationCN_2EQ ( ip : SysADL.types.WeatherStation ) : ( op
-					: SysADL.types.WeatherStation ) {
-						equation = op == ip
+					ip : WeatherStationIPT [ 1, 2 ] {
 					}
 				}
-				package ConnectorsWMS {
-					import SysADL.types;
-					import PortsWMS;
-					import ComponentsWMS;
-					connector def TemperatureCN {
-						participants ~ t_out : PortsWMS.TemperatureOPT {
-						}
-						~ t_in : PortsWMS.TemperatureIPT {
-						}
-						flows SysADL.types.LocalTemperature from t_out to t_in
-					}
-					connector def HumidityCN {
-						participants ~ h_out : PortsWMS.HumidityOPT {
-						}
-						~ h_in : PortsWMS.HumidityIPT {
-						}
-						flows SysADL.types.Humidity from h_out to h_in
-					}
-					connector def AtmPressureCN {
-						participants ~ ap_out : PortsWMS.AtmPressureOPT {
-						}
-						~ ap_in : PortsWMS.AtmPressureIPT {
-						}
-						flows SysADL.types.AtmPressure from ap_out to ap_in
-					}
-					connector def WatherStationCN {
-						participants ~ op : PortsWMS.WeatherStationOPT {
-						}
-						~ ip : PortsWMS.WeatherStationIPT {
-						}
-						flows SysADL.types.WeatherStation from op to ip
-					}
-					connector def FahrenheitToCelsiusCN {
-					}
-					connector def WatherStationCN_2 {
-					participants ~ op : PortsWMS.WeatherStationOPT [ 1, 2 ] {
-						}
-						~ ip : PortsWMS.WeatherStationIPT {
-						}
-						configuration {
-						components:
-							ws_2 : ComponentsWMS.WatherStationCN_2 {
-								using ports op : PortsWMS.WeatherStationOPT {
-								}
-								ip : PortsWMS.WeatherStationIPT [ 1, 2 ] {
-								}
-							}
-							delegations:
-							ws_2.ip to op ws_2.op to ip
-						}
-					flows 
-					}
+				delegations:
+				ip to op_CN2
+				op to ip_CN2
+		} 
+	}
+}
+package ComponentsWMS {
+	import ConnectorsWMS;
+	import PortsWMS;
+	import SysADL.types;
+	component def Arch1 {
+		configuration {
+			components:
+			wps : WeatherProcessingSubSystemCP {
+				using ports: ip_wps : WeatherStationIPT {
 				}
-				package PortsWMS {
-					import SysADL.types;
-					port def TemperatureIPT {
-						flow in SysADL.types.LocalTemperature
-					}
-					port def TemperatureOPT {
-						flow out SysADL.types.LocalTemperature
-					}
-					port def HumidityIPT {
-						flow in SysADL.types.Humidity
-					}
-					port def HumidityOPT {
-						flow out SysADL.types.Humidity
-					}
-					port def AtmPressureIPT {
-						flow in SysADL.types.AtmPressure
-					}
-					port def AtmPressureOPT {
-						flow out SysADL.types.AtmPressure
-					}
-					port def WeatherStationIPT {
-						flow in SysADL.types.WeatherStation
-					}
-					port def WeatherStationOPT {
-						flow out SysADL.types.WeatherStation
-					}
+				tp : TemperatureOPT {
 				}
-				allocations {
-					activity ComponentsWMS.WeatherProcessingSubSystemAC to
-					ComponentsWMS.WeatherProcessingSubSystemCP activity
-					ComponentsWMS.WeatherProcessingSubSystemARCH3AC to
-					ComponentsWMS.WeatherProcessingSubSystemCP activity
-					ComponentsWMS.WSDataAggregatorAC to ComponentsWMS.WSDataAggregatorCP
-					activity ComponentsWMS.WatherStationCN_2AC to
-					ComponentsWMS.WatherStationCN_2
-					executable ComponentsWMS.WeatherPS_TemperatureEX to
-					ComponentsWMS.WeatherPS_TemperatureAN executable
-					ComponentsWMS.WeatherPS_HumidityEX to ComponentsWMS.WeatherPS_HumidityAN
-					executable ComponentsWMS.WeatherPS_AtmPressureEX to
-					ComponentsWMS.WeatherPS_AtmPressureAN executable
-					ComponentsWMS.WeatherPS_TemperatureARCH3EX to
-					ComponentsWMS.WeatherPS_TemperatureARCH3AN executable
-					ComponentsWMS.WeatherPS_HumidityARCH3EX to
-					ComponentsWMS.WeatherPS_HumidityARCH3AN executable
-					ComponentsWMS.WeatherPS_AtmPressureARCH3EX to
-					ComponentsWMS.WeatherPS_AtmPressureARCH3AN executable
-					ComponentsWMS.WSDataAggregatorEX to ComponentsWMS.WSDataAggregatorAN
-					executable ComponentsWMS.WatherStationCN_2EX to
-					ComponentsWMS.WatherStationCN_2AN
+				hp : HumidityOPT {
 				}
+				ap : AtmPressureOPT {
+				}
+			}
+			ws3 : WeatherStationCP {
+				using ports: ip_ws3 : WeatherStationIPT {
+				}
+				op_ws3 : WeatherStationOPT {
+				}
+			}
+			ws2 : WeatherStationCP {
+				using ports: ip_ws2 : WeatherStationIPT {
+				}
+				op_ws2 : WeatherStationOPT {
+				}
+			}
+			ws1 : WeatherStationCP {
+				using ports: ip_ws1 : WeatherStationIPT {
+				}
+				op_ws1 : WeatherStationOPT {
+				}
+			}
+			d : DisplayCP {
+				using ports: t : TemperatureIPT {
+				}
+				h : HumidityIPT {
+				}
+				ap : AtmPressureIPT {
+				}
+			}
+			connectors:
+			wscn3 : WatherStationCN bindings op_ws3 = ip_ws2; 
+			wscn2 : WatherStationCN bindings op_ws2 = ip_ws1; 
+			wscn1 :	WatherStationCN bindings op_ws1 = ip_wps;
+		apCN :
+			AtmPressureCN bindings ap = ap; 
+			hCN : HumidityCN bindings hp = h; 
+			tCN : TemperatureCN bindings tp = t;
+		}
+	}
+	component def WeatherProcessingSubSystemCP {
+		ports: ip : WeatherStationIPT [ 1, 2 ] {
+		}
+		tp : TemperatureOPT {
+		}
+		hp : HumidityOPT {
+		}
+		ap : AtmPressureOPT {
+		}
+	}
+	boundary component def DisplayCP {
+		ports: t : TemperatureIPT {
+		}
+		h : HumidityIPT {
+		}
+		ap : AtmPressureIPT {
+		}
+	}
+	component def WeatherStationCP {
+		ports: ip : WeatherStationIPT {
+		}
+		op : WeatherStationOPT {
+		}
+		configuration {
+			components:
+			ts : TemperatureSensorCP {
+				using ports: tp_ts : TemperatureOPT {
+				}
+			}
+			hs : HumiditySensorCP {
+				using ports: hp_hs : HumidityOPT {
+				}
+			}
+			aps : AtmPressureSensorCP {
+				using ports: ap_aps : AtmPressureOPT {
+				}
+			}
+			WSDA : WSDataAggregatorCP {
+				using ports: ap_WSDA : AtmPressureIPT {
+				}
+				hp_WSDA : HumidityIPT {
+				}
+				tp_WSDA : TemperatureIPT {
+				}
+				op_WSDA : WeatherStationOPT {
+				}
+				ip_WSDA : WeatherStationIPT {
+				}
+			}
+			connectors:
+			hcn : HumidityCN bindings hp_hs = hp_WSDA; 
+			apcn : AtmPressureCN bindings ap_aps = ap_WSDA;
+			tcn : TemperatureCN bindings tp_ts = tp_WSDA;
+			delegations:
+			op_WSDA to op ip_WSDA to ip
+		}
+	}
+	component def WSDataAggregatorCP {
+		ports: ap : AtmPressureIPT {
+		}
+		hp : HumidityIPT {
+		}
+		tp : TemperatureIPT {
+		}
+		op : WeatherStationOPT [ 1, 1 ] {
+		}
+		ip : WeatherStationIPT [ 1, 1 ] {
+		}
+	}
+	boundary component def TemperatureSensorCP {
+		ports: tp : TemperatureOPT {
+		}
+	}
+	boundary component def HumiditySensorCP {
+		ports: hp : HumidityOPT {
+		}
+	}
+	boundary component def AtmPressureSensorCP {
+		ports: ap : AtmPressureOPT {
+		}
+	}
+	component def Arch3 {
+		configuration {
+			components:
+			ws3 : WeatherStationCP {
+				using ports: ip_ws3 : WeatherStationIPT {
+				}
+				op_ws3 : WeatherStationOPT {
+				}
+			}
+			ws2 : WeatherStationCP {
+				using ports: ip_ws2 : WeatherStationIPT {
+				}
+				op_ws2 : WeatherStationOPT {
+				}
+			}
+			ws1 : WeatherStationCP {
+				using ports: ip_ws1 : WeatherStationIPT {
+				}
+				op_ws1 : WeatherStationOPT {
+				}
+			}
+			wps : WeatherProcessingSubSystemCP {
+				using ports: ip1 : WeatherStationIPT {
+				}
+				ip2 : WeatherStationIPT {
+				}
+				tp : TemperatureOPT {
+				}
+				hp : HumidityOPT {
+				}
+				ap : AtmPressureOPT {
+				}
+			}
+			ws6 : WeatherStationCP {
+				using ports: ip_ws6 : WeatherStationIPT {
+				}
+				op_ws6 : WeatherStationOPT {
+				}
+			}
+			ws5 : WeatherStationCP {
+				using ports: ip_ws5 : WeatherStationIPT {
+				}
+				op_ws5 : WeatherStationOPT {
+				}
+			}
+			ws4 : WeatherStationCP {
+				using ports: ip_ws4 : WeatherStationIPT {
+				}
+				op_ws4 : WeatherStationOPT {
+				}
+			}
+			d : DisplayCP {
+				using ports: t : TemperatureIPT {
+				}
+				h : HumidityIPT {
+				}
+				ap : AtmPressureIPT {
+				}
+			}
+			connectors:
+			wscn1 : WatherStationCN bindings op_ws1 = ip1; 
+			wscn2 : WatherStationCN bindings op_ws2 = ip_ws1;
+			wscn3 :	WatherStationCN bindings op_ws3 = ip_ws2;
+			wscn6 :	WatherStationCN bindings op_ws6 = ip_ws5;
+			wscn5 :	WatherStationCN bindings op_ws5 = ip_ws4;
+			wscn4 : WatherStationCN bindings op_ws4 = ip2;
+			apCN : AtmPressureCN bindings ap = ap;
+			hCN : HumidityCN bindings hp = h;
+			tCN : TemperatureCN bindings tp = t;
+		}
+	}
+component def Arch2 {
+		configuration {
+			components:
+			ws3 : WeatherStationCP {
+				using ports: ip_ws3 : WeatherStationIPT {
+				}
+				op_ws3 : WeatherStationOPT {
+				}
+			}
+			ws1 : WeatherStationCP {
+				using ports: ip_ws1 : WeatherStationIPT {
+				}
+				op_ws1 : WeatherStationOPT {
+				}
+			}
+			ws4 : WeatherStationCP {
+				using ports: ip_ws4 : WeatherStationIPT {
+				}
+				op_ws4 : WeatherStationOPT {
+				}
+			}
+			wps : WeatherProcessingSubSystemCP {
+				using ports: ip : WeatherStationIPT {
+				}
+				tp : TemperatureOPT {
+				}
+				hp : HumidityOPT {
+				}
+				ap : AtmPressureOPT {
+				}
+			}
+			ws5 : WeatherStationCP {
+				using ports: ip_ws5 : WeatherStationIPT {
+				}
+				op_ws5 : WeatherStationOPT {
+				}
+			}
+			ws2 : WeatherStationCP {
+				using ports: ip_ws2 : WeatherStationIPT {
+				}
+				op_ws2 : WeatherStationOPT {
+				}
+			}
+			ws6 : WeatherStationCP {
+				using ports: ip_ws6 : WeatherStationIPT {
+				}
+				op_ws6 : WeatherStationOPT {
+				}
+			}
+			d : DisplayCP {
+				using ports: t : TemperatureIPT {
+				}
+				h : HumidityIPT {
+				}
+				ap : AtmPressureIPT {
+				}
+			}
+			connectors:
+			wscn6 : WatherStationCN bindings op_ws6 = ip_ws5;
+			wscn3 : WatherStationCN bindings op_ws3 = ip_ws2;
+			wscn5 :	WatherStationCN bindings op_ws5 = ip_ws4;
+			wscn1 :	WatherStationCN_2 bindings op_ws1 = ip;
+			wscn2 :	WatherStationCN bindings op_ws2 = ip_ws1;
+			wscn4 :	WatherStationCN_2 bindings op_ws4 = ip;
+			apCN : AtmPressureCN bindings ap = ap;
+			tCN : TemperatureCN bindings tp = t;
+			hCN : HumidityCN bindings hp = h;
+		}
+	}
+	activity def WeatherProcessingSubSystemAC ( ip : WeatherStation ) : ( tp :
+	LocalTemperature, hp : Humidity, ap : AtmPressure ) {
+		body {
+		actions : wpst : WeatherPS_TemperatureAN {
+				using pins: ip_wpst : WeatherStation;
+			}
+			wpsh : WeatherPS_HumidityAN {
+				using pins: ip_wpsh : WeatherStation;
+			}
+			wpsap : WeatherPS_AtmPressureAN {
+				using pins: ip_wpsap : WeatherStation;
+			}
+			delegate tp to wpst delegate hp to wpsh delegate ap to wpsap delegate ip
+			to ip_wpst delegate ip to ip_wpsh delegate ip to ip_wpsap
+		}
+	}
+	activity def WSDataAggregatorAC ( t : LocalTemperature, h : Humidity, ap : AtmPressure, wsData : WeatherStation ) : 
+	( newWSData : WeatherStation ) {
+		body {
+		actions : wsda : WSDataAggregatorAN {
+				using pins: ap : AtmPressure;
+				wsData : WeatherStation;
+				h : Humidity;
+				t : LocalTemperature;
+			}
+			delegate newWSData to wsda 
+			delegate t to t 
+			delegate h to h
+			delegate ap to ap 
+			delegate wsData to wsData
+		}
+	}
+	action def WSDataAggregatorAN ( t : LocalTemperature, h
+	: Humidity, ap : AtmPressure, wsData : WeatherStation ) : WeatherStation {
+	constraint: post-condition WSDataAggregatorEQ 
+	delegate WSDataAggregatorAN to newWSData delegate t to
+		t delegate h to h delegate ap to
+		ap delegate wsData to wsData
+	}
+	action def WeatherPS_TemperatureAN ( ip : WeatherStation ) : LocalTemperature {
+	constraint: post-condition WeatherPS_TemperatureEQ 
+	delegate WeatherPS_TemperatureAN to t delegate ip
+		to ip
+	}
+	action def WeatherPS_HumidityAN ( ip : WeatherStation ) : Humidity {
+	constraint: post-condition WeatherPS_HumidityEQ 
+	delegate WeatherPS_HumidityAN to h delegate ip to
+		ip
+	}
+	action def WeatherPS_AtmPressureAN ( ip : WeatherStation ) : AtmPressure {
+	constraint: post-condition WeatherPS_AtmPressureEQ 
+	delegate WeatherPS_AtmPressureAN to ap delegate ip
+		to ip
+	}
+	constraint WeatherPS_TemperatureEQ ( ip : WeatherStation )
+	: ( t : LocalTemperature ) {
+		equation = t == ip->t / ip->ct
+	}
+constraint WeatherPS_HumidityEQ ( ip : WeatherStation ) : ( h : Humidity ) {
+		equation = h == ip->h / ip->ct
+	}
+	constraint WeatherPS_AtmPressureEQ ( ip : WeatherStation ): ( ap : AtmPressure ) {
+		equation = ap == ip->p / ip->ct
+	}
+constraint WSDataAggregatorEQ ( t : LocalTemperature, h : Humidity, ap : AtmPressure, wsData : WeatherStation ) : 
+( newWSData : WeatherStation ) {
+		equation = newWSData->t == (t + wsData->t) && newWSData->h == (h + wsData->h) && 
+		newWSData->p == (ap + wsData->p) && newWSData->ct == (wsData->ct + 1)
+	}
+activity def WeatherProcessingSubSystemARCH3AC ( ip1 : WeatherStation, ip2 : WeatherStation ) : ( tp : LocalTemperature, 
+	hp : Humidity, ap : AtmPressure ) {
+		body {
+		actions : wpst : WeatherPS_TemperatureARCH3AN {
+				using pins: ip1_wpst : WeatherStation;
+				ip2_wpst : WeatherStation;
+			}
+			wpsh : WeatherPS_HumidityARCH3AN {
+				using pins: ip1_wpsh : WeatherStation;
+				ip2_wpsh : WeatherStation;
+			}
+			wpsap : WeatherPS_AtmPressureARCH3AN {
+				using pins: ip1_wpsap : WeatherStation;
+				ip2_wpsap : WeatherStation;
+			}
+			delegate tp to wpst 
+			delegate hp to wpsh 
+			delegate ap to wpsap 
+			delegate ip1 to ip1_wpst 
+			delegate ip1 to ip1_wpsh
+			delegate ip1 to ip1_wpsap
+			delegate ip2 to ip2_wpsap
+			delegate ip2 to ip2_wpsh 
+			delegate ip2 to	ip2_wpst
+		}
+	}
+	action def WeatherPS_TemperatureARCH3AN ( ip1 : WeatherStation, ip2 : WeatherStation ) : LocalTemperature {
+		constraint: post-condition WeatherPS_TemperatureARCH3EQ 
+	delegate WeatherPS_TemperatureARCH3AN to t
+		delegate ip1 to ip1 delegate ip2 to
+		ip2
+	}
+	action def WeatherPS_HumidityARCH3AN ( ip1 : WeatherStation,
+	ip2 : WeatherStation ) : Humidity {
+		constraint: post-condition WeatherPS_HumidityARCH3EQ 
+	delegate ip1 to ip1 delegate ip2 to
+		ip2 delegate WeatherPS_HumidityARCH3AN to
+		h
+	}
+	action def WeatherPS_AtmPressureARCH3AN ( ip1 :
+	WeatherStation, ip2 : WeatherStation ) : AtmPressure {
+		constraint: post-condition WeatherPS_AtmPressureARCH3EQ 
+	delegate ip1 to ip1 delegate ip2 to
+		ip2 delegate WeatherPS_AtmPressureARCH3AN to
+		ap
+	}
+	constraint WeatherPS_TemperatureARCH3EQ ( ip1 :WeatherStation, ip2 : WeatherStation ) : ( t :LocalTemperature ) {
+		equation = t == ((ip1->t / ip1->ct) + (ip2->t / ip2->ct)) / 2
+	}
+	constraint WeatherPS_HumidityARCH3EQ ( ip1 : WeatherStation,
+	ip2 : WeatherStation ) : ( h : Humidity ) {
+		equation = h == ((ip1->h / ip1->ct) + (ip2->h / ip2->ct)) / 2
+	}
+	constraint WeatherPS_AtmPressureARCH3EQ ( ip1 : WeatherStation, ip2 : WeatherStation ) : ( ap : AtmPressure ) {
+		equation = ap == ((ip1->p / ip1->ct) + (ip2->p / ip2->ct)) / 2
+	}
+
+	executable def WSDataAggregatorEX ( in t : LocalTemperature;, in wsData : WeatherStation;, in h : Humidity;, in ap :
+	AtmPressure;) : out WeatherStation {
+		let newWS : WeatherStation;
+		newWS->t = (t + wsData->t);
+		newWS->h = (h + wsData>h);
+		newWS->p = (ap + wsData->p);
+		newWS->ct = (wsData->ct + 1);
+		return newWS;
+	}
+	executable def WeatherPS_TemperatureEX ( in ip : WeatherStation; ) : out LocalTemperature {
+		return ip->t / ip->ct;
+	}
+	executable def WeatherPS_HumidityEX ( in ip : WeatherStation; ) : out Humidity {
+		return ip->h / ip->ct;
+	}
+	executable def WeatherPS_AtmPressureEX ( in ip : WeatherStation; ) : out AtmPressure {
+		return ip->p / ip->ct;
+	}
+	executable def WeatherPS_TemperatureARCH3EX ( in ip1 : WeatherStation;, in ip2 : WeatherStation;) : out LocalTemperature {
+		return ((ip1->t / ip1->ct) + (ip2->t / ip2->ct)) / 2;
+	}
+	executable def WeatherPS_HumidityARCH3EX ( in ip1 : WeatherStation;, in ip2 : WeatherStation; ) : out Humidity {
+		return ((ip1->h / ip1->ct) + (ip2->h / ip2->ct)) / 2;
+	}
+	executable def WeatherPS_AtmPressureARCH3EX ( in ip1 : WeatherStation;, in ip2 : WeatherStation; ) : out AtmPressure {
+		return ((ip1->p / ip1->ct) + (ip2->p / ip2->ct)) / 2;
+	}
+	executable def  WatherStationCN_2EX (in ip : WeatherStation;) : out WeatherStation {
+		return ip;
+	}
+component def WatherStationCN_2 {
+		ports: op : WeatherStationOPT {
+		}
+		ip : WeatherStationIPT [ 1, 2 ] {
+		}
+	}
+	activity def WatherStationCN_2AC ( ip1 : WeatherStation, ip2
+	: WeatherStation ) : ( op : WeatherStation ) {
+		body {
+			actions : ws_2 : WatherStationCN_2AN {
+				using pins: ip : WeatherStation;
+			}
+			delegate op to ws_2 
+			delegate ip1 to ip 
+			delegate ip2 to ip
+		}
+	}
+	action def WatherStationCN_2AN ( ip : WeatherStation ) : WeatherStation {
+		constraint: post-condition WatherStationCN_2EQ 
+	delegate WatherStationCN_2AN to op delegate ip to
+		ip
+	}
+	constraint WatherStationCN_2EQ ( ip : WeatherStation ) : ( op : WeatherStation ) {
+		equation = op == ip
+	}
+}
+allocations {
+	activity WeatherProcessingSubSystemAC to
+	WeatherProcessingSubSystemCP activity
+	WeatherProcessingSubSystemARCH3AC to
+	WeatherProcessingSubSystemCP activity
+	WSDataAggregatorAC to WSDataAggregatorCP
+	activity WatherStationCN_2AC to
+	WatherStationCN_2
+	executable WeatherPS_TemperatureEX to
+	WeatherPS_TemperatureAN executable
+	WeatherPS_HumidityEX to WeatherPS_HumidityAN
+	executable WeatherPS_AtmPressureEX to
+	WeatherPS_AtmPressureAN executable
+	WeatherPS_TemperatureARCH3EX to
+	WeatherPS_TemperatureARCH3AN executable
+	WeatherPS_HumidityARCH3EX to
+	WeatherPS_HumidityARCH3AN executable
+	WeatherPS_AtmPressureARCH3EX to
+	WeatherPS_AtmPressureARCH3AN executable
+	WSDataAggregatorEX to WSDataAggregatorAN
+	executable WatherStationCN_2EX to
+	WatherStationCN_2AN
+}

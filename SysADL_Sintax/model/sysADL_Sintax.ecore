@@ -15,6 +15,14 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="architectures" upperBound="-1"
         eType="#//ElementDef" containment="true" eKeys="#//NamedElement/name"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Style" eSuperTypes="#//Package">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="invariants" upperBound="-1"
+        eType="#//Invariant" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Invariant">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" lowerBound="1" eType="#//Expression"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Model" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="packages" upperBound="-1"
         eType="#//Package" containment="true" eKeys="#//NamedElement/name"/>
@@ -81,6 +89,8 @@
         eType="#//StructuralDef" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="dataDefs" upperBound="-1"
         eType="#//DataDef" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="invariants" upperBound="-1"
+        eType="#//Invariant" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="StructuralUse" abstract="true" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lowerBound" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
@@ -95,10 +105,13 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isBoundary" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="instances" upperBound="-1"
+        eType="#//ComponentUse" eOpposite="#//ComponentUse/definition"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ArchitectureDef" eSuperTypes="#//ComponentDef"/>
   <eClassifiers xsi:type="ecore:EClass" name="ComponentUse" eSuperTypes="#//StructuralUse">
     <eStructuralFeatures xsi:type="ecore:EReference" name="definition" lowerBound="1"
-        eType="#//ComponentDef"/>
+        eType="#//ComponentDef" eOpposite="#//ComponentDef/instances"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ports" upperBound="-1"
         eType="#//PortUse" containment="true"/>
   </eClassifiers>

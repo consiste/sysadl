@@ -79,6 +79,12 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Package/elementImports"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Package/architectures"/>
     </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//Style">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Style/invariants"/>
+    </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//Invariant">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Invariant/expr"/>
+    </genClasses>
     <genClasses ecoreClass="sysADL_Sintax.ecore#//Model">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Model/packages"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//Model/requirements"/>
@@ -126,6 +132,7 @@
     <genClasses image="false" ecoreClass="sysADL_Sintax.ecore#//StructuralDef">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//StructuralDef/archDefs"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//StructuralDef/dataDefs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//StructuralDef/invariants"/>
     </genClasses>
     <genClasses image="false" ecoreClass="sysADL_Sintax.ecore#//StructuralUse">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//StructuralUse/lowerBound"/>
@@ -135,7 +142,9 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ComponentDef/ports"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ComponentDef/composite"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysADL_Sintax.ecore#//ComponentDef/isBoundary"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ComponentDef/instances"/>
     </genClasses>
+    <genClasses ecoreClass="sysADL_Sintax.ecore#//ArchitectureDef"/>
     <genClasses ecoreClass="sysADL_Sintax.ecore#//ComponentUse">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ComponentUse/definition"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysADL_Sintax.ecore#//ComponentUse/ports"/>

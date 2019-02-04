@@ -36,8 +36,9 @@
   <eClassifiers xsi:type="ecore:EClass" name="ElementDef" abstract="true" eSuperTypes="#//NamedElement"/>
   <eClassifiers xsi:type="ecore:EClass" name="DataDef" abstract="true" eSuperTypes="#//ElementDef"/>
   <eClassifiers xsi:type="ecore:EClass" name="ConstraintUse">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="definition" eType="#//ConstraintDef"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" eType="#//ConstraintKind"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="definition" lowerBound="1"
+        eType="#//ConstraintDef"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" lowerBound="1" eType="#//ConstraintKind"
         defaultValueLiteral="postCondition"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DataTypeDef" eSuperTypes="#//TypeDef">
@@ -122,11 +123,13 @@
         eType="#//Flow" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="composite" eType="#//Configuration"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="instances" upperBound="-1"
+        eType="#//ConnectorUse" eOpposite="#//ConnectorUse/definition"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConnectorUse" eSuperTypes="#//StructuralUse">
     <eOperations name="allPorts"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="definition" lowerBound="1"
-        eType="#//ConnectorDef"/>
+        eType="#//ConnectorDef" eOpposite="#//ConnectorDef/instances"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ports" upperBound="-1"
         eType="#//PortUse" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="bindings" upperBound="-1"

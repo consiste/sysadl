@@ -38,19 +38,19 @@ public class SysADLCreationTools {
 		// Basic types
 		sysADL_Sintax.ValueTypeDef typeInt = factory.createValueTypeDef();
 		typeInt.setName("Int");
-		p.getDefinitions().add(typeInt);
+		p.getArchitectures().add(typeInt);
 		sysADL_Sintax.ValueTypeDef typeBool = factory.createValueTypeDef();
 		typeBool.setName("Boolean");
-		p.getDefinitions().add(typeBool);
+		p.getArchitectures().add(typeBool);
 		sysADL_Sintax.ValueTypeDef typeString = factory.createValueTypeDef();
 		typeString.setName("String");
-		p.getDefinitions().add(typeString);
+		p.getArchitectures().add(typeString);
 		sysADL_Sintax.ValueTypeDef typeVoid = factory.createValueTypeDef();
 		typeVoid.setName("Void");
-		p.getDefinitions().add(typeVoid);
+		p.getArchitectures().add(typeVoid);
 		sysADL_Sintax.ValueTypeDef typeReal = factory.createValueTypeDef();
 		typeReal.setName("Real");
-		p.getDefinitions().add(typeReal);
+		p.getArchitectures().add(typeReal);
 		
 		return m;
 	}

@@ -170,7 +170,7 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 		pList.add(p);
 		
 		for (pac : pList){
-			for (e : pac.definitions){
+			for (e : pac.architectures){
 				if(e instanceof ComponentDef){
 					componentDefList.add(e as ComponentDef);
 				}
@@ -195,7 +195,7 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 		pList.add(p);
 		
 		for (pac : pList){
-			for (e : pac.definitions){
+			for (e : pac.architectures){
 				if(e instanceof ConnectorDef){
 					connectorDefList.add(e as ConnectorDef);
 				}
@@ -243,7 +243,7 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 		pList.add(p);
 		
 		for (pac : pList){
-			for (e : pac.definitions){
+			for (e : pac.architectures){
 				if(e instanceof TypeDef){
 					typeDefList.add(e as TypeDef);
 				}
@@ -272,7 +272,7 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 		pList.add(p);
 		
 		for (pac : pList){
-			for (e : pac.definitions){
+			for (e : pac.architectures){
 				if(e instanceof PortDef){
 					portDefList.add(e as PortDef);
 				}
@@ -328,7 +328,7 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 		pList.add(p);
 		
 		for (pac : pList){
-			for (e : pac.definitions){
+			for (e : pac.architectures){
 				if(e instanceof ActionDef){
 					actionDefList.add(e as ActionDef);
 				}
@@ -347,7 +347,7 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 		pList.add(p);
 		
 		for (pac : pList){
-			for (e : pac.definitions){
+			for (e : pac.architectures){
 				if(e instanceof ConstraintDef){
 					constraintDefList.add(e as ConstraintDef);
 				}
@@ -408,7 +408,7 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 		var executableList = new ArrayList();
 		
 		for (p : (e.eContainer.eContainer as Model).packages) {
-			for (a : (p as Package).definitions) {
+			for (a : (p as Package).architectures) {
 				if(a instanceof Executable){
 					executableList.add(a as Executable);
 				}
@@ -422,7 +422,7 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 		var actionList = new ArrayList();
 		
 		for (p : (e.eContainer.eContainer as Model).packages) {
-			for (a : (p as Package).definitions) {
+			for (a : (p as Package).architectures) {
 				if(a instanceof ActionDef){
 					actionList.add(a as ActionDef);
 				}
@@ -436,7 +436,7 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 		var activityList = new ArrayList();
 		
 		for (p : (act.eContainer.eContainer as Model).packages) {
-			for (a : (p as Package).definitions) {
+			for (a : (p as Package).architectures) {
 				if(a instanceof ActivityDef){
 					activityList.add(a as ActivityDef);
 				}
@@ -450,7 +450,7 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 		var componentsList = new ArrayList();
 		
 		for (p : (act.eContainer.eContainer as Model).packages) {
-			for (a : (p as Package).definitions) {
+			for (a : (p as Package).architectures) {
 				if(a instanceof ComponentDef){
 					componentsList.add(a as ComponentDef);
 				}

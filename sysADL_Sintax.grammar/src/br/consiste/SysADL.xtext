@@ -108,8 +108,8 @@ Package returns Package:
 		('import' imports+=[Package|QualifiedName] ';')*
 		('using' elementImports+=[ElementDef|QualifiedName] ';')*
 		(properties+=Property
-		| definitions+=ElementDef
-		| definitions+=ArchitectureDef)*
+		| architectures+=ElementDef
+		| architectures+=ArchitectureDef)*
 	'}';
 
 ReqNumber:

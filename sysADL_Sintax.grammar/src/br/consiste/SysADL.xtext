@@ -315,15 +315,17 @@ TypeUse_NoSemicolon returns TypeUse:
 Executable returns Executable:
 	'executable' 'def' name=ID '(' ('in' params+=TypeUse_NoSemicolon (',' 'in' params+=TypeUse_NoSemicolon)*)? ')' ':' 'out' returnType=[TypeDef|QualifiedName]
 	'{'
-		body+=NonBlockStatement*
-	'}';
-
+		properties+=Property* 
+		body+=NonBlockStatement+
+	'}'
+	;
 
 /**
  * Executable[STATEMENTS]
  */
 Statement returns Statement: //TODO substituir AssignmentExpression por Expressione tratar o erro em Expression
-	AssignmentExpression ';' | BlockStatement | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | IfBlockStatement | SwitchStatement
+	//AssignmentExpression ';' | BlockStatement | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | IfBlockStatement | SwitchStatement
+	NonBlockStatement | BlockStatement
 ;
 
 // Same as above, but block statement is not allowed
@@ -334,7 +336,7 @@ NonBlockStatement returns Statement: //TODO substituir AssignmentExpression por 
 BlockStatement returns BlockStatement:
 	{BlockStatement}
 	'{'
-		body+=Statement*
+		body+=Statement+
 	'}';
 
 //Assignment returns Assignment:

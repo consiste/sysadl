@@ -202,7 +202,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="returnType" eType="#//TypeDef"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ActionUse" eSuperTypes="#//NamedElement #//ActivityFlowable">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="definition" eType="#//ActionDef"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="definition" lowerBound="1"
+        eType="#//ActionDef"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="pinIn" upperBound="-1"
         eType="#//Pin" containment="true"/>
   </eClassifiers>
@@ -264,9 +265,9 @@
   <eClassifiers xsi:type="ecore:EClass" name="ProtocolBodyInternal" abstract="true"
       interface="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="ProtocolBody" eSuperTypes="#//ProtocolBodyInternal">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="recControl" eType="#//ProtocolControl"
-        defaultValueLiteral="several"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//ProtocolBodyInternal"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="recControl" lowerBound="1"
+        eType="#//ProtocolControl" defaultValueLiteral="several"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" lowerBound="1" eType="#//ProtocolBodyInternal"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="recursive" eType="#//ProtocolBody"
         containment="true"/>
@@ -476,8 +477,8 @@
     <eLiterals name="decr" value="1"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BlockStatement" eSuperTypes="#//Statement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="#//Statement"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" lowerBound="1" upperBound="-1"
+        eType="#//Statement" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AssignmentExpression" eSuperTypes="#//Expression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="lhs" eType="#//LeftHandSide"

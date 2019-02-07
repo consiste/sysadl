@@ -137,12 +137,14 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="connectors" upperBound="-1"
         eType="#//ConnectorUse" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Delegation">
+  <eClassifiers xsi:type="ecore:EClass" name="RelationUse" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source" lowerBound="1"
+        eType="#//PortUse" eKeys="#//NamedElement/name"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="destination" lowerBound="1"
+        eType="#//PortUse" eKeys="#//NamedElement/name"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Delegation" eSuperTypes="#//RelationUse">
     <eOperations name="checkCompatibility" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="portProxy" lowerBound="1"
-        eType="#//PortUse"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="fullPort" lowerBound="1"
-        eType="#//PortUse"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PortDef" abstract="true" eSuperTypes="#//StructuralDef"/>
   <eClassifiers xsi:type="ecore:EClass" name="CompositePortDef" eSuperTypes="#//PortDef">
@@ -161,19 +163,10 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="definition" lowerBound="1"
         eType="#//PortDef"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ConnectorBinding">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="firstPort" lowerBound="1"
-        eType="#//PortUse"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="secondPort" lowerBound="1"
-        eType="#//PortUse"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Flow">
+  <eClassifiers xsi:type="ecore:EClass" name="ConnectorBinding" eSuperTypes="#//RelationUse"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Flow" eSuperTypes="#//RelationUse">
     <eStructuralFeatures xsi:type="ecore:EReference" name="flowType" lowerBound="1"
         eType="#//TypeDef"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="source" lowerBound="1"
-        eType="#//PortUse" eKeys="#//NamedElement/name"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="destination" lowerBound="1"
-        eType="#//PortUse" eKeys="#//NamedElement/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="FlowProperty">
     <eLiterals name="in"/>

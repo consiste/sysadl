@@ -83,8 +83,8 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 			return scope_ConnectorUse_Definition(context as ConnectorUse);
 		}
 		// FIXME it is wrong
-		if (context instanceof ConnectorBinding && (ref == SysADLPackage.eINSTANCE.connectorBinding_FirstPort
-			|| ref == SysADLPackage.eINSTANCE.connectorBinding_SecondPort)) {
+		if (context instanceof ConnectorBinding && (ref == SysADLPackage.eINSTANCE.relationUse_Source
+			|| ref == SysADLPackage.eINSTANCE.relationUse_Destination)) {
 			return scope_ConnectorBinding(context as ConnectorBinding);
 		}
 		if ((context instanceof Flow && ref == SysADLPackage.eINSTANCE.flow_FlowType) ||
@@ -100,17 +100,17 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 			(context instanceof EnumValueLiteralExpression && ref == SysADLPackage.eINSTANCE.enumValueLiteralExpression__enum)) {
 			return scope_TypeDef(context);
 		}
-		if (context instanceof Flow && (ref == SysADLPackage.eINSTANCE.flow_Source ||
-			ref == SysADLPackage.eINSTANCE.flow_Destination)) {
+		if (context instanceof Flow && (ref == SysADLPackage.eINSTANCE.relationUse_Source ||
+			ref == SysADLPackage.eINSTANCE.relationUse_Destination)) {
 			return scope_Flow_Source_Destination(context as Flow);
 		}
 		if (context instanceof PortUse && ref == SysADLPackage.eINSTANCE.portUse_Definition) {
 			return scope_PortUse_Definition(context as PortUse);
 		}
-		if (context instanceof Delegation && ref == SysADLPackage.eINSTANCE.delegation_PortProxy) {
+		if (context instanceof Delegation && ref == SysADLPackage.eINSTANCE.relationUse_Destination) {
 			return scope_Delegation_PortProxy(context as Delegation);
 		}
-		if (context instanceof Delegation && ref == SysADLPackage.eINSTANCE.delegation_FullPort) {
+		if (context instanceof Delegation && ref == SysADLPackage.eINSTANCE.relationUse_Source) {
 			return scope_Delegation_FullPort(context as Delegation);
 		}
 		if (context instanceof ActionUse && ref == SysADLPackage.eINSTANCE.actionUse_Definition) {

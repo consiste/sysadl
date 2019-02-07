@@ -128,10 +128,10 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 			(context instanceof ActivitySwitchCase && ref == SysADLPackage.eINSTANCE.activitySwitchCase_Target)) {
 			return scope_ActivityDelegation_Target_ActivityFlow_SourceTarget(context);
 		}
-		if (context instanceof ActionReceive && ref == SysADLPackage.eINSTANCE.actionReceive_FlowTo) {
+		if (context instanceof ActionReceive && ref == SysADLPackage.eINSTANCE.predefinedAction_FlowTo) {
 			return scope_ActionReceive_FlowTo(context as ActionReceive);
 		}
-		if (context instanceof ActionSend && ref == SysADLPackage.eINSTANCE.actionSend_FlowTo) {
+		if (context instanceof ActionSend && ref == SysADLPackage.eINSTANCE.predefinedAction_FlowTo) {
 			return scope_ActionSend_FlowTo(context as ActionSend);
 		}
 		if (context instanceof ExecutableAllocation && ref == SysADLPackage.eINSTANCE.executableAllocation_Source) {
@@ -397,11 +397,21 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 	}
 	
 	def scope_ActionReceive_FlowTo(ActionReceive a){
-		Scopes.scopeFor((a.eContainer.eContainer as Protocol).inParameters);
+		var protocol = a.eContainer.eContainer;
+		
+		while(!(protocol instanceof Protocol)){
+			protocol = protocol.eContainer;	
+		}
+		Scopes.scopeFor((protocol as Protocol).inParameters);
 	}
 	
 	def scope_ActionSend_FlowTo(ActionSend a){
-		Scopes.scopeFor((a.eContainer.eContainer as Protocol).outParameters);
+		var protocol = a.eContainer.eContainer;
+		
+		while(!(protocol instanceof Protocol)){
+			protocol = protocol.eContainer;	
+		}
+		Scopes.scopeFor((protocol as Protocol).outParameters);
 	}
 	
 	def scope_ExecutableAllocation_Source(ExecutableAllocation e){

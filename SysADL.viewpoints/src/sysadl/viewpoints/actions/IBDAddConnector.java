@@ -69,8 +69,8 @@ public class IBDAddConnector extends AbstractExternalJavaAction {
 		// case simple connector
 		ConnectorBinding tempBinding = SysADLFactory.eINSTANCE.createConnectorBinding(); // this binding is wrong, need to know connector type in advance
 		newConnector.getBindings().add(tempBinding);
-		tempBinding.setFirstPort(source);
-		tempBinding.setSecondPort(target);
+		tempBinding.setSource(source);
+		tempBinding.setDestination(target);
 		
 		conf.getConnectors().add(newConnector);
 	}

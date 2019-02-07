@@ -284,18 +284,17 @@
     <eLiterals name="always" value="3"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PredefinedAction" abstract="true" interface="true"
-      eSuperTypes="#//ProtocolBodyInternal"/>
+      eSuperTypes="#//ProtocolBodyInternal">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="flowTo" lowerBound="1"
+        eType="#//Pin" eKeys="#//NamedElement/name"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ActionSend" eSuperTypes="#//PredefinedAction">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expr" lowerBound="1" eType="#//Expression"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="flowTo" lowerBound="1"
-        eType="#//Pin" eKeys="#//NamedElement/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ActionReceive" eSuperTypes="#//PredefinedAction">
     <eStructuralFeatures xsi:type="ecore:EReference" name="var" lowerBound="1" eType="#//TypeUse"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="flowTo" lowerBound="1"
-        eType="#//Pin" eKeys="#//NamedElement/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Executable" eSuperTypes="#//ElementDef">
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" lowerBound="1" upperBound="-1"

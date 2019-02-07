@@ -748,7 +748,7 @@ Configuration returns Configuration:
 	'}';
 
 Delegation returns Delegation:
-	fullPort=[PortUse|QualifiedName] 'to' portProxy=[PortUse|QualifiedName]
+	source=[PortUse|QualifiedName] 'to' destination=[PortUse|QualifiedName]
 	;
 
 Flow returns Flow:
@@ -756,7 +756,7 @@ Flow returns Flow:
 	;
 
 ConnectorBinding returns ConnectorBinding:
-	firstPort=[PortUse|QualifiedName] '=' secondPort=[PortUse|QualifiedName];
+	source=[PortUse|QualifiedName] '=' destination=[PortUse|QualifiedName];
 
 enum FlowProperty returns FlowProperty:
 	in = 'in' | out = 'out';

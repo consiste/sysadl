@@ -73,7 +73,7 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 		}
 		if ((context instanceof DataTypeDef && ref == SysADLPackage.eINSTANCE.dataTypeDef_SuperType) ||
 			(context instanceof ValueTypeDef && ref == SysADLPackage.eINSTANCE.valueTypeDef_SuperType) ||
-			(context instanceof Requirement && ref == SysADLPackage.eINSTANCE.requirement_DerivedBy)) {
+			(context instanceof Requirement && ref == SysADLPackage.eINSTANCE.requirement_Derive)) {
 			return scope_DataTypeDef_ValueTypeDef_SuperType(context, ref);
 		}
 		if (context instanceof ComponentUse && ref == SysADLPackage.eINSTANCE.componentUse_Definition) {
@@ -87,7 +87,7 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 			|| ref == SysADLPackage.eINSTANCE.relationUse_Destination)) {
 			return scope_ConnectorBinding(context as ConnectorBinding);
 		}
-		if ((context instanceof Flow && ref == SysADLPackage.eINSTANCE.flow_FlowType) ||
+		if ((context instanceof Flow && ref == SysADLPackage.eINSTANCE.flow_Type) ||
 			(context instanceof SimplePortDef && ref == SysADLPackage.eINSTANCE.simplePortDef_FlowType) ||
 			(context instanceof Property && ref == SysADLPackage.eINSTANCE.property_Type) ||
 			((context instanceof TypeUse || context instanceof Pin || context instanceof VariableDecl) && ref == SysADLPackage.eINSTANCE.typeUse_Definition) ||
@@ -150,7 +150,7 @@ class SysADLScopeProvider extends AbstractSysADLScopeProvider {
 	}
 	
 	def scope_DataTypeAccessExpression_Attr(DataTypeAccessExpression a) {
-		Scopes.scopeFor((a.datatype.definition as DataTypeDef).dataTypeAttributes);
+		Scopes.scopeFor((a.datatype.definition as DataTypeDef).attributes);
 	}
 	
 	def scope_EnumValueLiteralExpression_EnumValue(EnumValueLiteralExpression v) {

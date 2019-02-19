@@ -105,12 +105,12 @@ public class SysADLServices {
 	
 	public Boolean isReqSatisfied(Requirement r) {
 		if (r.getSatisfiedBy().isEmpty()) {
-			if (!r.getComposition().isEmpty() || !r.getDerivedBy().isEmpty()) {
+			if (!r.getComposition().isEmpty() || !r.getDerive().isEmpty()) {
 				for (Object sub : r.getComposition()) {
 					if (!isReqSatisfied((Requirement)sub))
 						return false;
 				}
-				for (Object sub : r.getDerivedBy()) {
+				for (Object sub : r.getDerive()) {
 					if (!isReqSatisfied((Requirement)sub))
 						return false;
 				}

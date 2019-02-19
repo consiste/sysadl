@@ -10,7 +10,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="Package" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="imports" upperBound="-1"
         eType="#//Package" eKeys="#//NamedElement/name"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="elementImports" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="importedDefinitions" upperBound="-1"
         eType="#//ElementDef" eKeys="#//NamedElement/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="definitions" upperBound="-1"
         eType="#//ElementDef" containment="true" eKeys="#//NamedElement/name"/>
@@ -36,7 +36,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="ElementDef" abstract="true" eSuperTypes="#//NamedElement"/>
   <eClassifiers xsi:type="ecore:EClass" name="DataDef" abstract="true" eSuperTypes="#//ElementDef"/>
   <eClassifiers xsi:type="ecore:EClass" name="DataTypeDef" eSuperTypes="#//TypeDef">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="dataTypeAttributes" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
         eType="#//TypeUse" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="superType" eType="#//DataTypeDef"/>
   </eClassifiers>
@@ -49,7 +49,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="TypeUse" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="definition" lowerBound="1"
         eType="#//TypeDef" eOpposite="#//TypeDef/instances" eKeys="#//NamedElement/name"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//Index"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="arrayIndex" eType="#//ArrayIndex"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UnitDef" eSuperTypes="#//DataDef">
@@ -82,7 +82,7 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="StructuralDef" abstract="true" eSuperTypes="#//ElementDef">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="archDefs" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="structuralDefs" upperBound="-1"
         eType="#//StructuralDef" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="dataDefs" upperBound="-1"
         eType="#//DataDef" containment="true"/>
@@ -161,7 +161,7 @@
         eType="#//FlowProperty" defaultValueLiteral="in"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="flowType" lowerBound="1"
         eType="#//TypeDef"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//Index"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="arrayIndex" eType="#//ArrayIndex"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PortUse" eSuperTypes="#//StructuralUse">
@@ -170,8 +170,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConnectorBinding" eSuperTypes="#//RelationUse"/>
   <eClassifiers xsi:type="ecore:EClass" name="Flow" eSuperTypes="#//RelationUse">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="flowType" lowerBound="1"
-        eType="#//TypeDef"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="#//TypeDef"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="FlowProperty">
     <eLiterals name="in"/>
@@ -255,7 +254,7 @@
         eKeys="#//NamedElement/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="initValue" eType="#//Expression"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//Index"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//ArrayIndex"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DataStore" eSuperTypes="#//DataObject"/>
@@ -355,10 +354,10 @@
   <eClassifiers xsi:type="ecore:EClass" name="SequenceAccessExpression" eSuperTypes="#//Expression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="primary" eType="#//Expression"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//Index"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//ArrayIndex"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Index">
+  <eClassifiers xsi:type="ecore:EClass" name="ArrayIndex">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" upperBound="-1"
         eType="#//Expression" containment="true"/>
   </eClassifiers>
@@ -420,7 +419,7 @@
       eSuperTypes="#//Expression"/>
   <eClassifiers xsi:type="ecore:EClass" name="InstanceCreationExpression" eSuperTypes="#//PrimaryExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//TypeDef"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//Index"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//ArrayIndex"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NameExpression" eSuperTypes="#//PrimaryExpression">
@@ -457,7 +456,7 @@
         eKeys="#//NamedElement/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="datatype" eType="#//TypeUse"
         eKeys="#//NamedElement/name"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//Index"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//ArrayIndex"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FeatureReference">
@@ -506,7 +505,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="LeftHandSide">
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//NameExpression"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//Index"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//ArrayIndex"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="#//PrimaryExpression"
         containment="true"/>

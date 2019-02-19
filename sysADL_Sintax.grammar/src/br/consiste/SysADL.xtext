@@ -43,7 +43,7 @@ ComponentDef returns ComponentDef:
 	'{'
 		('ports' ':' ports+=PortUse*)?
 		(properties+=Property
-		| archDefs+=StructuralDef
+		| structuralDefs+=StructuralDef
 		| dataDefs+=DataDef)*
 		
 		(composite=Configuration)?
@@ -67,7 +67,7 @@ PortDef returns PortDef:
 
 Pin returns Pin:
 	{Pin}
-	name=ID ':' (isFlow?='flow')? definition=[TypeDef|QualifiedName] (index=Index)?
+	name=ID ':' (isFlow?='flow')? definition=[TypeDef|QualifiedName] (arrayIndex=Index)?
 	//('{' properties+=Property* '}' )?
 	;
 
@@ -106,7 +106,7 @@ Package returns Package:
 	{Package}
 	'package' name=QualifiedName '{'
 		('import' imports+=[Package|QualifiedName] ';')*
-		('using' elementImports+=[ElementDef|QualifiedName] ';')*
+		('using' importedDefinitions+=[ElementDef|QualifiedName] ';')*
 		(properties+=Property
 		| definitions+=ElementDef
 		| definitions+=ArchitectureDef)*
@@ -131,7 +131,7 @@ DataTypeDef returns DataTypeDef:
 	'datatype'
 	name=ID ('extends' superType=[DataTypeDef|QualifiedName])?
 	'{'
-		('attributes' ':' dataTypeAttributes+=TypeUse*)?
+		('attributes' ':' attributes+=TypeUse*)?
 		properties+=Property*
 	'}';
 
@@ -155,7 +155,7 @@ Enumeration returns Enumeration:
 	'}') | ';';
 
 TypeUse_Impl returns TypeUse:
-	name=ID ':' definition=[TypeDef|QualifiedName] (index=Index)?
+	name=ID ':' definition=[TypeDef|QualifiedName] (arrayIndex=Index)?
 		('{' properties+=Property* '}' | ';' )
 	;
 
@@ -198,7 +198,7 @@ ConnectorDef returns ConnectorDef:
 		('flows' ':' flows+=Flow*)?
 
 		(properties+=Property
-		| archDefs+=StructuralDef
+		| structuralDefs+=StructuralDef
 		| dataDefs+=DataDef)*
 	'}';
 
@@ -214,16 +214,16 @@ CompositePortDef returns CompositePortDef:
 	'{'
 		'ports' ':' ports+=PortUse*
 		(properties+=Property
-		| archDefs+=StructuralDef
+		| structuralDefs+=StructuralDef
 		| dataDefs+=DataDef)*
 	'}';
 
 SimplePortDef returns SimplePortDef:
 	'port' 'def' name=ID
 	'{'
-		'flow' flowProperties=FlowProperty flowType=[TypeDef|QualifiedName] (index=Index)?
+		'flow' flowProperties=FlowProperty flowType=[TypeDef|QualifiedName] (arrayIndex=Index)?
 		(properties+=Property
-		| archDefs+=StructuralDef
+		| structuralDefs+=StructuralDef
 		| dataDefs+=DataDef)*
 	'}';
 
@@ -308,7 +308,7 @@ ConstraintDef returns ConstraintDef:
  * Executable Viewpoint 
  */
 TypeUse_NoSemicolon returns TypeUse:
-	name=ID ':' definition=[TypeDef|QualifiedName] (index=Index)?
+	name=ID ':' definition=[TypeDef|QualifiedName] (arrayIndex=Index)?
 			('{' properties+=Property* '}')?
 ;
 
@@ -344,7 +344,7 @@ BlockStatement returns BlockStatement:
 //;
 
 VariableDecl returns VariableDecl:
-	'let' name=ID ':' definition=[TypeDef|QualifiedName] (index=Index)? ('=' value=Expression)? ';'
+	'let' name=ID ':' definition=[TypeDef|QualifiedName] (arrayIndex=Index)? ('=' value=Expression)? ';'
 	// TODO must add the following line: got a left-reduction conflict
 	//|  definition=[TypeDef|QualifiedName] name=ID '=' (value=Expression)?
 ; 
@@ -698,12 +698,12 @@ LeftHandSide returns LeftHandSide:
 	feature=EnumValueLiteralExpression | "(" LeftHandSide ")"
 ;
 
-Index returns Index:
-	{Index}
+Index returns ArrayIndex:
+	{ArrayIndex}
 	("[" expression+=Expression? "]")+
 ;
 
-NonEmptyIndex returns Index:
+NonEmptyIndex returns ArrayIndex:
 	("[" expression+=Expression "]")+
 ;
 
@@ -752,7 +752,7 @@ Delegation returns Delegation:
 	;
 
 Flow returns Flow:
-	flowType=[TypeDef|QualifiedName] 'from' source=[PortUse|QualifiedName] 'to' destination=[PortUse|QualifiedName]
+	type=[TypeDef|QualifiedName] 'from' source=[PortUse|QualifiedName] 'to' destination=[PortUse|QualifiedName]
 	;
 
 ConnectorBinding returns ConnectorBinding:

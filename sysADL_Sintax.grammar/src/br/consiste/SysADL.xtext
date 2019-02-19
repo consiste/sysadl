@@ -121,7 +121,7 @@ Requirement returns Requirement:
 	'{'
 		('text' '=' text=EString)?
 		('satisfied' 'by' satisfiedBy+=[ElementDef|QualifiedName] ( "," satisfiedBy+=[ElementDef|QualifiedName])* ';')?
-		('derive' derivedBy+=[Requirement|QualifiedName] ( "," derivedBy+=[Requirement|QualifiedName])* ';' )?
+		('derive' derive+=[Requirement|QualifiedName] ( "," derive+=[Requirement|QualifiedName])* ';' )?
 		(properties+=Property
 		| composition+=Requirement)*
 	'}';
@@ -245,7 +245,7 @@ ActionDef returns ActionDef:
 	name=ID '(' inParameters+=Pin ( "," inParameters+=Pin)* ')' ':' returnType=[TypeDef|QualifiedName]
 	'{'
 		(properties+=Property
-		| behaDefs+=BehaviorDef
+		| behaviorDefs+=BehaviorDef
 		| dataDefs+=DataDef)* 
 		('constraint' ':' constraints+=ConstraintUse*)?
 		delegations+=ActivityDelegation*
@@ -257,16 +257,16 @@ ActivityDef returns ActivityDef:
 	name=ID  ('(' inParameters+=Pin (',' inParameters+=Pin)* ')') (':' '('outParameters+=Pin (',' outParameters+=Pin)* ')')?
 	'{'
 		(properties+=Property
-		| behaDefs+=BehaviorDef
+		| behaviorDefs+=BehaviorDef
 		| dataDefs+=DataDef)* 
 		('constraint' ':' constraints+=ConstraintUse*)?
 		delegations+=ActivityDelegation*
-		(acbody=ActivityBody)?
+		(body=ActivityBody)?
 	'}';
 
 DataStore returns DataStore:
 	'datastore'
-	name=ID ':' type=[TypeDef|QualifiedName] (index=Index)?
+	name=ID ':' type=[TypeDef|QualifiedName] (arrayIndex=Index)?
 	('{'
 		
 		properties+=Property*
@@ -275,7 +275,7 @@ DataStore returns DataStore:
 
 DataBuffer returns DataBuffer:
 	'databuffer'
-	name=ID ':' type=[TypeDef|QualifiedName] (index=Index)?
+	name=ID ':' type=[TypeDef|QualifiedName] (arrayIndex=Index)?
 	'{'
 		properties+=Property*
 		('initial' 'value' '=' initValue=Expression ';')?
@@ -286,7 +286,7 @@ Protocol returns Protocol: // TODO
 	name=ID ('(' inParameters+=Pin (',' inParameters+=Pin)* ')') (':' outParameters+=Pin (',' outParameters+=Pin)*)?
 	'{'
 		(properties+=Property
-		behaDefs+=BehaviorDef
+		behaviorDefs+=BehaviorDef
 		dataDefs+=DataDef)*
 		//constraints+=ConstraintUse
 		('delegations' ':' delegations+=ActivityDelegation*)?
@@ -813,7 +813,7 @@ ProtocolBodyInternal returns ProtocolBodyInternal:
 	'(' ProtocolBody ')' | ActionSend | ActionReceive;
 
 ActionSend returns ActionSend:
-	'send' expr=Expression	'via' flowTo=[Pin|QualifiedName]
+	'send' expression=Expression	'via' flowTo=[Pin|QualifiedName]
 ;
 
 ActionReceive returns ActionReceive:

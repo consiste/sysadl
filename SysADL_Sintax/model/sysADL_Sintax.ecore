@@ -182,7 +182,7 @@
         upperBound="-1" eType="#//Pin" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="outParameters" ordered="false"
         upperBound="-1" eType="#//Pin" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="behaDefs" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="behaviorDefs" upperBound="-1"
         eType="#//BehaviorDef" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="dataDefs" upperBound="-1"
         eType="#//DataDef" containment="true"/>
@@ -192,7 +192,7 @@
         eType="#//ActivityDelegation" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ActivityDef" eSuperTypes="#//BehaviorDef">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="acbody" eType="#//ActivityBody"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//ActivityBody"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ActionDef" eSuperTypes="#//BehaviorDef #//ActivityFlowable">
@@ -254,7 +254,7 @@
         eKeys="#//NamedElement/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="initValue" eType="#//Expression"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//ArrayIndex"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="arrayIndex" eType="#//ArrayIndex"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DataStore" eSuperTypes="#//DataObject"/>
@@ -290,8 +290,8 @@
         eType="#//Pin" eKeys="#//NamedElement/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ActionSend" eSuperTypes="#//PredefinedAction">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" lowerBound="1" eType="#//Expression"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
+        eType="#//Expression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ActionReceive" eSuperTypes="#//PredefinedAction">
     <eStructuralFeatures xsi:type="ecore:EReference" name="var" lowerBound="1" eType="#//TypeUse"
@@ -304,6 +304,31 @@
         eType="#//TypeDef"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"
         eType="#//TypeUse" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Requirement" eSuperTypes="#//NamedElement">
+    <eOperations name="isValid" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="derive" upperBound="-1"
+        eType="#//Requirement" eKeys="#//NamedElement/name"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="composition" upperBound="-1"
+        eType="#//Requirement" containment="true" eKeys="#//NamedElement/name"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="satisfiedBy" upperBound="-1"
+        eType="#//ElementDef" eKeys="#//NamedElement/name"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AllocationTable">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="allocs" upperBound="-1"
+        eType="#//Allocation" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Allocation" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ExecutableAllocation" eSuperTypes="#//Allocation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source" eType="#//Executable"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//ActionDef"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ActivityAllocation" eSuperTypes="#//Allocation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source" eType="#//ActivityDef"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//StructuralDef"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Statement" abstract="true">
     <eOperations name="run">
@@ -577,29 +602,4 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DefaultSwitchClause" eSuperTypes="#//SwitchClause"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Requirement" eSuperTypes="#//NamedElement">
-    <eOperations name="isValid" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
-        iD="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="derivedBy" upperBound="-1"
-        eType="#//Requirement" eKeys="#//NamedElement/name"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="composition" upperBound="-1"
-        eType="#//Requirement" containment="true" eKeys="#//NamedElement/name"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="satisfiedBy" upperBound="-1"
-        eType="#//ElementDef" eKeys="#//NamedElement/name"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="AllocationTable">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="allocs" upperBound="-1"
-        eType="#//Allocation" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Allocation" abstract="true"/>
-  <eClassifiers xsi:type="ecore:EClass" name="ExecutableAllocation" eSuperTypes="#//Allocation">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="source" eType="#//Executable"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//ActionDef"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ActivityAllocation" eSuperTypes="#//Allocation">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="source" eType="#//ActivityDef"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//StructuralDef"/>
-  </eClassifiers>
 </ecore:EPackage>

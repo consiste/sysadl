@@ -825,7 +825,7 @@ ActionReceive returns ActionReceive:
 ActivityFlow returns ActivityFlow:
 	'flow'
 	'from' source=[ActivityFlowable|QualifiedName]
-	'to' (target=[ActivityFlowable|QualifiedName] | targetSwitch=ActivitySwitch)?
+	'to' (target=[ActivityFlowable|QualifiedName] | targetSwitch=ActivitySwitch)
 ;
 
 

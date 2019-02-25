@@ -236,9 +236,10 @@
         eType="#//ActivitySwitchCase" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ActivitySwitchCase">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="condition" eType="#//Expression"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//ActivityFlowable"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="condition" lowerBound="1"
+        eType="#//Expression" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
+        eType="#//ActivityFlowable"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ActivityFlowable" abstract="true" interface="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="ActivityBody">

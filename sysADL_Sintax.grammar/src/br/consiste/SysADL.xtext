@@ -299,8 +299,10 @@ ConstraintDef returns ConstraintDef:
 	'constraint'
 	name=ID ('(' ( inParameters+=Pin (',' inParameters+=Pin)* )? ')') (':' '(' outParameters+=Pin (',' outParameters+=Pin)* ')')? 
 	'{'
+		(properties+=Property
+		| behaviorDefs+=BehaviorDef
+		| dataDefs+=DataDef)*
 		('equation' '=' equation=Expression)?
-		properties+=Property*
 	'}';
 
 

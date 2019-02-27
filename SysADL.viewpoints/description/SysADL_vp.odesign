@@ -548,7 +548,7 @@
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </centerLabelStyleDescription>
           </style>
-          <conditionnalStyles predicateExpression="[not(self.oclAsType(ConnectorUse).definition.composite.oclIsInvalid())/]">
+          <conditionnalStyles predicateExpression="service:connectorIsComposite(self)">
             <style targetArrow="NoDecoration" sizeComputationExpression="3">
               <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
               <centerLabelStyleDescription showIcon="false" labelExpression="[self.name+' : '+self.definition.name/]">
@@ -763,6 +763,14 @@
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </style>
           </subNodeMappings>
+          <subContainerMappings>
+            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelSize="12">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+              <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
+            </style>
+          </subContainerMappings>
           <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" showIcon="false" labelExpression="['bdd [pkg] '+self.name/]" labelAlignment="LEFT" widthComputationExpression="60" heightComputationExpression="40">
             <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
@@ -800,6 +808,7 @@
         </toolSections>
       </defaultLayer>
     </ownedRepresentations>
+    <ownedJavaExtensions qualifiedClassName="sysadl.viewpoints.services.SysADLServices"/>
   </ownedViewpoints>
   <ownedViewpoints name="SysADL.Behavioral" label="SysADL Behavioral Viewpoint" modelFileExtension="sysadl">
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="BDD.Behavior" label="Block Definition Diagram (Behavior BDD)" domainClass="Package">

@@ -20,9 +20,12 @@ import org.eclipse.xtext.resource.XtextResource;
 import sysADL_Sintax.ActivityFlowable;
 import sysADL_Sintax.ActivitySwitch;
 import sysADL_Sintax.ActivitySwitchCase;
+import sysADL_Sintax.CompositePortDef;
+import sysADL_Sintax.ConnectorUse;
 import sysADL_Sintax.ConstraintUse;
 import sysADL_Sintax.Expression;
 import sysADL_Sintax.Model;
+import sysADL_Sintax.PortUse;
 import sysADL_Sintax.Requirement;
 import sysADL_Sintax.SysADLFactory;
 import sysADL_Sintax.util.SysADLCreationTools;
@@ -105,12 +108,12 @@ public class SysADLServices {
 	
 	public Boolean isReqSatisfied(Requirement r) {
 		if (r.getSatisfiedBy().isEmpty()) {
-			if (!r.getComposition().isEmpty() || !r.getDerive().isEmpty()) {
+			if (!r.getComposition().isEmpty() || !r.getDerivedBy().isEmpty()) {
 				for (Object sub : r.getComposition()) {
 					if (!isReqSatisfied((Requirement)sub))
 						return false;
 				}
-				for (Object sub : r.getDerive()) {
+				for (Object sub : r.getDerivedBy()) {
 					if (!isReqSatisfied((Requirement)sub))
 						return false;
 				}
@@ -135,5 +138,13 @@ public class SysADLServices {
 		setupCase(c, tar);
 		s.getCases().add(c);
 		return c;
+	}
+	
+	public Boolean connectorIsComposite(ConnectorUse c) {
+		Boolean b = (c.getDefinition().getComposite() != null);
+		PortUse first = c.getBindings().get(0).getFirstPort();
+		PortUse second = c.getBindings().get(0).getSecondPort();
+		b = b && (first.getDefinition() instanceof CompositePortDef) && (second.getDefinition() instanceof CompositePortDef);
+		return b;
 	}
 }

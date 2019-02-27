@@ -16,9 +16,37 @@ Model returns Model:
 		('using' involvedElements+=[ElementDef|QualifiedName] ';')*
 		(properties+=Property
 		| packages+=Package
-		| requirements+=Requirement)*
+		| requirements+=Requirement
+		| styles+=Style)*
 	(allocation=AllocationTable)?;
 
+Style returns Style:
+ 	{Style}
+	'style' name=QualifiedName '{'
+		( invariants+=Invariant
+		| definitions+=AbstractDef)*
+	'}'
+ 	;
+
+Invariant returns Invariant:
+   'invariant' 'lalala'; // TODO implement me
+   
+ AbstractDef returns AbstractDef:
+    AbstractComponentDef; // TODO extend to further types
+    
+AbstractComponentDef returns AbstractComponentDef:
+   {AbstractComponentDef}
+	'abstract' (isBoundary?='boundary')? 'component' 'def' name=ID 
+	'{'
+		('ports' ':' ports+=PortUse*)?
+		(properties+=Property
+		| structuralDefs+=StructuralDef
+		| dataDefs+=DataDef)*
+		
+		(composite=Configuration)?
+	'}' ;
+   
+   
 ElementDef returns ElementDef:
 	DataTypeDef | DimensionDef | UnitDef | ValueTypeDef | Enumeration | ComponentDef | ConnectorDef | CompositePortDef | SimplePortDef | ActionDef | ActivityDef | Protocol | ConstraintDef | Executable;
 
@@ -104,7 +132,7 @@ Property returns Property:
 
 Package returns Package:
 	{Package}
-	'package' name=QualifiedName '{'
+	'package' name=QualifiedName ('satisfies' appliedStyle=[Style|QualifiedName]) '{'
 		('import' imports+=[Package|QualifiedName] ';')*
 		('using' importedDefinitions+=[ElementDef|QualifiedName] ';')*
 		(properties+=Property

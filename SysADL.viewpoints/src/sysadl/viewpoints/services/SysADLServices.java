@@ -21,6 +21,7 @@ import sysADL_Sintax.ActivityFlowable;
 import sysADL_Sintax.ActivitySwitch;
 import sysADL_Sintax.ActivitySwitchCase;
 import sysADL_Sintax.CompositePortDef;
+import sysADL_Sintax.ConnectorBinding;
 import sysADL_Sintax.ConnectorUse;
 import sysADL_Sintax.ConstraintUse;
 import sysADL_Sintax.Expression;
@@ -108,12 +109,12 @@ public class SysADLServices {
 	
 	public Boolean isReqSatisfied(Requirement r) {
 		if (r.getSatisfiedBy().isEmpty()) {
-			if (!r.getComposition().isEmpty() || !r.getDerivedBy().isEmpty()) {
+			if (!r.getComposition().isEmpty() || !r.getDerive().isEmpty()) {
 				for (Object sub : r.getComposition()) {
 					if (!isReqSatisfied((Requirement)sub))
 						return false;
 				}
-				for (Object sub : r.getDerivedBy()) {
+				for (Object sub : r.getDerive()) {
 					if (!isReqSatisfied((Requirement)sub))
 						return false;
 				}
@@ -142,8 +143,8 @@ public class SysADLServices {
 	
 	public Boolean connectorIsComposite(ConnectorUse c) {
 		Boolean b = (c.getDefinition().getComposite() != null);
-		PortUse first = c.getBindings().get(0).getFirstPort();
-		PortUse second = c.getBindings().get(0).getSecondPort();
+		PortUse first = ((ConnectorBinding) c.getBindings().get(0)).getSource();
+		PortUse second = ((ConnectorBinding)c.getBindings().get(0)).getDestination();
 		b = b && (first.getDefinition() instanceof CompositePortDef) && (second.getDefinition() instanceof CompositePortDef);
 		return b;
 	}

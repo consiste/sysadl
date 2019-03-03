@@ -29,10 +29,10 @@ Style returns Style:
  	;
 
 Invariant returns Invariant:
-   'invariant' 'lalala'; // TODO implement me
+   'invariant' 'lala'; // TODO implement me
    
  AbstractDef returns AbstractDef:
-    AbstractComponentDef; // TODO extend to further types
+    AbstractComponentDef | AbstractConnectorDef; // TODO extend to further types
     
 AbstractComponentDef returns AbstractComponentDef:
    {AbstractComponentDef}
@@ -46,7 +46,19 @@ AbstractComponentDef returns AbstractComponentDef:
 		(composite=Configuration)?
 	'}' ;
    
-   
+ AbstractConnectorDef returns AbstractConnectorDef:
+	'abstract' 'connector' 'def' name=ID
+	'{'
+		('participants' ':' ports+=PortUse_Reverse*)?
+		(composite=Configuration)?
+		('flows' ':' flows+=Flow*)?
+
+		(properties+=Property
+		| structuralDefs+=StructuralDef
+		| dataDefs+=DataDef)*
+	'}';
+
+ 
 ElementDef returns ElementDef:
 	DataTypeDef | DimensionDef | UnitDef | ValueTypeDef | Enumeration | ComponentDef | ConnectorDef | CompositePortDef | SimplePortDef | ActionDef | ActivityDef | Protocol | ConstraintDef | Executable;
 

@@ -32,7 +32,7 @@ Invariant returns Invariant:
    'invariant' name=ID '=' expr=Expression;
    
  AbstractDef returns AbstractDef:
-    AbstractComponentDef | AbstractConnectorDef; // TODO extend to further types
+    AbstractComponentDef | AbstractConnectorDef;
     
 AbstractComponentDef returns AbstractComponentDef:
    {AbstractComponentDef}
@@ -186,13 +186,12 @@ ValueTypeDef returns ValueTypeDef:
 	'}';
 
 Enumeration returns Enumeration:
-	{Enumeration}
 	'enum'
 	name=ID
 	('{'
 		properties+=Property*
 		literals+=EnumLiteralValue ("," literals+=EnumLiteralValue)*
-	'}') | ';';
+	'}');
 
 TypeUse_Impl returns TypeUse:
 	name=ID ':' definition=[TypeDef|QualifiedName] (arrayIndex=Index)?
@@ -393,8 +392,7 @@ VariableDecl returns VariableDecl:
 
 IfBlockStatement returns IfBlockStatement:
 	main_if=IfStatement
-	//('or' paralel_ifs+=IfStatement)* // TODO need to fix it, we need some mechanism to find out the order of the if statements if combining parallel and sequential 
-	//('else' sequential_ifs+=IfStatement)* // FIXME will be removed, not necessary
+	//('or' paralel_ifs+=IfStatement)* // TODO need to fix it, we need some mechanism to determine the order of the if statements if combining parallel and sequential 
 	(=>else=ElseStatement)?
 ;
 
@@ -465,7 +463,7 @@ NonNameExpression returns Expression:
 	LiteralExpression 
 	| ThisExpression 
 	| ParenthesizedExpression 
-	//| PropertyAccessExpression // TODO left-recursion problem 
+	//| PropertyAccessExpression // FIXME left-recursion problem 
 	| DataTypeAccessExpression
 	//| InvocationExpression
 	| InstanceCreationExpression 
@@ -548,30 +546,6 @@ FeatureReference returns FeatureReference:
 	//target=FeatureTargetExpression "." field=[NamedElement|ID]
 	(feature=[NamedElement|QualifiedName] | expr=NonNameExpression) '->' field=[NamedElement|ID]
 ; 
-
-/*FeatureTargetExpression returns Expression:
-	{Expression} feature=[NamedElement|QualifiedName] | expr=NonNameExpression
-;
-
-NameTargetExpression: ID ('::' ID)+;*/
-
-/* InvocationExpression returns InvocationExpression: // TODO enable all of this
-target=[BehavioralDef|EString] tuple=Tuple
-
-Tuple returns Tuple:
-	PositionalTuple | NamedTuple
-
-PositionalTuple returns PositionalTuple:
-	'(' exp=Expression (exp+=Expression)* ')'
-
-NamedTuple returns NamedTuple:
-	'(' exp=NamedExpression (exp+=NamedExpression)* ')'
-
-NamedExpression returns NamedExpression:
-	name=EString '=>' exp=Expression
-*/
- 
-
 
 /**
  * Increment and decrement expressions

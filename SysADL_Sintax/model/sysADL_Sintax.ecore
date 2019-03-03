@@ -28,6 +28,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AbstractDef" abstract="true" interface="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="AbstractComponentDef" eSuperTypes="#//AbstractDef #//ComponentDef"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractConnectorDef" eSuperTypes="#//AbstractDef #//ConnectorDef"/>
   <eClassifiers xsi:type="ecore:EClass" name="Model" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="packages" upperBound="-1"
         eType="#//Package" containment="true" eKeys="#//NamedElement/name"/>
@@ -111,7 +112,8 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="instances" upperBound="-1"
         eType="#//ComponentUse" eOpposite="#//ComponentUse/definition"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="abstractComponent" eType="#//AbstractComponentDef"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="abstractComponent" eType="#//AbstractComponentDef"
+        eKeys="#//NamedElement/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ArchitectureDef" eSuperTypes="#//ComponentDef"/>
   <eClassifiers xsi:type="ecore:EClass" name="ComponentUse" eSuperTypes="#//StructuralUse">
@@ -129,6 +131,8 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="instances" upperBound="-1"
         eType="#//ConnectorUse" eOpposite="#//ConnectorUse/definition"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="abstractConnector" eType="#//AbstractConnectorDef"
+        eKeys="#//NamedElement/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConnectorUse" eSuperTypes="#//StructuralUse">
     <eOperations name="allPorts"/>

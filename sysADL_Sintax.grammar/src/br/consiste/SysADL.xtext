@@ -364,7 +364,7 @@ Executable returns Executable:
 /**
  * Executable[STATEMENTS]
  */
-Statement returns Statement: //TODO substituir AssignmentExpression por Expressione tratar o erro em Expression
+Statement returns Statement:
 	//AssignmentExpression ';' | BlockStatement | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | IfBlockStatement | SwitchStatement
 	NonBlockStatement | BlockStatement
 ;

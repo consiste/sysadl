@@ -18,11 +18,11 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Style" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="invariants" upperBound="-1"
-        eType="#//Invariant" containment="true"/>
+        eType="#//Invariant" containment="true" eKeys="#//NamedElement/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="definitions" upperBound="-1"
         eType="#//AbstractDef" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Invariant">
+  <eClassifiers xsi:type="ecore:EClass" name="Invariant" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expr" lowerBound="1" eType="#//Expression"
         containment="true"/>
   </eClassifiers>

@@ -29,7 +29,7 @@ Style returns Style:
  	;
 
 Invariant returns Invariant:
-   'invariant' 'lala'; // TODO implement me
+   'invariant' name=ID '=' expr=Expression;
    
  AbstractDef returns AbstractDef:
     AbstractComponentDef | AbstractConnectorDef; // TODO extend to further types

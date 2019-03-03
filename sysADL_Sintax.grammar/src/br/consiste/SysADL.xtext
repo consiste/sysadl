@@ -79,7 +79,7 @@ DataDef returns DataDef:
 	DataTypeDef | DimensionDef | UnitDef | ValueTypeDef | Enumeration;
 
 ComponentDef returns ComponentDef:
-	(isBoundary?='boundary')? 'component' 'def' name=ID 
+	(isBoundary?='boundary')? 'component' 'def' name=ID ('implements' abstractComponent=[AbstractComponentDef|QualifiedName])?
 	'{'
 		('ports' ':' ports+=PortUse*)?
 		(properties+=Property
@@ -92,7 +92,7 @@ ComponentDef returns ComponentDef:
 
 ArchitectureDef returns ComponentDef:
 	// alternatively, a component might be an architecture 
-	'architecture' 'def' name=ID 
+	'architecture' 'def' name=ID // TODO shall an architecture implement a style, instead of a package?
 	'{'
 		'ports' ':' ports+=PortUse*
 		properties+=Property*
@@ -231,7 +231,7 @@ ComponentUse returns ComponentUse:
 	'}' | ';');
 
 ConnectorDef returns ConnectorDef:
-	'connector' 'def' name=ID
+	'connector' 'def' name=ID  ('implements' abstractConnector=[AbstractConnectorDef|QualifiedName])?
 	'{'
 		('participants' ':' ports+=PortUse_Reverse*)?
 		(composite=Configuration)?
@@ -321,7 +321,7 @@ DataBuffer returns DataBuffer:
 		('initial' 'value' '=' initValue=Expression ';')?
 	'}';
 
-Protocol returns Protocol: // TODO
+Protocol returns Protocol: // TODO review
 	'protocol'
 	name=ID ('(' inParameters+=Pin (',' inParameters+=Pin)* ')') (':' outParameters+=Pin (',' outParameters+=Pin)*)?
 	'{'
@@ -446,7 +446,7 @@ DefaultSwitchClause returns DefaultSwitchClause:
  * Executable[EXPRESSIONS]
  * Expressions are divided into 6 groups of expressions
  */
-Expression returns Expression: //TODO resolver o problema de estar entrando em ConditionalExpression em todos os casos e nunca em AssignmentExpression
+Expression returns Expression:
 	ConditionalExpression | =>AssignmentExpression   
 ;
 
@@ -623,7 +623,6 @@ IsolationExpression returns IsolationExpression:
 //	operator='+'|'-' op=UnaryExpression
 //;
 
-//TODO 
 //CastExpression returns CastExpression:
 //	"(" typeName=[TypeDef|QualifiedName] ")" op=NonNumericUnaryExpression
 //; // NonNumericUnaryExpression 'as' typeName=[TypeDef|QualifiedName] // Xtend alternative

@@ -1,4 +1,4 @@
-package org.sysadl.execution.statement;
+package org.sysadl.execution.statements.types;
 
 import org.sysadl.context.exceptions.ContextException;
 

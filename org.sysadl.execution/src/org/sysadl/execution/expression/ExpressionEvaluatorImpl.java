@@ -24,7 +24,6 @@ import sysADL_Sintax.NameExpression;
 import sysADL_Sintax.NamedElement;
 import sysADL_Sintax.NaturalLiteralExpression;
 import sysADL_Sintax.NullLiteralExpression;
-import sysADL_Sintax.NumericUnaryOperator;
 import sysADL_Sintax.PropertyAccessExpression;
 import sysADL_Sintax.RelationalExpression;
 import sysADL_Sintax.RelationalOperator;
@@ -33,7 +32,6 @@ import sysADL_Sintax.StringLiteralExpression;
 import sysADL_Sintax.SysADLFactory;
 import sysADL_Sintax.ThisExpression;
 import sysADL_Sintax.TypeUse;
-import sysADL_Sintax.impl.SysADLFactoryImpl;
 
 public class ExpressionEvaluatorImpl extends ExpressionEvaluator {
 
@@ -212,25 +210,26 @@ public class ExpressionEvaluatorImpl extends ExpressionEvaluator {
 		if (exprRight==null) return evaluate(exprLeft, context);
 		Object left = evaluate(exprLeft, context);
 		Object right = evaluate(exprRight, context);
-		
-		NumericUnaryOperator op = e.getOperator();
-		switch (op.getValue()) {
-			case NumericUnaryOperator.PLUS:
-				if (left instanceof String || right instanceof String) {
-					return ((String) left).concat(right.toString());
-				} else {
-					if (left instanceof Integer && right instanceof Integer)
-						return (Integer) left + (Integer) right; // @fixme only for integer
-				}
-			case NumericUnaryOperator.MINUS:
-				if (left instanceof String || right instanceof String) {
-					return ((String) left).replace((right.toString()),"");
-				} else {
-					if (left instanceof Integer && right instanceof Integer)
-						return (Integer) left - (Integer) right; // @fixme only for integer
-				}
-			default:
-		}
+
+		// FIXME
+//		NumericUnaryOperator op = e.getOperator();
+//		switch (op.getValue()) {
+//			case NumericUnaryOperator.PLUS:
+//				if (left instanceof String || right instanceof String) {
+//					return ((String) left).concat(right.toString());
+//				} else {
+//					if (left instanceof Integer && right instanceof Integer)
+//						return (Integer) left + (Integer) right; // @fixme only for integer
+//				}
+//			case NumericUnaryOperator.MINUS:
+//				if (left instanceof String || right instanceof String) {
+//					return ((String) left).replace((right.toString()),"");
+//				} else {
+//					if (left instanceof Integer && right instanceof Integer)
+//						return (Integer) left - (Integer) right; // @fixme only for integer
+//				}
+//			default:
+//		}
 		return null;
 	}
 

@@ -1,14 +1,14 @@
-package org.sysadl.engine;
+package org.sysadl.execution.engine;
 
 import org.eclipse.emf.common.util.EList;
 import org.sysadl.context.SysADLContext;
 import org.sysadl.context.exceptions.ContextException;
-import org.sysadl.execution.StatementsInterpreterImpl;
-import org.sysadl.execution.SysADLStatementInterpreter;
 import org.sysadl.execution.expression.ExpressionEvaluator;
 import org.sysadl.execution.expression.ExpressionEvaluatorImpl;
-import org.sysadl.execution.statement.ControlBreakStatement;
-import org.sysadl.execution.statement.ControlReturnStatement;
+import org.sysadl.execution.statements.StatementsInterpreterImpl;
+import org.sysadl.execution.statements.SysADLStatementInterpreter;
+import org.sysadl.execution.statements.types.ControlBreakStatement;
+import org.sysadl.execution.statements.types.ControlReturnStatement;
 
 import sysADL_Sintax.Executable;
 import sysADL_Sintax.Expression;

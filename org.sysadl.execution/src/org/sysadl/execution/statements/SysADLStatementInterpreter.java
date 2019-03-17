@@ -1,11 +1,11 @@
-package org.sysadl.execution;
+package org.sysadl.execution.statements;
 
 import java.util.Map;
 
 import org.sysadl.context.SysADLContext;
 import org.sysadl.context.exceptions.ContextException;
-import org.sysadl.engine.SysADLExecutionEngine;
-import org.sysadl.execution.statement.ControlReturnStatement;
+import org.sysadl.execution.engine.SysADLExecutionEngine;
+import org.sysadl.execution.statements.types.ControlReturnStatement;
 
 import sysADL_Sintax.BlockStatement;
 import sysADL_Sintax.DoStatement;

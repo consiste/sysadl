@@ -1,8 +1,8 @@
-package org.sysadl.execution;
+package org.sysadl.execution.statements;
 
 import org.sysadl.context.SysADLContext;
 import org.sysadl.context.exceptions.ContextException;
-import org.sysadl.engine.SysADLExecutionEngine;
+import org.sysadl.execution.engine.SysADLExecutionEngine;
 
 import sysADL_Sintax.BlockStatement;
 import sysADL_Sintax.DoStatement;

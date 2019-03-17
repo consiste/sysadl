@@ -1,41 +1,37 @@
-package org.sysadl.sysADL_Sintax.aspects
+package org.sysadl.execution
 
 import fr.inria.diverse.k3.al.annotationprocessor.Aspect
-import fr.inria.diverse.k3.al.annotationprocessor.Main
-import org.eclipse.emf.common.util.EList
-import fr.inria.diverse.k3.al.annotationprocessor.Step
-import fr.inria.diverse.k3.al.annotationprocessor.InitializeModel
-import org.eclipse.emf.common.util.BasicEList
-import sysADL_Sintax.ActivityBody
-import sysADL_Sintax.ActivityDef
-import sysADL_Sintax.Pin
-import sysADL_Sintax.ActivityDelegation
-import sysADL_Sintax.ActionUse
-import sysADL_Sintax.DataObject
-import sysADL_Sintax.ActivityFlowable
-import sysADL_Sintax.ActivityRelation
-import sysADL_Sintax.ActivityFlow
-import sysADL_Sintax.NamedElement
-import org.sysadl.context.SysADLContext
-import org.sysadl.engine.SysADLExecutionEngine
-import org.sysadl.context.impl.SysADLContextImpl
-import org.sysadl.engine.ExecutionUtil
-import sysADL_Sintax.DataBuffer
 import java.util.Queue
-import sysADL_Sintax.DataStore
+import org.eclipse.emf.common.util.EList
+import org.sysadl.context.SysADLContext
+import org.sysadl.context.impl.SysADLContextImpl
+import org.sysadl.execution.engine.ExecutionUtil
+import org.sysadl.execution.engine.SysADLExecutionEngine
 import org.sysadl.execution.ui.Inputer
 import org.sysadl.execution.ui.UiActivityPinInput
 import org.sysadl.execution.value.Values
+import sysADL_Sintax.ActionUse
+import sysADL_Sintax.ActivityBody
+import sysADL_Sintax.ActivityDef
+import sysADL_Sintax.ActivityDelegation
+import sysADL_Sintax.ActivityFlow
+import sysADL_Sintax.ActivityFlowable
+import sysADL_Sintax.ActivityRelation
+import sysADL_Sintax.DataBuffer
+import sysADL_Sintax.DataObject
+import sysADL_Sintax.DataStore
+import sysADL_Sintax.NamedElement
+import sysADL_Sintax.Pin
 
 @Aspect(className=ActivityBody)
 class ActivityBodyAspect {
-	private boolean finished
-	private UiActivityPinInput input
+	boolean finished
+	UiActivityPinInput input
 	/**
 	 * Initialize the model, setting the private attributes and pin values for input
 	 */
-	@InitializeModel
-	def public void init(EList<String> args) {
+	
+	def void init(EList<String> args) {
 		_self.input = new Inputer(_self.eContainer as ActivityDef)
 		_self.finished = false;
 	}
@@ -43,7 +39,7 @@ class ActivityBodyAspect {
 	/** 
 	 * For now, main method just iterates over steps
 	 */
-	@Main
+
 	def static void main() {
 		// Infinite loop, find a way to make it finite
 		while (!_self.finished) {
@@ -58,7 +54,7 @@ class ActivityBodyAspect {
 	 * - Action Run: An Action has all data it needs and will execute
 	 * - Data: A data is provided by a DataObject 
 	 */
-	@Step
+	
 	def void step() {
 		// Setup  pins of activity:
 		_self.stepActivityPins()
@@ -73,7 +69,6 @@ class ActivityBodyAspect {
 		_self.stepRunActions()
 	}
 
-	@Step
 	def void stepActivityPins() {
 		// generate values for the activity pins in
 		val act = _self.eContainer.eContainer as ActivityDef
@@ -103,20 +98,19 @@ class ActivityBodyAspect {
 		}
 	}
 
-	@Step
 	def void stepRunData() {
 		for (d : _self.dataObjects) {
 			DataObjectAspect.run(d as DataObject)
 		}
 	}
 	
-	@Step
+
 	def void stepRunTransmit() {
 		for (f : _self.flows) {
 			ActivityRelationAspect.run(f as ActivityRelation);
 		}
 	}
-	@Step
+	
 	def void stepRunActions() {
 		for (a : _self.actions) { // a is an ActionUse 
 			ActionUseAspect.run(a as ActionUse)
@@ -127,7 +121,6 @@ class ActivityBodyAspect {
 
 @Aspect(className=ActionUse)
 class ActionUseAspect {
-	@Step
 	def void run() {
 		if (_self.canRun()) {
 			println("Running action " + _self.name)
@@ -159,7 +152,6 @@ class ActionUseAspect {
 
 @Aspect(className=ActivityRelation)
 class ActivityRelationAspect {
-	@Step
 	def void run() {
 		var src = _self.source
 		var tar = _self.target
@@ -230,7 +222,7 @@ class DataBufferAspect extends DataObjectAspect{
 
 @Aspect(className=DataStore)
 class DataStoreAspect extends DataObjectAspect {
-	private Object store
+	Object store
 	
 	def void run() {
 		if (_self.cvalue===null) { // either the value was consumed, or the store is empty

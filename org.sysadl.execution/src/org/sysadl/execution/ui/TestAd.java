@@ -26,7 +26,7 @@ public class TestAd {
 		
 		Package sysadlTypes = (Package) model.getPackages().get(0);
 		
-		for (Object t : sysadlTypes.getArchitectures()) {
+		for (Object t : sysadlTypes.getDefinitions()) {
 			if (t instanceof TypeDef) {
 				TypeDef type = (TypeDef) t;
 				

@@ -1,0 +1,10 @@
+	// BeginInjectInto org.sysadl.execution.DataObjectAspect#void run() from org.sysadl.execution.DataBufferAspect
+		if (_self instanceof sysADL_Sintax.DataBuffer){
+			org.sysadl.execution.DataBufferAspect.run((sysADL_Sintax.DataBuffer)_self);
+		} else
+		// EndInjectInto org.sysadl.execution.DataObjectAspect#void run() from org.sysadl.execution.DataBufferAspect
+	// BeginInjectInto org.sysadl.execution.DataObjectAspect#void run() from org.sysadl.execution.DataStoreAspect
+		if (_self instanceof sysADL_Sintax.DataStore){
+			org.sysadl.execution.DataStoreAspect.run((sysADL_Sintax.DataStore)_self);
+		} else
+		// EndInjectInto org.sysadl.execution.DataObjectAspect#void run() from org.sysadl.execution.DataStoreAspect

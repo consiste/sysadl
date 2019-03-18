@@ -10,11 +10,11 @@ import org.sysadl.execution.statements.SysADLStatementInterpreter;
 import org.sysadl.execution.statements.types.ControlBreakStatement;
 import org.sysadl.execution.statements.types.ControlReturnStatement;
 
-import sysADL_Sintax.Executable;
-import sysADL_Sintax.Expression;
-import sysADL_Sintax.NameExpression;
-import sysADL_Sintax.ReturnStatement;
-import sysADL_Sintax.Statement;
+import org.sysadl.Executable;
+import org.sysadl.Expression;
+import org.sysadl.NameExpression;
+import org.sysadl.ReturnStatement;
+import org.sysadl.Statement;
 
 /**
  * 

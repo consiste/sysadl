@@ -2,7 +2,7 @@
 <description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:description_2="http://www.eclipse.org/sirius/table/description/1.1.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:tool="http://www.eclipse.org/sirius/diagram/description/tool/1.1.0" xmlns:tool_1="http://www.eclipse.org/sirius/description/tool/1.1.0" xmlns:validation="http://www.eclipse.org/sirius/description/validation/1.1.0" name="SysADL_vp" version="12.0.0.2017041100">
   <ownedViewpoints name="SysADL.Structural" label="SysADL Structural Viewpoint" modelFileExtension="sysadl">
     <validationSet name="SysADL.Analysis.Structural">
-      <ownedRules xsi:type="validation:SemanticValidationRule" name="Analysis.Struc.Delegation.TypeCompatible" level="ERROR" message="Incompatible Types in Delegation" targetClass="sysADL_Sintax.Delegation">
+      <ownedRules xsi:type="validation:SemanticValidationRule" name="Analysis.Struc.Delegation.TypeCompatible" level="ERROR" message="Incompatible Types in Delegation" targetClass="org.sysadl.Delegation">
         <audits auditExpression="[fullPort.isCompatible(proxyPort)/]"/>
       </ownedRules>
     </validationSet>
@@ -539,7 +539,7 @@
       </additionalLayers>
     </ownedRepresentations>
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="SysADL.IBD" label="Internal Block Diagram (Structural IBD)" domainClass="Configuration">
-      <metamodel href="../../SysADL_Sintax/model/sysADL_Sintax.ecore#/"/>
+      <metamodel href="../../org.sysadl/model/org.sysadl.ecore#/"/>
       <defaultLayer name="IBD.DefaultLayer">
         <edgeMappings name="IBD.Connectors" semanticCandidatesExpression="feature:connectors" sourceMapping="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@subNodeMappings[name='IBD.Component%20']/@borderedNodeMappings[name='IBD.Component.PortUse']" targetMapping="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@subNodeMappings[name='IBD.Component%20']/@borderedNodeMappings[name='IBD.Component.PortUse']" targetFinderExpression="[self.bindings.secondPort/]" sourceFinderExpression="[self.bindings.firstPort/]" domainClass="ConnectorUse" useDomainElement="true">
           <style sizeComputationExpression="2">
@@ -679,7 +679,7 @@
                 <subModelOperations xsi:type="tool_1:Switch">
                   <cases conditionExpression="[sourceView.eContainer(DNode).target.eContainer().oclIsTypeOf(ConnectorDef)/]">
                     <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[sourceView.eContainer(DNode).target.eContainer(ConnectorDef).composite/]">
-                      <subModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.ConnectorUse" referenceName="connectors" variableName="connector">
+                      <subModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.ConnectorUse" referenceName="connectors" variableName="connector">
                         <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:connector">
                           <subModelOperations xsi:type="tool_1:CreateInstance" typeName="ConnectorBinding" referenceName="bindings" variableName="newBinding">
                             <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:newBinding">
@@ -694,7 +694,7 @@
                   </cases>
                   <cases conditionExpression="[sourceView.eContainer(DNode).target.eContainer().oclIsTypeOf(ComponentDef)/]">
                     <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[sourceView.eContainer(DNode).target.eContainer(ComponentDef).composite/]">
-                      <subModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.ConnectorUse" referenceName="connectors" variableName="connector">
+                      <subModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.ConnectorUse" referenceName="connectors" variableName="connector">
                         <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:connector">
                           <subModelOperations xsi:type="tool_1:CreateInstance" typeName="ConnectorBinding" referenceName="bindings" variableName="newBinding">
                             <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:newBinding">
@@ -709,7 +709,7 @@
                   </cases>
                   <default>
                     <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[sourceView.eContainer(DNode).target.eContainer()/]">
-                      <subModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.ConnectorUse" referenceName="connectors" variableName="connector">
+                      <subModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.ConnectorUse" referenceName="connectors" variableName="connector">
                         <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:connector">
                           <subModelOperations xsi:type="tool_1:CreateInstance" typeName="ConnectorBinding" referenceName="bindings" variableName="newBinding">
                             <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:newBinding">
@@ -798,7 +798,7 @@
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.Package" referenceName="packages"/>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.Package" referenceName="packages"/>
             </initialOperation>
           </ownedTools>
           <ownedTools xsi:type="tool:EdgeCreationDescription" name="Pkg.Tools.Import" label="Import" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.Package']/@defaultLayer/@edgeMappings[name='Pkg.Import']">
@@ -1020,9 +1020,9 @@
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.Protocol" referenceName="architectures">
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.Protocol" referenceName="architectures">
                 <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
-                  <subModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.ProtocolBody" referenceName="body" variableName="prot"/>
+                  <subModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.ProtocolBody" referenceName="body" variableName="prot"/>
                 </subModelOperations>
               </firstModelOperations>
             </initialOperation>
@@ -1305,7 +1305,7 @@
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.ActionSend" referenceName="body"/>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.ActionSend" referenceName="body"/>
             </initialOperation>
           </ownedTools>
         </toolSections>
@@ -1444,7 +1444,7 @@
             <targetViewVariable name="targetView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[source.eContainer()/]">
-                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.ActivityFlow" referenceName="flows">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.ActivityFlow" referenceName="flows">
                   <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="source" valueExpression="var:source"/>
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="target" valueExpression="var:target"/>
@@ -1460,7 +1460,7 @@
             <targetViewVariable name="targetView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[self.eContainer(ActivityDef).acbody/]">
-                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.ActivityDelegation" referenceName="flows">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.ActivityDelegation" referenceName="flows">
                   <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="source" valueExpression="var:source"/>
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="target" valueExpression="var:target"/>
@@ -1486,10 +1486,10 @@
             <targetViewVariable name="targetView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[source.eContainer()/]">
-                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.ActivityFlow" referenceName="flows">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.ActivityFlow" referenceName="flows">
                   <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="source" valueExpression="var:source"/>
-                    <subModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.ActivitySwitch" referenceName="targetSwitch" variableName="switch">
+                    <subModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.ActivitySwitch" referenceName="targetSwitch" variableName="switch">
                       <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:switch">
                         <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="service:createCase(target)"/>
                       </subModelOperations>
@@ -1506,15 +1506,15 @@
             <targetViewVariable name="targetView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[source.eContainer(ActivityDef).acbody/]">
-                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.ActivityDelegation" referenceName="flows">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.ActivityDelegation" referenceName="flows">
                   <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="source" valueExpression="var:source"/>
-                    <subModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.ActivitySwitch" referenceName="targetSwitch" variableName="switch">
+                    <subModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.ActivitySwitch" referenceName="targetSwitch" variableName="switch">
                       <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:switch">
-                        <subModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.ActivitySwitchCase" referenceName="cases" variableName="case">
+                        <subModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.ActivitySwitchCase" referenceName="cases" variableName="case">
                           <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:case">
                             <subModelOperations xsi:type="tool_1:SetValue" featureName="target" valueExpression="var:target"/>
-                            <subModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.Expression" referenceName="condition"/>
+                            <subModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.Expression" referenceName="condition"/>
                           </subModelOperations>
                         </subModelOperations>
                       </subModelOperations>
@@ -1531,10 +1531,10 @@
             <targetViewVariable name="targetView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:source">
-                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.ActivitySwitchCase" referenceName="cases">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.ActivitySwitchCase" referenceName="cases">
                   <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="target" valueExpression="var:target"/>
-                    <subModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.Expression" referenceName="condition"/>
+                    <subModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.Expression" referenceName="condition"/>
                   </subModelOperations>
                 </subModelOperations>
               </firstModelOperations>
@@ -1546,14 +1546,14 @@
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.DataStore" referenceName="dataObjects"/>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.DataStore" referenceName="dataObjects"/>
             </initialOperation>
           </ownedTools>
           <ownedTools xsi:type="tool:NodeCreationDescription" name="ADNew.Tools.Data.Buffer" label="Buffer" forceRefresh="true" nodeMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@containerMappings[name='ADNew.Self']/@subNodeMappings[name='ADNew.DataBuffer']" iconPath="/SysADL.viewpoints/icons/Property.gif">
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.DataBuffer" referenceName="dataObjects"/>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.DataBuffer" referenceName="dataObjects"/>
             </initialOperation>
           </ownedTools>
         </toolSections>
@@ -1617,7 +1617,7 @@
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.Executable" referenceName="architectures"/>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.Executable" referenceName="architectures"/>
             </initialOperation>
           </ownedTools>
           <ownedTools xsi:type="tool:NodeCreationDescription" name="Execution.Param" label="Parameter" forceRefresh="true" elementsToSelect="var:self" nodeMappings="//@ownedViewpoints[name='SysADL.Executable']/@ownedRepresentations[name='SysADL.Execution.BDD']/@defaultLayer/@containerMappings[name='SysADL.Execution.Self']/@subContainerMappings[name='SysADL.Execution.Executable']/@subContainerMappings[name='Execution.CP.Parameters']/@subNodeMappings[name='Execution.Params.Parameter']">
@@ -1631,7 +1631,7 @@
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.Expression" referenceName="body">
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.Expression" referenceName="body">
                 <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                   <subModelOperations xsi:type="tool_1:SetValue" featureName="value" valueExpression="['new line'/]"/>
                 </subModelOperations>
@@ -1642,7 +1642,7 @@
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:For" expression="[self.oclAsType(Package).architectures/]">
+              <firstModelOperations xsi:type="tool_1:For" expression="[self.oclAsType(Package).definitions/]">
                 <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[i.eContainer()/]">
                   <subModelOperations xsi:type="tool_1:If" conditionExpression="[i.oclIsTypeOf(ActionDef)/]">
                     <subModelOperations xsi:type="tool_1:CreateInstance" typeName="Executable" referenceName="architectures">
@@ -1716,7 +1716,7 @@
   <ownedViewpoints name="SysADL.Requirements" label="SysADL Requirements Toolkit" modelFileExtension="sysadl">
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="SysADL.Requirements.Main" label="Requirements Diagram" initialisation="true" domainClass="Model">
       <validationSet name="Requirements Completeness Validation">
-        <ownedRules xsi:type="validation:SemanticValidationRule" name="Requirements.Validation.Simple" label="Requirement Satisfability" level="WARNING" message="Unsatisfied Requirement" targetClass="sysADL_Sintax.Requirement">
+        <ownedRules xsi:type="validation:SemanticValidationRule" name="Requirements.Validation.Simple" label="Requirement Satisfability" level="WARNING" message="Unsatisfied Requirement" targetClass="org.sysadl.Requirement">
           <audits auditExpression="service:isReqSatisfied()"/>
         </ownedRules>
       </validationSet>
@@ -1787,7 +1787,7 @@
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="sysADL_Sintax.Requirement" referenceName="requirements">
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.Requirement" referenceName="requirements">
                 <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                   <subModelOperations xsi:type="tool_1:SetValue" featureName="id" valueExpression="['0'/]"/>
                 </subModelOperations>
@@ -1816,7 +1816,7 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="SysADL.Req.Tools.Import" label="Add Existing Element" precondition="[container.oclIsTypeOf(Model)/]" forceRefresh="true" candidatesExpression="[self.packages.architectures/]" multiple="true" message="Select Existing Element">
+          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="SysADL.Req.Tools.Import" label="Add Existing Element" precondition="[container.oclIsTypeOf(Model)/]" forceRefresh="true" candidatesExpression="[self.packages.definitions/]" multiple="true" message="Select Existing Element">
             <element name="element"/>
             <containerView name="containerView"/>
             <container name="container"/>
@@ -1893,7 +1893,7 @@
       </defaultLayer>
       <additionalLayers name="Requirements.Test" label="Disable/Under Development Features">
         <toolSections name="Requiremensts.Test" label="Disable/Under Development">
-          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="SysADL.Req.Tool.SatisfyPanel" precondition="[container.oclIsTypeOf(Model)/]" candidatesExpression="[self.packages.architectures/]">
+          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="SysADL.Req.Tool.SatisfyPanel" precondition="[container.oclIsTypeOf(Model)/]" candidatesExpression="[self.packages.definitions/]">
             <element name="element"/>
             <containerView name="containerView"/>
             <container name="container"/>

@@ -5,11 +5,10 @@ import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.business.api.action.AbstractExternalJavaAction;
-import org.eclipse.sirius.tools.api.ui.IExternalJavaAction;
 
-import sysADL_Sintax.ElementDef;
-import sysADL_Sintax.Model;
-import sysADL_Sintax.Requirement;
+import org.sysadl.ElementDef;
+import org.sysadl.Model;
+import org.sysadl.Requirement;
 
 public class RequirementDeleteElement extends AbstractExternalJavaAction {
 

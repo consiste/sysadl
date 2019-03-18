@@ -1,7 +1,7 @@
 package org.sysadl.execution.ui;
 
-import sysADL_Sintax.ForControl;
-import sysADL_Sintax.Pin;
+import org.sysadl.ForControl;
+import org.sysadl.Pin;
 
 public class InputUiException extends Exception {
 

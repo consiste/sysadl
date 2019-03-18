@@ -1,10 +1,10 @@
 package org.sysadl.execution.engine;
 
 import org.eclipse.emf.ecore.EObject;
-import sysADL_Sintax.ActionUse;
-import sysADL_Sintax.Executable;
-import sysADL_Sintax.ExecutableAllocation;
-import sysADL_Sintax.Model;
+import org.sysadl.ActionUse;
+import org.sysadl.Executable;
+import org.sysadl.ExecutableAllocation;
+import org.sysadl.Model;
 
 public class ExecutionUtil {
 	public static Model getModel(EObject e) {

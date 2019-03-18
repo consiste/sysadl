@@ -4,34 +4,34 @@ import org.sysadl.context.SysADLContext;
 import org.sysadl.context.exceptions.ContextException;
 import org.sysadl.context.exceptions.InvalidExpression;
 
-import sysADL_Sintax.AdditiveExpression;
-import sysADL_Sintax.AssignmentExpression;
-import sysADL_Sintax.BooleanLiteralExpression;
-import sysADL_Sintax.ClassificationExpression;
-import sysADL_Sintax.ConditionalLogicalExpression;
-import sysADL_Sintax.ConditionalTestExpression;
-import sysADL_Sintax.EnumValueLiteralExpression;
-import sysADL_Sintax.EqualityExpression;
-import sysADL_Sintax.EqualityOperator;
-import sysADL_Sintax.Expression;
-import sysADL_Sintax.FeatureReference;
-import sysADL_Sintax.InstanceCreationExpression;
-import sysADL_Sintax.LeftHandSide;
-import sysADL_Sintax.LogicalExpression;
-import sysADL_Sintax.MultiplicativeExpression;
-import sysADL_Sintax.MultiplicativeOperator;
-import sysADL_Sintax.NameExpression;
-import sysADL_Sintax.NamedElement;
-import sysADL_Sintax.NaturalLiteralExpression;
-import sysADL_Sintax.NullLiteralExpression;
-import sysADL_Sintax.PropertyAccessExpression;
-import sysADL_Sintax.RelationalExpression;
-import sysADL_Sintax.RelationalOperator;
-import sysADL_Sintax.ShiftExpression;
-import sysADL_Sintax.StringLiteralExpression;
-import sysADL_Sintax.SysADLFactory;
-import sysADL_Sintax.ThisExpression;
-import sysADL_Sintax.TypeUse;
+import org.sysadl.AdditiveExpression;
+import org.sysadl.AssignmentExpression;
+import org.sysadl.BooleanLiteralExpression;
+import org.sysadl.ClassificationExpression;
+import org.sysadl.ConditionalLogicalExpression;
+import org.sysadl.ConditionalTestExpression;
+import org.sysadl.EnumValueLiteralExpression;
+import org.sysadl.EqualityExpression;
+import org.sysadl.EqualityOperator;
+import org.sysadl.Expression;
+import org.sysadl.FeatureReference;
+import org.sysadl.InstanceCreationExpression;
+import org.sysadl.LeftHandSide;
+import org.sysadl.LogicalExpression;
+import org.sysadl.MultiplicativeExpression;
+import org.sysadl.MultiplicativeOperator;
+import org.sysadl.NameExpression;
+import org.sysadl.NamedElement;
+import org.sysadl.NaturalLiteralExpression;
+import org.sysadl.NullLiteralExpression;
+import org.sysadl.PropertyAccessExpression;
+import org.sysadl.RelationalExpression;
+import org.sysadl.RelationalOperator;
+import org.sysadl.ShiftExpression;
+import org.sysadl.StringLiteralExpression;
+import org.sysadl.SysADLFactory;
+import org.sysadl.ThisExpression;
+import org.sysadl.TypeUse;
 
 public class ExpressionEvaluatorImpl extends ExpressionEvaluator {
 
@@ -135,7 +135,7 @@ public class ExpressionEvaluatorImpl extends ExpressionEvaluator {
 		Object right = evaluate(expRight, context); 
 		// first test, if they have different classes, return false
 		if (left.getClass() != right.getClass()) return false; 
-		if (e.getOperator() == EqualityOperator.EQUAL_LITERAL) {
+		if (e.getOperator() == EqualityOperator.EQUAL) {
 			return left.equals(right);
 		}
 		else return !left.equals(right);
@@ -172,13 +172,13 @@ public class ExpressionEvaluatorImpl extends ExpressionEvaluator {
 		
 		if ((op1 instanceof Integer) && (op2 instanceof Integer)) {
 			switch (e.getOperator().getValue()) {
-				case RelationalOperator.GREATER:
+				case RelationalOperator.GREATER_VALUE:
 					return (Integer) op1 > (Integer)op2;
-				case RelationalOperator.GREATER_EQUAL:
+				case RelationalOperator.GREATER_EQUAL_VALUE:
 					return (Integer) op1 >= (Integer)op2;
-				case RelationalOperator.LESS:
+				case RelationalOperator.LESS_VALUE:
 					return (Integer) op1 < (Integer)op2;
-				case RelationalOperator.LESS_EQUAL:
+				case RelationalOperator.LESS_EQUAL_VALUE:
 					return (Integer) op1 <= (Integer)op2;
 				default:
 			}
@@ -249,11 +249,11 @@ public class ExpressionEvaluatorImpl extends ExpressionEvaluator {
 		MultiplicativeOperator op = e.getOperator();
 		if (op1 instanceof Integer && op2 instanceof Integer) {
 			switch (op.getValue()) {
-				case MultiplicativeOperator.STAR:
+				case MultiplicativeOperator.STAR_VALUE:
 					return (Integer) op1 * (Integer) op2;
-				case MultiplicativeOperator.SLASH:
+				case MultiplicativeOperator.SLASH_VALUE:
 					return (Integer) op1 / (Integer) op2;
-				case MultiplicativeOperator.REM:
+				case MultiplicativeOperator.REM_VALUE:
 					return (Integer) op1 % (Integer) op2;
 				default:
 			}

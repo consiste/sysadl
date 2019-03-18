@@ -8,7 +8,7 @@ import java.util.Set;
 import org.sysadl.context.SysADLContext;
 import org.sysadl.context.exceptions.ContextInvalidKey;
 
-import sysADL_Sintax.NamedElement;
+import org.sysadl.NamedElement;
 
 public class SysADLContextImpl implements SysADLContext {
 

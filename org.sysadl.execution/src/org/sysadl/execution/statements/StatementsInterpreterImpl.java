@@ -4,18 +4,18 @@ import org.sysadl.context.SysADLContext;
 import org.sysadl.context.exceptions.ContextException;
 import org.sysadl.execution.engine.SysADLExecutionEngine;
 
-import sysADL_Sintax.BlockStatement;
-import sysADL_Sintax.DoStatement;
-import sysADL_Sintax.Expression;
-import sysADL_Sintax.ForControl;
-import sysADL_Sintax.ForStatement;
-import sysADL_Sintax.IfBlockStatement;
-import sysADL_Sintax.IfStatement;
-import sysADL_Sintax.Statement;
-import sysADL_Sintax.SwitchClause;
-import sysADL_Sintax.SwitchStatement;
-import sysADL_Sintax.VariableDecl;
-import sysADL_Sintax.WhileStatement;
+import org.sysadl.BlockStatement;
+import org.sysadl.DoStatement;
+import org.sysadl.Expression;
+import org.sysadl.ForControl;
+import org.sysadl.ForStatement;
+import org.sysadl.IfBlockStatement;
+import org.sysadl.IfStatement;
+import org.sysadl.Statement;
+import org.sysadl.SwitchClause;
+import org.sysadl.SwitchStatement;
+import org.sysadl.VariableDecl;
+import org.sysadl.WhileStatement;
 
 public class StatementsInterpreterImpl extends SysADLStatementInterpreter {
 

@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import sysADL_Sintax.CompositePortDef;
-import sysADL_Sintax.FlowProperty;
-import sysADL_Sintax.PortDef;
-import sysADL_Sintax.PortUse;
-import sysADL_Sintax.SimplePortDef;
-import sysADL_Sintax.TypeDef;
+import org.sysadl.CompositePortDef;
+import org.sysadl.FlowProperty;
+import org.sysadl.PortDef;
+import org.sysadl.PortUse;
+import org.sysadl.SimplePortDef;
+import org.sysadl.TypeDef;
 
 public class SysADLTypeValidator {
 	public static boolean areTypesCompatible(TypeDef source, TypeDef target) {

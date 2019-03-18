@@ -1,0 +1,636 @@
+@xcore.lang.Ecore(nsURI="org.sysadl")
+@xcore.lang.GenModel(modelDirectory="/org.sysadl/src", prefix="SysADL", fileExtensions="sysadl", modelName="SysADL",
+	importerID="org.eclipse.emf.importer.ecore")
+package org.sysadl
+
+annotation "aspect" as Aspect
+
+abstract class NamedElement {
+	String name = "newElement"
+	contains Property[] properties
+}
+
+class Package extends NamedElement {
+	refers Package[] imports keys name
+	refers ElementDef[] importedDefinitions keys name
+	contains ElementDef[] definitions keys name
+	refers Style appliedStyle keys name
+}
+
+class Style extends NamedElement {
+	contains Invariant[] invariants keys name
+	contains AbstractDef[] definitions keys name
+}
+
+class Invariant extends NamedElement {
+	contains Expression[1] expr
+}
+
+interface AbstractDef extends NamedElement {
+}
+
+class AbstractComponentDef extends AbstractDef , ComponentDef {
+}
+
+class AbstractConnectorDef extends AbstractDef , ConnectorDef {
+}
+
+class Model extends NamedElement {
+	contains Package[] packages keys name
+	contains Requirement[] requirements keys name
+	refers ElementDef[] involvedElements keys name
+	contains derived AllocationTable allocation
+	contains Style[] styles keys name
+}
+
+abstract class ElementDef extends NamedElement {
+}
+
+abstract class DataDef extends ElementDef {
+}
+
+class DataTypeDef extends TypeDef {
+	contains TypeUse[] attributes keys name
+	refers DataTypeDef superType keys name
+}
+
+class DimensionDef extends DataDef {
+}
+
+abstract class TypeDef extends DataDef {
+	refers TypeUse[] instances opposite definition
+	op boolean isCompatible()
+}
+
+class TypeUse extends NamedElement {
+	refers TypeDef[1] definition opposite instances keys name
+	contains ArrayIndex arrayIndex
+}
+
+class UnitDef extends DataDef {
+	refers DimensionDef dimension
+}
+
+class ValueTypeDef extends TypeDef {
+	refers UnitDef unit keys name
+	refers DimensionDef dimension keys name
+	refers ValueTypeDef superType keys name
+}
+
+enum ConstraintKind {
+	preCondition
+	postCondition = 1
+	invariant = 2
+}
+
+class Enumeration extends TypeDef {
+	contains EnumLiteralValue[] literals opposite ^enum keys name
+}
+
+class EnumLiteralValue {
+	container Enumeration[1] ^enum opposite literals
+	String[1] name
+}
+
+class Property {
+	String[1] name
+	refers TypeDef ^type keys name
+	contains Expression value
+}
+
+abstract class StructuralDef extends ElementDef {
+	contains StructuralDef[] structuralDefs keys name
+	contains DataDef[] dataDefs keys name
+	contains Invariant[] invariants keys name
+}
+
+abstract class StructuralUse extends NamedElement {
+	int lowerBound = "1"
+	int upperBound = "1"
+}
+
+class ComponentDef extends StructuralDef {
+	contains PortUse[] ports keys name
+	contains Configuration composite
+	boolean[1] isBoundary = "false"
+	refers ComponentUse[] instances opposite definition keys name
+	refers AbstractComponentDef abstractComponent keys name
+}
+
+class ArchitectureDef extends ComponentDef {
+}
+
+class ComponentUse extends StructuralUse {
+	refers ComponentDef[1] definition opposite instances keys name
+	contains PortUse[] ports keys name
+}
+
+class ConnectorDef extends StructuralDef {
+	contains PortUse[0..2] ports keys name
+	contains Flow[] flows
+	contains Configuration composite 
+	refers ConnectorUse[] instances opposite definition keys name
+	refers AbstractConnectorDef abstractConnector keys name
+}
+
+class ConnectorUse extends StructuralUse {
+	refers ConnectorDef[1] definition opposite instances keys name
+	contains PortUse[] ports keys name
+	contains ConnectorBinding[] bindings
+	// op void allPorts() // [Eduardo 18/03] Removed, unused
+}
+
+class Configuration {
+	contains ComponentUse[] components keys name
+	contains ConnectorUse[] connectors keys name 
+	contains Delegation[] delegations
+}
+
+abstract class RelationUse {
+	refers PortUse[1] source keys name
+	refers PortUse[1] destination keys name
+}
+
+class Delegation extends RelationUse {
+	op boolean checkCompatibility()
+}
+
+abstract class PortDef extends StructuralDef {
+	refers PortUse[] instances opposite definition keys name
+}
+
+class CompositePortDef extends PortDef {
+	contains PortUse[2..*] ports keys name
+}
+
+class SimplePortDef extends PortDef {
+	FlowProperty[1] flowProperties = "in"
+	refers TypeDef[1] flowType keys name
+	contains ArrayIndex arrayIndex
+}
+
+class PortUse extends StructuralUse {
+	refers PortDef[1] definition opposite instances keys name
+}
+
+class ConnectorBinding extends RelationUse {
+}
+
+class Flow extends RelationUse {
+	refers TypeDef[1] ^type keys name
+}
+
+enum FlowProperty {
+	in
+	out = 1
+}
+
+interface BehaviorDef extends ElementDef {
+	contains Pin[] inParameters keys name
+	contains Pin[] outParameters keys name
+	contains BehaviorDef[] behaviorDefs keys name
+	contains DataDef[] dataDefs keys name
+	contains ConstraintUse[] constraints
+	contains ActivityDelegation[] delegations
+}
+
+class ActivityDef extends BehaviorDef {
+	contains ActivityBody body
+}
+
+class ActionDef extends BehaviorDef , ActivityFlowable {
+	refers TypeDef returnType keys name
+	refers ActionUse[] instances opposite definition keys name
+}
+
+class ActionUse extends NamedElement , ActivityFlowable {
+	refers ActionDef[1] definition opposite instances keys name
+	contains Pin[] pinIn keys name
+}
+
+@xcore.lang.GenModel(image="false")
+class Pin extends TypeUse , ActivityFlowable {
+	boolean[1] isFlow = "false"
+}
+
+class ConstraintDef extends BehaviorDef {
+	contains Expression equation
+	refers ConstraintUse[] instances opposite definition
+}
+
+class ConstraintUse {
+	refers ConstraintDef[1] definition opposite instances
+	ConstraintKind[1] kind = "postCondition"
+}
+
+abstract class ActivityRelation {
+	refers ActivityFlowable[1] source
+	refers ActivityFlowable target
+	contains ActivitySwitch targetSwitch
+}
+
+class ActivityDelegation extends ActivityRelation {
+}
+
+class ActivityFlow extends ActivityRelation {
+}
+
+class ActivitySwitch extends ActivityFlowable {
+	contains ActivitySwitchCase[] cases
+}
+
+class ActivitySwitchCase {
+	contains Expression[1] condition
+	refers ActivityFlowable[1] target
+}
+
+interface ActivityFlowable {
+}
+
+class ActivityBody {
+	contains ActionUse[] actions keys name
+	contains ActivityRelation[] flows
+	contains DataObject[] dataObjects
+}
+
+abstract class DataObject extends NamedElement , ActivityFlowable {
+	refers TypeDef[1] ^type keys name
+	contains Expression initValue
+	contains ArrayIndex arrayIndex
+}
+
+class DataStore extends DataObject {
+}
+
+class DataBuffer extends DataObject {
+}
+
+class Protocol extends BehaviorDef {
+	contains ProtocolBody[1] body
+}
+
+interface ProtocolBodyInternal {
+}
+
+class ProtocolBody extends ProtocolBodyInternal {
+	ProtocolControl[1] recControl = "several"
+	contains ProtocolBodyInternal[1] body
+	contains ProtocolBody recursive
+	ProtocolAlternativeType recType
+}
+
+enum ProtocolAlternativeType {
+	alternative
+	complimentary = 1
+}
+
+enum ProtocolControl {
+	several
+	once = 1
+	perhaps = 2
+	always = 3
+}
+
+interface PredefinedAction extends ProtocolBodyInternal {
+	refers Pin[1] flowTo keys name
+}
+
+class ActionSend extends PredefinedAction {
+	contains Expression[1] expression
+}
+
+class ActionReceive extends PredefinedAction {
+	contains TypeUse[1] ^var
+}
+
+class Executable extends ElementDef {
+	contains Statement[+] body
+	refers TypeDef[1] returnType
+	contains TypeUse[] params
+}
+
+class Requirement extends NamedElement {
+	id String[1] ^id
+	String text
+	refers Requirement[] derive keys name
+	contains Requirement[] composition keys name
+	refers ElementDef[] satisfiedBy keys name
+	op boolean isValid()
+}
+
+class AllocationTable {
+	contains Allocation[] allocs
+}
+
+abstract class Allocation {
+}
+
+class ExecutableAllocation extends Allocation {
+	refers Executable source
+	refers ActionDef target
+}
+
+class ActivityAllocation extends Allocation {
+	refers ActivityDef source
+	refers StructuralDef target
+}
+
+abstract class Statement {
+	@Aspect
+	op void run()
+}
+
+class Expression extends Statement {
+}
+
+class ConditionalTestExpression extends Expression {
+	contains Expression op1
+	contains Expression op2
+	contains Expression op3
+}
+
+class BinaryExpression extends Expression {
+	contains Expression op1
+	contains Expression op2
+}
+
+class ConditionalLogicalExpression extends BinaryExpression {
+	String operator
+}
+
+class LogicalExpression extends BinaryExpression {
+	String operator
+}
+
+class RelationalExpression extends BinaryExpression {
+	RelationalOperator operator
+}
+
+class ShiftExpression extends BinaryExpression {
+	ShiftOperator operator
+}
+
+class MultiplicativeExpression extends BinaryExpression {
+	MultiplicativeOperator operator
+}
+
+class AdditiveExpression extends BinaryExpression {
+	AdditiveOperator operator
+}
+
+class EqualityExpression extends BinaryExpression {
+	EqualityOperator operator
+}
+
+class SequenceConstructionExpression extends Expression {
+	refers TypeDef ^type
+	contains SequenceElements elements
+}
+
+class SequenceAccessExpression extends Expression {
+	contains Expression primary
+	contains ArrayIndex index
+}
+
+class ArrayIndex {
+	contains Expression[] expression
+}
+
+class SequenceElements {
+}
+
+class SequenceExpressionList extends SequenceElements {
+	contains LiteralExpression[] element
+}
+
+class SequenceRange extends SequenceElements {
+	contains NaturalLiteralExpression rangeLower
+	contains NaturalLiteralExpression rangeUpper
+}
+
+enum AdditiveOperator {
+	plus
+	minus = 1
+}
+
+enum MultiplicativeOperator {
+	star
+	slash = 1
+	rem = 2
+}
+
+enum ShiftOperator {
+	lshift
+	rshift = 1
+	urshift = 2
+}
+
+enum RelationalOperator {
+	less
+	greater = 1
+	less_equal = 2
+	greater_equal = 3
+}
+
+enum ClassificationOperator {
+	^instanceof
+	hastype = 1
+}
+
+enum EqualityOperator {
+	equal
+	different = 1
+}
+
+class UnaryExpression extends Expression {
+	contains Expression ^op
+	String operator
+}
+
+class BooleanUnaryExpression extends UnaryExpression {
+}
+
+class BitStringUnaryExpression extends UnaryExpression {
+}
+
+class NumericUnaryExpression extends UnaryExpression {
+}
+
+class CastExpression extends UnaryExpression {
+	refers TypeDef typeName
+}
+
+class IsolationExpression extends UnaryExpression {
+}
+
+class ClassificationExpression extends UnaryExpression {
+	refers TypeDef typeName
+}
+
+interface PrimaryExpression extends Expression {
+}
+
+class InstanceCreationExpression extends PrimaryExpression {
+	refers TypeDef ^type
+	contains ArrayIndex index
+}
+
+class NameExpression extends PrimaryExpression {
+	refers NamedElement cite keys name
+}
+
+interface NonNameExpression extends PrimaryExpression {
+}
+
+class BooleanLiteralExpression extends LiteralExpression {
+	boolean[1] isTrue
+}
+
+class NaturalLiteralExpression extends LiteralExpression {
+	int[1] int_value
+}
+
+class StringLiteralExpression extends LiteralExpression {
+	String[1] str_value
+}
+
+class EnumValueLiteralExpression extends LiteralExpression {
+	refers EnumLiteralValue enumValue
+	refers Enumeration _enum
+}
+
+class NullLiteralExpression extends LiteralExpression {
+}
+
+class LiteralExpression extends NonNameExpression {
+}
+
+class ThisExpression extends NonNameExpression {
+}
+
+class PropertyAccessExpression extends PrimaryExpression {
+	contains FeatureReference featureRef
+}
+
+class DataTypeAccessExpression extends PrimaryExpression {
+	refers TypeUse attr keys name
+	refers TypeUse datatype keys name
+	contains ArrayIndex index
+}
+
+class FeatureReference {
+	refers NamedElement feature
+	refers NamedElement field
+	contains Expression expr
+}
+
+@xcore.lang.GenModel(image="false")
+class IncrementOrDecrementExpression extends Expression {
+	contains LeftHandSide operand
+	AffixOperator operator
+}
+
+class PrefixExpression extends IncrementOrDecrementExpression {
+}
+
+class PostfixExpression extends IncrementOrDecrementExpression {
+}
+
+enum AffixOperator {
+	incr
+	decr = 1
+}
+
+class BlockStatement extends Statement {
+	contains Statement[+] body
+}
+
+class AssignmentExpression extends Expression {
+	contains LeftHandSide lhs
+	contains Expression v
+	AssignmentOperator operator = "equal"
+}
+
+enum AssignmentOperator {
+	equal
+	plusEqual = 1
+	minusEqual = 2
+	starEqual = 3
+	modEqual = 4
+	divEqual = 5
+	andEqual = 6
+	orEqual = 7
+	powerEqual = 8
+	shiftLeftEqual = 9
+	shiftRightEqual = 10
+	shiftRightDoubledEqual = 11
+}
+
+class LeftHandSide {
+	contains NameExpression target
+	contains ArrayIndex index
+	contains PrimaryExpression feature
+}
+
+class VariableDecl extends Statement , TypeUse {
+	contains Expression value
+}
+
+class IfBlockStatement extends Statement {
+	contains IfStatement[1] main_if
+	contains IfStatement[] paralel_ifs
+	contains IfStatement[] sequential_ifs
+	contains ElseStatement final
+	contains ElseStatement ^else
+}
+
+class IfStatement {
+	contains Expression[1] condition
+	contains Statement[1] body
+}
+
+class ElseStatement {
+	contains Statement[1] body
+}
+
+class ReturnStatement extends Statement {
+	contains Expression[1] value
+}
+
+abstract class LoopStatement extends Statement {
+	contains Expression[1] condition
+	contains Statement[1] body
+}
+
+class WhileStatement extends LoopStatement {
+}
+
+class DoStatement extends LoopStatement {
+}
+
+class ForStatement extends Statement {
+	contains Statement[1] body
+	contains ForControl[1] control
+}
+
+class ForControl {
+	contains ForVar[+] vars
+}
+
+class ForVar {
+	contains VariableDecl[1] ^var
+	contains Expression[1] expr
+}
+
+class SwitchStatement extends Statement {
+	contains Expression[1] expr
+	contains SwitchClause[] clauses
+}
+
+class SwitchClause {
+	contains Expression value
+	contains Statement[1] body
+}
+
+class DefaultSwitchClause extends SwitchClause {
+}

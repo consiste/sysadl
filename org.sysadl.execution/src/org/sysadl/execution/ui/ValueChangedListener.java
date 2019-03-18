@@ -1,6 +1,6 @@
 package org.sysadl.execution.ui;
 
-import sysADL_Sintax.Pin;
+import org.sysadl.Pin;
 
 public interface ValueChangedListener {
 	

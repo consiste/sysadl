@@ -19,9 +19,9 @@ import javax.swing.table.TableColumn;
 
 import org.sysadl.execution.value.Values;
 
-import sysADL_Sintax.ActivityDef;
-import sysADL_Sintax.Pin;
-import sysADL_Sintax.TypeDef;
+import org.sysadl.ActivityDef;
+import org.sysadl.Pin;
+import org.sysadl.TypeDef;
 
 public class PinTableGUI implements ValueChangedListener{
 	

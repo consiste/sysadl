@@ -24,9 +24,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import org.sysadl.execution.value.Values;
-import sysADL_Sintax.ActivityDef;
-import sysADL_Sintax.Pin;
-import sysADL_Sintax.TypeDef;
+import org.sysadl.ActivityDef;
+import org.sysadl.Pin;
+import org.sysadl.TypeDef;
 
 
 public class Inputer extends UiActivityPinInput  {

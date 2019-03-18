@@ -7,15 +7,15 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.business.api.action.AbstractExternalJavaAction;
 import org.eclipse.sirius.diagram.DNode;
 
-import sysADL_Sintax.ComponentDef;
-import sysADL_Sintax.ComponentUse;
-import sysADL_Sintax.Configuration;
-import sysADL_Sintax.ConnectorBinding;
-import sysADL_Sintax.ConnectorDef;
-import sysADL_Sintax.ConnectorUse;
-import sysADL_Sintax.PortUse;
+import org.sysadl.ComponentDef;
+import org.sysadl.ComponentUse;
+import org.sysadl.Configuration;
+import org.sysadl.ConnectorBinding;
+import org.sysadl.ConnectorDef;
+import org.sysadl.ConnectorUse;
+import org.sysadl.PortUse;
 
-import sysADL_Sintax.SysADLFactory;
+import org.sysadl.SysADLFactory;
 
 public class IBDAddConnector extends AbstractExternalJavaAction {
 

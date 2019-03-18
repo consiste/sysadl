@@ -1,6 +1,6 @@
 package org.sysadl.execution.value;
 
-import sysADL_Sintax.TypeDef;
+import org.sysadl.TypeDef;
 
 public class Values {
 	private int id;

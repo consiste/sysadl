@@ -6,10 +6,10 @@ import java.util.Map;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.business.api.action.AbstractExternalJavaAction;
 
-import sysADL_Sintax.ElementDef;
-import sysADL_Sintax.Model;
-import sysADL_Sintax.Requirement;
-import sysADL_Sintax.util.SysADLCreationTools;
+import org.sysadl.ElementDef;
+import org.sysadl.Model;
+import org.sysadl.Requirement;
+import org.sysadl.util.SysADLCreationTools;
 
 public class RequirementAssignSatisfy extends AbstractExternalJavaAction {
 

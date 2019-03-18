@@ -7,21 +7,21 @@ import org.sysadl.context.SysADLContext
 import org.sysadl.context.impl.SysADLContextImpl
 import org.sysadl.execution.engine.ExecutionUtil
 import org.sysadl.execution.engine.SysADLExecutionEngine
-import org.sysadl.execution.ui.Inputer
 import org.sysadl.execution.ui.UiActivityPinInput
 import org.sysadl.execution.value.Values
-import sysADL_Sintax.ActionUse
-import sysADL_Sintax.ActivityBody
-import sysADL_Sintax.ActivityDef
-import sysADL_Sintax.ActivityDelegation
-import sysADL_Sintax.ActivityFlow
-import sysADL_Sintax.ActivityFlowable
-import sysADL_Sintax.ActivityRelation
-import sysADL_Sintax.DataBuffer
-import sysADL_Sintax.DataObject
-import sysADL_Sintax.DataStore
-import sysADL_Sintax.NamedElement
-import sysADL_Sintax.Pin
+import org.sysadl.ActionUse
+import org.sysadl.ActivityBody
+import org.sysadl.ActivityDef
+import org.sysadl.ActivityDelegation
+import org.sysadl.ActivityFlow
+import org.sysadl.ActivityFlowable
+import org.sysadl.ActivityRelation
+import org.sysadl.DataBuffer
+import org.sysadl.DataObject
+import org.sysadl.DataStore
+import org.sysadl.NamedElement
+import org.sysadl.Pin
+import org.sysadl.execution.ui.Inputer
 
 @Aspect(className=ActivityBody)
 class ActivityBodyAspect {

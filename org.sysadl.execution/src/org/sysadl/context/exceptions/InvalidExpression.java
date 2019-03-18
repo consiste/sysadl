@@ -1,6 +1,6 @@
 package org.sysadl.context.exceptions;
 
-import sysADL_Sintax.Expression;
+import org.sysadl.Expression;
 
 public class InvalidExpression extends ContextException {
 

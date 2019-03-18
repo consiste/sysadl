@@ -2,16 +2,14 @@ package org.sysadl.execution.ui;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
-
-import sysADL_Sintax.ActivityDef;
-import sysADL_Sintax.Model;
-import sysADL_Sintax.Pin;
-import sysADL_Sintax.SysADLFactory;
-import sysADL_Sintax.TypeDef;
-import sysADL_Sintax.impl.SysADLFactoryImpl;
-import sysADL_Sintax.util.SysADLCreationTools;
-import sysADL_Sintax.Package;
+import org.sysadl.ActivityDef;
+import org.sysadl.Model;
+import org.sysadl.Pin;
+import org.sysadl.SysADLFactory;
+import org.sysadl.TypeDef;
+import org.sysadl.impl.SysADLFactoryImpl;
+import org.sysadl.util.SysADLCreationTools;
+import org.sysadl.Package;
 
 //Nao consegui usar por dentro da package tests. muitos problemas de dependencia e classe faltando, por isso upei aqui.
 public class TestAd {
@@ -22,7 +20,7 @@ public class TestAd {
 		
 		ad.setName("NewActivity");
 		
-		EList<EObject> pinsIn = new BasicEList<EObject>();
+		EList<Pin> pinsIn = new BasicEList<Pin>();
 		
 		Package sysadlTypes = (Package) model.getPackages().get(0);
 		

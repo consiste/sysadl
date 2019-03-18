@@ -1,10 +1,9 @@
 package org.sysadl.execution.ui;
 
-import java.util.HashMap;
 import java.util.Map;
 
-import sysADL_Sintax.ActivityDef;
-import sysADL_Sintax.Pin;
+import org.sysadl.ActivityDef;
+import org.sysadl.Pin;
 
 /**
  * This class is responsible for capturing Input values and presenting Output values 

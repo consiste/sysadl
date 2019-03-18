@@ -7,13 +7,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.business.api.action.AbstractExternalJavaAction;
 import org.eclipse.sirius.diagram.DEdge;
 import org.eclipse.sirius.diagram.DNode;
-import org.eclipse.sirius.diagram.EdgeTarget;
-import org.eclipse.sirius.tools.api.ui.IExternalJavaAction;
-
-import sysADL_Sintax.ElementDef;
-import sysADL_Sintax.Model;
-import sysADL_Sintax.Requirement;
-import sysADL_Sintax.SysADLPackage;
+import org.sysadl.ElementDef;
+import org.sysadl.Model;
+import org.sysadl.Requirement;
 
 public class RequirementDeleteSatisfy extends AbstractExternalJavaAction {
 

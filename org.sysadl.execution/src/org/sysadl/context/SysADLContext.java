@@ -4,7 +4,7 @@ import java.util.Set;
 
 import org.sysadl.context.exceptions.ContextInvalidKey;
 
-import sysADL_Sintax.NamedElement;
+import org.sysadl.NamedElement;
 
 public interface SysADLContext {
 	/**

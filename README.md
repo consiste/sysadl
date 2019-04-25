@@ -3,6 +3,13 @@
 
 Never commit to the master branch, it might lead to several issues. Create your own branch and work on it. As soon as you finish your work, create a pull request to the master branch.
 
+# Requirements 
+
+Eclipse Xcore - Update site: https://download.eclipse.org/modeling/emf/emf/updates/releases/
+Kermetta3 - Update site: http://www.kermeta.org/k3/update/
+Xtext - Update site: http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/
+Sirius - Update site: http://download.eclipse.org/sirius/updates/releases/6.2.0/photon
+
 # SysADL
 
 In order to start working with this code, follow these steps:

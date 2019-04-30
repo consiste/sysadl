@@ -38,18 +38,22 @@ AbstractComponentDef returns AbstractComponentDef:
    {AbstractComponentDef}
 	'abstract' (isBoundary?='boundary')? 'component' 'def' name=ID 
 	'{'
-		('ports' ':' ports+=PortUse*)?
+		('ports' ':' ports+=AbstractPortUse*)?
 		(properties+=Property
 		| structuralDefs+=StructuralDef
 		| dataDefs+=DataDef)*
 		
 		(composite=Configuration)?
 	'}' ;
+
+AbstractPortUse returns PortUse:
+	'port' name=ID ':' 'any';
+
    
  AbstractConnectorDef returns AbstractConnectorDef:
 	'abstract' 'connector' 'def' name=ID
 	'{'
-		('participants' ':' ports+=PortUse_Reverse*)?
+		('participants' ':' ports+=AbstractPortUse_Reverse*)?
 		(composite=Configuration)?
 		('flows' ':' flows+=Flow*)?
 
@@ -57,6 +61,9 @@ AbstractComponentDef returns AbstractComponentDef:
 		| structuralDefs+=StructuralDef
 		| dataDefs+=DataDef)*
 	'}';
+
+AbstractPortUse_Reverse returns PortUse:
+	'~' 'port' name=ID ':' 'any';
 
  
 ElementDef returns ElementDef:

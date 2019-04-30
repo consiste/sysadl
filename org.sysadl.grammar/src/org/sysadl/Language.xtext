@@ -144,7 +144,7 @@ Property returns Property:
 
 Package returns Package:
 	{Package}
-	'package' name=QualifiedName ('satisfies' appliedStyle=[Style|QualifiedName]) '{'
+	'package' name=QualifiedName ('satisfies' appliedStyle=[Style|QualifiedName])? '{'
 		('import' imports+=[Package|QualifiedName] ';')*
 		('using' importedDefinitions+=[ElementDef|QualifiedName] ';')*
 		(properties+=Property

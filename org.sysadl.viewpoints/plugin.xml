@@ -3,7 +3,7 @@
 <plugin>
   <extension point="org.eclipse.sirius.componentization">
     <component class="defaultpackage.Activator"
-               id="SysADL.viewpoints"
+               id="org.sysadl.viewpoints"
 	       name="SysADL">
     </component>
   </extension>

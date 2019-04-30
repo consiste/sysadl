@@ -1904,6 +1904,11 @@
     </ownedRepresentations>
     <ownedJavaExtensions qualifiedClassName="sysadl.viewpoints.services.SysADLServices"/>
   </ownedViewpoints>
+  <ownedViewpoints name="SysADL.Styles" label="SysADL Styles" modelFileExtension="sysadl">
+    <ownedRepresentations xsi:type="description_1:DiagramDescription" enablePopupBars="true">
+      <defaultLayer name="Default"/>
+    </ownedRepresentations>
+  </ownedViewpoints>
   <userColorsPalettes name="Colors">
     <entries xsi:type="description:UserFixedColor" red="255" green="228" blue="130" name="DefColor"/>
     <entries xsi:type="description:UserFixedColor" red="247" green="220" blue="159" name="InstanceColor"/>

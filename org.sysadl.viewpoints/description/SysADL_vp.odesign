@@ -33,13 +33,13 @@
           </style>
         </edgeMappings>
         <containerMappings name="BDD" semanticCandidatesExpression="var:self" domainClass="Package">
-          <subNodeMappings name="BDD.Dimension" semanticCandidatesExpression="feature:architectures" domainClass="DimensionDef">
+          <subNodeMappings name="BDD.Dimension" semanticCandidatesExpression="feature:definitions" domainClass="DimensionDef">
             <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="['&lt;&lt;dimension>>\n'+self.name/]" iconPath="/SysADL.viewpoints/icons/DataType.gif" labelPosition="node" resizeKind="NSEW" color="//@userColorsPalettes[name='Colors']/@entries[name='BlueDataType']">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </style>
           </subNodeMappings>
-          <subContainerMappings name="BDD.Unit" semanticCandidatesExpression="feature:architectures" domainClass="UnitDef" childrenPresentation="List">
+          <subContainerMappings name="BDD.Unit" semanticCandidatesExpression="feature:definitions" domainClass="UnitDef" childrenPresentation="List">
             <subNodeMappings name="BDD.Unit.Dimension" semanticCandidatesExpression="feature:dimension" domainClass="DimensionDef">
               <style xsi:type="style:DotDescription" showIcon="false" labelExpression="['dimension='+self.name/]" resizeKind="NSEW">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
@@ -53,7 +53,7 @@
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
             </style>
           </subContainerMappings>
-          <subContainerMappings name="BDD.SimplePortDef" semanticCandidatesExpression="feature:architectures" domainClass="SimplePortDef" childrenPresentation="List">
+          <subContainerMappings name="BDD.SimplePortDef" semanticCandidatesExpression="feature:definitions" domainClass="SimplePortDef" childrenPresentation="List">
             <subNodeMappings name="BDD.SimplePortDef.FlowType" semanticCandidatesExpression="var:self" domainClass="SimplePortDef">
               <style xsi:type="style:DotDescription" showIcon="false" labelExpression="['Flow Type: '+self.flowType.name/]" resizeKind="NSEW">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
@@ -74,7 +74,7 @@
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
             </style>
           </subContainerMappings>
-          <subContainerMappings name="BDD.CompositePort" semanticCandidatesExpression="feature:architectures" domainClass="CompositePortDef" childrenPresentation="List">
+          <subContainerMappings name="BDD.CompositePort" semanticCandidatesExpression="feature:definitions" domainClass="CompositePortDef" childrenPresentation="List">
             <subNodeMappings name="BDD.CompositePort.Ports" semanticCandidatesExpression="feature:ports" domainClass="PortUse">
               <style xsi:type="style:DotDescription" showIcon="false" labelExpression="[self.name + ' : ' + self.definition.name/]" resizeKind="NSEW">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
@@ -132,7 +132,7 @@
               </style>
             </conditionnalStyles>
           </subContainerMappings>
-          <subContainerMappings name="BDD.ComponentDef" semanticCandidatesExpression="feature:architectures" domainClass="ComponentDef" childrenPresentation="List">
+          <subContainerMappings name="BDD.ComponentDef" semanticCandidatesExpression="feature:definitions" domainClass="ComponentDef" childrenPresentation="List">
             <borderedNodeMappings name="BDD.ComDef.Ports" semanticCandidatesExpression="feature:ports" domainClass="PortUse">
               <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="[self.name + if (self.definition &lt;> null) then (' : ' + self.definition.name ) else '' endif  + ' ['+self.lowerBound+','+self.upperBound + '] '/]" labelAlignment="LEFT" tooltipExpression="['Port '+self.name/]" resizeKind="NSEW" width="2" height="2">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
@@ -169,7 +169,7 @@
               </style>
             </conditionnalStyles>
           </subContainerMappings>
-          <subContainerMappings name="BDD.ConnectorDef" semanticCandidatesExpression="feature:architectures" domainClass="ConnectorDef" childrenPresentation="List">
+          <subContainerMappings name="BDD.ConnectorDef" semanticCandidatesExpression="feature:definitions" domainClass="ConnectorDef" childrenPresentation="List">
             <borderedNodeMappings name="BDD.Connector.PortRef" semanticCandidatesExpression="feature:ports" domainClass="PortUse">
               <style xsi:type="style:SquareDescription" borderLineStyle="dash" showIcon="false" labelExpression="[self.name + ':~' + self.definition.name/]" resizeKind="NSEW" width="2" height="2">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
@@ -198,7 +198,7 @@
               <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
             </style>
           </subContainerMappings>
-          <subContainerMappings name="BDD.Enum" semanticCandidatesExpression="feature:architectures" domainClass="Enumeration" childrenPresentation="List">
+          <subContainerMappings name="BDD.Enum" semanticCandidatesExpression="feature:definitions" domainClass="Enumeration" childrenPresentation="List">
             <subNodeMappings name="BDD.Enum.Elements" semanticCandidatesExpression="feature:literals" domainClass="EnumLiteralValue">
               <style xsi:type="style:DotDescription" showIcon="false" labelExpression="[self.name/]" resizeKind="NSEW">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
@@ -212,7 +212,7 @@
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
             </style>
           </subContainerMappings>
-          <subContainerMappings name="BDD.ValueTypeDef" semanticCandidatesExpression="feature:architectures" domainClass="ValueTypeDef" childrenPresentation="List">
+          <subContainerMappings name="BDD.ValueTypeDef" semanticCandidatesExpression="feature:definitions" domainClass="ValueTypeDef" childrenPresentation="List">
             <subNodeMappings name="BDD.ValueType.Unit" semanticCandidatesExpression="feature:unit" domainClass="UnitDef">
               <style xsi:type="style:DotDescription" showIcon="false" labelExpression="['Unit = '+ self.name/]" resizeKind="NSEW">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
@@ -233,7 +233,7 @@
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
             </style>
           </subContainerMappings>
-          <subContainerMappings name="BDD.DataTypeDef" semanticCandidatesExpression="feature:architectures" domainClass="DataTypeDef" childrenPresentation="List">
+          <subContainerMappings name="BDD.DataTypeDef" semanticCandidatesExpression="feature:definitions" domainClass="DataTypeDef" childrenPresentation="List">
             <subNodeMappings name="BDD.DataTypeAttribute" semanticCandidatesExpression="feature:dataTypeAttributes" domainClass="TypeUse">
               <style xsi:type="style:DotDescription" showIcon="false" labelExpression="[self.name + ':' +  self.definition.name /]" resizeKind="NSEW">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
@@ -259,7 +259,7 @@
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="ComponentDef" referenceName="architectures">
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="ComponentDef" referenceName="definitions">
                 <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                   <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newComponent"/>
                 </subModelOperations>
@@ -280,7 +280,7 @@
               <container name="container"/>
               <initialOperation>
                 <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:self">
-                  <subModelOperations xsi:type="tool_1:CreateInstance" typeName="SimplePortDef" referenceName="architectures">
+                  <subModelOperations xsi:type="tool_1:CreateInstance" typeName="SimplePortDef" referenceName="definitions">
                     <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                       <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newPort"/>
                       <subModelOperations xsi:type="tool_1:SetValue" featureName="flowType" valueExpression="var:element"/>
@@ -295,7 +295,7 @@
               <container name="container"/>
               <initialOperation>
                 <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:self">
-                  <subModelOperations xsi:type="tool_1:CreateInstance" typeName="CompositePortDef" referenceName="architectures">
+                  <subModelOperations xsi:type="tool_1:CreateInstance" typeName="CompositePortDef" referenceName="definitions">
                     <subModelOperations xsi:type="tool_1:For" expression="[element->asSequence()/]">
                       <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                         <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newPort"/>
@@ -328,7 +328,7 @@
               <variable name="container"/>
               <viewVariable name="containerView"/>
               <initialOperation>
-                <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="ConnectorDef" referenceName="architectures">
+                <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="ConnectorDef" referenceName="definitions">
                   <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newConnector"/>
                   </subModelOperations>
@@ -341,7 +341,7 @@
               <variable name="container"/>
               <viewVariable name="containerView"/>
               <initialOperation>
-                <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="ValueTypeDef" referenceName="architectures">
+                <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="ValueTypeDef" referenceName="definitions">
                   <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newValueType"/>
                   </subModelOperations>
@@ -352,7 +352,7 @@
               <variable name="container"/>
               <viewVariable name="containerView"/>
               <initialOperation>
-                <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="DataTypeDef" referenceName="architectures">
+                <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="DataTypeDef" referenceName="definitions">
                   <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newDataType"/>
                   </subModelOperations>
@@ -363,7 +363,7 @@
               <variable name="container"/>
               <viewVariable name="containerView"/>
               <initialOperation>
-                <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="Enumeration" referenceName="architectures">
+                <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="Enumeration" referenceName="definitions">
                   <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newEnum"/>
                   </subModelOperations>
@@ -376,7 +376,7 @@
               <variable name="container"/>
               <viewVariable name="containerView"/>
               <initialOperation>
-                <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="DimensionDef" referenceName="architectures">
+                <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="DimensionDef" referenceName="definitions">
                   <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newDimension"/>
                   </subModelOperations>
@@ -387,7 +387,7 @@
               <variable name="container"/>
               <viewVariable name="containerView"/>
               <initialOperation>
-                <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="UnitDef" referenceName="architectures">
+                <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="UnitDef" referenceName="definitions">
                   <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newUnit"/>
                   </subModelOperations>
@@ -843,7 +843,7 @@
           </style>
         </edgeMappings>
         <containerMappings name="BDD.Behavior.Self" semanticCandidatesExpression="var:self" domainClass="Package">
-          <subContainerMappings name="BDD.Activity" semanticCandidatesExpression="feature:architectures" doubleClickDescription="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@toolSections.1/@ownedTools[name='BDD.Behavior.OpenPD']" domainClass="ActivityDef" childrenPresentation="List">
+          <subContainerMappings name="BDD.Activity" semanticCandidatesExpression="feature:definitions" doubleClickDescription="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@toolSections.1/@ownedTools[name='BDD.Behavior.OpenPD']" domainClass="ActivityDef" childrenPresentation="List">
             <subNodeMappings name="BDD.Activity.InParams" semanticCandidatesExpression="feature:inParameters" domainClass="Pin">
               <style xsi:type="style:DotDescription" showIcon="false" labelExpression="['in '+self.name +' : '+self.definition.name/]" labelPosition="node" resizeKind="NSEW">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
@@ -878,7 +878,7 @@
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
             </style>
           </subContainerMappings>
-          <subContainerMappings name="BDD.Action" semanticCandidatesExpression="feature:architectures" doubleClickDescription="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@toolSections.1/@ownedTools[name='BDD.Behavior.OpenPD']" domainClass="ActionDef" childrenPresentation="List">
+          <subContainerMappings name="BDD.Action" semanticCandidatesExpression="feature:definitions" doubleClickDescription="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@toolSections.1/@ownedTools[name='BDD.Behavior.OpenPD']" domainClass="ActionDef" childrenPresentation="List">
             <subNodeMappings name="BDD.Action.ConstraintUse" semanticCandidatesExpression="feature:constraints" domainClass="ConstraintUse">
               <style xsi:type="style:DotDescription" showIcon="false" labelExpression="[self.kind+' '+self.definition.name/]" resizeKind="NSEW">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
@@ -899,7 +899,7 @@
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
             </style>
           </subContainerMappings>
-          <subContainerMappings name="BDD.Protocol" semanticCandidatesExpression="feature:architectures" doubleClickDescription="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@toolSections.1/@ownedTools[name='BDD.Behavior.OpenPD']" domainClass="Protocol" reusedNodeMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.InParams'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.OutParams']" childrenPresentation="List">
+          <subContainerMappings name="BDD.Protocol" semanticCandidatesExpression="feature:definitions" doubleClickDescription="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@toolSections.1/@ownedTools[name='BDD.Behavior.OpenPD']" domainClass="Protocol" reusedNodeMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.InParams'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.OutParams']" childrenPresentation="List">
             <subNodeMappings name="BDD.Protocol.Body" semanticCandidatesExpression="feature:body" doubleClickDescription="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@toolSections.1/@ownedTools[name='BDD.Behavior.OpenProtocol']" domainClass="ProtocolBody">
               <style xsi:type="style:DotDescription" showIcon="false" labelExpression="['Protocol Body'/]" resizeKind="NSEW">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
@@ -913,7 +913,7 @@
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
             </style>
           </subContainerMappings>
-          <subContainerMappings name="BDD.Constraint" semanticCandidatesExpression="feature:architectures" domainClass="ConstraintDef" childrenPresentation="List">
+          <subContainerMappings name="BDD.Constraint" semanticCandidatesExpression="feature:definitions" domainClass="ConstraintDef" childrenPresentation="List">
             <subNodeMappings name="BDD.Constraint.ParamIn" semanticCandidatesExpression="feature:inParameters" domainClass="Pin">
               <style xsi:type="style:DotDescription" showIcon="false" labelExpression="['Param In '+self.name+ if self.definition&lt;>null then (':'+self.definition.name) else ' ' endif/]" resizeKind="NSEW">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
@@ -954,7 +954,7 @@
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="ActivityDef" referenceName="architectures">
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="ActivityDef" referenceName="definitions">
                 <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                   <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newActivity">
                     <subModelOperations xsi:type="tool_1:CreateInstance" typeName="ActivityBody" referenceName="acbody" variableName="newBody"/>
@@ -969,7 +969,7 @@
             <container name="container"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:self">
-                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="ActionDef" referenceName="architectures">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="ActionDef" referenceName="definitions">
                   <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newAction"/>
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="returnType" valueExpression="var:element"/>
@@ -982,7 +982,7 @@
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.Protocol" referenceName="architectures">
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.Protocol" referenceName="definitions">
                 <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                   <subModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.ProtocolBody" referenceName="body" variableName="prot"/>
                 </subModelOperations>
@@ -993,7 +993,7 @@
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="ConstraintDef" referenceName="architectures">
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="ConstraintDef" referenceName="definitions">
                 <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                   <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newConstraint"/>
                 </subModelOperations>
@@ -1527,7 +1527,7 @@
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="SysADL.Execution.BDD" label="Block Definition Diagram (Execution BDD)" domainClass="Package">
       <defaultLayer name="Default">
         <containerMappings name="SysADL.Execution.Self" semanticCandidatesExpression="var:self" domainClass="Package">
-          <subContainerMappings name="SysADL.Execution.Executable" semanticCandidatesExpression="feature:architectures" doubleClickDescription="//@ownedViewpoints[name='SysADL.Executable']/@ownedRepresentations[name='SysADL.Execution.BDD']/@defaultLayer/@toolSections.0/@ownedTools[name='Teste']" domainClass="Executable" childrenPresentation="VerticalStack">
+          <subContainerMappings name="SysADL.Execution.Executable" semanticCandidatesExpression="feature:definitions" doubleClickDescription="//@ownedViewpoints[name='SysADL.Executable']/@ownedRepresentations[name='SysADL.Execution.BDD']/@defaultLayer/@toolSections.0/@ownedTools[name='Teste']" domainClass="Executable" childrenPresentation="VerticalStack">
             <subContainerMappings name="Execution.CP.Parameters" semanticCandidatesExpression="var:self" domainClass="Executable" childrenPresentation="List">
               <subNodeMappings name="Execution.Params.Parameter" semanticCandidatesExpression="feature:params" domainClass="TypeUse">
                 <style xsi:type="style:DotDescription" showIcon="false" labelExpression="['param '+self.name+':'+self.definition.name/]" labelPosition="node" resizeKind="NSEW">
@@ -1579,7 +1579,7 @@
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.Executable" referenceName="architectures"/>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.Executable" referenceName="definitions"/>
             </initialOperation>
           </ownedTools>
           <ownedTools xsi:type="tool:NodeCreationDescription" name="Execution.Param" label="Parameter" forceRefresh="true" elementsToSelect="var:self" nodeMappings="//@ownedViewpoints[name='SysADL.Executable']/@ownedRepresentations[name='SysADL.Execution.BDD']/@defaultLayer/@containerMappings[name='SysADL.Execution.Self']/@subContainerMappings[name='SysADL.Execution.Executable']/@subContainerMappings[name='Execution.CP.Parameters']/@subNodeMappings[name='Execution.Params.Parameter']">
@@ -1607,7 +1607,7 @@
               <firstModelOperations xsi:type="tool_1:For" expression="[self.oclAsType(Package).definitions/]">
                 <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[i.eContainer()/]">
                   <subModelOperations xsi:type="tool_1:If" conditionExpression="[i.oclIsTypeOf(ActionDef)/]">
-                    <subModelOperations xsi:type="tool_1:CreateInstance" typeName="Executable" referenceName="architectures">
+                    <subModelOperations xsi:type="tool_1:CreateInstance" typeName="Executable" referenceName="definitions">
                       <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                         <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="[(i.name + 'EX').replace('ANEX','EX')/]"/>
                         <subModelOperations xsi:type="tool_1:SetValue" featureName="returnType" valueExpression="[i.returnType/]"/>

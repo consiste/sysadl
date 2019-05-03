@@ -95,7 +95,7 @@
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
             </style>
           </subContainerMappings>
-          <subContainerMappings name="BDD.Import.ComponentDef" deletionDescription="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@toolSections.3/@ownedTools[name='BDD.Import.Delete']" semanticCandidatesExpression="feature:elementImports" doubleClickDescription="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@toolSections.3/@ownedTools[name='BDD.Tools.Import.Nagivation']" domainClass="ComponentDef" childrenPresentation="List">
+          <subContainerMappings name="BDD.Import.ComponentDef" deletionDescription="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@toolSections.3/@ownedTools[name='BDD.Import.Delete']" semanticCandidatesExpression="feature:importedDefinitions" doubleClickDescription="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@toolSections.3/@ownedTools[name='BDD.Tools.Import.Nagivation']" domainClass="ComponentDef" childrenPresentation="List">
             <borderedNodeMappings name="BDD.ComDef.Import.Ports" semanticCandidatesExpression="feature:ports" domainClass="PortUse">
               <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="[self.name + if (self.definition &lt;> null) then (' : ' + self.definition.name ) else '' endif  + ' ['+self.lowerBound+','+self.upperBound + '] '/]" labelAlignment="LEFT" tooltipExpression="['Port '+self.name/]" resizeKind="NSEW" width="2" height="2">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
@@ -489,7 +489,7 @@
             <containerView name="containerView"/>
             <container name="container"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:SetValue" featureName="elementImports" valueExpression="var:element"/>
+              <firstModelOperations xsi:type="tool_1:SetValue" featureName="importedDefinitions" valueExpression="var:element"/>
             </initialOperation>
           </ownedTools>
           <ownedTools xsi:type="tool:DoubleClickDescription" name="BDD.Tools.Import.Nagivation" label="Open Original BDD" forceRefresh="true" mappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.Import.ComponentDef']">
@@ -507,7 +507,7 @@
             <containerView name="containerView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:self">
-                <subModelOperations xsi:type="tool_1:Unset" featureName="elementImports" elementExpression="[self.oclAsType(Package).elementImports->excluding(element->asSet())/]"/>
+                <subModelOperations xsi:type="tool_1:Unset" featureName="importedDefinitions" elementExpression="[self.oclAsType(Package).importedDefinitions->excluding(element->asSet())/]"/>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>

@@ -834,7 +834,7 @@
   <ownedViewpoints name="SysADL.Behavioral" label="SysADL Behavioral Viewpoint" modelFileExtension="sysadl">
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="BDD.Behavior" label="Block Definition Diagram (Behavior BDD)" domainClass="Package">
       <defaultLayer name="BDD.Bevahior.Default">
-        <edgeMappings name="BDD.Activity.Composition" sourceMapping="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']" targetMapping="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ComponentDef'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Action']" targetFinderExpression="[self.acbody.actions.definition/]">
+        <edgeMappings name="BDD.Activity.Composition" sourceMapping="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']" targetMapping="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ComponentDef'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Action']" targetFinderExpression="[self.body.actions.definition/]">
           <style sourceArrow="FillDiamond" targetArrow="NoDecoration" sizeComputationExpression="2">
             <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
             <centerLabelStyleDescription>
@@ -865,7 +865,7 @@
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
               </style>
             </subNodeMappings>
-            <subNodeMappings name="BDD.Activity.Body" semanticCandidatesExpression="feature:acbody" doubleClickDescription="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@toolSections.1/@ownedTools[name='BDD.Behavior.OpenAD']" domainClass="ActivityBody">
+            <subNodeMappings name="BDD.Activity.Body" semanticCandidatesExpression="feature:body" doubleClickDescription="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@toolSections.1/@ownedTools[name='BDD.Behavior.OpenAD']" domainClass="ActivityBody">
               <style xsi:type="style:DotDescription" showIcon="false" labelExpression="['Open Activity Diagram'/]" resizeKind="NSEW">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
@@ -957,7 +957,7 @@
               <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="ActivityDef" referenceName="definitions">
                 <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                   <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newActivity">
-                    <subModelOperations xsi:type="tool_1:CreateInstance" typeName="ActivityBody" referenceName="acbody" variableName="newBody"/>
+                    <subModelOperations xsi:type="tool_1:CreateInstance" typeName="ActivityBody" referenceName="body" variableName="newBody"/>
                   </subModelOperations>
                 </subModelOperations>
               </firstModelOperations>
@@ -1421,7 +1421,7 @@
             <sourceViewVariable name="sourceView"/>
             <targetViewVariable name="targetView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[self.eContainer(ActivityDef).acbody/]">
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[self.eContainer(ActivityDef).body/]">
                 <subModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.ActivityDelegation" referenceName="flows">
                   <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="source" valueExpression="var:source"/>
@@ -1467,7 +1467,7 @@
             <sourceViewVariable name="sourceView"/>
             <targetViewVariable name="targetView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[source.eContainer(ActivityDef).acbody/]">
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[source.eContainer(ActivityDef).body/]">
                 <subModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.ActivityDelegation" referenceName="flows">
                   <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="source" valueExpression="var:source"/>

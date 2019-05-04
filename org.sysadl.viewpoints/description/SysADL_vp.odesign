@@ -34,7 +34,7 @@
         </edgeMappings>
         <containerMappings name="BDD" semanticCandidatesExpression="var:self" domainClass="Package">
           <subNodeMappings name="BDD.Dimension" semanticCandidatesExpression="feature:definitions" domainClass="DimensionDef">
-            <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="['&lt;&lt;dimension>>\n'+self.name/]" iconPath="/SysADL.viewpoints/icons/DataType.gif" labelPosition="node" resizeKind="NSEW" color="//@userColorsPalettes[name='Colors']/@entries[name='BlueDataType']">
+            <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="['&lt;&lt;dimension>>\n'+self.name/]" iconPath="/org.sysadl.viewpoints/icons/DataType.gif" labelPosition="node" resizeKind="NSEW" color="//@userColorsPalettes[name='Colors']/@entries[name='BlueDataType']">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </style>
@@ -47,7 +47,7 @@
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
               </style>
             </subNodeMappings>
-            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;unit>>\n'+self.name/]" iconPath="/SysADL.viewpoints/icons/Unit.gif" backgroundStyle="GradientTopToBottom" foregroundColor="//@userColorsPalettes[name='Colors']/@entries[name='BlueDataType']">
+            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;unit>>\n'+self.name/]" iconPath="/org.sysadl.viewpoints/icons/Unit.gif" backgroundStyle="GradientTopToBottom" foregroundColor="//@userColorsPalettes[name='Colors']/@entries[name='BlueDataType']">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
@@ -68,7 +68,7 @@
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
               </style>
             </subNodeMappings>
-            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;' + self.flowProperties+ ' ' + 'Port>>\n'+self.name/]" iconPath="/SysADL.viewpoints/icons/Property.gif" backgroundStyle="GradientTopToBottom" foregroundColor="//@userColorsPalettes[name='Colors']/@entries[name='PortIn']">
+            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;' + self.flowProperties+ ' ' + 'Port>>\n'+self.name/]" iconPath="/org.sysadl.viewpoints/icons/Property.gif" backgroundStyle="GradientTopToBottom" foregroundColor="//@userColorsPalettes[name='Colors']/@entries[name='PortIn']">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
@@ -89,7 +89,7 @@
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
               </style>
             </subNodeMappings>
-            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;CompositePort>>\n'+self.name/]" iconPath="/SysADL.viewpoints/icons/Property.gif" foregroundColor="//@userColorsPalettes[name='Colors']/@entries[name='PortIn']">
+            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;CompositePort>>\n'+self.name/]" iconPath="/org.sysadl.viewpoints/icons/Property.gif" foregroundColor="//@userColorsPalettes[name='Colors']/@entries[name='PortIn']">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
@@ -104,7 +104,7 @@
               </style>
             </borderedNodeMappings>
             <subNodeMappings name="BDD.CompDef.Import.Configuration" semanticCandidatesExpression="feature:composite" domainClass="Configuration">
-              <style xsi:type="style:DotDescription" labelExpression="Configuration" iconPath="/SysADL.viewpoints/icons/Configuration.gif" resizeKind="NSEW">
+              <style xsi:type="style:DotDescription" labelExpression="Configuration" iconPath="/org.sysadl.viewpoints/icons/Configuration.gif" resizeKind="NSEW">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
@@ -117,14 +117,14 @@
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
               </style>
             </subNodeMappings>
-            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;imported>>\n&lt;&lt;component>>\n'  + self.name/]" iconPath="/SysADL.viewpoints/icons/Component.gif" tooltipExpression="['Component '+self.name/]" backgroundStyle="GradientTopToBottom">
+            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;imported>>\n&lt;&lt;component>>\n'  + self.name/]" iconPath="/org.sysadl.viewpoints/icons/Component.gif" tooltipExpression="['Component '+self.name/]" backgroundStyle="GradientTopToBottom">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
               <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_blue']"/>
             </style>
             <conditionnalStyles predicateExpression="[self.composite=null/]">
-              <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;imported>>\n&lt;&lt;component>>\n'  + self.name/]" iconPath="/SysADL.viewpoints/icons/Component.gif">
+              <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;imported>>\n&lt;&lt;component>>\n'  + self.name/]" iconPath="/org.sysadl.viewpoints/icons/Component.gif">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
@@ -141,7 +141,7 @@
               </style>
             </borderedNodeMappings>
             <subNodeMappings name="BDD.CompDef.Configuration" semanticCandidatesExpression="feature:composite" doubleClickDescription="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@toolSections.0/@ownedTools[name='BDD.Tools.DoubleClick']" domainClass="Configuration">
-              <style xsi:type="style:DotDescription" labelExpression="Configuration" iconPath="/SysADL.viewpoints/icons/Configuration.gif" resizeKind="NSEW">
+              <style xsi:type="style:DotDescription" labelExpression="Configuration" iconPath="/org.sysadl.viewpoints/icons/Configuration.gif" resizeKind="NSEW">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
@@ -154,14 +154,14 @@
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
               </style>
             </subNodeMappings>
-            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;component>>\n'  + self.name/]" iconPath="/SysADL.viewpoints/icons/Component.gif" tooltipExpression="['Component '+self.name/]" backgroundStyle="GradientTopToBottom">
+            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;component>>\n'  + self.name/]" iconPath="/org.sysadl.viewpoints/icons/Component.gif" tooltipExpression="['Component '+self.name/]" backgroundStyle="GradientTopToBottom">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
               <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_blue']"/>
             </style>
             <conditionnalStyles predicateExpression="[self.composite=null/]">
-              <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;component>>\n'  + self.name/]" iconPath="/SysADL.viewpoints/icons/Component.gif">
+              <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;component>>\n'  + self.name/]" iconPath="/org.sysadl.viewpoints/icons/Component.gif">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
@@ -185,13 +185,13 @@
               </style>
             </subNodeMappings>
             <subNodeMappings name="BDD.Connector.Configuration" semanticCandidatesExpression="feature:composite" doubleClickDescription="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@toolSections.0/@ownedTools[name='BDD.Tools.DoubleClick']" domainClass="Configuration">
-              <style xsi:type="style:DotDescription" labelExpression="['Configuration'/]" iconPath="/SysADL.viewpoints/icons/Configuration.gif" resizeKind="NSEW">
+              <style xsi:type="style:DotDescription" labelExpression="['Configuration'/]" iconPath="/org.sysadl.viewpoints/icons/Configuration.gif" resizeKind="NSEW">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
               </style>
             </subNodeMappings>
-            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;connector>>\n' +self.name/]" iconPath="/SysADL.viewpoints/icons/Connector.gif" backgroundStyle="GradientTopToBottom">
+            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;connector>>\n' +self.name/]" iconPath="/org.sysadl.viewpoints/icons/Connector.gif" backgroundStyle="GradientTopToBottom">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
@@ -206,7 +206,7 @@
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
               </style>
             </subNodeMappings>
-            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;enumeration>>\n'+self.name/]" iconPath="/SysADL.viewpoints/icons/Enumeration.gif" foregroundColor="//@userColorsPalettes[name='Colors']/@entries[name='BlueBlock']">
+            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;enumeration>>\n'+self.name/]" iconPath="/org.sysadl.viewpoints/icons/Enumeration.gif" foregroundColor="//@userColorsPalettes[name='Colors']/@entries[name='BlueBlock']">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
@@ -227,21 +227,21 @@
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
               </style>
             </subNodeMappings>
-            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" showIcon="false" labelExpression="['&lt;&lt;value type>>\n' +self.name/]" iconPath="/SysADL.viewpoints/icons/DataType.gif" backgroundStyle="GradientTopToBottom" foregroundColor="//@userColorsPalettes[name='Colors']/@entries[name='BlueBlock']">
+            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" showIcon="false" labelExpression="['&lt;&lt;value type>>\n' +self.name/]" iconPath="/org.sysadl.viewpoints/icons/DataType.gif" backgroundStyle="GradientTopToBottom" foregroundColor="//@userColorsPalettes[name='Colors']/@entries[name='BlueBlock']">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
             </style>
           </subContainerMappings>
           <subContainerMappings name="BDD.DataTypeDef" semanticCandidatesExpression="feature:definitions" domainClass="DataTypeDef" childrenPresentation="List">
-            <subNodeMappings name="BDD.DataTypeAttribute" semanticCandidatesExpression="feature:dataTypeAttributes" domainClass="TypeUse">
+            <subNodeMappings name="BDD.DataTypeAttribute" semanticCandidatesExpression="feature:attributes" domainClass="TypeUse">
               <style xsi:type="style:DotDescription" showIcon="false" labelExpression="[self.name + ':' +  self.definition.name /]" resizeKind="NSEW">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
               </style>
             </subNodeMappings>
-            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;dataType>>\n'+self.name/]" iconPath="/SysADL.viewpoints/icons/DataType.gif" backgroundColor="//@userColorsPalettes[name='Colors']/@entries[name='BlueDataType']" foregroundColor="//@userColorsPalettes[name='Colors']/@entries[name='BlueDataType']">
+            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;dataType>>\n'+self.name/]" iconPath="/org.sysadl.viewpoints/icons/DataType.gif" backgroundColor="//@userColorsPalettes[name='Colors']/@entries[name='BlueDataType']" foregroundColor="//@userColorsPalettes[name='Colors']/@entries[name='BlueDataType']">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </style>
@@ -255,7 +255,7 @@
           </style>
         </containerMappings>
         <toolSections name="BDD.Tools.Types" label="Types">
-          <ownedTools xsi:type="tool:ContainerCreationDescription" name="BDD.Tools.ComponentDef" label="Define Component" forceRefresh="true" containerMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ComponentDef']" iconPath="/SysADL.viewpoints/icons/Component.gif">
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="BDD.Tools.ComponentDef" label="Define Component" forceRefresh="true" containerMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ComponentDef']" iconPath="/org.sysadl.viewpoints/icons/Component.gif">
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
@@ -274,7 +274,7 @@
             </initialOperation>
           </ownedTools>
           <ownedTools xsi:type="tool:ToolGroup" name="Group Port" label="Group Port">
-            <tools xsi:type="tool_1:SelectionWizardDescription" name="BDD.Tools.SimplePort" label="Define Simple Port" precondition="[container.oclIsTypeOf(Package)/]" forceRefresh="true" candidatesExpression="[self.oclAsType(Package).eContents(TypeDef)->union(self.oclAsType(Package).imports.eContents(TypeDef))/]" rootExpression="var:self" childrenExpression="var:self" message="Select Simple Port Flow Type" iconPath="/SysADL.viewpoints/icons/Property.gif" windowImagePath="/SysADL.viewpoints/icons/Property.gif">
+            <tools xsi:type="tool_1:SelectionWizardDescription" name="BDD.Tools.SimplePort" label="Define Simple Port" precondition="[container.oclIsTypeOf(Package)/]" forceRefresh="true" candidatesExpression="[self.oclAsType(Package).eContents(TypeDef)->union(self.oclAsType(Package).imports.eContents(TypeDef))/]" rootExpression="var:self" childrenExpression="var:self" message="Select Simple Port Flow Type" iconPath="/org.sysadl.viewpoints/icons/Property.gif" windowImagePath="/org.sysadl.viewpoints/icons/Property.gif">
               <element name="element"/>
               <containerView name="containerView"/>
               <container name="container"/>
@@ -289,7 +289,7 @@
                 </firstModelOperations>
               </initialOperation>
             </tools>
-            <tools xsi:type="tool_1:SelectionWizardDescription" name="BDD.Tools.CompositePort" label="Define Composite Port" precondition="[container.oclIsTypeOf(Package)/]" forceRefresh="true" candidatesExpression="[self.oclAsType(Package).eContents(PortDef)->union(self.oclAsType(Package).imports.eContents(PortDef))/]" multiple="true" rootExpression="var:self" childrenExpression="var:self" message="Select Sub-Port Types (at least one)" iconPath="/SysADL.viewpoints/icons/Property.gif" windowImagePath="/SysADL.viewpoints/icons/Property.gif">
+            <tools xsi:type="tool_1:SelectionWizardDescription" name="BDD.Tools.CompositePort" label="Define Composite Port" precondition="[container.oclIsTypeOf(Package)/]" forceRefresh="true" candidatesExpression="[self.oclAsType(Package).eContents(PortDef)->union(self.oclAsType(Package).imports.eContents(PortDef))/]" multiple="true" rootExpression="var:self" childrenExpression="var:self" message="Select Sub-Port Types (at least one)" iconPath="/org.sysadl.viewpoints/icons/Property.gif" windowImagePath="/org.sysadl.viewpoints/icons/Property.gif">
               <element name="element"/>
               <containerView name="containerView"/>
               <container name="container"/>
@@ -324,7 +324,7 @@
             </tools>
           </ownedTools>
           <ownedTools xsi:type="tool:ToolGroup" name="Group Connector">
-            <tools xsi:type="tool:ContainerCreationDescription" name="BDD.Tools.Connector" label="Define Connector" forceRefresh="true" containerMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ConnectorDef']" iconPath="/SysADL.viewpoints/icons/Connector.gif">
+            <tools xsi:type="tool:ContainerCreationDescription" name="BDD.Tools.Connector" label="Define Connector" forceRefresh="true" containerMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ConnectorDef']" iconPath="/org.sysadl.viewpoints/icons/Connector.gif">
               <variable name="container"/>
               <viewVariable name="containerView"/>
               <initialOperation>
@@ -337,7 +337,7 @@
             </tools>
           </ownedTools>
           <ownedTools xsi:type="tool:ToolGroup" name="Group DataTypes">
-            <tools xsi:type="tool:ContainerCreationDescription" name="BDD.Tools.ValueType" label="Define Value Type" containerMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ValueTypeDef']" iconPath="/SysADL.viewpoints/icons/DataType.gif">
+            <tools xsi:type="tool:ContainerCreationDescription" name="BDD.Tools.ValueType" label="Define Value Type" containerMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ValueTypeDef']" iconPath="/org.sysadl.viewpoints/icons/DataType.gif">
               <variable name="container"/>
               <viewVariable name="containerView"/>
               <initialOperation>
@@ -348,7 +348,7 @@
                 </firstModelOperations>
               </initialOperation>
             </tools>
-            <tools xsi:type="tool:ContainerCreationDescription" name="BDD.Tools.DataType" label="Define Data Type" containerMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.DataTypeDef']" iconPath="/SysADL.viewpoints/icons/DataType.gif">
+            <tools xsi:type="tool:ContainerCreationDescription" name="BDD.Tools.DataType" label="Define Data Type" containerMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.DataTypeDef']" iconPath="/org.sysadl.viewpoints/icons/DataType.gif">
               <variable name="container"/>
               <viewVariable name="containerView"/>
               <initialOperation>
@@ -359,7 +359,7 @@
                 </firstModelOperations>
               </initialOperation>
             </tools>
-            <tools xsi:type="tool:ContainerCreationDescription" name="BDD.Tools.Enum" label="Define Enumeration" containerMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.Enum']" iconPath="/SysADL.viewpoints/icons/Enumeration.gif">
+            <tools xsi:type="tool:ContainerCreationDescription" name="BDD.Tools.Enum" label="Define Enumeration" containerMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.Enum']" iconPath="/org.sysadl.viewpoints/icons/Enumeration.gif">
               <variable name="container"/>
               <viewVariable name="containerView"/>
               <initialOperation>
@@ -372,7 +372,7 @@
             </tools>
           </ownedTools>
           <ownedTools xsi:type="tool:ToolGroup" name="Group Dimension">
-            <tools xsi:type="tool:NodeCreationDescription" name="BDD.Tools.Dimension" label="Dimension" forceRefresh="true" nodeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subNodeMappings[name='BDD.Dimension']" iconPath="/SysADL.viewpoints/icons/DataType.gif">
+            <tools xsi:type="tool:NodeCreationDescription" name="BDD.Tools.Dimension" label="Dimension" forceRefresh="true" nodeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subNodeMappings[name='BDD.Dimension']" iconPath="/org.sysadl.viewpoints/icons/DataType.gif">
               <variable name="container"/>
               <viewVariable name="containerView"/>
               <initialOperation>
@@ -383,7 +383,7 @@
                 </firstModelOperations>
               </initialOperation>
             </tools>
-            <tools xsi:type="tool:ContainerCreationDescription" name="BDD.Tools.Unit" label="Unit" forceRefresh="true" containerMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.Unit']" iconPath="/SysADL.viewpoints/icons/Unit.gif">
+            <tools xsi:type="tool:ContainerCreationDescription" name="BDD.Tools.Unit" label="Unit" forceRefresh="true" containerMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.Unit']" iconPath="/org.sysadl.viewpoints/icons/Unit.gif">
               <variable name="container"/>
               <viewVariable name="containerView"/>
               <initialOperation>
@@ -397,7 +397,7 @@
           </ownedTools>
         </toolSections>
         <toolSections name="BDD.Tools.Features" label="Features">
-          <ownedTools xsi:type="tool:NodeCreationDescription" name="BDD.Tools.Configuration" label="Configuration (Component, Connector)" forceRefresh="true" nodeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ComponentDef']/@subNodeMappings[name='BDD.CompDef.Configuration'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.Import.ComponentDef']/@subNodeMappings[name='BDD.CompDef.Import.Configuration'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ConnectorDef']/@subNodeMappings[name='BDD.Connector.Configuration']" iconPath="/SysADL.viewpoints/icons/Configuration.gif">
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="BDD.Tools.Configuration" label="Configuration (Component, Connector)" forceRefresh="true" nodeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ComponentDef']/@subNodeMappings[name='BDD.CompDef.Configuration'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.Import.ComponentDef']/@subNodeMappings[name='BDD.CompDef.Import.Configuration'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ConnectorDef']/@subNodeMappings[name='BDD.Connector.Configuration']" iconPath="/org.sysadl.viewpoints/icons/Configuration.gif">
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
@@ -417,7 +417,7 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:NodeCreationDescription" name="BDD.Tools.Enum.Element" label="Element (Enum)" forceRefresh="true" nodeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.Enum']/@subNodeMappings[name='BDD.Enum.Elements']" iconPath="/SysADL.viewpoints/icons/Enumeration.gif">
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="BDD.Tools.Enum.Element" label="Element (Enum)" forceRefresh="true" nodeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.Enum']/@subNodeMappings[name='BDD.Enum.Elements']" iconPath="/org.sysadl.viewpoints/icons/Enumeration.gif">
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
@@ -428,18 +428,18 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:NodeCreationDescription" name="BDD.Tools.DataTypeAttribute" label="Attribute (DataType)" forceRefresh="true" nodeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.DataTypeDef']/@subNodeMappings[name='BDD.DataTypeAttribute']" iconPath="/SysADL.viewpoints/icons/DataType.gif">
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="BDD.Tools.DataTypeAttribute" label="Attribute (DataType)" forceRefresh="true" nodeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.DataTypeDef']/@subNodeMappings[name='BDD.DataTypeAttribute']" iconPath="/org.sysadl.viewpoints/icons/DataType.gif">
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="TypeUse" referenceName="dataTypeAttributes">
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="TypeUse" referenceName="attributes">
                 <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                   <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newAttribute"/>
                 </subModelOperations>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:NodeCreationDescription" name="BDD.Tools.Property" label="Property" forceRefresh="true" nodeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ComponentDef']/@subNodeMappings[name='BDD.CompDef.Property'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.CompositePort']/@subNodeMappings[name='BDD.CompositePort.Property'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ConnectorDef']/@subNodeMappings[name='BDD.Connector.Property'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.SimplePortDef']/@subNodeMappings[name='BDD.SimplePort.Property'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.Import.ComponentDef']/@subNodeMappings[name='BDD.CompDef.Import.Property']" iconPath="/SysADL.viewpoints/icons/Property.gif">
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="BDD.Tools.Property" label="Property" forceRefresh="true" nodeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ComponentDef']/@subNodeMappings[name='BDD.CompDef.Property'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.CompositePort']/@subNodeMappings[name='BDD.CompositePort.Property'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ConnectorDef']/@subNodeMappings[name='BDD.Connector.Property'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.SimplePortDef']/@subNodeMappings[name='BDD.SimplePort.Property'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.Import.ComponentDef']/@subNodeMappings[name='BDD.CompDef.Import.Property']" iconPath="/org.sysadl.viewpoints/icons/Property.gif">
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
@@ -452,7 +452,7 @@
           </ownedTools>
         </toolSections>
         <toolSections name="BDD.Tools.Relationships" label="Relationships">
-          <ownedTools xsi:type="tool:EdgeCreationDescription" name="BDD.Tools.Flow" label="Flow" precondition="[preTarget.oclAsType(PortUse).definition.oclIsTypeOf(SimplePortDef)._and(preSource.eContainer()=preTarget.eContainer())/]" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@edgeMappings[name='BDD.Flow']" iconPath="/SysADL.viewpoints/icons/Connector.gif" connectionStartPrecondition="[preSource.oclAsType(PortUse).definition.oclIsTypeOf(SimplePortDef)/]">
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="BDD.Tools.Flow" label="Flow" precondition="[preTarget.oclAsType(PortUse).definition.oclIsTypeOf(SimplePortDef)._and(preSource.eContainer()=preTarget.eContainer())/]" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@edgeMappings[name='BDD.Flow']" iconPath="/org.sysadl.viewpoints/icons/Connector.gif" connectionStartPrecondition="[preSource.oclAsType(PortUse).definition.oclIsTypeOf(SimplePortDef)/]">
             <sourceVariable name="source"/>
             <targetVariable name="target"/>
             <sourceViewVariable name="sourceView"/>
@@ -469,7 +469,7 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:EdgeCreationDescription" name="BDD.Tools.SuperType" label="Generalization" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@edgeMappings[name='BDD.SuperType']" iconPath="/SysADL.viewpoints/icons/Generalization.gif">
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="BDD.Tools.SuperType" label="Generalization" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@edgeMappings[name='BDD.SuperType']" iconPath="/org.sysadl.viewpoints/icons/Generalization.gif">
             <sourceVariable name="source"/>
             <targetVariable name="target"/>
             <sourceViewVariable name="sourceView"/>
@@ -515,7 +515,7 @@
       </defaultLayer>
       <additionalLayers name="Disabled">
         <toolSections name="DisabledTools">
-          <ownedTools xsi:type="tool:EdgeCreationDescription" name="BDD.Tools.Component.Composition" label="Composition" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@edgeMappings[name='BDD.Component.Composition']" iconPath="/SysADL.viewpoints/icons/Association_composite.gif">
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="BDD.Tools.Component.Composition" label="Composition" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@edgeMappings[name='BDD.Component.Composition']" iconPath="/org.sysadl.viewpoints/icons/Association_composite.gif">
             <sourceVariable name="source"/>
             <targetVariable name="target"/>
             <sourceViewVariable name="sourceView"/>
@@ -590,7 +590,7 @@
                 <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
               </style>
             </borderedNodeMappings>
-            <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="['&lt;&lt;proxy>>\n' + self.name + ':' + self.definition.name /]" iconPath="/SysADL.viewpoints/icons/Property.gif" labelAlignment="LEFT" tooltipExpression="['Port '+self.name/]" sizeComputationExpression="5" resizeKind="NSEW" width="3" height="3">
+            <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="['&lt;&lt;proxy>>\n' + self.name + ':' + self.definition.name /]" iconPath="/org.sysadl.viewpoints/icons/Property.gif" labelAlignment="LEFT" tooltipExpression="['Port '+self.name/]" sizeComputationExpression="5" resizeKind="NSEW" width="3" height="3">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
@@ -611,7 +611,7 @@
                 </style>
               </conditionnalStyles>
             </borderedNodeMappings>
-            <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="['&lt;&lt;component>>\n' + self.name + (if (self.definition&lt;>null) then ':' + self.definition.name else ' ' endif) + ' [' +self.lowerBound +'..' +self.upperBound.toString().replace('-1','*')+']' /]" iconPath="/SysADL.viewpoints/icons/ComponentUse.gif" labelPosition="node" resizeKind="NSEW" width="15" height="7" color="//@userColorsPalettes[name='Colors']/@entries[name='BlueBlock']">
+            <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="['&lt;&lt;component>>\n' + self.name + (if (self.definition&lt;>null) then ':' + self.definition.name else ' ' endif) + ' [' +self.lowerBound +'..' +self.upperBound.toString().replace('-1','*')+']' /]" iconPath="/org.sysadl.viewpoints/icons/ComponentUse.gif" labelPosition="node" resizeKind="NSEW" width="15" height="7" color="//@userColorsPalettes[name='Colors']/@entries[name='BlueBlock']">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </style>
@@ -625,7 +625,7 @@
           </style>
         </containerMappings>
         <toolSections name="IBD.Tools.Reuse" label="Components">
-          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="test2" label="Component Instance" precondition="[container.oclIsTypeOf(Configuration)/]" forceRefresh="true" candidatesExpression="[self.eContainer().eContainer().oclAsType(Package).eContents(ComponentDef)->excluding(self.eContainer())->union(self.eContainer().eContainer().oclAsType(Package).imports.eContents(ComponentDef))/]" rootExpression="var:self" childrenExpression="var:self" message="Select Component Def" iconPath="/SysADL.viewpoints/icons/ComponentUse.gif" windowTitle="Select Component" windowImagePath="/SysADL.viewpoints/icons/ComponentUse.gif">
+          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="test2" label="Component Instance" precondition="[container.oclIsTypeOf(Configuration)/]" forceRefresh="true" candidatesExpression="[self.eContainer().eContainer().oclAsType(Package).eContents(ComponentDef)->excluding(self.eContainer())->union(self.eContainer().eContainer().oclAsType(Package).imports.eContents(ComponentDef))/]" rootExpression="var:self" childrenExpression="var:self" message="Select Component Def" iconPath="/org.sysadl.viewpoints/icons/ComponentUse.gif" windowTitle="Select Component" windowImagePath="/org.sysadl.viewpoints/icons/ComponentUse.gif">
             <element name="element"/>
             <containerView name="containerView"/>
             <container name="container"/>
@@ -653,7 +653,7 @@
           </ownedTools>
         </toolSections>
         <toolSections name="IBD.Tools.Relationships" label="Relationships">
-          <ownedTools xsi:type="tool:EdgeCreationDescription" name="IBD.Tools.Delegation" label="Delegation" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@edgeMappings[name='IBD.Delegation']" iconPath="/SysADL.viewpoints/icons/Delegation.gif">
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="IBD.Tools.Delegation" label="Delegation" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@edgeMappings[name='IBD.Delegation']" iconPath="/org.sysadl.viewpoints/icons/Delegation.gif">
             <sourceVariable name="source"/>
             <targetVariable name="target"/>
             <sourceViewVariable name="sourceView"/>
@@ -669,7 +669,7 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:EdgeCreationDescription" name="IBD.Tool.Connectors.Test" label="Connector" precondition="[(preSource.eContainer().oclIsKindOf(PortDef)._and(preTarget.eContainer().oclIsKindOf(PortDef)))._or(preSource.eContainer().oclIsTypeOf(ComponentUse)._and(preTarget.eContainer().oclIsTypeOf(ComponentUse)))/]" forceRefresh="true" elementsToSelect="var:connector" edgeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@edgeMappings[name='IBD.Connectors.Composite'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@edgeMappings[name='IBD.Connectors']" iconPath="/SysADL.viewpoints/icons/Attachments.gif">
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="IBD.Tool.Connectors.Test" label="Connector" precondition="[(preSource.eContainer().oclIsKindOf(PortDef)._and(preTarget.eContainer().oclIsKindOf(PortDef)))._or(preSource.eContainer().oclIsTypeOf(ComponentUse)._and(preTarget.eContainer().oclIsTypeOf(ComponentUse)))/]" forceRefresh="true" elementsToSelect="var:connector" edgeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@edgeMappings[name='IBD.Connectors.Composite'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@edgeMappings[name='IBD.Connectors']" iconPath="/org.sysadl.viewpoints/icons/Attachments.gif">
             <sourceVariable name="source"/>
             <targetVariable name="target"/>
             <sourceViewVariable name="sourceView"/>
@@ -834,7 +834,7 @@
   <ownedViewpoints name="SysADL.Behavioral" label="SysADL Behavioral Viewpoint" modelFileExtension="sysadl">
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="BDD.Behavior" label="Block Definition Diagram (Behavior BDD)" domainClass="Package">
       <defaultLayer name="BDD.Bevahior.Default">
-        <edgeMappings name="BDD.Activity.Composition" sourceMapping="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']" targetMapping="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ComponentDef'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Action']" targetFinderExpression="[self.acbody.actions.definition/]">
+        <edgeMappings name="BDD.Activity.Composition" sourceMapping="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']" targetMapping="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ComponentDef'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Action']" targetFinderExpression="[self.body.actions.definition/]">
           <style sourceArrow="FillDiamond" targetArrow="NoDecoration" sizeComputationExpression="2">
             <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
             <centerLabelStyleDescription>
@@ -865,14 +865,14 @@
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
               </style>
             </subNodeMappings>
-            <subNodeMappings name="BDD.Activity.Body" semanticCandidatesExpression="feature:acbody" doubleClickDescription="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@toolSections.1/@ownedTools[name='BDD.Behavior.OpenAD']" domainClass="ActivityBody">
+            <subNodeMappings name="BDD.Activity.Body" semanticCandidatesExpression="feature:body" doubleClickDescription="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@toolSections.1/@ownedTools[name='BDD.Behavior.OpenAD']" domainClass="ActivityBody">
               <style xsi:type="style:DotDescription" showIcon="false" labelExpression="['Open Activity Diagram'/]" resizeKind="NSEW">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
               </style>
             </subNodeMappings>
-            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;activity>>\n'+self.name/]" iconPath="/SysADL.viewpoints/icons/Activity.gif" backgroundStyle="GradientTopToBottom" foregroundColor="//@userColorsPalettes[name='Colors']/@entries[name='BlueBlock']">
+            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;activity>>\n'+self.name/]" iconPath="/org.sysadl.viewpoints/icons/Activity.gif" backgroundStyle="GradientTopToBottom" foregroundColor="//@userColorsPalettes[name='Colors']/@entries[name='BlueBlock']">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
@@ -893,7 +893,7 @@
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
               </style>
             </subNodeMappings>
-            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;action>>\n'+self.name + ' : '+self.returnType.name/]" iconPath="/SysADL.viewpoints/icons/Action.gif" backgroundStyle="GradientTopToBottom" foregroundColor="//@userColorsPalettes[name='Colors']/@entries[name='BlueBlock']">
+            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;action>>\n'+self.name + ' : '+self.returnType.name/]" iconPath="/org.sysadl.viewpoints/icons/Action.gif" backgroundStyle="GradientTopToBottom" foregroundColor="//@userColorsPalettes[name='Colors']/@entries[name='BlueBlock']">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
@@ -907,7 +907,7 @@
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
               </style>
             </subNodeMappings>
-            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;Protocol>>\n'+self.name/]" iconPath="/SysADL.viewpoints/icons/Activity.gif" foregroundColor="//@userColorsPalettes[name='Colors']/@entries[name='BlueBlock']">
+            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;Protocol>>\n'+self.name/]" iconPath="/org.sysadl.viewpoints/icons/Activity.gif" foregroundColor="//@userColorsPalettes[name='Colors']/@entries[name='BlueBlock']">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
@@ -935,7 +935,7 @@
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
               </style>
             </subNodeMappings>
-            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;Constraint>>\n'+self.name/]" iconPath="/SysADL.viewpoints/icons/Constraint.gif" backgroundStyle="GradientTopToBottom" foregroundColor="//@userColorsPalettes[name='Colors']/@entries[name='BlueBlock']">
+            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;Constraint>>\n'+self.name/]" iconPath="/org.sysadl.viewpoints/icons/Constraint.gif" backgroundStyle="GradientTopToBottom" foregroundColor="//@userColorsPalettes[name='Colors']/@entries[name='BlueBlock']">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
@@ -950,20 +950,20 @@
           </style>
         </containerMappings>
         <toolSections name="BDD.Behavior.Tools.Activity" label="Types">
-          <ownedTools xsi:type="tool:ContainerCreationDescription" name="BDD.Behavior.Tools.Activity" label="Activity" forceRefresh="true" containerMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']" iconPath="/SysADL.viewpoints/icons/Activity.gif">
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="BDD.Behavior.Tools.Activity" label="Activity" forceRefresh="true" containerMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']" iconPath="/org.sysadl.viewpoints/icons/Activity.gif">
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="ActivityDef" referenceName="definitions">
                 <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                   <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newActivity">
-                    <subModelOperations xsi:type="tool_1:CreateInstance" typeName="ActivityBody" referenceName="acbody" variableName="newBody"/>
+                    <subModelOperations xsi:type="tool_1:CreateInstance" typeName="ActivityBody" referenceName="body" variableName="newBody"/>
                   </subModelOperations>
                 </subModelOperations>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="Behavior.Tools.Action" label="Action" precondition="[container.oclIsTypeOf(Package)/]" forceRefresh="true" candidatesExpression="[self.oclAsType(Package).eContents(TypeDef)->union(self.oclAsType(Package).imports.eContents(TypeDef))/]" rootExpression="var:self" childrenExpression="var:self" message="Select Return Type" iconPath="/SysADL.viewpoints/icons/Action.gif" windowTitle="Return Type of Action" windowImagePath="/SysADL.viewpoints/icons/Action.gif">
+          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="Behavior.Tools.Action" label="Action" precondition="[container.oclIsTypeOf(Package)/]" forceRefresh="true" candidatesExpression="[self.oclAsType(Package).eContents(TypeDef)->union(self.oclAsType(Package).imports.eContents(TypeDef))/]" rootExpression="var:self" childrenExpression="var:self" message="Select Return Type" iconPath="/org.sysadl.viewpoints/icons/Action.gif" windowTitle="Return Type of Action" windowImagePath="/org.sysadl.viewpoints/icons/Action.gif">
             <element name="element"/>
             <containerView name="containerView"/>
             <container name="container"/>
@@ -978,7 +978,7 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:ContainerCreationDescription" name="BDD.Behavior.Tools.Protocol" label="Protocol" forceRefresh="true" containerMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Protocol']" iconPath="/SysADL.viewpoints/icons/Activity.gif">
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="BDD.Behavior.Tools.Protocol" label="Protocol" forceRefresh="true" containerMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Protocol']" iconPath="/org.sysadl.viewpoints/icons/Activity.gif">
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
@@ -989,7 +989,7 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:ContainerCreationDescription" name="BDD.Behavior.Tools.Constraint" label="Constraint" forceRefresh="true" containerMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Constraint']" iconPath="/SysADL.viewpoints/icons/Constraint.gif">
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="BDD.Behavior.Tools.Constraint" label="Constraint" forceRefresh="true" containerMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Constraint']" iconPath="/org.sysadl.viewpoints/icons/Constraint.gif">
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
@@ -1025,7 +1025,7 @@
               <firstModelOperations xsi:type="tool:Navigation" createIfNotExistent="true" diagramDescription="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='Parametric']"/>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="BDD.Behavior.Tools.ParamIn" label="Parameter (In)" precondition="[container.oclIsKindOf(BehaviorDef)/]" candidatesExpression="[self.eContainer().oclAsType(Package).eContents(TypeDef)->union(self.eContainer().oclAsType(Package).imports.eContents(TypeDef))/]" rootExpression="var:self" childrenExpression="var:self" message="Select Parameter Type" iconPath="/SysADL.viewpoints/icons/Parameter.gif" windowTitle="Select Type" windowImagePath="/SysADL.viewpoints/icons/Parameter.gif">
+          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="BDD.Behavior.Tools.ParamIn" label="Parameter (In)" precondition="[container.oclIsKindOf(BehaviorDef)/]" candidatesExpression="[self.eContainer().oclAsType(Package).eContents(TypeDef)->union(self.eContainer().oclAsType(Package).imports.eContents(TypeDef))/]" rootExpression="var:self" childrenExpression="var:self" message="Select Parameter Type" iconPath="/org.sysadl.viewpoints/icons/Parameter.gif" windowTitle="Select Type" windowImagePath="/org.sysadl.viewpoints/icons/Parameter.gif">
             <element name="element"/>
             <containerView name="containerView"/>
             <container name="container"/>
@@ -1040,7 +1040,7 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="BDD.Behavior.Tools.ParamOut" label="Parameter (Out)" precondition="[container.oclIsKindOf(BehaviorDef)/]" candidatesExpression="[self.eContainer().oclAsType(Package).eContents(TypeDef)->union(self.eContainer().oclAsType(Package).imports.eContents(TypeDef))/]" rootExpression="var:self" childrenExpression="var:self" message="Select Parameter Type" iconPath="/SysADL.viewpoints/icons/Parameter.gif" windowTitle="Select Type" windowImagePath="/SysADL.viewpoints/icons/Parameter.gif">
+          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="BDD.Behavior.Tools.ParamOut" label="Parameter (Out)" precondition="[container.oclIsKindOf(BehaviorDef)/]" candidatesExpression="[self.eContainer().oclAsType(Package).eContents(TypeDef)->union(self.eContainer().oclAsType(Package).imports.eContents(TypeDef))/]" rootExpression="var:self" childrenExpression="var:self" message="Select Parameter Type" iconPath="/org.sysadl.viewpoints/icons/Parameter.gif" windowTitle="Select Type" windowImagePath="/org.sysadl.viewpoints/icons/Parameter.gif">
             <element name="element"/>
             <containerView name="containerView"/>
             <container name="container"/>
@@ -1055,7 +1055,7 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="BDD.Behavior.Tools.ConstraintUse" label="Constraint Use" precondition="[container.oclIsTypeOf(ActionDef)._or(container.oclIsTypeOf(ActivityDef))/]" candidatesExpression="[self.eContainer().oclAsType(Package).eContents(ConstraintDef)->union(self.eContainer().oclAsType(Package).imports.eContents(ConstraintDef))/]" rootExpression="var:self" childrenExpression="var:self" message="Select Parameter Type" iconPath="/SysADL.viewpoints/icons/Parameter.gif" windowTitle="Select Type" windowImagePath="/SysADL.viewpoints/icons/Parameter.gif">
+          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="BDD.Behavior.Tools.ConstraintUse" label="Constraint Use" precondition="[container.oclIsTypeOf(ActionDef)._or(container.oclIsTypeOf(ActivityDef))/]" candidatesExpression="[self.eContainer().oclAsType(Package).eContents(ConstraintDef)->union(self.eContainer().oclAsType(Package).imports.eContents(ConstraintDef))/]" rootExpression="var:self" childrenExpression="var:self" message="Select Parameter Type" iconPath="/org.sysadl.viewpoints/icons/Parameter.gif" windowTitle="Select Type" windowImagePath="/org.sysadl.viewpoints/icons/Parameter.gif">
             <element name="element"/>
             <containerView name="containerView"/>
             <container name="container"/>
@@ -1129,7 +1129,7 @@
           </style>
         </containerMappings>
         <toolSections name="Parametric.Tools" label="Parametric Tools">
-          <ownedTools xsi:type="tool:EdgeCreationDescription" name="Parametric.Tools.PinBinding" label="Pin Bindings" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='Parametric']/@defaultLayer/@edgeMappings[name='Parametric.PinBinding']" iconPath="/SysADL.viewpoints/icons/PinBindings.gif">
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="Parametric.Tools.PinBinding" label="Pin Bindings" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='Parametric']/@defaultLayer/@edgeMappings[name='Parametric.PinBinding']" iconPath="/org.sysadl.viewpoints/icons/PinBindings.gif">
             <sourceVariable name="source"/>
             <targetVariable name="target"/>
             <sourceViewVariable name="sourceView"/>
@@ -1336,13 +1336,13 @@
             </style>
           </subNodeMappings>
           <subNodeMappings name="ADNew.DataStore" semanticCandidatesExpression="feature:dataObjects" domainClass="DataStore">
-            <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="['&lt;&lt;datastore>>\n'+self.name+' : '+self.type.name/]" iconPath="/SysADL.viewpoints/icons/Property.gif" labelPosition="node" resizeKind="NSEW" color="//@userColorsPalettes[name='Colors']/@entries[name='InstanceColor']">
+            <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="['&lt;&lt;datastore>>\n'+self.name+' : '+self.type.name/]" iconPath="/org.sysadl.viewpoints/icons/Property.gif" labelPosition="node" resizeKind="NSEW" color="//@userColorsPalettes[name='Colors']/@entries[name='InstanceColor']">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </style>
           </subNodeMappings>
           <subNodeMappings name="ADNew.DataBuffer" semanticCandidatesExpression="feature:dataObjects" domainClass="DataBuffer">
-            <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="['&lt;&lt;buffer>>\n'+self.name+' : '+self.type.name/]" iconPath="/SysADL.viewpoints/icons/Property.gif" labelPosition="node" resizeKind="NSEW" color="//@userColorsPalettes[name='Colors']/@entries[name='InstanceColor']">
+            <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="['&lt;&lt;buffer>>\n'+self.name+' : '+self.type.name/]" iconPath="/org.sysadl.viewpoints/icons/Property.gif" labelPosition="node" resizeKind="NSEW" color="//@userColorsPalettes[name='Colors']/@entries[name='InstanceColor']">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </style>
@@ -1360,7 +1360,7 @@
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               </style>
             </borderedNodeMappings>
-            <style xsi:type="style:FlatContainerStyleDescription" arcWidth="15" arcHeight="15" borderSizeComputationExpression="1" showIcon="false" labelExpression="['&lt;&lt;action>>\n'+self.name+if self.definition.oclIsUndefined() then ' ' else ' : '+ self.definition.name endif/]" iconPath="/SysADL.viewpoints/icons/Action.gif" roundedCorner="true" backgroundColor="//@userColorsPalettes[name='Colors']/@entries[name='InstanceColor']" foregroundColor="//@userColorsPalettes[name='Colors']/@entries[name='InstanceColor']">
+            <style xsi:type="style:FlatContainerStyleDescription" arcWidth="15" arcHeight="15" borderSizeComputationExpression="1" showIcon="false" labelExpression="['&lt;&lt;action>>\n'+self.name+if self.definition.oclIsUndefined() then ' ' else ' : '+ self.definition.name endif/]" iconPath="/org.sysadl.viewpoints/icons/Action.gif" roundedCorner="true" backgroundColor="//@userColorsPalettes[name='Colors']/@entries[name='InstanceColor']" foregroundColor="//@userColorsPalettes[name='Colors']/@entries[name='InstanceColor']">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </style>
@@ -1374,7 +1374,7 @@
           </style>
         </containerMappings>
         <toolSections name="ADNew.Tools.Intance" label="Action Instance">
-          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="test2" label="Action Instance" precondition="[container.oclIsTypeOf(ActivityBody)/]" forceRefresh="true" candidatesExpression="[self.eContainer().eContainer().oclAsType(Package).eContents(ActionDef)->union(self.eContainer().eContainer().oclAsType(Package).imports.eContents(ActionDef))/]" rootExpression="var:self" childrenExpression="var:self" message="Select Action Def" iconPath="/SysADL.viewpoints/icons/Body.gif" windowTitle="Select Action">
+          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="test2" label="Action Instance" precondition="[container.oclIsTypeOf(ActivityBody)/]" forceRefresh="true" candidatesExpression="[self.eContainer().eContainer().oclAsType(Package).eContents(ActionDef)->union(self.eContainer().eContainer().oclAsType(Package).imports.eContents(ActionDef))/]" rootExpression="var:self" childrenExpression="var:self" message="Select Action Def" iconPath="/org.sysadl.viewpoints/icons/Body.gif" windowTitle="Select Action">
             <element name="element"/>
             <containerView name="containerView"/>
             <container name="container"/>
@@ -1399,7 +1399,7 @@
           </ownedTools>
         </toolSections>
         <toolSections name="ADNew.Tools.Relationships" label="Relationships">
-          <ownedTools xsi:type="tool:EdgeCreationDescription" name="ADNew.Tools.Flow" label="Flow" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Flows']" iconPath="/SysADL.viewpoints/icons/ConnectorFlow.gif">
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="ADNew.Tools.Flow" label="Flow" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Flows']" iconPath="/org.sysadl.viewpoints/icons/ConnectorFlow.gif">
             <sourceVariable name="source"/>
             <targetVariable name="target"/>
             <sourceViewVariable name="sourceView"/>
@@ -1415,13 +1415,13 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:EdgeCreationDescription" name="ADNew.Tools.Delegation" label="Delegation" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Delegation.In'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Delegation.Out']" iconPath="/SysADL.viewpoints/icons/Delegation.gif">
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="ADNew.Tools.Delegation" label="Delegation" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Delegation.In'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Delegation.Out']" iconPath="/org.sysadl.viewpoints/icons/Delegation.gif">
             <sourceVariable name="source"/>
             <targetVariable name="target"/>
             <sourceViewVariable name="sourceView"/>
             <targetViewVariable name="targetView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[self.eContainer(ActivityDef).acbody/]">
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[self.eContainer(ActivityDef).body/]">
                 <subModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.ActivityDelegation" referenceName="flows">
                   <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="source" valueExpression="var:source"/>
@@ -1441,7 +1441,7 @@
           </ownedTools>
         </toolSections>
         <toolSections name="ADNew.Tools.Conditional" label="Conditional Relationships">
-          <ownedTools xsi:type="tool:EdgeCreationDescription" name="ADNew.Tool.SwitchFlow" label="Switch Flow" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Flows'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Flows.SwitchCase']" iconPath="/SysADL.viewpoints/icons/if.gif">
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="ADNew.Tool.SwitchFlow" label="Switch Flow" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Flows'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Flows.SwitchCase']" iconPath="/org.sysadl.viewpoints/icons/if.gif">
             <sourceVariable name="source"/>
             <targetVariable name="target"/>
             <sourceViewVariable name="sourceView"/>
@@ -1461,13 +1461,13 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:EdgeCreationDescription" name="ADNew.Tools.SwitchDelegation" label="Switch Delegation" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Delegation.Out'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Delegation.In']" iconPath="/SysADL.viewpoints/icons/if.gif">
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="ADNew.Tools.SwitchDelegation" label="Switch Delegation" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Delegation.Out'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Delegation.In']" iconPath="/org.sysadl.viewpoints/icons/if.gif">
             <sourceVariable name="source"/>
             <targetVariable name="target"/>
             <sourceViewVariable name="sourceView"/>
             <targetViewVariable name="targetView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[source.eContainer(ActivityDef).acbody/]">
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[source.eContainer(ActivityDef).body/]">
                 <subModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.ActivityDelegation" referenceName="flows">
                   <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="source" valueExpression="var:source"/>
@@ -1504,14 +1504,14 @@
           </ownedTools>
         </toolSections>
         <toolSections name="ADNew.Tools.Data" label="Data Objects">
-          <ownedTools xsi:type="tool:NodeCreationDescription" name="ADNew.Tools.Data.Store" label="Datastore" forceRefresh="true" nodeMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@containerMappings[name='ADNew.Self']/@subNodeMappings[name='ADNew.DataStore']" iconPath="/SysADL.viewpoints/icons/Property.gif">
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="ADNew.Tools.Data.Store" label="Datastore" forceRefresh="true" nodeMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@containerMappings[name='ADNew.Self']/@subNodeMappings[name='ADNew.DataStore']" iconPath="/org.sysadl.viewpoints/icons/Property.gif">
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.DataStore" referenceName="dataObjects"/>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:NodeCreationDescription" name="ADNew.Tools.Data.Buffer" label="Buffer" forceRefresh="true" nodeMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@containerMappings[name='ADNew.Self']/@subNodeMappings[name='ADNew.DataBuffer']" iconPath="/SysADL.viewpoints/icons/Property.gif">
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="ADNew.Tools.Data.Buffer" label="Buffer" forceRefresh="true" nodeMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@containerMappings[name='ADNew.Self']/@subNodeMappings[name='ADNew.DataBuffer']" iconPath="/org.sysadl.viewpoints/icons/Property.gif">
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
@@ -1559,7 +1559,7 @@
                 <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
               </style>
             </subContainerMappings>
-            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;Executable>>\n'+self.name + ' : '+self.returnType.name/]" iconPath="/SysADL.viewpoints/icons/Constraint.gif" backgroundStyle="GradientTopToBottom">
+            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;Executable>>\n'+self.name + ' : '+self.returnType.name/]" iconPath="/org.sysadl.viewpoints/icons/Constraint.gif" backgroundStyle="GradientTopToBottom">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>

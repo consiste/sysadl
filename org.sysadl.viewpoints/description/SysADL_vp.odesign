@@ -798,7 +798,7 @@
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.Package" referenceName="packages"/>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="Package" referenceName="packages"/>
             </initialOperation>
           </ownedTools>
           <ownedTools xsi:type="tool:EdgeCreationDescription" name="Pkg.Tools.Import" label="Import" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.Package']/@defaultLayer/@edgeMappings[name='Pkg.Import']">

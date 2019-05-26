@@ -136,4 +136,10 @@ public class SysADLServices {
 		b = b && (first.getDefinition() instanceof CompositePortDef) && (second.getDefinition() instanceof CompositePortDef);
 		return b;
 	}
+	
+	public EObject createPackage(Model m) {
+		org.sysadl.Package package1 = SysADLFactory.eINSTANCE.createPackage();
+		m.getPackages().add(package1);
+		return package1;
+	}
 }

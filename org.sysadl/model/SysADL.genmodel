@@ -124,7 +124,6 @@
     </genClasses>
     <genClasses ecoreClass="sysadl.ecore#//DimensionDef"/>
     <genClasses image="false" ecoreClass="sysadl.ecore#//TypeDef">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//TypeDef/instances"/>
       <genOperations ecoreOperation="sysadl.ecore#//TypeDef/isCompatible"/>
     </genClasses>
     <genClasses ecoreClass="sysadl.ecore#//TypeUse">
@@ -164,7 +163,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ComponentDef/ports"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ComponentDef/composite"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//ComponentDef/isBoundary"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ComponentDef/instances"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ComponentDef/abstractComponent"/>
     </genClasses>
     <genClasses ecoreClass="sysadl.ecore#//ArchitectureDef"/>
@@ -176,7 +174,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ConnectorDef/ports"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ConnectorDef/flows"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ConnectorDef/composite"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ConnectorDef/instances"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ConnectorDef/abstractConnector"/>
     </genClasses>
     <genClasses ecoreClass="sysadl.ecore#//ConnectorUse">
@@ -196,9 +193,7 @@
     <genClasses ecoreClass="sysadl.ecore#//Delegation">
       <genOperations ecoreOperation="sysadl.ecore#//Delegation/checkCompatibility"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="sysadl.ecore#//PortDef">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//PortDef/instances"/>
-    </genClasses>
+    <genClasses image="false" ecoreClass="sysadl.ecore#//PortDef"/>
     <genClasses ecoreClass="sysadl.ecore#//CompositePortDef">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//CompositePortDef/ports"/>
     </genClasses>
@@ -227,7 +222,6 @@
     </genClasses>
     <genClasses ecoreClass="sysadl.ecore#//ActionDef">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ActionDef/returnType"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ActionDef/instances"/>
     </genClasses>
     <genClasses ecoreClass="sysadl.ecore#//ActionUse">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ActionUse/definition"/>
@@ -238,7 +232,6 @@
     </genClasses>
     <genClasses ecoreClass="sysadl.ecore#//ConstraintDef">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ConstraintDef/equation"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ConstraintDef/instances"/>
     </genClasses>
     <genClasses ecoreClass="sysadl.ecore#//ConstraintUse">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ConstraintUse/definition"/>

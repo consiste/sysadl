@@ -58,12 +58,11 @@ class DimensionDef extends DataDef {
 }
 
 abstract class TypeDef extends DataDef {
-	refers TypeUse[] instances opposite definition
 	op boolean isCompatible()
 }
 
 class TypeUse extends NamedElement {
-	refers TypeDef[1] definition opposite instances keys name
+	refers TypeDef[1] definition keys name
 	contains ArrayIndex arrayIndex
 }
 
@@ -113,7 +112,7 @@ class ComponentDef extends StructuralDef {
 	contains PortUse[] ports keys name
 	contains Configuration composite
 	boolean[1] isBoundary = "false"
-	refers ComponentUse[] instances opposite definition keys name
+	//refers ComponentUse[] instances opposite definition keys name
 	refers AbstractComponentDef abstractComponent keys name
 }
 
@@ -121,7 +120,7 @@ class ArchitectureDef extends ComponentDef {
 }
 
 class ComponentUse extends StructuralUse {
-	refers ComponentDef[1] definition opposite instances keys name
+	refers ComponentDef[1] definition keys name
 	contains PortUse[] ports keys name
 }
 
@@ -129,12 +128,12 @@ class ConnectorDef extends StructuralDef {
 	contains PortUse[0..2] ports keys name
 	contains Flow[] flows
 	contains Configuration composite 
-	refers ConnectorUse[] instances opposite definition keys name
+	//refers ConnectorUse[] instances opposite definition keys name
 	refers AbstractConnectorDef abstractConnector keys name
 }
 
 class ConnectorUse extends StructuralUse {
-	refers ConnectorDef[1] definition opposite instances keys name
+	refers ConnectorDef[1] definition keys name
 	contains PortUse[] ports keys name
 	contains ConnectorBinding[] bindings
 	// op void allPorts() // [Eduardo 18/03] Removed, unused
@@ -156,7 +155,7 @@ class Delegation extends RelationUse {
 }
 
 abstract class PortDef extends StructuralDef {
-	refers PortUse[] instances opposite definition keys name
+	//refers PortUse[] instances opposite definition keys name
 }
 
 class CompositePortDef extends PortDef {
@@ -170,7 +169,7 @@ class SimplePortDef extends PortDef {
 }
 
 class PortUse extends StructuralUse {
-	refers PortDef[1] definition opposite instances keys name
+	refers PortDef[1] definition keys name
 }
 
 class ConnectorBinding extends RelationUse {
@@ -200,11 +199,11 @@ class ActivityDef extends BehaviorDef {
 
 class ActionDef extends BehaviorDef , ActivityFlowable {
 	refers TypeDef returnType keys name
-	refers ActionUse[] instances opposite definition keys name
+	//refers ActionUse[] instances opposite definition keys name
 }
 
 class ActionUse extends NamedElement , ActivityFlowable {
-	refers ActionDef[1] definition opposite instances keys name
+	refers ActionDef[1] definition keys name
 	contains Pin[] pinIn keys name
 }
 
@@ -215,11 +214,11 @@ class Pin extends TypeUse , ActivityFlowable {
 
 class ConstraintDef extends BehaviorDef {
 	contains Expression equation
-	refers ConstraintUse[] instances opposite definition
+	//refers ConstraintUse[] instances opposite definition
 }
 
 class ConstraintUse {
-	refers ConstraintDef[1] definition opposite instances
+	refers ConstraintDef[1] definition 
 	ConstraintKind[1] kind = "postCondition"
 }
 

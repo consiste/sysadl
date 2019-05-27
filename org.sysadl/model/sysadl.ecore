@@ -65,12 +65,10 @@
   <eClassifiers xsi:type="ecore:EClass" name="DimensionDef" eSuperTypes="#//DataDef"/>
   <eClassifiers xsi:type="ecore:EClass" name="TypeDef" abstract="true" eSuperTypes="#//DataDef">
     <eOperations name="isCompatible" unique="false" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="instances" upperBound="-1"
-        eType="#//TypeUse" eOpposite="#//TypeUse/definition"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TypeUse" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="definition" lowerBound="1"
-        eType="#//TypeDef" eOpposite="#//TypeDef/instances" eKeys="#//NamedElement/name"/>
+        eType="#//TypeDef" eKeys="#//NamedElement/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="arrayIndex" eType="#//ArrayIndex"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
@@ -133,15 +131,13 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isBoundary" unique="false"
         lowerBound="1" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"
         defaultValueLiteral="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="instances" upperBound="-1"
-        eType="#//ComponentUse" eOpposite="#//ComponentUse/definition" eKeys="#//NamedElement/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="abstractComponent" eType="#//AbstractComponentDef"
         eKeys="#//NamedElement/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ArchitectureDef" eSuperTypes="#//ComponentDef"/>
   <eClassifiers xsi:type="ecore:EClass" name="ComponentUse" eSuperTypes="#//StructuralUse">
     <eStructuralFeatures xsi:type="ecore:EReference" name="definition" lowerBound="1"
-        eType="#//ComponentDef" eOpposite="#//ComponentDef/instances" eKeys="#//NamedElement/name"/>
+        eType="#//ComponentDef" eKeys="#//NamedElement/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ports" upperBound="-1"
         eType="#//PortUse" containment="true" resolveProxies="false" eKeys="#//NamedElement/name"/>
   </eClassifiers>
@@ -152,14 +148,12 @@
         eType="#//Flow" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="composite" eType="#//Configuration"
         containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="instances" upperBound="-1"
-        eType="#//ConnectorUse" eOpposite="#//ConnectorUse/definition" eKeys="#//NamedElement/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="abstractConnector" eType="#//AbstractConnectorDef"
         eKeys="#//NamedElement/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConnectorUse" eSuperTypes="#//StructuralUse">
     <eStructuralFeatures xsi:type="ecore:EReference" name="definition" lowerBound="1"
-        eType="#//ConnectorDef" eOpposite="#//ConnectorDef/instances" eKeys="#//NamedElement/name"/>
+        eType="#//ConnectorDef" eKeys="#//NamedElement/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ports" upperBound="-1"
         eType="#//PortUse" containment="true" resolveProxies="false" eKeys="#//NamedElement/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="bindings" upperBound="-1"
@@ -182,10 +176,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="Delegation" eSuperTypes="#//RelationUse">
     <eOperations name="checkCompatibility" unique="false" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PortDef" abstract="true" eSuperTypes="#//StructuralDef">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="instances" upperBound="-1"
-        eType="#//PortUse" eOpposite="#//PortUse/definition" eKeys="#//NamedElement/name"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PortDef" abstract="true" eSuperTypes="#//StructuralDef"/>
   <eClassifiers xsi:type="ecore:EClass" name="CompositePortDef" eSuperTypes="#//PortDef">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ports" lowerBound="2" upperBound="-1"
         eType="#//PortUse" containment="true" resolveProxies="false" eKeys="#//NamedElement/name"/>
@@ -200,7 +191,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PortUse" eSuperTypes="#//StructuralUse">
     <eStructuralFeatures xsi:type="ecore:EReference" name="definition" lowerBound="1"
-        eType="#//PortDef" eOpposite="#//PortDef/instances" eKeys="#//NamedElement/name"/>
+        eType="#//PortDef" eKeys="#//NamedElement/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConnectorBinding" eSuperTypes="#//RelationUse"/>
   <eClassifiers xsi:type="ecore:EClass" name="Flow" eSuperTypes="#//RelationUse">
@@ -233,12 +224,10 @@
   <eClassifiers xsi:type="ecore:EClass" name="ActionDef" eSuperTypes="#//BehaviorDef #//ActivityFlowable">
     <eStructuralFeatures xsi:type="ecore:EReference" name="returnType" eType="#//TypeDef"
         eKeys="#//NamedElement/name"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="instances" upperBound="-1"
-        eType="#//ActionUse" eOpposite="#//ActionUse/definition" eKeys="#//NamedElement/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ActionUse" eSuperTypes="#//NamedElement #//ActivityFlowable">
     <eStructuralFeatures xsi:type="ecore:EReference" name="definition" lowerBound="1"
-        eType="#//ActionDef" eOpposite="#//ActionDef/instances" eKeys="#//NamedElement/name"/>
+        eType="#//ActionDef" eKeys="#//NamedElement/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="pinIn" upperBound="-1"
         eType="#//Pin" containment="true" resolveProxies="false" eKeys="#//NamedElement/name"/>
   </eClassifiers>
@@ -253,12 +242,10 @@
   <eClassifiers xsi:type="ecore:EClass" name="ConstraintDef" eSuperTypes="#//BehaviorDef">
     <eStructuralFeatures xsi:type="ecore:EReference" name="equation" eType="#//Expression"
         containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="instances" upperBound="-1"
-        eType="#//ConstraintUse" eOpposite="#//ConstraintUse/definition"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConstraintUse">
     <eStructuralFeatures xsi:type="ecore:EReference" name="definition" lowerBound="1"
-        eType="#//ConstraintDef" eOpposite="#//ConstraintDef/instances"/>
+        eType="#//ConstraintDef"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" unique="false" lowerBound="1"
         eType="#//ConstraintKind" defaultValueLiteral="postCondition"/>
   </eClassifiers>

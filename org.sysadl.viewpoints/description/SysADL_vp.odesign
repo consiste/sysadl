@@ -465,7 +465,7 @@
                   <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="source" valueExpression="var:source"/>
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="destination" valueExpression="var:target"/>
-                    <subModelOperations xsi:type="tool_1:SetValue" featureName="flowType" valueExpression="[source.definition.oclAsType(SimplePortDef).flowType/]"/>
+                    <subModelOperations xsi:type="tool_1:SetValue" featureName="type" valueExpression="[source.definition.oclAsType(SimplePortDef).flowType/]"/>
                   </subModelOperations>
                 </subModelOperations>
               </firstModelOperations>

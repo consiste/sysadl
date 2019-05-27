@@ -1746,7 +1746,7 @@
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.Requirement" referenceName="requirements">
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="Requirement" referenceName="requirements">
                 <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                   <subModelOperations xsi:type="tool_1:SetValue" featureName="id" valueExpression="['0'/]"/>
                 </subModelOperations>
@@ -1759,8 +1759,8 @@
             <sourceViewVariable name="sourceView"/>
             <targetViewVariable name="targetView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:target">
-                <subModelOperations xsi:type="tool_1:SetValue" featureName="derivedBy" valueExpression="var:source"/>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:source">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="derive" valueExpression="var:target"/>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>

@@ -29,5 +29,9 @@
            actionClass="sysadl.viewpoints.actions.IBDAddConnector"
            id="org.sysadl.viewpoints.ibd.addConnector">
      </javaActions>
+     <javaActions
+           actionClass="sysadl.viewpoints.actions.ModelAddElement"
+           id="org.sysadl.viewpoints.addElement">
+     </javaActions>
   </extension>
 </plugin>

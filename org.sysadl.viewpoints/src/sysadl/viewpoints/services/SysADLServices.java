@@ -137,9 +137,4 @@ public class SysADLServices {
 		return b;
 	}
 	
-	public EObject createPackage(Model m) {
-		org.sysadl.Package package1 = SysADLFactory.eINSTANCE.createPackage();
-		m.getPackages().add(package1);
-		return package1;
-	}
 }

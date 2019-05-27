@@ -401,7 +401,9 @@
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="Configuration" referenceName="composite"/>
+              <firstModelOperations xsi:type="tool_1:ExternalJavaAction" name="org.sysadl.addElement" id="org.sysadl.viewpoints.addElement">
+                <parameters name="type" value="Configuration"/>
+              </firstModelOperations>
             </initialOperation>
           </ownedTools>
           <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="BDD.Tools.Port" label="Port (Component, Composite Port, Connector)" precondition="[container.oclIsTypeOf(ComponentDef)._or(container.oclIsTypeOf(ConnectorDef))/]" forceRefresh="true" candidatesExpression="[self.eContainer().oclAsType(Package).eContents(PortDef)->union(self.eContainer().oclAsType(Package).imports.eContents(PortDef))->excluding(self)/]" rootExpression="var:self" childrenExpression="var:self" message="Select Port Def">

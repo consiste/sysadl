@@ -15,8 +15,15 @@ class SysADLFormatter extends AbstractFormatter2 {
 	
 	@Inject extension SysADLGrammarAccess
 	def dispatch void format(Model model, extension IFormattableDocument document) {
-		model.regionFor.keyword("{").append[indent]
-		// TODO: format HiddenRegions around keywords, attributes, cross references, etc. 
+		model.interior[indent];
+		
+		for (v : model.regionFor.keywords("{")) {
+			v.append[autowrap]
+		}
+		for (v : model.regionFor.keywords("}")) {
+			v.prepend[autowrap]
+		}
+		
 		for (property : model.properties) {
 			property.format
 		}

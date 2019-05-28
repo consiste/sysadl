@@ -1866,7 +1866,7 @@
   <ownedViewpoints name="org.sysadl.Style" label="SysADL Styles">
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="SysADL.Style" label="Style Definition Diagram (Style BDD)" initialisation="true" domainClass="Style">
       <defaultLayer name="Default">
-        <containerMappings name="Style.Self" semanticCandidatesExpression="var:self" domainClass="Style">
+        <containerMappings name="Style.Self" semanticCandidatesExpression="var:self" domainClass="Style" reusedContainerMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.SimplePortDef']">
           <subNodeMappings name="Style.Invariant" semanticCandidatesExpression="feature:invariants" domainClass="Invariant">
             <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="['Invariant'/]" labelPosition="node" resizeKind="NSEW">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
@@ -1920,6 +1920,13 @@
             <viewVariable name="containerView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="AbstractComponentDef" referenceName="definitions"/>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="Style.Tools.Create.Component" label="Create Connector" forceRefresh="true" containerMappings="//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractConnector']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="AbstractConnectorDef" referenceName="definitions"/>
             </initialOperation>
           </ownedTools>
         </toolSections>

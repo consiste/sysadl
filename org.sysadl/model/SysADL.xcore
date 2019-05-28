@@ -29,10 +29,22 @@ class Invariant extends NamedElement {
 interface AbstractDef extends NamedElement {
 }
 
-class AbstractComponentDef extends AbstractDef , ComponentDef {
+class AbstractComponentDef extends AbstractDef {
+	contains AbstractPortUse[] ports keys name
 }
 
-class AbstractConnectorDef extends AbstractDef , ConnectorDef {
+class AbstractConnectorDef extends AbstractDef {
+	contains AbstractPortUse[] ports keys name
+	contains AbstractFlow[] flows
+}
+
+class AbstractFlow extends AbstractDef {
+	refers AbstractPortUse source
+	refers AbstractPortUse target
+}
+
+class AbstractPortUse extends NamedElement {
+	FlowProperty[1] flow
 }
 
 class Model extends NamedElement {
@@ -170,6 +182,7 @@ class SimplePortDef extends PortDef {
 
 class PortUse extends StructuralUse {
 	refers PortDef[1] definition keys name
+	refers AbstractPortUse[0..1] ^abstractPort
 }
 
 class ConnectorBinding extends RelationUse {

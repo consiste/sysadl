@@ -40,8 +40,23 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AbstractDef" abstract="true" interface="true"
       eSuperTypes="#//NamedElement"/>
-  <eClassifiers xsi:type="ecore:EClass" name="AbstractComponentDef" eSuperTypes="#//AbstractDef #//ComponentDef"/>
-  <eClassifiers xsi:type="ecore:EClass" name="AbstractConnectorDef" eSuperTypes="#//AbstractDef #//ConnectorDef"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractComponentDef" eSuperTypes="#//AbstractDef">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ports" upperBound="-1"
+        eType="#//AbstractPortUse" containment="true" resolveProxies="false" eKeys="#//NamedElement/name"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractConnectorDef" eSuperTypes="#//AbstractDef">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ports" upperBound="-1"
+        eType="#//AbstractPortUse" containment="true" resolveProxies="false" eKeys="#//NamedElement/name"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="flows" upperBound="-1"
+        eType="#//AbstractFlow" containment="true" resolveProxies="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractFlow" eSuperTypes="#//AbstractDef">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source" eType="#//AbstractPortUse"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//AbstractPortUse"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractPortUse" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//PortDef"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Model" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="packages" upperBound="-1"
         eType="#//Package" containment="true" resolveProxies="false" eKeys="#//NamedElement/name"/>

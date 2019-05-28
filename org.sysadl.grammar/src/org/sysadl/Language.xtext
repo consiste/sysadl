@@ -20,6 +20,9 @@ Model returns Model:
 		| styles+=Style)*
 	(allocation=AllocationTable)?;
 
+/**
+ * Style support
+ */
 Style returns Style:
  	{Style}
 	'style' name=QualifiedName '{'
@@ -36,36 +39,31 @@ Invariant returns Invariant:
     
 AbstractComponentDef returns AbstractComponentDef:
    {AbstractComponentDef}
-	'abstract' (isBoundary?='boundary')? 'component' 'def' name=ID 
+	'abstract' 'component' 'def' name=ID 
 	'{'
 		('ports' ':' ports+=AbstractPortUse*)?
-		(properties+=Property
-		| structuralDefs+=StructuralDef
-		| dataDefs+=DataDef)*
-		
-		(composite=Configuration)?
 	'}' ;
 
-AbstractPortUse returns PortUse:
-	'port' name=ID ':' 'any';
+AbstractPortUse returns AbstractPortUse:
+	name=ID ':' flowProperties=FlowProperty 'any';
 
    
  AbstractConnectorDef returns AbstractConnectorDef:
 	'abstract' 'connector' 'def' name=ID
 	'{'
 		('participants' ':' ports+=AbstractPortUse_Reverse*)?
-		(composite=Configuration)?
-		('flows' ':' flows+=Flow*)?
-
-		(properties+=Property
-		| structuralDefs+=StructuralDef
-		| dataDefs+=DataDef)*
+		('flows' ':' flows+=AbstractFlow*)?
 	'}';
 
-AbstractPortUse_Reverse returns PortUse:
-	'~' 'port' name=ID ':' 'any';
+AbstractFlow returns AbstractFlow:
+	'flow' source=[AbstractPortUse|ID] 'to' target=[AbstractPortUse|ID];	
 
- 
+AbstractPortUse_Reverse returns AbstractPortUse:
+	'~' name=ID ':' flowProperties=FlowProperty 'any';
+
+ /**
+  * Core elements
+  */
 ElementDef returns ElementDef:
 	DataTypeDef | DimensionDef | UnitDef | ValueTypeDef | Enumeration | ComponentDef | ConnectorDef | CompositePortDef | SimplePortDef | ActionDef | ActivityDef | Protocol | ConstraintDef | Executable;
 

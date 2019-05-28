@@ -186,7 +186,7 @@ class SimplePortDef extends PortDef {
 
 class PortUse extends StructuralUse {
 	refers PortDef[1] definition keys name
-	refers AbstractPortUse[0..1] ^abstractPort
+	refers AbstractPortUse ^abstractPort
 }
 
 class ConnectorBinding extends RelationUse {

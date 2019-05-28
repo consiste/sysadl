@@ -272,7 +272,7 @@ SimplePortDef returns SimplePortDef:
 	'}';
 
 PortUse returns PortUse:
-	name=ID ':' definition=[PortDef|QualifiedName] ('[' lowerBound=EInt ',' upperBound=EInt ']')?
+	name=ID ':' definition=[PortDef|QualifiedName] ('{' abstractPort=[AbstractPortUse|QualifiedName] '}')? ('[' lowerBound=EInt ',' upperBound=EInt ']')?
 	('{'
 		properties+=Property*
 	'}' | ';');

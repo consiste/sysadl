@@ -160,12 +160,20 @@
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
               <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_blue']"/>
             </style>
-            <conditionnalStyles predicateExpression="[self.composite=null/]">
+            <conditionnalStyles predicateExpression="[self.composite=null and self.abstractComponent=null/]">
               <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;component>>\n'  + self.name/]" iconPath="/org.sysadl.viewpoints/icons/Component.gif">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
                 <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
+              </style>
+            </conditionnalStyles>
+            <conditionnalStyles predicateExpression="[self.abstractComponent&lt;>null/]">
+              <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;'+self.abstractComponent.name+'>>\n&lt;&lt;component>>\n'  + self.name/]" iconPath="/org.sysadl.viewpoints/icons/Component.gif" tooltipExpression="['Component '+self.name/]" backgroundStyle="GradientTopToBottom">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+                <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_blue']"/>
               </style>
             </conditionnalStyles>
           </subContainerMappings>
@@ -197,6 +205,14 @@
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
               <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
             </style>
+            <conditionnalStyles predicateExpression="[self.abstractConnector&lt;>null/]">
+              <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;'+self.abstractConnector.name+'>>\n&lt;&lt;connector>>\n'  + self.name/]" iconPath="/org.sysadl.viewpoints/icons/Component.gif" tooltipExpression="['Component '+self.name/]" backgroundStyle="GradientTopToBottom">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+                <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_blue']"/>
+              </style>
+            </conditionnalStyles>
           </subContainerMappings>
           <subContainerMappings name="BDD.Enum" semanticCandidatesExpression="feature:definitions" domainClass="Enumeration" childrenPresentation="List">
             <subNodeMappings name="BDD.Enum.Elements" semanticCandidatesExpression="feature:literals" domainClass="EnumLiteralValue">

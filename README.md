@@ -5,7 +5,7 @@ Never commit to the master branch, it might lead to several issues. Create your 
 
 # Requirements 
 
-- Eclipse Xcore - Update site: https://download.eclipse.org/modeling/emf/emf/updates/releases/
+- Eclipse Xcore - Update site: http://download.eclipse.org/modeling/emf/emf/updates/2.10.x/
 - Kermetta3 - Update site: http://www.kermeta.org/k3/update/
 - Xtext - Update site: http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/
 - Sirius - Update site: http://download.eclipse.org/sirius/updates/releases/6.2.0/photon

@@ -584,6 +584,20 @@
           </ownedTools>
         </toolSections>
       </additionalLayers>
+      <additionalLayers name="BDD.Style.Layer">
+        <toolSections name="BDD.Style.Layer">
+          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="BDD.Style.Apply" precondition="[container.oclIsTypeOf(ComponentDef)/]" candidatesExpression="service:possibleStyle(container)" multiple="true" rootExpression="service:possibleStyle(container)" childrenExpression="var:self" message="Select Styled Element to Apply">
+            <element name="element"/>
+            <containerView name="containerView"/>
+            <container name="container"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ExternalJavaAction">
+                <parameters name="style" value="var:element"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+      </additionalLayers>
     </ownedRepresentations>
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="SysADL.IBD" label="Internal Block Diagram (Structural IBD)" domainClass="Configuration">
       <metamodel href="../../org.sysadl/model/org.sysadl.ecore#/"/>

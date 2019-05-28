@@ -33,5 +33,9 @@
            actionClass="sysadl.viewpoints.actions.ModelAddElement"
            id="org.sysadl.viewpoints.addElement">
      </javaActions>
+     <javaActions
+           actionClass="org.sysadl.viewpoints.ApplyStyle"
+           id="org.sysadl.viewpoints.applyStyle">
+     </javaActions>
   </extension>
 </plugin>

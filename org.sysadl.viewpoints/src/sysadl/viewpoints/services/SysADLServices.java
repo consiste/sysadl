@@ -2,6 +2,7 @@ package sysadl.viewpoints.services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
@@ -33,44 +34,7 @@ import org.sysadl.util.SysADLUtil;
 
 public class SysADLServices {
 
-//	public EObject openTextEditor(EObject any) {
-//		if (any != null && any.eResource() instanceof XtextResource
-//				&& any.eResource().getURI() != null) {
-//
-//			String fileURI = any.eResource().getURI().toPlatformString(true);
-//			IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot()
-//					.getFile(new Path(fileURI));
-//			if (workspaceFile != null) {
-//				IWorkbenchPage page = PlatformUI.getWorkbench()
-//						.getActiveWorkbenchWindow().getActivePage();
-//				try {
-//					IEditorPart openEditor = IDE.openEditor(page,
-//							workspaceFile,
-//							"br.consiste.SysADL",
-//							true);
-//					if (openEditor instanceof AbstractTextEditor) {
-//						ICompositeNode node = NodeModelUtils
-//								.findActualNodeFor(any);
-//						if (node != null) {
-//							int offset = node.getOffset();
-//							int length = node.getTotalEndOffset() - offset;
-//							((AbstractTextEditor) openEditor).selectAndReveal(
-//									offset, length);
-//							System.out
-//									.println("SysADLServices.openTextEditor()");
-//						}
-//					}
-//					// editorInput.
-//				} catch (PartInitException e) {
-//					// Put your exception handler here if you wish to.
-//				}
-//			}
-//		}
-//		System.out.println(any);
-//		return any;
-//	}
-	
-	public EObject inferConnectorType(EObject port1, EObject port2) {
+	public ConnectorDef inferConnectorType(PortUse port1, PortUse port2) {
 		return null; // TODO
 	}
 	
@@ -83,6 +47,25 @@ public class SysADLServices {
 	
 	public String constraintUseText(ConstraintUse c) {
 		return "<<Constraint>>\n:"+c.getDefinition().getName()+"\n"+nodeText(c.getDefinition().getEquation());
+	}
+	
+
+	public List<EObject> possibleStyle(EObject entry) {
+		ArrayList<EObject> result = new ArrayList<EObject>();
+		org.sysadl.Package p = SysADLUtil.upToPackage(entry);
+		Style s = p.getAppliedStyle();
+		Class<?> filterClass = null;
+		
+		if (entry instanceof ComponentDef)  filterClass = AbstractComponentDef.class;
+		else if (entry instanceof ConnectorDef) filterClass = AbstractConnectorDef.class;
+		else if (entry instanceof PortUse) filterClass = AbstractPortUse.class;
+		
+		for (AbstractDef d : s.getDefinitions()) {
+			if (d.getClass().equals(filterClass)) {
+				result.add(d);
+			}
+		}
+		return result;
 	}
 	
 	public EList allElements(Model m) {
@@ -125,13 +108,13 @@ public class SysADLServices {
 		return true;
 	}
 	
-	public Expression createNullExpression() {
+	public Expression createNullExpression(EObject any) {
 		return SysADLCreationTools.createNullExpression();
 	}
 	
 	public void setupCase(ActivitySwitchCase a, ActivityFlowable tar) {
 		a.setTarget(tar);
-		a.setCondition(createNullExpression());
+		a.setCondition(createNullExpression(null));
 	}
 	
 	public EObject createCase(ActivitySwitch s, ActivityFlowable tar) {
@@ -149,22 +132,4 @@ public class SysADLServices {
 		return b;
 	}
 	
-	public Collection<EObject> possibleStyle(EObject entry) {
-		
-		ArrayList<EObject> result = new ArrayList<EObject>();
-		org.sysadl.Package p = SysADLUtil.upToPackage(entry);
-		Style s = p.getAppliedStyle();
-		Class<?> filterClass = null;
-		
-		if (entry instanceof ComponentDef)  filterClass = AbstractComponentDef.class;
-		else if (entry instanceof ConnectorDef) filterClass = AbstractConnectorDef.class;
-		else if (entry instanceof PortUse) filterClass = AbstractPortUse.class;
-		
-		for (AbstractDef d : s.getDefinitions()) {
-			if (d.getClass().equals(filterClass)) {
-				result.add(d);
-			}
-		}
-		return result;
-	}
 }

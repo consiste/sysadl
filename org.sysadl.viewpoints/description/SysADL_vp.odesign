@@ -584,9 +584,9 @@
           </ownedTools>
         </toolSections>
       </additionalLayers>
-      <additionalLayers name="BDD.Style.Layer">
+      <additionalLayers name="BDD.Style.Layer" activeByDefault="true">
         <toolSections name="BDD.Style.Layer">
-          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="BDD.Style.Apply" precondition="[container.oclIsTypeOf(ComponentDef)/]" candidatesExpression="service:possibleStyle(container)" multiple="true" rootExpression="service:possibleStyle(container)" childrenExpression="var:self" message="Select Styled Element to Apply">
+          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="BDD.Style.Apply" precondition="[container.oclIsTypeOf(ComponentDef)._or(container.oclIsTypeOf(ConnectorDef))._or(container.oclIsTypeOf(PortUse))/]" candidatesExpression="[container.eContainer().oclAsType(Package).appliedStyle.eContents(AbstractComponentDef)/]" multiple="true" rootExpression="[container.eContainer().oclAsType(Package).appliedStyle.eContents(AbstractComponentDef)/]" childrenExpression="var:self" message="Select Styled Element to Apply">
             <element name="element"/>
             <containerView name="containerView"/>
             <container name="container"/>

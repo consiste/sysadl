@@ -20,10 +20,14 @@ class Package extends NamedElement {
 class Style extends NamedElement {
 	contains Invariant[] invariants keys name
 	contains AbstractDef[] definitions keys name
+	contains ExampleArchitecture[] archs keys name
+}
+
+class ExampleArchitecture extends NamedElement {
 }
 
 class Invariant extends NamedElement {
-	contains Expression[1] expr
+	contains Expression[0..1] expr
 }
 
 interface AbstractDef extends NamedElement {
@@ -44,7 +48,7 @@ class AbstractFlow extends AbstractDef {
 }
 
 class AbstractPortUse extends NamedElement {
-	FlowProperty[1] flow
+	FlowProperty[1] flowProperty = "inout"
 }
 
 class Model extends NamedElement {
@@ -193,8 +197,9 @@ class Flow extends RelationUse {
 }
 
 enum FlowProperty {
-	in
-	out = 1
+	inout,
+	in,
+	out
 }
 
 interface BehaviorDef extends ElementDef {

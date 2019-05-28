@@ -11,7 +11,7 @@
       <package
             uri="org.sysadl"
             class="org.sysadl.SysADLPackage"
-            genModel="model/SysADL.xcore"/>
+            genModel="model/SysADL.genmodel"/>
    </extension>
 
 </plugin>

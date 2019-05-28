@@ -33,9 +33,12 @@
         eType="#//Invariant" containment="true" resolveProxies="false" eKeys="#//NamedElement/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="definitions" upperBound="-1"
         eType="#//AbstractDef" containment="true" resolveProxies="false" eKeys="#//NamedElement/name"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="archs" upperBound="-1"
+        eType="#//ExampleArchitecture" containment="true" resolveProxies="false" eKeys="#//NamedElement/name"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExampleArchitecture" eSuperTypes="#//NamedElement"/>
   <eClassifiers xsi:type="ecore:EClass" name="Invariant" eSuperTypes="#//NamedElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" lowerBound="1" eType="#//Expression"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//Expression"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AbstractDef" abstract="true" interface="true"
@@ -55,7 +58,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//AbstractPortUse"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AbstractPortUse" eSuperTypes="#//NamedElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//PortDef"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="flowProperty" unique="false"
+        lowerBound="1" eType="#//FlowProperty" defaultValueLiteral="inout"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Model" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="packages" upperBound="-1"
@@ -207,6 +211,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="PortUse" eSuperTypes="#//StructuralUse">
     <eStructuralFeatures xsi:type="ecore:EReference" name="definition" lowerBound="1"
         eType="#//PortDef" eKeys="#//NamedElement/name"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="abstractPort" eType="#//AbstractPortUse"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConnectorBinding" eSuperTypes="#//RelationUse"/>
   <eClassifiers xsi:type="ecore:EClass" name="Flow" eSuperTypes="#//RelationUse">
@@ -214,8 +219,9 @@
         eKeys="#//NamedElement/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="FlowProperty">
+    <eLiterals name="inout"/>
     <eLiterals name="in"/>
-    <eLiterals name="out" value="1"/>
+    <eLiterals name="out"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BehaviorDef" abstract="true" interface="true"
       eSuperTypes="#//ElementDef">

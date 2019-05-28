@@ -32,7 +32,7 @@ Style returns Style:
  	;
 
 Invariant returns Invariant:
-   'invariant' name=ID '=' expr=Expression;
+   'invariant' name=ID ('=' expr=Expression)?;
    
  AbstractDef returns AbstractDef:
     AbstractComponentDef | AbstractConnectorDef;
@@ -45,7 +45,7 @@ AbstractComponentDef returns AbstractComponentDef:
 	'}' ;
 
 AbstractPortUse returns AbstractPortUse:
-	name=ID ':' flowProperties=FlowProperty 'any';
+	name=ID ':' flowProperty=FlowProperty 'any';
 
    
  AbstractConnectorDef returns AbstractConnectorDef:
@@ -59,7 +59,7 @@ AbstractFlow returns AbstractFlow:
 	'flow' source=[AbstractPortUse|ID] 'to' target=[AbstractPortUse|ID];	
 
 AbstractPortUse_Reverse returns AbstractPortUse:
-	'~' name=ID ':' flowProperties=FlowProperty 'any';
+	'~' name=ID ':' flowProperty=FlowProperty 'any';
 
  /**
   * Core elements

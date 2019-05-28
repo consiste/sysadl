@@ -284,7 +284,7 @@
               <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_blue']"/>
             </style>
           </subContainerMappings>
-          <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" showIcon="false" labelExpression="['bdd [Structure] '+self.name + if self.appliedStyle&lt;>null then ' satisfies ' + self.appliedStyle.name else ' '/]" labelAlignment="LEFT">
+          <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" showIcon="false" labelExpression="['bdd [Structure] '+self.name + if self.appliedStyle&lt;>null then ' satisfies ' + self.appliedStyle.name else ' ' endif/]" labelAlignment="LEFT">
             <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
@@ -819,7 +819,7 @@
             </style>
           </subNodeMappings>
           <subNodeMappings name="Pkg.Style" semanticCandidatesExpression="feature:styles" doubleClickDescription="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.Package']/@defaultLayer/@toolSections.0/@ownedTools[name='Pkg.Tools.Navigate.Stlye']" domainClass="Style">
-            <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="['&lt;&lt;style>>'/]" labelPosition="node" resizeKind="NSEW" color="//@userColorsPalettes[name='Colors']/@entries[name='BlueDataType']">
+            <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="['&lt;&lt;style>>\n'+self.name/]" labelPosition="node" resizeKind="NSEW" color="//@userColorsPalettes[name='Colors']/@entries[name='BlueDataType']">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </style>
@@ -871,6 +871,26 @@
             <elementView name="elementView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool:Navigation" createIfNotExistent="true" diagramDescription="//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']"/>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+        <toolSections name="Pgk.Style" label="Architectural Styles">
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="Pkg.Tools.Style" label="Style" nodeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.Package']/@defaultLayer/@containerMappings[name='Pkg.Self']/@subNodeMappings[name='Pkg.Style']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="Style" referenceName="styles"/>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="Pkg.Tools.ApplyStyle" label="Apply Style" edgeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.Package']/@defaultLayer/@edgeMappings[name='Pkg.AppliedStyle']">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:source">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="appliedStyle" valueExpression="var:target"/>
+              </firstModelOperations>
             </initialOperation>
           </ownedTools>
         </toolSections>

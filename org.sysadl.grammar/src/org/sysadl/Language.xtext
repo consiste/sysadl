@@ -95,7 +95,7 @@ ComponentDef returns ComponentDef:
 	'}' 
 	;
 
-ArchitectureDef returns ComponentDef:
+ArchitectureDef returns ArchitectureDef:
 	// alternatively, a component might be an architecture 
 	'architecture' 'def' name=ID // TODO shall an architecture implement a style, instead of a package?
 	'{'
@@ -272,13 +272,13 @@ SimplePortDef returns SimplePortDef:
 	'}';
 
 PortUse returns PortUse:
-	name=ID ':' definition=[PortDef|QualifiedName] ('{' abstractPort=[AbstractPortUse|QualifiedName] '}')? ('[' lowerBound=EInt ',' upperBound=EInt ']')?
+	name=ID ':' definition=[PortDef|QualifiedName] ('concrete' abstractPort=[AbstractPortUse|QualifiedName])? ('[' lowerBound=EInt ',' upperBound=EInt ']')?
 	('{'
 		properties+=Property*
 	'}' | ';');
 
 PortUse_Reverse returns PortUse:
-	'~' name=ID ':' definition=[PortDef|QualifiedName] ('[' lowerBound=EInt ',' upperBound=EInt ']')?
+	'~' name=ID ':' definition=[PortDef|QualifiedName] ('concrete' abstractPort=[AbstractPortUse|QualifiedName])? ('[' lowerBound=EInt ',' upperBound=EInt ']')?
 	('{'
 		properties+=Property*
 	'}' | ';');
@@ -779,7 +779,7 @@ ConnectorBinding returns ConnectorBinding:
 	source=[PortUse|QualifiedName] '=' destination=[PortUse|QualifiedName];
 
 enum FlowProperty returns FlowProperty:
-	in = 'in' | out = 'out';
+	in = 'in' | out = 'out' | inout='inout';
 
 ConstraintUse returns ConstraintUse:
 	{ConstraintUse}

@@ -9,13 +9,21 @@ import org.eclipse.xtext.formatting2.IFormattableDocument
 import org.sysadl.Model
 import org.sysadl.Style
 import org.sysadl.services.SysADLGrammarAccess
+import org.sysadl.ComponentDef
 
 class SysADLFormatter extends AbstractFormatter2 {
 	
 	@Inject extension SysADLGrammarAccess
-
 	def dispatch void format(Model model, extension IFormattableDocument document) {
-		// TODO: format HiddenRegions around keywords, attributes, cross references, etc. 
+		model.interior[indent];
+		
+		for (v : model.regionFor.keywords("{")) {
+			v.append[autowrap]
+		}
+		for (v : model.regionFor.keywords("}")) {
+			v.prepend[autowrap]
+		}
+		
 		for (property : model.properties) {
 			property.format
 		}
@@ -33,6 +41,7 @@ class SysADLFormatter extends AbstractFormatter2 {
 
 	def dispatch void format(Style style, extension IFormattableDocument document) {
 		// TODO: format HiddenRegions around keywords, attributes, cross references, etc. 
+		
 		for (invariant : style.invariants) {
 			invariant.format
 		}
@@ -41,5 +50,8 @@ class SysADLFormatter extends AbstractFormatter2 {
 		}
 	}
 	
+	def dispatch void format(ComponentDef comp, extension IFormattableDocument document) {
+		comp.regionFor.keyword("component").prepend[newLine]
+	}
 	// TODO: implement for Invariant, AbstractComponentDef, AbstractConnectorDef, ComponentDef, Pin, ActionUse, Property, Package, Requirement, DataTypeDef, ValueTypeDef, Enumeration, TypeUse, DimensionDef, UnitDef, ComponentUse, ConnectorDef, ConnectorUse, CompositePortDef, SimplePortDef, PortUse, ActionDef, ActivityDef, DataStore, DataBuffer, Protocol, ConstraintDef, Executable, BlockStatement, VariableDecl, IfBlockStatement, IfStatement, ElseStatement, ReturnStatement, WhileStatement, DoStatement, ForStatement, ForControl, ForVar, SwitchStatement, SwitchClause, DefaultSwitchClause, InstanceCreationExpression, SequenceConstructionExpression, SequenceExpressionList, SequenceRange, SequenceAccessExpression, DataTypeAccessExpression, PropertyAccessExpression, FeatureReference, IncrementOrDecrementExpression, UnaryExpression, BooleanUnaryExpression, BitStringUnaryExpression, IsolationExpression, MultiplicativeExpression, AdditiveExpression, ShiftExpression, RelationalExpression, ClassificationExpression, EqualityExpression, LogicalExpression, ConditionalLogicalExpression, ConditionalTestExpression, AssignmentExpression, LeftHandSide, ArrayIndex, Configuration, ActivityDelegation, ActivitySwitch, ActivitySwitchCase, ActivityBody, ProtocolBody, ActionSend, ActionReceive, ActivityFlow, AllocationTable
 }

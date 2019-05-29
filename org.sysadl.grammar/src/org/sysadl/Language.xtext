@@ -20,6 +20,9 @@ Model returns Model:
 		| styles+=Style)*
 	(allocation=AllocationTable)?;
 
+/**
+ * Style support
+ */
 Style returns Style:
  	{Style}
 	'style' name=QualifiedName '{'
@@ -29,43 +32,38 @@ Style returns Style:
  	;
 
 Invariant returns Invariant:
-   'invariant' name=ID '=' expr=Expression;
+   'invariant' name=ID ('=' expr=Expression)?;
    
  AbstractDef returns AbstractDef:
     AbstractComponentDef | AbstractConnectorDef;
     
 AbstractComponentDef returns AbstractComponentDef:
    {AbstractComponentDef}
-	'abstract' (isBoundary?='boundary')? 'component' 'def' name=ID 
+	'abstract' 'component' 'def' name=ID 
 	'{'
 		('ports' ':' ports+=AbstractPortUse*)?
-		(properties+=Property
-		| structuralDefs+=StructuralDef
-		| dataDefs+=DataDef)*
-		
-		(composite=Configuration)?
 	'}' ;
 
-AbstractPortUse returns PortUse:
-	'port' name=ID ':' 'any';
+AbstractPortUse returns AbstractPortUse:
+	name=ID ':' flowProperty=FlowProperty 'any';
 
    
  AbstractConnectorDef returns AbstractConnectorDef:
 	'abstract' 'connector' 'def' name=ID
 	'{'
 		('participants' ':' ports+=AbstractPortUse_Reverse*)?
-		(composite=Configuration)?
-		('flows' ':' flows+=Flow*)?
-
-		(properties+=Property
-		| structuralDefs+=StructuralDef
-		| dataDefs+=DataDef)*
+		('flows' ':' flows+=AbstractFlow*)?
 	'}';
 
-AbstractPortUse_Reverse returns PortUse:
-	'~' 'port' name=ID ':' 'any';
+AbstractFlow returns AbstractFlow:
+	'flow' source=[AbstractPortUse|ID] 'to' target=[AbstractPortUse|ID];	
 
- 
+AbstractPortUse_Reverse returns AbstractPortUse:
+	'~' name=ID ':' flowProperty=FlowProperty 'any';
+
+ /**
+  * Core elements
+  */
 ElementDef returns ElementDef:
 	DataTypeDef | DimensionDef | UnitDef | ValueTypeDef | Enumeration | ComponentDef | ConnectorDef | CompositePortDef | SimplePortDef | ActionDef | ActivityDef | Protocol | ConstraintDef | Executable;
 
@@ -97,7 +95,7 @@ ComponentDef returns ComponentDef:
 	'}' 
 	;
 
-ArchitectureDef returns ComponentDef:
+ArchitectureDef returns ArchitectureDef:
 	// alternatively, a component might be an architecture 
 	'architecture' 'def' name=ID // TODO shall an architecture implement a style, instead of a package?
 	'{'
@@ -274,13 +272,13 @@ SimplePortDef returns SimplePortDef:
 	'}';
 
 PortUse returns PortUse:
-	name=ID ':' definition=[PortDef|QualifiedName] ('[' lowerBound=EInt ',' upperBound=EInt ']')?
+	name=ID ':' definition=[PortDef|QualifiedName] ('concrete' abstractPort=[AbstractPortUse|QualifiedName])? ('[' lowerBound=EInt ',' upperBound=EInt ']')?
 	('{'
 		properties+=Property*
 	'}' | ';');
 
 PortUse_Reverse returns PortUse:
-	'~' name=ID ':' definition=[PortDef|QualifiedName] ('[' lowerBound=EInt ',' upperBound=EInt ']')?
+	'~' name=ID ':' definition=[PortDef|QualifiedName] ('concrete' abstractPort=[AbstractPortUse|QualifiedName])? ('[' lowerBound=EInt ',' upperBound=EInt ']')?
 	('{'
 		properties+=Property*
 	'}' | ';');
@@ -781,7 +779,7 @@ ConnectorBinding returns ConnectorBinding:
 	source=[PortUse|QualifiedName] '=' destination=[PortUse|QualifiedName];
 
 enum FlowProperty returns FlowProperty:
-	in = 'in' | out = 'out';
+	in = 'in' | out = 'out' | inout='inout';
 
 ConstraintUse returns ConstraintUse:
 	{ConstraintUse}

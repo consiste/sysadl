@@ -132,7 +132,7 @@
               </style>
             </conditionnalStyles>
           </subContainerMappings>
-          <subContainerMappings name="BDD.ComponentDef" semanticCandidatesExpression="feature:definitions" domainClass="ComponentDef" childrenPresentation="List">
+          <subContainerMappings name="BDD.ComponentDef" preconditionExpression="[not(self.oclIsKindOf(ArchitectureDef))/]" semanticCandidatesExpression="feature:definitions" domainClass="ComponentDef" childrenPresentation="List">
             <borderedNodeMappings name="BDD.ComDef.Ports" semanticCandidatesExpression="feature:ports" domainClass="PortUse">
               <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="[self.name + if (self.definition &lt;> null) then (' : ' + self.definition.name ) else '' endif  + ' ['+self.lowerBound+','+self.upperBound + '] '/]" labelAlignment="LEFT" tooltipExpression="['Port '+self.name/]" resizeKind="NSEW" width="2" height="2">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
@@ -160,12 +160,20 @@
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
               <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_blue']"/>
             </style>
-            <conditionnalStyles predicateExpression="[self.composite=null/]">
+            <conditionnalStyles predicateExpression="[self.composite=null and self.abstractComponent=null/]">
               <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;component>>\n'  + self.name/]" iconPath="/org.sysadl.viewpoints/icons/Component.gif">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
                 <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
+              </style>
+            </conditionnalStyles>
+            <conditionnalStyles predicateExpression="[self.abstractComponent&lt;>null/]">
+              <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;'+self.abstractComponent.name+'>>\n&lt;&lt;component>>\n'  + self.name/]" iconPath="/org.sysadl.viewpoints/icons/Component.gif" tooltipExpression="['Component '+self.name/]" backgroundStyle="GradientTopToBottom">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+                <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_blue']"/>
               </style>
             </conditionnalStyles>
           </subContainerMappings>
@@ -197,6 +205,14 @@
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
               <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
             </style>
+            <conditionnalStyles predicateExpression="[self.abstractConnector&lt;>null/]">
+              <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;'+self.abstractConnector.name+'>>\n&lt;&lt;connector>>\n'  + self.name/]" iconPath="/org.sysadl.viewpoints/icons/Component.gif" tooltipExpression="['Component '+self.name/]" backgroundStyle="GradientTopToBottom">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+                <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_blue']"/>
+              </style>
+            </conditionnalStyles>
           </subContainerMappings>
           <subContainerMappings name="BDD.Enum" semanticCandidatesExpression="feature:definitions" domainClass="Enumeration" childrenPresentation="List">
             <subNodeMappings name="BDD.Enum.Elements" semanticCandidatesExpression="feature:literals" domainClass="EnumLiteralValue">
@@ -246,7 +262,29 @@
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </style>
           </subContainerMappings>
-          <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" showIcon="false" labelExpression="['bdd [Structure] '+self.name/]" labelAlignment="LEFT">
+          <subContainerMappings name="BDD.Architecture" semanticCandidatesExpression="feature:definitions" domainClass="ArchitectureDef" childrenPresentation="List">
+            <subNodeMappings name="BDD.ArchDef.Configuration" semanticCandidatesExpression="feature:composite" domainClass="Configuration">
+              <style xsi:type="style:DotDescription" labelExpression="Configuration" iconPath="/org.sysadl.viewpoints/icons/Configuration.gif" resizeKind="NSEW">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+              </style>
+            </subNodeMappings>
+            <subNodeMappings name="BDD.ArchDef.Ports" semanticCandidatesExpression="feature:ports" domainClass="PortUse">
+              <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="[self.name + if (self.definition &lt;> null) then (' : ' + self.definition.name ) else '' endif  + ' ['+self.lowerBound+','+self.upperBound + '] '/]" labelAlignment="LEFT" tooltipExpression="['Port '+self.name/]" resizeKind="NSEW" width="2" height="2">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+              </style>
+            </subNodeMappings>
+            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;architecture>>\n'  + self.name/]" iconPath="/org.sysadl.viewpoints/icons/Component.gif" tooltipExpression="['Component '+self.name/]" backgroundStyle="GradientTopToBottom">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+              <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_blue']"/>
+            </style>
+          </subContainerMappings>
+          <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" showIcon="false" labelExpression="['bdd [Structure] '+self.name + if self.appliedStyle&lt;>null then ' satisfies ' + self.appliedStyle.name else ' ' endif/]" labelAlignment="LEFT">
             <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
@@ -395,9 +433,16 @@
               </initialOperation>
             </tools>
           </ownedTools>
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="BDD.Tools.Architecture" containerMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.Architecture']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="ArchitectureDef" referenceName="definitions"/>
+            </initialOperation>
+          </ownedTools>
         </toolSections>
         <toolSections name="BDD.Tools.Features" label="Features">
-          <ownedTools xsi:type="tool:NodeCreationDescription" name="BDD.Tools.Configuration" label="Configuration (Component, Connector)" forceRefresh="true" nodeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ComponentDef']/@subNodeMappings[name='BDD.CompDef.Configuration'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.Import.ComponentDef']/@subNodeMappings[name='BDD.CompDef.Import.Configuration'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ConnectorDef']/@subNodeMappings[name='BDD.Connector.Configuration']" iconPath="/org.sysadl.viewpoints/icons/Configuration.gif">
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="BDD.Tools.Configuration" label="Configuration (Component, Connector)" forceRefresh="true" nodeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ComponentDef']/@subNodeMappings[name='BDD.CompDef.Configuration'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.Import.ComponentDef']/@subNodeMappings[name='BDD.CompDef.Import.Configuration'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ConnectorDef']/@subNodeMappings[name='BDD.Connector.Configuration'] //@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.Architecture']/@subNodeMappings[name='BDD.ArchDef.Configuration']" iconPath="/org.sysadl.viewpoints/icons/Configuration.gif">
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
@@ -534,6 +579,20 @@
                     </subModelOperations>
                   </subModelOperations>
                 </subModelOperations>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+      </additionalLayers>
+      <additionalLayers name="BDD.Style.Layer" activeByDefault="true">
+        <toolSections name="BDD.Style.Layer">
+          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="BDD.Style.Apply" precondition="[container.oclIsTypeOf(ComponentDef)._or(container.oclIsTypeOf(ConnectorDef))._or(container.oclIsTypeOf(PortUse))/]" candidatesExpression="[container.eContainer().oclAsType(Package).appliedStyle.eContents(AbstractComponentDef)/]" multiple="true" rootExpression="[container.eContainer().oclAsType(Package).appliedStyle.eContents(AbstractComponentDef)/]" childrenExpression="var:self" message="Select Styled Element to Apply">
+            <element name="element"/>
+            <containerView name="containerView"/>
+            <container name="container"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ExternalJavaAction">
+                <parameters name="style" value="var:element"/>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
@@ -774,7 +833,7 @@
             </style>
           </subNodeMappings>
           <subNodeMappings name="Pkg.Style" semanticCandidatesExpression="feature:styles" doubleClickDescription="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.Package']/@defaultLayer/@toolSections.0/@ownedTools[name='Pkg.Tools.Navigate.Stlye']" domainClass="Style">
-            <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="['&lt;&lt;style>>'/]" labelPosition="node" resizeKind="NSEW" color="//@userColorsPalettes[name='Colors']/@entries[name='BlueDataType']">
+            <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="['&lt;&lt;style>>\n'+self.name/]" labelPosition="node" resizeKind="NSEW" color="//@userColorsPalettes[name='Colors']/@entries[name='BlueDataType']">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </style>
@@ -826,6 +885,26 @@
             <elementView name="elementView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool:Navigation" createIfNotExistent="true" diagramDescription="//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']"/>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+        <toolSections name="Pgk.Style" label="Architectural Styles">
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="Pkg.Tools.Style" label="Style" nodeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.Package']/@defaultLayer/@containerMappings[name='Pkg.Self']/@subNodeMappings[name='Pkg.Style']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="Style" referenceName="styles"/>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="Pkg.Tools.ApplyStyle" label="Apply Style" edgeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.Package']/@defaultLayer/@edgeMappings[name='Pkg.AppliedStyle']">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:source">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="appliedStyle" valueExpression="var:target"/>
+              </firstModelOperations>
             </initialOperation>
           </ownedTools>
         </toolSections>
@@ -1866,17 +1945,18 @@
   <ownedViewpoints name="org.sysadl.Style" label="SysADL Styles">
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="SysADL.Style" label="Style Definition Diagram (Style BDD)" initialisation="true" domainClass="Style">
       <defaultLayer name="Default">
-        <containerMappings name="Style.Self" semanticCandidatesExpression="var:self" domainClass="Style">
-          <subNodeMappings name="Style.Invariant" semanticCandidatesExpression="feature:invariants" domainClass="Invariant">
-            <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="['Invariant'/]" labelPosition="node" resizeKind="NSEW">
-              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+        <edgeMappings name="Style.Flow" sourceMapping="//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractConnector']/@borderedNodeMappings[name='org.sysadl.style.connector.ports']" targetMapping="//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractConnector']/@borderedNodeMappings[name='org.sysadl.style.connector.ports']" targetFinderExpression="feature:target" sourceFinderExpression="feature:source" domainClass="AbstractFlow" useDomainElement="true">
+          <style sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+            <centerLabelStyleDescription showIcon="false" labelExpression="any">
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
-              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
-            </style>
-          </subNodeMappings>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <containerMappings name="Style.Self" semanticCandidatesExpression="var:self" domainClass="Style" reusedContainerMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.SimplePortDef']">
           <subContainerMappings name="Style.AbstractComponent" semanticCandidatesExpression="feature:definitions" domainClass="AbstractComponentDef">
-            <borderedNodeMappings name="org.sysadl.style.component.ports" semanticCandidatesExpression="feature:ports" domainClass="PortUse">
-              <style xsi:type="style:SquareDescription" labelSize="12" showIcon="false" labelExpression="[self.name+' : '+self.definition.name/]" resizeKind="NSEW">
+            <borderedNodeMappings name="org.sysadl.style.component.ports" semanticCandidatesExpression="feature:ports" domainClass="AbstractPortUse">
+              <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="[self.flowProperty + ' ' +  self.name + ': any'/]" resizeKind="NSEW">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
@@ -1890,20 +1970,43 @@
               <labelBorderStyle href="environment:/viewpoint#//@labelBorderStyles/@labelBorderStyleDescriptions.1"/>
             </style>
           </subContainerMappings>
-          <subContainerMappings name="Style.AbstractConnector" semanticCandidatesExpression="feature:definitions" domainClass="AbstractConnector">
-            <subNodeMappings name="org.sysadl.style.connector.ports" semanticCandidatesExpression="feature:ports" domainClass="PortUse">
-              <style xsi:type="style:SquareDescription" labelSize="12" showIcon="false" labelExpression="[self.name+' : '+self.definition.name/]" resizeKind="NSEW">
+          <subContainerMappings name="Style.AbstractConnector" semanticCandidatesExpression="feature:definitions" domainClass="AbstractConnectorDef">
+            <borderedNodeMappings name="org.sysadl.style.connector.ports" semanticCandidatesExpression="feature:ports" domainClass="AbstractPortUse">
+              <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="[self.flowProperty + ' ' +  self.name + ': any'/]" resizeKind="NSEW">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
               </style>
-            </subNodeMappings>
+            </borderedNodeMappings>
             <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" showIcon="false" labelExpression="['&lt;&lt;abstract>>\n&lt;&lt;Connector Def>> \n'+self.name/]">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
               <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_blue']"/>
               <labelBorderStyle href="environment:/viewpoint#//@labelBorderStyles/@labelBorderStyleDescriptions.1"/>
+            </style>
+          </subContainerMappings>
+          <subContainerMappings name="Style.Invariant" semanticCandidatesExpression="feature:invariants" domainClass="Invariant" childrenPresentation="List">
+            <subNodeMappings name="Style.Invariant.Expression" semanticCandidatesExpression="feature:expr" domainClass="Expression">
+              <style xsi:type="style:DotDescription" showIcon="false" labelExpression="service:nodeText(self)" labelPosition="node" resizeKind="NSEW">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+              </style>
+            </subNodeMappings>
+            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" showIcon="false" labelExpression="['&lt;&lt;Invariant>>\n'+self.name/]">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+              <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </subContainerMappings>
+          <subContainerMappings name="Styles.Architectures" semanticCandidatesExpression="feature:archs" domainClass="ExampleArchitecture">
+            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" showIcon="false" labelExpression="['&lt;&lt;template>>\n'+self.name/]">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+              <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
             </style>
           </subContainerMappings>
           <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" showIcon="false" labelExpression="['bdd [Style] '+self.name/]" labelAlignment="LEFT">
@@ -1915,11 +2018,55 @@
           </style>
         </containerMappings>
         <toolSections name="Style.Tools" label="ToolsStyle.Tools">
-          <ownedTools xsi:type="tool:ContainerCreationDescription" name="Style.Tools.Create.Component" label="Create Component" forceRefresh="true" containerMappings="//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractComponent']">
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="Style.Tools.Create.Component" label="Abstract Component" forceRefresh="true" containerMappings="//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractComponent']">
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="AbstractComponentDef" referenceName="definitions"/>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="Style.Tools.Create.Connector" label="Abstract Connector" forceRefresh="true" containerMappings="//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractConnector']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="AbstractConnectorDef" referenceName="definitions"/>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="Style.Tools.Create.Port" label="Abstract Port" nodeMappings="//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractComponent']/@borderedNodeMappings[name='org.sysadl.style.component.ports'] //@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractConnector']/@borderedNodeMappings[name='org.sysadl.style.connector.ports']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="AbstractPortUse" referenceName="ports"/>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="Style.Tools.Create.Flow" label="Abstract Flow" edgeMappings="//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@edgeMappings[name='Style.Flow']">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[source.eContainer()/]">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="AbstractFlow" referenceName="flows">
+                  <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
+                    <subModelOperations xsi:type="tool_1:SetValue" featureName="source" valueExpression="var:source"/>
+                    <subModelOperations xsi:type="tool_1:SetValue" featureName="target" valueExpression="var:target"/>
+                  </subModelOperations>
+                </subModelOperations>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="Style.Tools.Create.Invariant" label="Invariant" containerMappings="//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.Invariant']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="Invariant" referenceName="invariants"/>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="Style.Tools.Architecture" label="Architecture Overview" containerMappings="//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Styles.Architectures']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="ExampleArchitecture" referenceName="archs"/>
             </initialOperation>
           </ownedTools>
         </toolSections>

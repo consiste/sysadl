@@ -30,6 +30,7 @@
       <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//ConstraintKind/invariant"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysadl.ecore#//FlowProperty">
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//FlowProperty/inout"/>
       <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//FlowProperty/in"/>
       <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//FlowProperty/out"/>
     </genEnums>
@@ -102,13 +103,27 @@
     <genClasses ecoreClass="sysadl.ecore#//Style">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Style/invariants"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Style/definitions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Style/archs"/>
     </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//ExampleArchitecture"/>
     <genClasses ecoreClass="sysadl.ecore#//Invariant">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Invariant/expr"/>
     </genClasses>
     <genClasses image="false" ecoreClass="sysadl.ecore#//AbstractDef"/>
-    <genClasses ecoreClass="sysadl.ecore#//AbstractComponentDef"/>
-    <genClasses ecoreClass="sysadl.ecore#//AbstractConnectorDef"/>
+    <genClasses ecoreClass="sysadl.ecore#//AbstractComponentDef">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractComponentDef/ports"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//AbstractConnectorDef">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractConnectorDef/ports"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractConnectorDef/flows"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//AbstractFlow">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractFlow/source"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractFlow/target"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//AbstractPortUse">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//AbstractPortUse/flowProperty"/>
+    </genClasses>
     <genClasses ecoreClass="sysadl.ecore#//Model">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Model/packages"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Model/requirements"/>
@@ -204,6 +219,7 @@
     </genClasses>
     <genClasses ecoreClass="sysadl.ecore#//PortUse">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//PortUse/definition"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//PortUse/abstractPort"/>
     </genClasses>
     <genClasses ecoreClass="sysadl.ecore#//ConnectorBinding"/>
     <genClasses ecoreClass="sysadl.ecore#//Flow">

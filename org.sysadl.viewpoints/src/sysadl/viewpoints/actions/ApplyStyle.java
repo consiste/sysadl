@@ -1,4 +1,4 @@
-package org.sysadl.viewpoints;
+package sysadl.viewpoints.actions;
 
 import java.util.Collection;
 import java.util.Map;

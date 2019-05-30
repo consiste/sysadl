@@ -1,15 +1,11 @@
 package sysadl.viewpoints.services;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtext.nodemodel.INode;
-import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.sysadl.AbstractComponentDef;
 import org.sysadl.AbstractConnectorDef;
 import org.sysadl.AbstractDef;
@@ -29,6 +25,7 @@ import org.sysadl.PortUse;
 import org.sysadl.Requirement;
 import org.sysadl.Style;
 import org.sysadl.SysADLFactory;
+import org.sysadl.grammar.util.SysADLGrammarUtil;
 import org.sysadl.util.SysADLCreationTools;
 import org.sysadl.util.SysADLUtil;
 
@@ -39,10 +36,7 @@ public class SysADLServices {
 	}
 	
 	public String nodeText(EObject exp) {
-		if (exp==null) return "";
-		INode expNode = NodeModelUtils.getNode(exp);
-		String value = NodeModelUtils.getTokenText(expNode);
-		return  value;
+		return SysADLGrammarUtil.nodeText(exp);
 	}
 	
 	public String constraintUseText(ConstraintUse c) {

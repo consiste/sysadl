@@ -584,20 +584,6 @@
           </ownedTools>
         </toolSections>
       </additionalLayers>
-      <additionalLayers name="BDD.Style.Layer" activeByDefault="true">
-        <toolSections name="BDD.Style.Layer">
-          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="BDD.Style.Apply" precondition="[container.oclIsTypeOf(ComponentDef)._or(container.oclIsTypeOf(ConnectorDef))._or(container.oclIsTypeOf(PortUse))/]" candidatesExpression="[container.eContainer().oclAsType(Package).appliedStyle.eContents(AbstractComponentDef)/]" multiple="true" rootExpression="[container.eContainer().oclAsType(Package).appliedStyle.eContents(AbstractComponentDef)/]" childrenExpression="var:self" message="Select Styled Element to Apply">
-            <element name="element"/>
-            <containerView name="containerView"/>
-            <container name="container"/>
-            <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ExternalJavaAction">
-                <parameters name="style" value="var:element"/>
-              </firstModelOperations>
-            </initialOperation>
-          </ownedTools>
-        </toolSections>
-      </additionalLayers>
     </ownedRepresentations>
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="SysADL.IBD" label="Internal Block Diagram (Structural IBD)" domainClass="Configuration">
       <metamodel href="../../org.sysadl/model/org.sysadl.ecore#/"/>
@@ -2072,6 +2058,22 @@
         </toolSections>
       </defaultLayer>
     </ownedRepresentations>
+    <ownedRepresentationExtensions xsi:type="description_1:DiagramExtensionDescription" name="org.sysadl.Styles.layer" viewpointURI="viewpoint:/org.sysadl.viewpoints/SysADL.Structural" representationName="SysADL.BDD">
+      <layers name="org.sysadl.Styles.additionalLayer" label="Styles Tools" activeByDefault="true">
+        <toolSections name="BDD.Style.Layer" label="Style Tools">
+          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="BDD.Style.Apply" label="Apply Style to Element" precondition="[container.oclIsTypeOf(ComponentDef)._or(container.oclIsTypeOf(ConnectorDef))._or(container.oclIsTypeOf(PortUse))/]" candidatesExpression="[if container.oclIsTypeOf(ConnectorDef) then container.eContainer().oclAsType(Package).appliedStyle.eContents(AbstractConnectorDef) else if container.oclIsTypeOf(ComponentDef) then container.eContainer().oclAsType(Package).appliedStyle.eContents(AbstractComponentDef) else if container.oclIsTypeOf(PortUse) then if container.eContainer().oclIsTypeOf(ComponentDef) then container.eContainer().oclAsType(ComponentDef).abstractComponent.ports else if container.eContainer().oclIsTypeOf(ConnectorDef) then container.eContainer().oclAsType(ConnectorDef).abstractConnector.ports else null endif endif else null endif endif endif/]" childrenExpression="var:self" message="Select Styled Element to Apply">
+            <element name="element"/>
+            <containerView name="containerView"/>
+            <container name="container"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ExternalJavaAction" name="org.sysadl.Styles.apply" id="org.sysadl.viewpoints.applyStyle">
+                <parameters name="style" value="var:element"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+      </layers>
+    </ownedRepresentationExtensions>
   </ownedViewpoints>
   <userColorsPalettes name="Colors">
     <entries xsi:type="description:UserFixedColor" red="255" green="228" blue="130" name="DefColor"/>

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
-
 import org.sysadl.Model;
-import org.sysadl.Package;;
+import org.sysadl.Package;
+
 public class SysADLUtil {
 
 	public static Package upToPackage(EObject use) {
@@ -35,4 +35,5 @@ public class SysADLUtil {
 		}
 		return packages;
 	}
+	
 }

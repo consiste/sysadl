@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SysADL Viewpoints
+Bundle-SymbolicName: org.sysadl.viewpoints;singleton:=true
+Bundle-Version: 2.5.1
+Bundle-Activator: defaultpackage.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.sirius,
+ org.eclipse.sirius.common.acceleo.mtl,
+ org.eclipse.core.resources,
+ org.sysadl,
+ com.google.inject,
+ org.eclipse.xtext,
+ org.eclipse.sirius.diagram,
+ org.sysadl.grammar
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Import-Package: org.eclipse.ui.ide,
+ org.eclipse.ui.texteditor
+

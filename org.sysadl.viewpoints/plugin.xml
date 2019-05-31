@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+  <extension point="org.eclipse.sirius.componentization">
+    <component class="defaultpackage.Activator"
+               id="org.sysadl.viewpoints"
+	       name="SysADL">
+    </component>
+  </extension>
+  <extension
+        point="org.eclipse.sirius.externalJavaAction">
+     <javaActions
+           actionClass="sysadl.viewpoints.actions.RequirementAssignSatisfy"
+           id="org.sysadl.viewpoints.assignsatisfy">
+     </javaActions>
+     <javaActions
+           actionClass="sysadl.viewpoints.actions.RequirementDeleteSatisfy"
+           id="org.sysadl.viewpoints.deletesatisfy">
+     </javaActions>
+     <javaActions
+           actionClass="sysadl.viewpoints.actions.RequirementDeleteElement"
+           id="org.sysadl.viewpoints.deleteimported">
+     </javaActions>
+     <javaActions
+           actionClass="sysadl.viewpoints.actions.RequirementDeleteComposition"
+           id="org.sysadl.viewpoints.deletecomposition">
+     </javaActions>
+     <javaActions
+           actionClass="sysadl.viewpoints.actions.IBDAddConnector"
+           id="org.sysadl.viewpoints.ibd.addConnector">
+     </javaActions>
+     <javaActions
+           actionClass="sysadl.viewpoints.actions.ModelAddElement"
+           id="org.sysadl.viewpoints.addElement">
+     </javaActions>
+     <javaActions
+           actionClass="sysadl.viewpoints.actions.ApplyStyle"
+           id="org.sysadl.viewpoints.applyStyle">
+     </javaActions>
+  </extension>
+</plugin>

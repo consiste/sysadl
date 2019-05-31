@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.sysadl/src" modelPluginID="org.sysadl" runtimeJar="true"
+    modelName="SysADL" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    testsDirectory="" booleanFlagsField="eFlags" booleanFlagsReservedBits="8" importerID="org.eclipse.emf.importer.ecore"
+    containmentProxies="true" complianceLevel="8.0" language="en" usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore"
+    operationReflection="true" importOrganizing="true" decoration="Live" oSGiCompatible="true"
+    eclipsePlatformVersion="Juno" autoResizeProperties="true" autoExpandProperties="10"
+    findAction="true" expandAllAction="true" collapseAllAction="true" revertAction="true">
+  <genAnnotations source="http://www.eclipse.org/emf/2002/GenModel/exporter/org.eclipse.xsd.ecore.exporter">
+    <genAnnotations source="selectedPackages">
+      <details key="http://www.eclipse.org/emf/2002/Ecore" value="Ecore.xsd"/>
+    </genAnnotations>
+    <details key="directoryURI" value="."/>
+  </genAnnotations>
+  <genAnnotations source="http://www.eclipse.org/emf/2002/GenModel/exporter/org.eclipse.xsd.ecore.exporter.xmi">
+    <genAnnotations source="selectedPackages">
+      <details key="http://www.eclipse.org/emf/2002/Ecore" value="EcoreXMI.xsd"/>
+    </genAnnotations>
+    <details key="directoryURI" value="."/>
+  </genAnnotations>
+  <foreignModel>SysADL.xcore</foreignModel>
+  <modelPluginVariables>org.eclipse.xtext.xbase.lib</modelPluginVariables>
+  <modelPluginVariables>org.eclipse.emf.ecore.xcore.lib</modelPluginVariables>
+  <genPackages prefix="SysADL" basePackage="org" disposableProviderFactory="true"
+      fileExtensions="sysadl" ecorePackage="sysadl.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysadl.ecore#//ConstraintKind">
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//ConstraintKind/preCondition"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//ConstraintKind/postCondition"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//ConstraintKind/invariant"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysadl.ecore#//FlowProperty">
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//FlowProperty/inout"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//FlowProperty/in"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//FlowProperty/out"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysadl.ecore#//ProtocolAlternativeType">
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//ProtocolAlternativeType/alternative"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//ProtocolAlternativeType/complimentary"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysadl.ecore#//ProtocolControl">
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//ProtocolControl/several"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//ProtocolControl/once"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//ProtocolControl/perhaps"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//ProtocolControl/always"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysadl.ecore#//AdditiveOperator">
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//AdditiveOperator/plus"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//AdditiveOperator/minus"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysadl.ecore#//MultiplicativeOperator">
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//MultiplicativeOperator/star"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//MultiplicativeOperator/slash"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//MultiplicativeOperator/rem"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysadl.ecore#//ShiftOperator">
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//ShiftOperator/lshift"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//ShiftOperator/rshift"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//ShiftOperator/urshift"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysadl.ecore#//RelationalOperator">
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//RelationalOperator/less"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//RelationalOperator/greater"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//RelationalOperator/less_equal"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//RelationalOperator/greater_equal"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysadl.ecore#//ClassificationOperator">
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//ClassificationOperator/instanceof"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//ClassificationOperator/hastype"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysadl.ecore#//EqualityOperator">
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//EqualityOperator/equal"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//EqualityOperator/different"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysadl.ecore#//AffixOperator">
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//AffixOperator/incr"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//AffixOperator/decr"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysadl.ecore#//AssignmentOperator">
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//AssignmentOperator/equal"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//AssignmentOperator/plusEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//AssignmentOperator/minusEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//AssignmentOperator/starEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//AssignmentOperator/modEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//AssignmentOperator/divEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//AssignmentOperator/andEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//AssignmentOperator/orEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//AssignmentOperator/powerEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//AssignmentOperator/shiftLeftEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//AssignmentOperator/shiftRightEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="sysadl.ecore#//AssignmentOperator/shiftRightDoubledEqual"/>
+    </genEnums>
+    <genClasses image="false" ecoreClass="sysadl.ecore#//NamedElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//NamedElement/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//NamedElement/properties"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//Package">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//Package/imports"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//Package/importedDefinitions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Package/definitions"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//Package/appliedStyle"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//Style">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Style/invariants"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Style/definitions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Style/archs"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//ExampleArchitecture"/>
+    <genClasses ecoreClass="sysadl.ecore#//Invariant">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Invariant/expr"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysadl.ecore#//AbstractDef"/>
+    <genClasses ecoreClass="sysadl.ecore#//AbstractComponentDef">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractComponentDef/ports"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//AbstractConnectorDef">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractConnectorDef/ports"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractConnectorDef/flows"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//AbstractFlow">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractFlow/source"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractFlow/target"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//AbstractPortUse">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//AbstractPortUse/flowProperty"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//Model">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Model/packages"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Model/requirements"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//Model/involvedElements"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Model/allocation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Model/styles"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysadl.ecore#//ElementDef"/>
+    <genClasses image="false" ecoreClass="sysadl.ecore#//DataDef"/>
+    <genClasses ecoreClass="sysadl.ecore#//DataTypeDef">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//DataTypeDef/attributes"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//DataTypeDef/superType"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//DimensionDef"/>
+    <genClasses image="false" ecoreClass="sysadl.ecore#//TypeDef">
+      <genOperations ecoreOperation="sysadl.ecore#//TypeDef/isCompatible"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//TypeUse">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//TypeUse/definition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//TypeUse/arrayIndex"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//UnitDef">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//UnitDef/dimension"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//ValueTypeDef">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ValueTypeDef/unit"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ValueTypeDef/dimension"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ValueTypeDef/superType"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//Enumeration">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Enumeration/literals"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//EnumLiteralValue">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//EnumLiteralValue/enum"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//EnumLiteralValue/name"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//Property">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//Property/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//Property/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Property/value"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysadl.ecore#//StructuralDef">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//StructuralDef/structuralDefs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//StructuralDef/dataDefs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//StructuralDef/invariants"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysadl.ecore#//StructuralUse">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//StructuralUse/lowerBound"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//StructuralUse/upperBound"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//ComponentDef">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ComponentDef/ports"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ComponentDef/composite"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//ComponentDef/isBoundary"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ComponentDef/abstractComponent"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//ArchitectureDef"/>
+    <genClasses ecoreClass="sysadl.ecore#//ComponentUse">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ComponentUse/definition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ComponentUse/ports"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//ConnectorDef">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ConnectorDef/ports"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ConnectorDef/flows"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ConnectorDef/composite"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ConnectorDef/abstractConnector"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//ConnectorUse">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ConnectorUse/definition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ConnectorUse/ports"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ConnectorUse/bindings"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//Configuration">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Configuration/components"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Configuration/connectors"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Configuration/delegations"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysadl.ecore#//RelationUse">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//RelationUse/source"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//RelationUse/destination"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//Delegation">
+      <genOperations ecoreOperation="sysadl.ecore#//Delegation/checkCompatibility"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysadl.ecore#//PortDef"/>
+    <genClasses ecoreClass="sysadl.ecore#//CompositePortDef">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//CompositePortDef/ports"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//SimplePortDef">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//SimplePortDef/flowProperties"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//SimplePortDef/flowType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//SimplePortDef/arrayIndex"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//PortUse">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//PortUse/definition"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//PortUse/abstractPort"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//ConnectorBinding"/>
+    <genClasses ecoreClass="sysadl.ecore#//Flow">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//Flow/type"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysadl.ecore#//BehaviorDef">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//BehaviorDef/inParameters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//BehaviorDef/outParameters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//BehaviorDef/behaviorDefs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//BehaviorDef/dataDefs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//BehaviorDef/constraints"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//BehaviorDef/delegations"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//ActivityDef">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ActivityDef/body"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//ActionDef">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ActionDef/returnType"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//ActionUse">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ActionUse/definition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ActionUse/pinIn"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysadl.ecore#//Pin">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//Pin/isFlow"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//ConstraintDef">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ConstraintDef/equation"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//ConstraintUse">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ConstraintUse/definition"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//ConstraintUse/kind"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysadl.ecore#//ActivityRelation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ActivityRelation/source"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ActivityRelation/target"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ActivityRelation/targetSwitch"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//ActivityDelegation"/>
+    <genClasses ecoreClass="sysadl.ecore#//ActivityFlow"/>
+    <genClasses ecoreClass="sysadl.ecore#//ActivitySwitch">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ActivitySwitch/cases"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//ActivitySwitchCase">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ActivitySwitchCase/condition"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ActivitySwitchCase/target"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysadl.ecore#//ActivityFlowable"/>
+    <genClasses ecoreClass="sysadl.ecore#//ActivityBody">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ActivityBody/actions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ActivityBody/flows"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ActivityBody/dataObjects"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysadl.ecore#//DataObject">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//DataObject/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//DataObject/initValue"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//DataObject/arrayIndex"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//DataStore"/>
+    <genClasses ecoreClass="sysadl.ecore#//DataBuffer"/>
+    <genClasses ecoreClass="sysadl.ecore#//Protocol">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Protocol/body"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysadl.ecore#//ProtocolBodyInternal"/>
+    <genClasses ecoreClass="sysadl.ecore#//ProtocolBody">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//ProtocolBody/recControl"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ProtocolBody/body"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ProtocolBody/recursive"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//ProtocolBody/recType"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysadl.ecore#//PredefinedAction">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//PredefinedAction/flowTo"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//ActionSend">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ActionSend/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//ActionReceive">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ActionReceive/var"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//Executable">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Executable/body"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//Executable/returnType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Executable/params"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//Requirement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//Requirement/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//Requirement/text"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//Requirement/derive"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Requirement/composition"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//Requirement/satisfiedBy"/>
+      <genOperations ecoreOperation="sysadl.ecore#//Requirement/isValid"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//AllocationTable">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//AllocationTable/allocs"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysadl.ecore#//Allocation"/>
+    <genClasses ecoreClass="sysadl.ecore#//ExecutableAllocation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ExecutableAllocation/source"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ExecutableAllocation/target"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//ActivityAllocation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ActivityAllocation/source"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ActivityAllocation/target"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysadl.ecore#//Statement">
+      <genOperations ecoreOperation="sysadl.ecore#//Statement/run"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//Expression"/>
+    <genClasses ecoreClass="sysadl.ecore#//ConditionalTestExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ConditionalTestExpression/op1"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ConditionalTestExpression/op2"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ConditionalTestExpression/op3"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//BinaryExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//BinaryExpression/op1"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//BinaryExpression/op2"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//ConditionalLogicalExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//ConditionalLogicalExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//LogicalExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//LogicalExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//RelationalExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//RelationalExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//ShiftExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//ShiftExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//MultiplicativeExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//MultiplicativeExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//AdditiveExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//AdditiveExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//EqualityExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//EqualityExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//SequenceConstructionExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//SequenceConstructionExpression/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//SequenceConstructionExpression/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//SequenceAccessExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//SequenceAccessExpression/primary"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//SequenceAccessExpression/index"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//ArrayIndex">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ArrayIndex/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//SequenceElements"/>
+    <genClasses ecoreClass="sysadl.ecore#//SequenceExpressionList">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//SequenceExpressionList/element"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//SequenceRange">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//SequenceRange/rangeLower"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//SequenceRange/rangeUpper"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//UnaryExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//UnaryExpression/op"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//UnaryExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//BooleanUnaryExpression"/>
+    <genClasses ecoreClass="sysadl.ecore#//BitStringUnaryExpression"/>
+    <genClasses ecoreClass="sysadl.ecore#//NumericUnaryExpression"/>
+    <genClasses ecoreClass="sysadl.ecore#//CastExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//CastExpression/typeName"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//IsolationExpression"/>
+    <genClasses ecoreClass="sysadl.ecore#//ClassificationExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ClassificationExpression/typeName"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysadl.ecore#//PrimaryExpression"/>
+    <genClasses ecoreClass="sysadl.ecore#//InstanceCreationExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//InstanceCreationExpression/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//InstanceCreationExpression/index"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//NameExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//NameExpression/cite"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysadl.ecore#//NonNameExpression"/>
+    <genClasses ecoreClass="sysadl.ecore#//BooleanLiteralExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//BooleanLiteralExpression/isTrue"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//NaturalLiteralExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//NaturalLiteralExpression/int_value"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//StringLiteralExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//StringLiteralExpression/str_value"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//EnumValueLiteralExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//EnumValueLiteralExpression/enumValue"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//EnumValueLiteralExpression/_enum"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//NullLiteralExpression"/>
+    <genClasses ecoreClass="sysadl.ecore#//LiteralExpression"/>
+    <genClasses ecoreClass="sysadl.ecore#//ThisExpression"/>
+    <genClasses ecoreClass="sysadl.ecore#//PropertyAccessExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//PropertyAccessExpression/featureRef"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//DataTypeAccessExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//DataTypeAccessExpression/attr"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//DataTypeAccessExpression/datatype"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//DataTypeAccessExpression/index"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//FeatureReference">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//FeatureReference/feature"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//FeatureReference/field"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//FeatureReference/expr"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysadl.ecore#//IncrementOrDecrementExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//IncrementOrDecrementExpression/operand"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//IncrementOrDecrementExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//PrefixExpression"/>
+    <genClasses ecoreClass="sysadl.ecore#//PostfixExpression"/>
+    <genClasses ecoreClass="sysadl.ecore#//BlockStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//BlockStatement/body"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//AssignmentExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//AssignmentExpression/lhs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//AssignmentExpression/v"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//AssignmentExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//LeftHandSide">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//LeftHandSide/target"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//LeftHandSide/index"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//LeftHandSide/feature"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//VariableDecl">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//VariableDecl/value"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//IfBlockStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//IfBlockStatement/main_if"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//IfBlockStatement/paralel_ifs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//IfBlockStatement/sequential_ifs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//IfBlockStatement/final"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//IfBlockStatement/else"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//IfStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//IfStatement/condition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//IfStatement/body"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//ElseStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ElseStatement/body"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//ReturnStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ReturnStatement/value"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysadl.ecore#//LoopStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//LoopStatement/condition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//LoopStatement/body"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//WhileStatement"/>
+    <genClasses ecoreClass="sysadl.ecore#//DoStatement"/>
+    <genClasses ecoreClass="sysadl.ecore#//ForStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ForStatement/body"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ForStatement/control"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//ForControl">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ForControl/vars"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//ForVar">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ForVar/var"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ForVar/expr"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//SwitchStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//SwitchStatement/expr"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//SwitchStatement/clauses"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//SwitchClause">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//SwitchClause/value"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//SwitchClause/body"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//DefaultSwitchClause"/>
+  </genPackages>
+</genmodel:GenModel>

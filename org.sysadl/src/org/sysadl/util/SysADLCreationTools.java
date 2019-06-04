@@ -5,6 +5,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 import org.sysadl.AdditiveExpression;
+import org.sysadl.BooleanLiteralExpression;
 import org.sysadl.ClassificationExpression;
 import org.sysadl.ComponentUse;
 import org.sysadl.CompositePortDef;
@@ -13,6 +14,7 @@ import org.sysadl.ConditionalTestExpression;
 import org.sysadl.ConnectorUse;
 import org.sysadl.EqualityExpression;
 import org.sysadl.Expression;
+import org.sysadl.LiteralExpression;
 import org.sysadl.LogicalExpression;
 import org.sysadl.Model;
 import org.sysadl.MultiplicativeExpression;
@@ -90,23 +92,40 @@ public class SysADLCreationTools {
 		return (Model) val;
 	}
 
-	public static Expression createNullExpression() {
+	public static Expression createTrueExpression() {
 		ConditionalTestExpression exp = SysADLFactory.eINSTANCE.createConditionalTestExpression();
+		// implies
 		ConditionalLogicalExpression c0 = SysADLFactory.eINSTANCE.createConditionalLogicalExpression();
+		// or
 		ConditionalLogicalExpression c1 = SysADLFactory.eINSTANCE.createConditionalLogicalExpression();
+		// and
+		ConditionalLogicalExpression c2 = SysADLFactory.eINSTANCE.createConditionalLogicalExpression();
+		// inclusive or
 		LogicalExpression l0 = SysADLFactory.eINSTANCE.createLogicalExpression();
+		// exclusive or
 		LogicalExpression l1 = SysADLFactory.eINSTANCE.createLogicalExpression();
+		// and expression
 		LogicalExpression l2 = SysADLFactory.eINSTANCE.createLogicalExpression();
+		// equality
 		EqualityExpression e = SysADLFactory.eINSTANCE.createEqualityExpression();
+		// classification
 		ClassificationExpression c = SysADLFactory.eINSTANCE.createClassificationExpression();
+		// relational
 		RelationalExpression r = SysADLFactory.eINSTANCE.createRelationalExpression();
+		// shift
 		ShiftExpression s = SysADLFactory.eINSTANCE.createShiftExpression();
+		// additive
 		AdditiveExpression a = SysADLFactory.eINSTANCE.createAdditiveExpression();
+		// multiplicative
 		MultiplicativeExpression m = SysADLFactory.eINSTANCE.createMultiplicativeExpression();
-		NullLiteralExpression n = SysADLFactory.eINSTANCE.createNullLiteralExpression();
+		//NullLiteralExpression n = SysADLFactory.eINSTANCE.createNullLiteralExpression();
+		// unary
+		BooleanLiteralExpression n = SysADLFactory.eINSTANCE.createBooleanLiteralExpression();
+		n.setIsTrue(true);
 		exp.setOp1(c0);
 		c0.setOp1(c1);
-		c1.setOp1(l0);
+		c1.setOp1(c2);
+		c2.setOp1(l0);
 		l0.setOp1(l1);
 		l1.setOp1(l2);
 		l2.setOp1(e);

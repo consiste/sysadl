@@ -19,8 +19,7 @@ public class SysADLGrammarUtil {
 	public static String nodeText(EObject exp) {
 		if (exp==null) return "";
 		INode expNode = NodeModelUtils.getNode(exp);
-		String value = NodeModelUtils.getTokenText(expNode);
-		return  value;
+		return NodeModelUtils.getTokenText(expNode);
 	}
 	
 	// TODO work here

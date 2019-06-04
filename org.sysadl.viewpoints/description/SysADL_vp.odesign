@@ -1049,10 +1049,8 @@
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.Protocol" referenceName="definitions">
-                <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
-                  <subModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.ProtocolBody" referenceName="body" variableName="prot"/>
-                </subModelOperations>
+              <firstModelOperations xsi:type="tool_1:ExternalJavaAction" name="Behavior.Tools.AddElement.Protocol" id="org.sysadl.viewpoints.addElement">
+                <parameters name="type" value="Protocol"/>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>

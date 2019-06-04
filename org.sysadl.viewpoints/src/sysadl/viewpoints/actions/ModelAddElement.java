@@ -49,6 +49,12 @@ public class ModelAddElement extends AbstractExternalJavaAction {
 					p.setBody(pb);
 					((Package) o).getDefinitions().add(p);
 				}
+				break;
+			case "Requirement":
+				if (o instanceof Model) {
+					((Model) o).getRequirements().add(fac.createRequirement());
+				}
+				break;
 			default:
 				// do nothing
 				System.out.println("Didn't match anything");

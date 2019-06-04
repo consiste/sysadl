@@ -560,30 +560,6 @@
           </ownedTools>
         </toolSections>
       </defaultLayer>
-      <additionalLayers name="Disabled">
-        <toolSections name="DisabledTools">
-          <ownedTools xsi:type="tool:EdgeCreationDescription" name="BDD.Tools.Component.Composition" label="Composition" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@edgeMappings[name='BDD.Component.Composition']" iconPath="/org.sysadl.viewpoints/icons/Association_composite.gif">
-            <sourceVariable name="source"/>
-            <targetVariable name="target"/>
-            <sourceViewVariable name="sourceView"/>
-            <targetViewVariable name="targetView"/>
-            <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:source">
-                <subModelOperations xsi:type="tool_1:If" conditionExpression="[source.oclAsType(ComponentDef).composite.oclIsUndefined()/]">
-                  <subModelOperations xsi:type="tool_1:CreateInstance" typeName="Configuration" referenceName="composite" variableName="config"/>
-                </subModelOperations>
-                <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[source.oclAsType(ComponentDef).composite/]">
-                  <subModelOperations xsi:type="tool_1:CreateInstance" typeName="ComponentUse" referenceName="components" variableName="component">
-                    <subModelOperations xsi:type="tool_1:SetValue" featureName="definition" valueExpression="var:target">
-                      <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['new'+component.definition.name/]"/>
-                    </subModelOperations>
-                  </subModelOperations>
-                </subModelOperations>
-              </firstModelOperations>
-            </initialOperation>
-          </ownedTools>
-        </toolSections>
-      </additionalLayers>
     </ownedRepresentations>
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="SysADL.IBD" label="Internal Block Diagram (Structural IBD)" domainClass="Configuration">
       <metamodel href="../../org.sysadl/model/org.sysadl.ecore#/"/>
@@ -1918,16 +1894,6 @@
           </ownedTools>
         </toolSections>
       </defaultLayer>
-      <additionalLayers name="Requirements.Test" label="Disable/Under Development Features">
-        <toolSections name="Requiremensts.Test" label="Disable/Under Development">
-          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="SysADL.Req.Tool.SatisfyPanel" precondition="[container.oclIsTypeOf(Model)/]" candidatesExpression="[self.packages.definitions/]">
-            <element name="element"/>
-            <containerView name="containerView"/>
-            <container name="container"/>
-            <initialOperation/>
-          </ownedTools>
-        </toolSections>
-      </additionalLayers>
     </ownedRepresentations>
     <ownedJavaExtensions qualifiedClassName="sysadl.viewpoints.services.SysADLServices"/>
   </ownedViewpoints>

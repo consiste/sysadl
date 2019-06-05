@@ -10,6 +10,8 @@ import org.sysadl.ComponentDef;
 import org.sysadl.ConnectorDef;
 import org.sysadl.Model;
 import org.sysadl.Package;
+import org.sysadl.Protocol;
+import org.sysadl.ProtocolBody;
 import org.sysadl.SysADLFactory;
 import org.sysadl.impl.ComponentDefImpl;
 import org.sysadl.impl.ConnectorDefImpl;
@@ -37,6 +39,20 @@ public class ModelAddElement extends AbstractExternalJavaAction {
 				}
 				if (o instanceof ConnectorDef) {
 					((ConnectorDef) o).setComposite(fac.createConfiguration());
+				}
+				break;
+			case "Protocol":
+				if (o instanceof Package) {
+					Protocol p = fac.createProtocol();
+					ProtocolBody pb = fac.createProtocolBody();
+					pb.setBody(fac.createProtocolBody());
+					p.setBody(pb);
+					((Package) o).getDefinitions().add(p);
+				}
+				break;
+			case "Requirement":
+				if (o instanceof Model) {
+					((Model) o).getRequirements().add(fac.createRequirement());
 				}
 				break;
 			default:

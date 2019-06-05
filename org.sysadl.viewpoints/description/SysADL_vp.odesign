@@ -560,30 +560,6 @@
           </ownedTools>
         </toolSections>
       </defaultLayer>
-      <additionalLayers name="Disabled">
-        <toolSections name="DisabledTools">
-          <ownedTools xsi:type="tool:EdgeCreationDescription" name="BDD.Tools.Component.Composition" label="Composition" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@edgeMappings[name='BDD.Component.Composition']" iconPath="/org.sysadl.viewpoints/icons/Association_composite.gif">
-            <sourceVariable name="source"/>
-            <targetVariable name="target"/>
-            <sourceViewVariable name="sourceView"/>
-            <targetViewVariable name="targetView"/>
-            <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:source">
-                <subModelOperations xsi:type="tool_1:If" conditionExpression="[source.oclAsType(ComponentDef).composite.oclIsUndefined()/]">
-                  <subModelOperations xsi:type="tool_1:CreateInstance" typeName="Configuration" referenceName="composite" variableName="config"/>
-                </subModelOperations>
-                <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[source.oclAsType(ComponentDef).composite/]">
-                  <subModelOperations xsi:type="tool_1:CreateInstance" typeName="ComponentUse" referenceName="components" variableName="component">
-                    <subModelOperations xsi:type="tool_1:SetValue" featureName="definition" valueExpression="var:target">
-                      <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['new'+component.definition.name/]"/>
-                    </subModelOperations>
-                  </subModelOperations>
-                </subModelOperations>
-              </firstModelOperations>
-            </initialOperation>
-          </ownedTools>
-        </toolSections>
-      </additionalLayers>
     </ownedRepresentations>
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="SysADL.IBD" label="Internal Block Diagram (Structural IBD)" domainClass="Configuration">
       <metamodel href="../../org.sysadl/model/org.sysadl.ecore#/"/>
@@ -1049,10 +1025,8 @@
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.Protocol" referenceName="definitions">
-                <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
-                  <subModelOperations xsi:type="tool_1:CreateInstance" typeName="org.sysadl.ProtocolBody" referenceName="body" variableName="prot"/>
-                </subModelOperations>
+              <firstModelOperations xsi:type="tool_1:ExternalJavaAction" name="Behavior.Tools.AddElement.Protocol" id="org.sysadl.viewpoints.addElement">
+                <parameters name="type" value="Protocol"/>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
@@ -1750,8 +1724,8 @@
         </ownedRules>
       </validationSet>
       <defaultLayer name="Default">
-        <edgeMappings name="SysADL.Req.Derive" sourceMapping="//@ownedViewpoints[name='SysADL.Requirements']/@ownedRepresentations[name='SysADL.Requirements.Main']/@defaultLayer/@containerMappings[name='SysADL.Req.Self']/@subContainerMappings[name='SysADL.Req.Requirement']" targetMapping="//@ownedViewpoints[name='SysADL.Requirements']/@ownedRepresentations[name='SysADL.Requirements.Main']/@defaultLayer/@containerMappings[name='SysADL.Req.Self']/@subContainerMappings[name='SysADL.Req.Requirement']" targetFinderExpression="feature:derivedBy">
-          <style lineStyle="dash" sourceArrow="InputArrow" targetArrow="NoDecoration" sizeComputationExpression="2">
+        <edgeMappings name="SysADL.Req.Derive" sourceMapping="//@ownedViewpoints[name='SysADL.Requirements']/@ownedRepresentations[name='SysADL.Requirements.Main']/@defaultLayer/@containerMappings[name='SysADL.Req.Self']/@subContainerMappings[name='SysADL.Req.Requirement']" targetMapping="//@ownedViewpoints[name='SysADL.Requirements']/@ownedRepresentations[name='SysADL.Requirements.Main']/@defaultLayer/@containerMappings[name='SysADL.Req.Self']/@subContainerMappings[name='SysADL.Req.Requirement']" targetFinderExpression="feature:derive">
+          <style lineStyle="dash" sizeComputationExpression="2">
             <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             <centerLabelStyleDescription showIcon="false" labelExpression="['&lt;&lt;derive>>'/]">
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
@@ -1816,10 +1790,8 @@
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="Requirement" referenceName="requirements">
-                <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
-                  <subModelOperations xsi:type="tool_1:SetValue" featureName="id" valueExpression="['0'/]"/>
-                </subModelOperations>
+              <firstModelOperations xsi:type="tool_1:ExternalJavaAction" name="Req.Tool.Create" id="org.sysadl.viewpoints.addElement">
+                <parameters name="type" value="Requirement"/>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
@@ -1920,16 +1892,6 @@
           </ownedTools>
         </toolSections>
       </defaultLayer>
-      <additionalLayers name="Requirements.Test" label="Disable/Under Development Features">
-        <toolSections name="Requiremensts.Test" label="Disable/Under Development">
-          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="SysADL.Req.Tool.SatisfyPanel" precondition="[container.oclIsTypeOf(Model)/]" candidatesExpression="[self.packages.definitions/]">
-            <element name="element"/>
-            <containerView name="containerView"/>
-            <container name="container"/>
-            <initialOperation/>
-          </ownedTools>
-        </toolSections>
-      </additionalLayers>
     </ownedRepresentations>
     <ownedJavaExtensions qualifiedClassName="sysadl.viewpoints.services.SysADLServices"/>
   </ownedViewpoints>

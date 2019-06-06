@@ -12,10 +12,10 @@ package Connectors { import Ports ;
 	}
 connector def MotorCN { participants : ~ agvm : AGVtoMotorCPT ; ~ m : MotorCPT ; configuration { } } connector def VehicleDataCN { participants : ~ vdOut : VehicleDataOPT ; ~ vdIn : VehicleDataIPT ; flows : VehicleData from vdOut to vdIn } connector def NotificationAGVCN { participants : ~ nAGVOut : NotificationAGVOPT ; ~ nAGVIn : NotificationAGVIPT ; flows : NotificationAGV from nAGVOut to nAGVIn } connector def SupervisorySystemCN { participants : ~ ss : SupervisorySystemCTP ; ~ agvs : AGVtoSupervisoryCPT ; configuration { } } connector def CmdArmCN { participants : ~ caOut : CmdArmOPT ; ~ caIn : CmdArmIPT ; flows : CmdArm from caOut to caIn } connector def NotificationArmCN { participants : ~ naOut : NotificationArmOPT ; ~ naIn : NotificationArmIPT ; flows : NotificationArm from naOut to naIn } connector def ArmCN { participants : ~ a : ArmCPT ; ~ agva : AGVtoArmCPT ; configuration { } } connector def ArrivedSensorCN { participants : ~ asOut : ArrivedSensorOPT ; ~ asIn : ArrivedSensorIPT ; flows : ArrivedStation from asOut to asIn } connector def signalClockCN { participants : ~ scOut : signalClockOPT ; ~ scIn : signalClockIPT ; flows : Void from scOut to scIn } connector def VehicleStatusCN { participants : ~ rvd : ReturnVehicleDataCPT ; ~ qvd : QueryVehicleDataCPT ; configuration { } } connector def IdAGVCN { participants : ~ idOut : idOPT ; ~ idIn : idIPT ; flows : Int from idOut to idIn } }
 package Components satisfies IoTStyle { import Ports ; import Connectors ; import SysADL.types ; boundary
-	component def SupervisorySystem { ports : supervisoryProxy : SupervisorySystemCTP ; } boundary
-	component def DisplaySystem { ports : displayProxy : VehicleDataIPT ; }
+	component def SupervisorySystem { ports : supervisoryProxy : SupervisorySystemCTP [ 1 , -1 ] ; } boundary
+	component def DisplaySystem { ports : displayProxy : VehicleDataIPT [ 1 , -1 ] ; }
 	component def VehicleControl { ports : moveIn : VehicleDataIPT ; motorInterface : AGVtoMotorCPT ; armInterface : AGVtoArmCPT ; sensorInterface : ArrivedSensorIPT ; nOut : NotificationAGVOPT ;  updateData : VehicleDataOPT ; }
-	component def AGVSystem { configuration { components : agv : AGV { using ports : supervisoryProxy : AGVtoSupervisoryCPT ; displayProxy : VehicleDataOPT ; } ss : SupervisorySystem { using ports : supervisorySProxy : SupervisorySystemCTP ; } ds : DisplaySystem { using ports : displaySProxy : VehicleDataIPT ; } connectors : ss : SupervisorySystemCN bindings supervisorySProxy = supervisoryProxy ; status : VehicleDataCN bindings displayProxy = displaySProxy ; } }
+	component def AGVSystem { configuration { components : agv : AGV [ 1 , -1 ] { using ports : supervisoryProxy : AGVtoSupervisoryCPT ; displayProxy : VehicleDataOPT ; } ss : SupervisorySystem { using ports : supervisorySProxy : SupervisorySystemCTP ; } ds : DisplaySystem { using ports : displaySProxy : VehicleDataIPT ; } connectors : ss : SupervisorySystemCN bindings supervisorySProxy = supervisoryProxy ; status : VehicleDataCN bindings displayProxy = displaySProxy ; } }
 	component def AGV implements IoTStyle.Device { ports : supervisoryProxy : AGVtoSupervisoryCPT ; displayProxy : VehicleDataOPT ; configuration { components : c : Clock { using ports : scO : signalClockOPT ; } vt : VehicleTimer { using ports : scI : signalClockIPT ; sOut : VehicleDataOPT ; qstatus : QueryVehicleDataCPT ; } ra : RoboticArm { using ports : arm : ArmCPT ; } m : Motor { using ports : m : MotorCPT ; } as : ArrivedSensor { using ports : as : ArrivedSensorOPT ; } vc : VehicleControl { using ports : moveIn : VehicleDataIPT ; motorInterface : AGVtoMotorCPT ; armInterface : AGVtoArmCPT ; sensorInterface : ArrivedSensorIPT ; nOut : NotificationAGVOPT ;  updateData : VehicleDataOPT ; } vs : VehicleStatus { using ports : dataIn : VehicleDataIPT ; rvd : ReturnVehicleDataCPT ; } connectors : sc : signalClockCN bindings scO = scI ; m : MotorCN bindings motorInterface = m ; as : ArrivedSensorCN bindings as = sensorInterface ; a : ArmCN bindings armInterface = arm ; vd : VehicleDataCN bindings updateData = dataIn ; status : VehicleStatusCN bindings rvd = qstatus ;  delegations : sOut to displayProxy moveIn to vdIn nOut to nOut } } boundary
 	component def Motor implements IoTStyle.Actuator { ports : m : MotorCPT concrete IoTStyle.Actuator.actuatorIPT ; } boundary
 	component def ArrivedSensor implements IoTStyle.Sensor { ports : as : ArrivedSensorOPT concrete IoTStyle.Sensor.sensorOPT ; } boundary
@@ -55,24 +55,25 @@ package Components satisfies IoTStyle { import Ports ; import Connectors ; impor
 	action def ArmControlAN ( vdIn : VehicleData , stopMotor : CmdMotor ) : CmdArm { constraint : post-condition ArmControlEQ } 
 	action def UpdateDataAN ( vd : VehicleData , nMotor : NotificationMotor ) : VehicleData { constraint : post-condition UpdateDataEQ } action def NotificationArmAN ( nArmIn : NotificationArm ) : NotificationAGV { constraint : post-condition NotificationArmEQ } action def SensorControlAN ( asIn : ArrivedStation , vdt : VehicleData ) : VehicleData { constraint : post-condition SensorControlEQ } 
 	constraint MotorControlEQ ( moveIn : VehicleData ) : ( cmdMotorOut : CmdMotor ) { 
-		equation = 'moveIn->destination != moveIn->location' ? cmdMotorOut == CmdMotor::start : cmdMotorOut == CmdMotor::stop
+		equation = moveIn->destination != moveIn->location ? cmdMotorOut == CmdMotor::start : cmdMotorOut == CmdMotor::stop
 	} 
 	constraint NotificationMotorEQ ( nMotorIn : NotificationMotor ) : ( nAGVOut : NotificationAGV ) { 
-		equation = nMotorIn == NotificationMotor::started implies nAGVOut == NotificationAGV::departed
+		equation = nMotorIn == NotificationMotor::started && nAGVOut == NotificationAGV::departed
 	} 
 	constraint UpdateDataEQ ( vd : VehicleData , inMotor : NotificationMotor ) : ( updateData : VehicleData ) { 
-		equation = 'updateData->id == vd->id && updateData->destination == vd->destination && updateData->operation == vd->operation && updateData->location == vd->location' && (inMotor == NotificationMotor::started  implies 'updateData->status' == Availability::busy)} 
+		equation = inMotor == NotificationMotor::started && updateData->id == vd->id && updateData->destination == vd->destination 
+		&& updateData->operation == vd->operation && updateData->location == vd->location && updateData->status == Availability::busy} 
 		constraint SensorControlEQ ( asIn : ArrivedStation , vdt : VehicleData ) : ( updateData : VehicleData ) { 
-			equation = 'updateData->id == vdt->id && updateData->destination == vdt->destination && updateData->operation == vdt->operation && updateData->location == asIn->location'
+			equation = updateData->id == vdt->id && updateData->destination == vdt->destination && updateData->operation == vdt->operation && updateData->location == asIn->location
 		} 
 		constraint ArmControlEQ ( vdIn : VehicleData, stopMotor : CmdMotor ) : ( cmdArmOut : CmdArm ) { 
-			equation = stopMotor == CmdMotor::stop implies cmdArmOut == 'vdIn->operation'
+			equation = stopMotor == CmdMotor::stop && cmdArmOut == vdIn->operation
 		} 
 		constraint NotificationArmEQ ( nArmIn : NotificationArm ) : ( nAGVOut : NotificationAGV ) { 
 			equation = nAGVOut == NotificationAGV::arrived
 		} action def SetIdleStatusAN ( v : VehicleData , nArm : NotificationArm ) : VehicleData { constraint : post-condition SetIdleStatusEQ } 
 		constraint SetIdleStatusEQ ( vd : VehicleData , inArm : NotificationArm ) : ( updateData : VehicleData ) { 
-			equation = 'updateData->id == vd->id && updateData->destination == vd->destination && updateData->operation == vd->operation && updateData->location == vd->location && updateData->status' == Availability::idle
+			equation = updateData->id == vd->id && updateData->destination == vd->destination && updateData->operation == vd->operation && updateData->location == vd->location && updateData->status == Availability::idle
 		} action def SetPassedAN ( vdata : VehicleData ) : NotificationAGV { 
 			constraint : post-condition SetPassedEQ
 		} constraint SetPassedEQ ( vdata : VehicleData ) : ( nAGVOut : NotificationAGV ) { 
@@ -86,4 +87,4 @@ package Components satisfies IoTStyle { import Ports ; import Connectors ; impor
 				delegate vdOut to ss 
 			}
 		} action def QueryStatusAN ( signalClock : Void ) : Int { } action def SendStatusAN ( vdIn : VehicleData ) : VehicleData { } }
-style IoTStyle { abstract component def Sensor { ports : sensorOPT : out any } abstract component def Actuator { ports : actuatorIPT : in any } abstract component def Device { ports : sensorIPT : in any deviceOPT : out any actuatorOPT : out any gtwDataIPT : in any } abstract component def Gateway { ports : deviceIPT : in any gtwDataOPT : out any serviceIPT : in any serviceOPT : out any } abstract component def Datastore { ports : dataIPT : in any dataOPT : out any } }
+style IoTStyle { abstract component def Sensor { ports : sensorOPT : out any } abstract component def Actuator { ports : actuatorIPT : in any } abstract component def Device { ports : sensorIPT : in any deviceOPT : out any actuatorOPT : out any gtwDataIPT : in any } abstract component def Gateway { ports : deviceIPT : in any gtwDataOPT : out any serviceIPT : in any serviceOPT : out any } abstract component def Datastore { ports : dataIPT : in any dataOPT : out any } abstract connector def SensorDataCN { participants : ~ sensorOPT : out any ~ sensorIPT : in any flows : flow sensorOPT to sensorIPT } abstract connector def ActuatorCommandCN { participants : ~ actuatorOPT : out any ~ actuatorIPT : in any flows : flow actuatorOPT to actuatorIPT } abstract connector def DeviceDataCN { participants : ~ deviceOPT : out any ~ deviceIPT : in any flows : flow deviceOPT to deviceIPT } abstract connector def GatewayDataCN { participants : ~ gtwDataOPT : out any ~ gtwDataIPT : in any flows : flow gtwDataOPT to gtwDataIPT } abstract connector def DatastoreCN { participants : ~ dataIPT : in any ~ dataOPT : out any flows : flow dataOPT to dataIPT } abstract connector def ServiceCN { participants : ~ serviceOPT : out any ~ serviceIPT : in any flows : flow serviceOPT to serviceIPT } } allocations { activity VehicleControlAC to VehicleControl activity VehicleTimerAC to VehicleTimer }

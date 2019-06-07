@@ -97,7 +97,7 @@
           </subContainerMappings>
           <subContainerMappings name="BDD.Import.ComponentDef" deletionDescription="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@toolSections.3/@ownedTools[name='BDD.Import.Delete']" semanticCandidatesExpression="feature:importedDefinitions" doubleClickDescription="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@toolSections.3/@ownedTools[name='BDD.Tools.Import.Nagivation']" domainClass="ComponentDef" childrenPresentation="List">
             <borderedNodeMappings name="BDD.ComDef.Import.Ports" semanticCandidatesExpression="feature:ports" domainClass="PortUse">
-              <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="[self.name + if (self.definition &lt;> null) then (' : ' + self.definition.name ) else '' endif  + ' ['+self.lowerBound+','+self.upperBound + '] '/]" labelAlignment="LEFT" tooltipExpression="['Port '+self.name/]" resizeKind="NSEW" width="2" height="2">
+              <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="[self.name + if (self.definition &lt;> null) then (' : ' + self.definition.name ) else '' endif  + ' ['+self.lowerBound+','+self.upperBound.toString().replace('-1','*')+ '] '/]" labelAlignment="LEFT" tooltipExpression="['Port '+self.name/]" resizeKind="NSEW" width="2" height="2">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
@@ -134,7 +134,7 @@
           </subContainerMappings>
           <subContainerMappings name="BDD.ComponentDef" preconditionExpression="[not(self.oclIsKindOf(ArchitectureDef))/]" semanticCandidatesExpression="feature:definitions" domainClass="ComponentDef" childrenPresentation="List">
             <borderedNodeMappings name="BDD.ComDef.Ports" semanticCandidatesExpression="feature:ports" domainClass="PortUse">
-              <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="[self.name + if (self.definition &lt;> null) then (' : ' + self.definition.name ) else '' endif  + ' ['+self.lowerBound+','+self.upperBound + '] '/]" labelAlignment="LEFT" tooltipExpression="['Port '+self.name/]" resizeKind="NSEW" width="2" height="2">
+              <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="[self.name + if (self.definition &lt;> null) then (' : ' + self.definition.name ) else '' endif  + ' ['+self.lowerBound+','+self.upperBound.toString().replace('-1','*')+ '] '/]" labelAlignment="LEFT" tooltipExpression="['Port '+self.name/]" resizeKind="NSEW" width="2" height="2">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
@@ -173,7 +173,7 @@
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
-                <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_blue']"/>
+                <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='blue']"/>
               </style>
             </conditionnalStyles>
           </subContainerMappings>
@@ -271,7 +271,7 @@
               </style>
             </subNodeMappings>
             <subNodeMappings name="BDD.ArchDef.Ports" semanticCandidatesExpression="feature:ports" domainClass="PortUse">
-              <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="[self.name + if (self.definition &lt;> null) then (' : ' + self.definition.name ) else '' endif  + ' ['+self.lowerBound+','+self.upperBound + '] '/]" labelAlignment="LEFT" tooltipExpression="['Port '+self.name/]" resizeKind="NSEW" width="2" height="2">
+              <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="[self.name + if (self.definition &lt;> null) then (' : ' + self.definition.name ) else '' endif  + ' ['+self.lowerBound+','+self.upperBound.toString().replace('-1','*')+ '] '/]" labelAlignment="LEFT" tooltipExpression="['Port '+self.name/]" resizeKind="NSEW" width="2" height="2">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
@@ -1909,7 +1909,7 @@
         <containerMappings name="Style.Self" semanticCandidatesExpression="var:self" domainClass="Style" reusedContainerMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.SimplePortDef']">
           <subContainerMappings name="Style.AbstractComponent" semanticCandidatesExpression="feature:definitions" domainClass="AbstractComponentDef">
             <borderedNodeMappings name="org.sysadl.style.component.ports" semanticCandidatesExpression="feature:ports" domainClass="AbstractPortUse">
-              <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="[self.flowProperty + ' ' +  self.name + ': any'/]" resizeKind="NSEW">
+              <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="[self.flowProperty + ' ' +  self.name + ': any'/]" labelAlignment="LEFT" resizeKind="NSEW" width="2" height="2">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
@@ -1919,23 +1919,23 @@
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
-              <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_blue']"/>
+              <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='blue']"/>
               <labelBorderStyle href="environment:/viewpoint#//@labelBorderStyles/@labelBorderStyleDescriptions.1"/>
             </style>
           </subContainerMappings>
           <subContainerMappings name="Style.AbstractConnector" semanticCandidatesExpression="feature:definitions" domainClass="AbstractConnectorDef">
             <borderedNodeMappings name="org.sysadl.style.connector.ports" semanticCandidatesExpression="feature:ports" domainClass="AbstractPortUse">
-              <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="[self.flowProperty + ' ' +  self.name + ': any'/]" resizeKind="NSEW">
+              <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="[self.flowProperty + ' ' +  self.name + ': any'/]" labelAlignment="LEFT" resizeKind="NSEW" width="2" height="2">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
-                <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+                <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_green']"/>
               </style>
             </borderedNodeMappings>
             <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" showIcon="false" labelExpression="['&lt;&lt;abstract>>\n&lt;&lt;Connector Def>> \n'+self.name/]">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
-              <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_blue']"/>
+              <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
               <labelBorderStyle href="environment:/viewpoint#//@labelBorderStyles/@labelBorderStyleDescriptions.1"/>
             </style>
           </subContainerMappings>

@@ -114,6 +114,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractComponentDef/ports"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//AbstractComponentDef/lowerBound"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//AbstractComponentDef/upperBound"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractComponentDef/composition"/>
     </genClasses>
     <genClasses ecoreClass="sysadl.ecore#//AbstractConnectorDef">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractConnectorDef/ports"/>

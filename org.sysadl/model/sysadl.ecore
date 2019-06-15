@@ -52,6 +52,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="upperBound" unique="false"
         eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"
         defaultValueLiteral="1"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="composition" upperBound="-1"
+        eType="#//AbstractComponentDef" eKeys="#//NamedElement/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AbstractConnectorDef" eSuperTypes="#//AbstractDef">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ports" upperBound="-1"

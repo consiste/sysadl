@@ -39,13 +39,14 @@ Invariant returns Invariant:
     
 AbstractComponentDef returns AbstractComponentDef:
    {AbstractComponentDef}
-	'abstract' 'component' 'def' name=ID 
+	'abstract' 'component' 'def' name=ID ('[' lowerBound=EInt ',' upperBound=EInt ']')?
 	'{'
 		('ports' ':' ports+=AbstractPortUse*)?
+		(composition+=[AbstractComponentDef|QualifiedName])*
 	'}' ;
 
 AbstractPortUse returns AbstractPortUse:
-	name=ID ':' flowProperty=FlowProperty 'any';
+	name=ID ':' flowProperty=FlowProperty 'any' ('[' lowerBound=EInt ',' upperBound=EInt ']')?;
 
    
  AbstractConnectorDef returns AbstractConnectorDef:

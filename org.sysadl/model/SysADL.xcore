@@ -37,6 +37,7 @@ class AbstractComponentDef extends AbstractDef {
 	contains AbstractPortUse[] ports keys name
 	int lowerBound = "1"
 	int upperBound = "1"
+	refers AbstractComponentDef[] composition keys name
 }
 
 class AbstractConnectorDef extends AbstractDef {

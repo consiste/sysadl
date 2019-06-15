@@ -1909,13 +1909,13 @@
         <containerMappings name="Style.Self" semanticCandidatesExpression="var:self" domainClass="Style" reusedContainerMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.SimplePortDef']">
           <subContainerMappings name="Style.AbstractComponent" semanticCandidatesExpression="feature:definitions" domainClass="AbstractComponentDef">
             <borderedNodeMappings name="org.sysadl.style.component.ports" semanticCandidatesExpression="feature:ports" domainClass="AbstractPortUse">
-              <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="[self.flowProperty + ' ' +  self.name + ': any'/]" labelAlignment="LEFT" resizeKind="NSEW" width="2" height="2">
+              <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="[self.flowProperty + ' ' +  self.name + ': any' + ' ['+self.lowerBound+','+self.upperBound.toString().replace('-1','*')+ '] '/]" labelAlignment="LEFT" resizeKind="NSEW" width="2" height="2">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
               </style>
             </borderedNodeMappings>
-            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" showIcon="false" labelExpression="['&lt;&lt;abstract>>\n&lt;&lt;Component Def>> \n'+self.name/]">
+            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" showIcon="false" labelExpression="['&lt;&lt;abstract>>\n&lt;&lt;Component Def>> \n'+self.name + ' ['+self.lowerBound+'..'+self.upperBound.toString().replace('-1','*')+ '] '/]">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
@@ -1941,7 +1941,7 @@
           </subContainerMappings>
           <subContainerMappings name="Style.Invariant" semanticCandidatesExpression="feature:invariants" domainClass="Invariant" childrenPresentation="List">
             <subNodeMappings name="Style.Invariant.Expression" semanticCandidatesExpression="feature:expr" domainClass="Expression">
-              <style xsi:type="style:DotDescription" showIcon="false" labelExpression="service:nodeText(self)" labelPosition="node" resizeKind="NSEW">
+              <style xsi:type="style:DotDescription" showIcon="false" labelExpression="['invariant: ' + nodeText(self)/]" resizeKind="NSEW">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
@@ -2008,11 +2008,15 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:ContainerCreationDescription" name="Style.Tools.Create.Invariant" label="Invariant" containerMappings="//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.Invariant']">
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="Style.Tools.Create.Invariant" label="Invariant" forceRefresh="true" containerMappings="//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.Invariant']">
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="Invariant" referenceName="invariants"/>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="Invariant" referenceName="invariants">
+                <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newInvariant"/>
+                </subModelOperations>
+              </firstModelOperations>
             </initialOperation>
           </ownedTools>
           <ownedTools xsi:type="tool:ContainerCreationDescription" name="Style.Tools.Architecture" label="Architecture Overview" containerMappings="//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Styles.Architectures']">

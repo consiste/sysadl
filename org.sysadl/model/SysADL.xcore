@@ -35,6 +35,8 @@ interface AbstractDef extends NamedElement {
 
 class AbstractComponentDef extends AbstractDef {
 	contains AbstractPortUse[] ports keys name
+	int lowerBound = "1"
+	int upperBound = "1"
 }
 
 class AbstractConnectorDef extends AbstractDef {
@@ -49,6 +51,8 @@ class AbstractFlow extends AbstractDef {
 
 class AbstractPortUse extends NamedElement {
 	FlowProperty[1] flowProperty = "inout"
+	int lowerBound = "1"
+	int upperBound = "1"
 }
 
 class Model extends NamedElement {

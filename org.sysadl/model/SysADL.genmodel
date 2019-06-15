@@ -112,6 +112,8 @@
     <genClasses image="false" ecoreClass="sysadl.ecore#//AbstractDef"/>
     <genClasses ecoreClass="sysadl.ecore#//AbstractComponentDef">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractComponentDef/ports"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//AbstractComponentDef/lowerBound"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//AbstractComponentDef/upperBound"/>
     </genClasses>
     <genClasses ecoreClass="sysadl.ecore#//AbstractConnectorDef">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractConnectorDef/ports"/>
@@ -123,6 +125,8 @@
     </genClasses>
     <genClasses ecoreClass="sysadl.ecore#//AbstractPortUse">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//AbstractPortUse/flowProperty"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//AbstractPortUse/lowerBound"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//AbstractPortUse/upperBound"/>
     </genClasses>
     <genClasses ecoreClass="sysadl.ecore#//Model">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Model/packages"/>

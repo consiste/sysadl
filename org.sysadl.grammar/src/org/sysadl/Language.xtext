@@ -35,14 +35,23 @@ Invariant returns Invariant:
    'invariant' name=ID ('=' expr=Expression)?;
    
  AbstractDef returns AbstractDef:
-    AbstractComponentDef | AbstractConnectorDef;
+    AbstractComponentDef | AbstractConnectorDef | AbstractActivityDef;
+    
+AbstractActivityDef returns AbstractActivityDef:
+	{AbstractActivityDef}
+	'abstract' 'activity' 'def'
+	name=ID  ('(' inParameters+=AbstractPin (',' inParameters+=AbstractPin)* ')') (':' '('outParameters+=AbstractPin (',' outParameters+=AbstractPin)* ')')? ;
+
+AbstractPin returns AbstractPin:
+	{AbstractPin}
+	name=ID ':' (isFlow?='flow')? ;
     
 AbstractComponentDef returns AbstractComponentDef:
    {AbstractComponentDef}
 	'abstract' 'component' 'def' name=ID ('[' lowerBound=EInt ',' upperBound=EInt ']')?
 	'{'
 		('ports' ':' ports+=AbstractPortUse*)?
-		(composition+=[AbstractComponentDef|QualifiedName])*
+		(composition+=[AbstractComponentDef|QualifiedName])* //fazer escopo
 	'}' ;
 
 AbstractPortUse returns AbstractPortUse:

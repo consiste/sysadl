@@ -40,7 +40,7 @@ Invariant returns Invariant:
 AbstractActivityDef returns AbstractActivityDef:
 	{AbstractActivityDef}
 	'abstract' 'activity' 'def'
-	name=ID  ('(' inParameters+=AbstractPin (',' inParameters+=AbstractPin)* ')') (':' '('outParameters+=AbstractPin (',' outParameters+=AbstractPin)* ')')? ;
+	name=ID  ('(' inParameters+=AbstractPin (',' inParameters+=AbstractPin)* ')')? (':' '('outParameters+=AbstractPin (',' outParameters+=AbstractPin)* ')')? ;
 
 AbstractPin returns AbstractPin:
 	{AbstractPin}
@@ -51,7 +51,7 @@ AbstractComponentDef returns AbstractComponentDef:
 	'abstract' 'component' 'def' name=ID ('[' lowerBound=EInt ',' upperBound=EInt ']')?
 	'{'
 		('ports' ':' ports+=AbstractPortUse*)?
-		(composition+=[AbstractComponentDef|QualifiedName])* //fazer escopo
+		('compose {' composition+=[AbstractComponentDef|QualifiedName] (',' composition+=[AbstractComponentDef|QualifiedName])* '}')?//fazer escopo
 	'}' ;
 
 AbstractPortUse returns AbstractPortUse:

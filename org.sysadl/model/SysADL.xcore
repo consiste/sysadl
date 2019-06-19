@@ -35,6 +35,9 @@ interface AbstractDef extends NamedElement {
 
 class AbstractComponentDef extends AbstractDef {
 	contains AbstractPortUse[] ports keys name
+	int lowerBound = "1"
+	int upperBound = "1"
+	refers AbstractComponentDef[] composition keys name
 }
 
 class AbstractConnectorDef extends AbstractDef {
@@ -49,6 +52,18 @@ class AbstractFlow extends AbstractDef {
 
 class AbstractPortUse extends NamedElement {
 	FlowProperty[1] flowProperty = "inout"
+	int lowerBound = "1"
+	int upperBound = "1"
+}
+
+class AbstractActivityDef extends AbstractDef {
+	contains AbstractPin[] inParameters keys name
+	contains AbstractPin[] outParameters keys name
+}
+
+class AbstractPin extends AbstractDef {
+	//contains ArrayIndex arrayIndex
+	boolean[1] isFlow = "false"
 }
 
 class Model extends NamedElement {
@@ -213,6 +228,7 @@ interface BehaviorDef extends ElementDef {
 
 class ActivityDef extends BehaviorDef {
 	contains ActivityBody body
+	refers AbstractActivityDef abstractActivity keys name
 }
 
 class ActionDef extends BehaviorDef , ActivityFlowable {
@@ -228,6 +244,7 @@ class ActionUse extends NamedElement , ActivityFlowable {
 @xcore.lang.GenModel(image="false")
 class Pin extends TypeUse , ActivityFlowable {
 	boolean[1] isFlow = "false"
+	refers AbstractPin ^abstractPin
 }
 
 class ConstraintDef extends BehaviorDef {

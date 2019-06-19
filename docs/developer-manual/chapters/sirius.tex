@@ -1,0 +1,35 @@
+\chapter{\label{sirius}Sirius Plug-in}
+\section{\label{sirius:intro}Introduction}
+Sirius Plug-in in SysADL Studio is responsible for implementing and providing the diagram views. Sirius works over the \textbf{description file}, described in Section \ref{sirius:desc}. The description file is not compiled, therefore can be edited and tested in runtime versions. However, in SysADL Studio, many features are implemented through Java Services or Actions, using an API provided by the framework to implement the operations in Java. These Servies and Actions are compiled, therefore is not possible to edit and debug them at runtime.
+
+The plug-in \textit{org.sysadl.viewpoints} (former \textit{SysADL Sintax.viewpoints}) encompasses all Java classes and the description file used by Sirius to produce the diagram views.
+\section{\label{sirius:desc}Description File}
+Sirius' description file is responsible to define the visual style of the elements and the rules that define an diagram. The description file is organized in \textit{viewpoints}, each \textit{viewpoint} encompasses a set of diagrams. Is SysADL Studio, we define five viewpoints:
+\begin{enumerate}
+	\item Structural Viewpoint
+	\item Behavioral Viewpoint
+	\item Execution Viewpoint
+	\item Requirements Viewpoint
+	\item Allocation Viewpoint
+\end{enumerate}
+
+The viewpoints are independent from each other, although they rely on the same metamodel.
+
+\subsection{Structural Viewpoint}
+The Structural Viewpoint encompasses X diagram descriptors:
+\begin{enumerate}
+	\item Package Diagram
+	\item Structural Block Definition Diagram (BDD)
+	\item Internal Block Diagram (IBD)
+\end{enumerate}
+
+
+\subsection{Behavioral Viewpoint}
+\subsection{Execution Viewpoint}
+\subsection{Requirements Viewpoint}
+\subsection{Allocation Viewpoint}
+
+
+\section{\label{sirius:services}Services}
+\section{\label{sirius:java}Java Actions}
+\section{\label{sirius:validation}Validation}

@@ -1,0 +1,866 @@
+Model SysADLArchitecture;
+package SysADL.types {
+	value type Int {
+	}
+	value type Boolean {
+	}
+	value type String {
+	}
+	value type Void {
+	}
+	value type Real {
+	}
+
+	enum InfraredCode {
+		increase, decrease, turn_on, turn_off
+	}
+	datatype DataSensor {
+		attributes: id : String;
+		^value : String;
+		^type : TypeSensor;
+	}
+	datatype RestFulService {
+		attributes: ip : String;
+		^port : String;
+		path : String;
+		i : Intervention;
+		m : Measurement;
+	}
+	datatype Sensor {
+		attributes:  room : Room;
+		^type : TypeSensor;
+		id : String;
+	}
+	datatype Measurement {
+		attributes: ^value : String;
+		schedule : Schedule;
+		sensor : Sensor;
+	}
+	datatype Schedule {
+		attributes: timestamp : Int;
+	}
+	datatype Location {
+		attributes: latitude : Real;
+		longitude : Real;
+	}
+	datatype Building {
+		attributes: id : String; 
+		location : Location;
+	}
+	datatype Room {
+		attributes: id : String;
+		building : Building;
+	}
+	datatype AirConditioner {
+		attributes:   room : Room;
+		id : String;
+	}
+	datatype Context {
+		attributes: sensor : Sensor; 
+		air_conditioner : AirConditioner;
+		room : Room;
+		building : Building;
+	}
+	enum TypeSensor {
+		temperature, presence
+	, camera
+	}
+datatype UpdateDB {
+		attributes: idAirCond : String; 
+		currentTime : Schedule;
+		actionTemp : InfraredCode;
+	}
+	datatype FrameList {
+	}
+datatype Intervention {
+		attributes: cmd : InfraredCode; 
+		airCond : AirConditioner;
+		schedule : Schedule;
+	}
+dimension Temperature
+	value type Temp {
+		unit = Celsius
+		dimension = Temperature
+	}
+	unit Celsius {
+		dimension = Temperature } datatype Raspeberry {
+			attributes:
+			temperature : Temp;
+			presence : Boolean;
+		numPeople : Int;
+		}
+	}
+package SmartPlacePorts {
+	import SysADL.types;
+	port def TemperatureOPT {
+		flow out Temp
+	}
+	port def TemperatureIPT {
+		flow in Temp
+	}	
+	port def ReservationIPT {
+		flow in Boolean
+	}
+	port def ReservationOPT {
+		flow out Boolean
+	}
+	port def RequestOPT {
+		flow out String
+	}
+	port def RequestIPT {
+		flow in String
+	}
+	port def InfraredIPT {
+		flow in Void
+	}
+	port def InfraredOPT {
+		flow out Void
+	}
+	port def ContextOPT {
+		flow out Context
+	}
+	port def ContextIPT {
+		flow in Context
+	}
+	port def UndefinedOPT {
+		flow out Void
+	}
+	port def UndefinedIPT {
+		flow in Void
+	}	
+	port def CommandIPT {
+		flow in InfraredCode
+	}
+	port def CommandOPT {
+		flow out InfraredCode
+	}
+	port def RaspberryIPT {
+		flow in Raspeberry
+	}
+	port def RaspberryOPT {
+		flow out Raspeberry
+	}
+port def DataOPT {
+		flow out String
+	}
+	port def DataIPT {
+		flow in String
+	}
+
+	
+port def UpdateIPT {
+		flow in UpdateDB
+	}
+	port def UpdateOPT {
+		flow out UpdateDB
+	}
+port def FrameIPT {
+		flow in FrameList
+	}
+	port def FrameOPT {
+		flow out FrameList
+	}
+	port def DataBaseO2I {
+		ports: reqODB : RequestOPT {
+		}
+		respIDB : DataIPT {
+		}
+	}
+	port def DataBaseI2O {
+		ports: reqIDB : RequestIPT {
+		}
+		respODB : DataOPT {
+		}
+	}
+	port def ReservationInformationO2I {
+		ports: reqORI : RequestOPT {
+		}
+		respIRI : ReservationIPT {
+		}
+	}
+	port def ReservationInformationI2O {
+		ports: reqIRI : RequestIPT {
+		}
+		respORI : ReservationOPT {
+		}
+	}	
+port def ContextO2I {
+		ports: reqOC : RequestOPT {
+		}
+		respIC : ContextIPT {
+		}
+	}
+	port def ContextI2O {
+		ports: reqIC : RequestIPT {
+		}
+		respOC : ContextOPT {
+		}
+	}
+port def PresenceIPT {
+			flow in Boolean
+		}
+		port def PresenceOPT {
+			flow out Boolean
+		}
+		port def NumPeopleIPT {
+			flow in Int
+		}
+		port def NumPeopleOPT {
+			flow out Int
+		}
+		port def ServiceGtwIPT {
+			flow in RestFulService
+		}
+		port def ServiceGtwOPT {
+			flow out RestFulService
+		}
+	port def ServiceAppOPT {
+			flow out Room
+		}
+		port def ServiceAppIPT {
+			flow in Room
+		}
+	}
+package SmartPlaceConnectors {
+	import SmartPlacePorts;
+	
+	connector def UndefinedCN {
+		participants: ~ undO : UndefinedOPT {
+		}
+		~ undI : UndefinedIPT {
+		}
+		flows: Void from undO to undI
+	}
+	connector def TemperatureCN {
+		participants: ~ tO : TemperatureOPT {
+		}
+		~ tI : TemperatureIPT {
+		}
+		flows: Temp from tO to tI
+	}
+
+	connector def CommandCN {
+		participants: ~ cmdI : CommandIPT {
+		}
+		~ cmdO : CommandOPT {
+		}
+		flows: InfraredCode from cmdO to cmdI
+	}
+	
+	
+	connector def RaspberryCN {
+		participants: ~ restI : RaspberryIPT {
+		}
+		~ restO : RaspberryOPT {
+		}
+		flows: Raspeberry from restO to restI
+	}
+	connector def ReservationDataCN {
+		participants: ~ rrRespI : ReservationIPT {
+		}
+		~ rRespO : ReservationOPT {
+		}
+		flows: Boolean from rRespO to rrRespI
+	}
+	connector def RequestCN {
+		participants: ~ rReqO : RequestOPT {
+		}
+		~ rReqI : RequestIPT {
+		}
+		flows: String from rReqO to rReqI
+	}
+	connector def ContextDataCN {
+		participants: ~ ciI : ContextIPT {
+		}
+		~ ciO : ContextOPT {
+		}
+		flows: Context from ciO to ciI
+	}
+	connector def InfraredCN {
+		participants: ~ isI : InfraredIPT {
+		}
+		~ isO : InfraredOPT {
+		}
+		flows: Void from isO to isI
+	}
+	
+	connector def ReservationCN {
+		participants: ~ riI : ReservationInformationI2O {
+		}
+		~ riO : ReservationInformationO2I {
+		}
+		configuration {
+			connectors:
+			rr : RequestCN bindings reqORI = reqIRI;
+			sr : ReservationDataCN bindings respORI = respIRI;
+		}
+	}
+	
+	connector def QueryPostgreSQLCN {
+		participants: ~ qI : DataBaseI2O {
+		}
+		~ qO : DataBaseO2I {
+		}
+		configuration {
+			connectors:
+			req : RequestCN bindings reqODB = reqIDB;
+			resp : DataPostgreSQLCN bindings respODB = respIDB;
+		}
+	}
+	connector def DataPostgreSQLCN {
+		participants: ~ psqlO : DataOPT {
+		}
+		~ psqlI : DataIPT {
+		}
+		flows: String from psqlO to psqlI
+	}
+
+connector def FrameCN {
+		participants: ~ fI : FrameIPT {
+		}
+		~ fO : FrameOPT {
+		}
+		flows: FrameList from fO to fI
+	}
+connector def QueryContextCN {
+		participants: ~ cO : ContextO2I {
+		}
+		~ cI : ContextI2O {
+		}
+		configuration {
+		connectors:
+			req : RequestCN bindings reqOC = reqIC;
+			resp : ContextDataCN bindings respOC = respIC;
+		}
+	}
+connector def PresenceCN {
+			participants:
+			~pO : PresenceOPT;
+			~pI : PresenceIPT;
+			flows:
+			Boolean from pO to pI
+		}
+connector def UpdatePostgreSQLCN {
+			participants:
+			~psqlO : DataOPT;
+			~psqlI : DataIPT;
+			flows:
+			String from psqlO to psqlI
+		}
+		connector def UpdateOrionCN {
+			participants:
+			~sO : ServiceGtwOPT;
+			~cI : ContextIPT;
+			configuration {
+			}
+		}
+	connector def ServiceAppCN {
+			participants:
+			~sAppO : ServiceAppOPT;
+			~sAppI : ServiceAppIPT;
+			flows:
+			Room from sAppO to sAppI
+		}
+	}
+package SmartPlaceComponents satisfies IoTStyle {
+	import SmartPlaceConnectors;
+	import SmartPlacePorts;
+	import SysADL.types;
+	component def SmartPlace {
+	configuration {
+		components:
+			app : WebApplicationCP {
+				using ports: 
+				
+				dbr : DataBaseO2I {
+				}
+				us : UpdateOPT {
+				}
+				cxr : ContextO2I {
+				}
+				sapps : ServiceAppOPT;
+			}
+			rrs : RoomReservationSystemCP {
+				using ports: riRrs : ReservationInformationI2O {
+				}
+			}
+			
+			ts : TemperatureSensorCP {
+				using ports: ts : TemperatureOPT {
+				}
+			}
+			ms : MotionSensorCP {
+				using ports: ps : PresenceOPT {
+				}
+			}
+			psql : PostgreSQLCP {
+				using ports: dbs : DataBaseI2O {
+				}
+				ur : UpdateIPT {
+				}
+			}
+			ac : AirConditionerCP {
+				using ports: ir : InfraredIPT {
+				}
+			}
+			
+			r : RaspberryPiCP {
+				using ports: is : InfraredOPT {
+				}
+				cr : CommandIPT {
+				}
+				fr : FrameIPT {
+				}
+				tr : TemperatureIPT {
+				}
+				pr : PresenceIPT {
+				}
+				rs : RaspberryOPT {
+				}
+				rir : ReservationInformationO2I;
+			}
+			c : CameraCP {
+				using ports: fs : FrameOPT {
+				}
+			}
+			g : GatewayCP {
+					using
+					ports:
+					rr : RaspberryIPT;
+					cs : CommandOPT;		
+					sappr : ServiceAppIPT;
+					cxs : ContextI2O {}
+				}
+				connectors: 
+				sendQuery :	QueryPostgreSQLCN bindings dbr = dbs;
+				sendUpdate : UpdatePostgreSQLCN bindings us = ur;
+				sendPresence : PresenceCN bindings ps = pr;
+				sendFrame : FrameCN bindings fs = fr;
+				sendTemp : TemperatureCN bindings	ts = tr;
+				sendSignal : InfraredCN bindings is = ir;
+				sendData : RaspberryCN bindings rs = rr;
+				sendCmd : CommandCN bindings cs = cr;
+				sendReservationData : ReservationCN bindings rir = riRrs;
+				sendQueryContext : QueryContextCN bindings cxs = cxr;
+				sendRoomInformation : ServiceAppCN bindings sapps = sappr;
+			}
+	}
+	boundary component def RoomReservationSystemCP {
+		ports: ris : ReservationInformationI2O {
+		}
+	}
+	boundary component def OrionContextBrokerCP implements IoTStyle.DataStoreCP { ports : ci : ContextIPT {
+		}
+		
+	co : ContextOPT;
+		}
+	boundary component def PostgreSQLCP {
+		ports: db : DataBaseI2O {
+		}
+	u : UpdateIPT {
+		}
+	}
+	component def RaspberryPiCP implements IoTStyle.DeviceCP { ports : is : InfraredOPT {
+		}
+		
+		fr : FrameIPT {
+		}
+		tr : TemperatureIPT {
+		}
+		pr : PresenceIPT {
+		}
+		rs : RaspberryOPT {
+		}
+			cr : CommandIPT;
+		rir : ReservationInformationO2I;
+	configuration {
+		components:
+			cm : CamMonitorCP {
+				using ports: fr : FrameIPT {
+				}
+				nps : NumPeopleOPT {
+				}
+			}
+			
+			agg : AggregatorCP {
+				using ports: pr : PresenceIPT {
+				}
+				rraspTc : RaspberryOPT {
+				}
+				
+				tr : TemperatureIPT {
+				}
+				npr : NumPeopleIPT {
+				}
+				
+			}
+			
+			l : Led {
+					using
+					ports:
+					cr : CommandIPT;
+					is : InfraredOPT;
+				}
+				spac : SmartPlaceAirControlCP {
+					using
+					ports:
+					crgtw : CommandIPT;
+					cs : CommandOPT;
+				}
+				connectors:
+			 countPeople : TemperatureCN bindings nps = npr;
+			 
+			sendCommand : CommandCN bindings cs = cr;
+				delegations:
+			fr to fr 
+			pr to pr
+			tr to tr
+			 
+			rraspTc to rs 
+			
+			
+		is to is
+			crgtw to cr
+			}
+	}
+	boundary component def MotionSensorCP implements IoTStyle.SensorCP { ports : ps : PresenceOPT {
+		}
+	}
+	component def AirConditionerCP implements IoTStyle.ActuatorCP { ports : ir : InfraredIPT {
+		}
+	
+	}
+	
+	boundary component def TemperatureSensorCP implements IoTStyle.SensorCP { ports : ts : TemperatureOPT {
+		}
+	}
+	
+	
+	
+	boundary component def Led {
+		ports: cr : CommandIPT {
+		}
+		is : InfraredOPT {
+		}
+	}
+	
+	component def WebApplicationCP {
+		ports: 
+		
+		db : DataBaseO2I {
+		}
+		u : UpdateOPT {
+		}
+		ctx : ContextO2I {
+		}
+			sapps : ServiceAppOPT;
+		configuration {
+			components:			
+			
+			rg : ReportGenerator {
+				using ports: a : ContextO2I {
+				}
+			}
+			gg : GraphicsGenerator {
+				using ports: dbGg : DataBaseO2I {
+				}
+				ctxGg : ContextO2I {
+				}
+			}
+			hc : HistoricController {
+				using ports: rrHc : RaspberryIPT {
+				}
+				uHc : UpdateOPT {
+				}
+				ctxHc : ContextO2I {
+				}
+			}
+			delegations:
+			
+			a to ctx
+			ctxGg to ctx 
+			ctxHc to ctx 
+			uHc to u 
+			dbGg to db 
+			
+		}
+	}
+	component def ReportGenerator {
+		ports: a : ContextIPT {
+		}
+	}
+	component def AggregatorCP {
+		ports: pr : PresenceIPT {
+		}
+		rs : RaspberryOPT {
+		}		
+		
+		tr : TemperatureIPT {
+		}
+		npr : NumPeopleIPT {
+		}
+	
+	
+	}
+	
+	
+	
+	activity def GatewayAC (deviceData : Raspeberry, 
+		room : Room , reservation : Boolean ) : (
+	restful : RestFulService, cmd :
+			InfraredCode, query_reservation : String) {
+		body {
+			actions : 	
+			
+			at : AdjustTemperatureAN {
+					using pins : lastAdjustTemp : Schedule;
+					lastPresence : Schedule;
+					currentTime : Schedule;
+				}
+				turnOff : TurnOffAN {
+					using pins : lastPres : Schedule;
+					currentTime : Schedule;
+					ddTOff : Raspeberry;
+				}
+				turnOn : TurnOnAN {
+					using pins : reservation : Boolean;
+					ddTOn : Raspeberry;
+				}
+				idt : IncreaseDecreaseTemperatureAN {
+					using pins : ddIncDec : Raspeberry;
+					adjustTemp : Boolean;
+				}
+				slp : SaveLastPresenceAN {
+					using pins : currentTime : Schedule;
+					deviceData : Raspeberry;
+				}
+				delegate reservation to reservation flow from at to adjustTemp
+			
+			delegate  cmd to turnOn
+			
+			delegate  cmd to turnOff
+			
+			delegate  cmd to idt flow from slp to LastPresence flow from LastPresence to
+				lastPresence flow from LastPresence to lastPres
+				delegate deviceData to deviceData
+				delegate deviceData to ddTOn
+				delegate deviceData to ddIncDec flow from LastChangeTemp to lastAdjustTemp
+				delegate deviceData to ddTOff
+			
+			databuffer LastPresence : SysADL.types.Schedule {
+				 
+			}
+			databuffer LastChangeTemp : SysADL.types.Schedule {
+				 
+			}
+		}
+	}
+	
+	
+	constraint SaveLastPresenceEQ (deviceData : Raspeberry, currentTime : Schedule ) : ( lastPresence : Schedule) {
+		equation = (deviceData->presence == true || deviceData->numPeople > 0) ? lastPresence == currentTime : lastPresence == lastPresence
+	}
+	constraint TurnOnEQ (deviceData : Raspeberry, reservation : Boolean ) : ( ic : InfraredCode) {
+		equation = (reservation == true || deviceData->presence == true ||  deviceData->numPeople > 0) ? ic == InfraredCode::turn_on : ic == null
+	}
+	action def IncreaseDecreaseTemperatureAN ( adjustTemp : Boolean, deviceData : Raspeberry ) :
+	InfraredCode {
+		constraint: post-condition IncreaseDecreaseTemperatureEQ
+	}
+	constraint TurnOffEQ (deviceData : Raspeberry, lastPresence : Schedule, currentTime : Schedule ) :
+	( ic : InfraredCode) {
+		equation = deviceData->presence == false && deviceData->numPeople == 0 && (currentTime - lastPresence > 15) ? ic == InfraredCode::turn_off : ic == null
+	}
+
+	
+
+	
+	
+boundary component def CameraCP implements IoTStyle.SensorCP { ports : fs : FrameOPT {
+		}
+	}
+	boundary component def CamMonitorCP {
+		ports: fr : FrameIPT {
+		}
+		nps : NumPeopleOPT {
+		}
+	}
+	boundary component def SQLiteCP {
+		ports: ri : ReservationInformationI2O {
+		}
+	rresp : ReservationIPT {
+		}
+	}
+	component def HistoricController {
+		ports: rr : RaspberryIPT {
+		}
+		u : UpdateOPT {
+		}
+		ctx : ContextO2I {
+		}
+	}
+	boundary component def GraphicsGenerator {
+		ports: db : DataBaseO2I {
+		}
+	ctx : ContextO2I {
+		}
+	}
+	
+action def SaveLastPresenceAN ( deviceData : Raspeberry, currentTime : Schedule ) :
+	Schedule {
+		constraint: post-condition SaveLastPresenceEQ
+	}
+	action def TurnOnAN ( deviceData : Raspeberry , reservation : Boolean ) :
+	InfraredCode {
+	constraint: post-condition TurnOnEQ
+	}
+action def TurnOffAN ( deviceData : Raspeberry, lastPresence : Schedule , currentTime :
+	Schedule ) : InfraredCode {
+	}
+component def GatewayCP implements IoTStyle.GatewayCP { ports :
+			rr : RaspberryIPT;
+			cs : CommandOPT;
+			appr : ServiceAppIPT;
+			ctx : ContextI2O;
+		configuration {
+			}
+		}
+		component def SmartPlaceAirControlCP implements IoTStyle.ControllerCP { ports :
+			cr : CommandIPT;
+			cs : CommandOPT;
+		}
+	activity def AggregatorAC ( temperarure : Temp, presence : Boolean, numPeople :
+		Int ) : ( deviceData : Raspeberry ) {
+			body {
+			actions : agg : AggregatorAN {
+					using pins : presence : Boolean;
+					numPeople : Int;
+					temperature : Temp;
+				}
+				delegate deviceData to agg
+				delegate presence to presence
+				delegate temperarure to temperature
+				delegate numPeople to numPeople
+			}
+		}
+		action def AggregatorAN ( temperature : Temp, presence : Boolean, numPeople
+		: Int ) : Raspeberry {
+			constraint : post-condition AggregatorEQ
+		}
+		constraint AggregatorEQ ( temperature : Temp, presence : Boolean, numPeople
+		: Int ) : ( deviceData : Raspeberry ) {
+			equation = (deviceData->temperature == temperature) && (deviceData->presence == presence) && (deviceData->numPeople == numPeople)
+		}
+	constraint AdjustTemperatureEQ ( lastPresence : Schedule, lastAdjustTemp :
+		Schedule, currentTime : Schedule ) : ( adjustTemp : Boolean ) {
+			equation = (currentTime - lastPresence <= 15) && (currentTime - lastAdjustTemp > 10) ?  adjustTemp == true : adjustTemp == false
+		}
+	constraint IncreaseDecreaseTemperatureEQ ( adjustTemp : Boolean, deviceData :
+		Raspeberry ) : ( ic : InfraredCode ) {
+			equation = (adjustTemp == true && deviceData->temperature < 22) ? ic == InfraredCode::increase : 
+						(adjustTemp == true && deviceData->temperature > 22) ? ic == InfraredCode::decrease : ic == null
+		}
+		action def AdjustTemperatureAN ( lastPresence : Schedule, lastAdjustTemp :
+		Schedule, currentTime : Schedule ) : Boolean {
+			constraint : post-condition AdjustTemperatureEQ
+		}
+	component def BlackboardCP {
+		}
+	}
+Requirement SmartPlace ( 0.0 ) {
+	text =
+	"The system must control the air conditioners automatically in order to optimize their energy consumption and use."
+Requirement AirConditioningControl ( 2.0 ) {
+	text =
+	"The system must control the air conditioners by turning the power on, off, reducing or raising the temperature as needed."
+Requirement TurnOn_TurnOff_AirConditioning ( 2.1 ) {
+			text = "The system must decide when to turn the air conditioner on or off."
+			Requirement TurnOnAirConditioning ( 2.2 ) {
+				text =
+				"Air conditioners must be turned on automatically whenever there is at least one person in the room and the appliances are turned off."
+			}
+			Requirement TurnOffAirConditioning ( 2.4 ) {
+				text =
+				"Air conditioners should be automatically switched off when there are no people in the room in the last 15 minutes, when there is no reserve for that room within the next 15 minutes and if the temperature is found to be lower than or equal to the temperature default - 4."
+			}
+		}
+		Requirement SendInfraredSignal ( 2.9 ) {
+			text =
+			"The on, off and set temperature commands should be converted to infrared code and sent to air conditioners."
+		}
+		Requirement ControlTemperature ( 2.6 ) {
+			text =
+			"If any presence has been recorded in the last 15 minutes and the last temperature change occurred in a time greater than 10 minutes, the system must decide the temperature."
+			Requirement DecreaseTemperature ( 2.7 ) {
+				text =
+				"If the current temperature is greater than or equal to the default temperature + 2, a command will be sent to decrease the temperature."
+			}
+			Requirement IncreaseTemperature ( 2.8 ) {
+				text =
+				"If the current temperature is less than or equal to the default temperature - 2, a command will be sent to increase the temperature."
+			}
+		}
+	}
+	Requirement PersistData ( 3.0 ) {
+	text =
+	"The system shall record the measurements/changes temperature and presence data, associating these data with the measurement place, date, time, and identifier of the sensors and air conditioners."
+}
+	Requirement MaintainingContextScience ( 4.0 ) {
+	text =
+	"The system must save context information from sensors, air conditioners, rooms and buildings so that they can be used by other applications."
+}
+	Requirement AcquireSensorData ( 1.0 ) {
+	text =
+	"Send every 5 minutes the room temperature to the raspberry-pi, and whenever movement is detected, send this information to the raspberry-pi"
+}
+}
+Requirement DetectPresence ( 1.1 ) {
+	text =
+	"The system should automatically detect whether or not people are in the environment"
+	derive SmartPlace.AcquireSensorData;
+}
+Requirement DetectTemperature ( 1.2 ) {
+	text = "The system must automatically detect the ambient temperature." derive
+	SmartPlace.AcquireSensorData;
+}
+Requirement CheckAirConditioningStatus ( 2.3 ) {
+	text =
+	"The system must detect whether the air conditioners are switched on or off."
+	derive
+	SmartPlace.AirConditioningControl.TurnOn_TurnOff_AirConditioning.TurnOnAirConditioning;
+}
+Requirement CheckRoomReservation ( 2.5 ) {
+	text =
+	"The system should consult the Reservation Manager to check if there is a reservation for a particular room within the next 15 minutes."
+	derive
+	SmartPlace.AirConditioningControl.TurnOn_TurnOff_AirConditioning.TurnOffAirConditioning;
+}
+style IoTStyle { 
+	abstract component def SensorCP [ 1 , -1 ] { ports : SensorOPT : out any } 
+	abstract component def ActuatorCP [ 0 , -1 ] { ports : ActuatorIPT : in any } 
+	abstract component def DeviceCP [ 1 , -1 ] { ports : SensorIPT : in any [ 0 , -1 ] DeviceOPT : out any [ 0 , 1 ] ActuatorOPT : out any [ 0 , -1 ]  ServiceIPT : in any [ 0 , -1 ] compose {ControllerCP, ActuatorCP, DataStoreCP, GatewayCP, SensorCP} } 
+	abstract component def GatewayCP [ 0 , -1 ] { ports : DeviceIPT : in any [ 1 , -1 ]  ServiceIPT : in any [ 0 , -1 ] ServiceOPT : out any [ 1 , -1 ] compose {DataStoreCP} } 
+	abstract component def DataStoreCP [ 1 , -1 ] { ports : DataIPT : in any DataOPT : out any } abstract connector def SensorDataCN { participants : ~ SensorOPT : out any ~ SensorIPT : in any flows : flow SensorOPT to SensorIPT } 
+	abstract component def IoTARCH { compose {DataStoreCP, GatewayCP, DeviceCP, SensorCP, ActuatorCP} } 
+	abstract component def ControllerCP [ 0 , -1 ] { ports : SensorIPT : in any [ 0 , -1 ] ActuatorOPT : out any [ 0 , -1 ] } 
+	abstract connector def ActuatorCommandCN { participants : ~ ActuatorOPT : out any ~ ActuatorIPT : in any flows : flow ActuatorOPT to ActuatorIPT } 
+	abstract connector def DeviceDataCN { participants : ~ DeviceOPT : out any ~ DeviceIPT : in any flows : flow DeviceOPT to DeviceIPT }  
+	abstract connector def DatastoreCN { participants : ~ DataIPT : in any ~ DataOPT : out any flows : flow DataOPT to DataIPT } 
+	abstract connector def ServiceCN { participants : ~ ServiceOPT : out any ~ ServiceIPT : in any flows : flow ServiceOPT to ServiceIPT } 
+	invariant ExistsSensorCP = 'context Model : self.involvedElements->select(i | i.oclIsTypeOf(StructuralDef))->select(sd | sd.oclIsTypeOf(ComponentDef))->exists(c | c.abstractComponent = self.styles->select(s | s.name=IoTStyle)->select(s | s.definitions)->select(d | d.oclIsTypeOf(AbstractComponentDef))->select(ac | ac.name=SensorCP))'
+	invariant ExistsDataStoreCP 
+	invariant ExistsDeviceCP 
+	invariant SensorConnection 
+	invariant ActuatorConnection 
+	invariant Communication 
+	invariant NumberSensorIPTAndSensorDataCNOfDeviceCP 
+	invariant NumberActuatorOPTAndActuatorCommandCNOfDeviceCP 
+	invariant NumberDeviceIPTAndDeviceDataCNOfGatewayCP 
+	invariant NumberSensorIPTOfControllerCP 
+	invariant NumberSensorDataCNOfControllerCP 
+	invariant NumberActuatorOPTOfControllerCP 
+	invariant NumberActuatorCommandCNOfControllerCP 
+	abstract activity def Monitoring : ( data : ) 
+	abstract activity def Analysis ( data : ) : ( changeRequest : ) 
+	abstract activity def Planning ( changeRequest : ) : ( command : ) 
+	abstract activity def Execution ( command : ) }

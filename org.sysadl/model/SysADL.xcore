@@ -228,7 +228,7 @@ interface BehaviorDef extends ElementDef {
 
 class ActivityDef extends BehaviorDef {
 	contains ActivityBody body
-	refers AbstractActivityDef abstractActivity keys name
+	refers AbstractActivityDef[] abstractActivity keys name
 }
 
 class ActionDef extends BehaviorDef , ActivityFlowable {

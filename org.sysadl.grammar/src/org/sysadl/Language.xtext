@@ -308,7 +308,8 @@ ActionDef returns ActionDef:
 ActivityDef returns ActivityDef:
 	{ActivityDef}
 	'activity' 'def'
-	name=ID  ('(' inParameters+=Pin (',' inParameters+=Pin)* ')') (':' '('outParameters+=Pin (',' outParameters+=Pin)* ')')?
+	name=ID ('implements' abstractActivity+=[AbstractActivityDef|QualifiedName] (',' abstractActivity+=[AbstractActivityDef|QualifiedName])*)? 
+	('(' inParameters+=Pin (',' inParameters+=Pin)* ')') (':' '('outParameters+=Pin (',' outParameters+=Pin)* ')')?
 	'{'
 		(properties+=Property
 		| behaviorDefs+=BehaviorDef

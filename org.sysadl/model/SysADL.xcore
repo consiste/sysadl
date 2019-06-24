@@ -57,13 +57,6 @@ class AbstractPortUse extends NamedElement {
 }
 
 class AbstractActivityDef extends AbstractDef {
-	contains AbstractPin[] inParameters keys name
-	contains AbstractPin[] outParameters keys name
-}
-
-class AbstractPin extends AbstractDef {
-	//contains ArrayIndex arrayIndex
-	boolean[1] isFlow = "false"
 }
 
 class Model extends NamedElement {
@@ -244,7 +237,6 @@ class ActionUse extends NamedElement , ActivityFlowable {
 @xcore.lang.GenModel(image="false")
 class Pin extends TypeUse , ActivityFlowable {
 	boolean[1] isFlow = "false"
-	refers AbstractPin ^abstractPin
 }
 
 class ConstraintDef extends BehaviorDef {

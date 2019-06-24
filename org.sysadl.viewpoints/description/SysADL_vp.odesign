@@ -920,6 +920,14 @@
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
             </style>
+            <conditionnalStyles predicateExpression="[self.abstractActivity&lt;>null/]">
+              <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="['&lt;&lt;activity>>\n'+self.name/]" iconPath="/org.sysadl.viewpoints/icons/Activity.gif" backgroundStyle="GradientTopToBottom">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+                <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='blue']"/>
+              </style>
+            </conditionnalStyles>
           </subContainerMappings>
           <subContainerMappings name="BDD.Action" semanticCandidatesExpression="feature:definitions" doubleClickDescription="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@toolSections.1/@ownedTools[name='BDD.Behavior.OpenPD']" domainClass="ActionDef" childrenPresentation="List">
             <subNodeMappings name="BDD.Action.ConstraintUse" semanticCandidatesExpression="feature:constraints" domainClass="ConstraintUse">
@@ -1917,7 +1925,7 @@
         <containerMappings name="Style.Self" semanticCandidatesExpression="var:self" domainClass="Style" reusedContainerMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.SimplePortDef']">
           <subContainerMappings name="Style.AbstractComponent" semanticCandidatesExpression="feature:definitions" domainClass="AbstractComponentDef">
             <borderedNodeMappings name="org.sysadl.style.component.ports" semanticCandidatesExpression="feature:ports" domainClass="AbstractPortUse">
-              <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="[self.flowProperty + ' ' +  self.name + ': any' + ' ['+self.lowerBound+','+self.upperBound.toString().replace('-1','*')+ '] '/]" labelAlignment="LEFT" resizeKind="NSEW" width="2" height="2">
+              <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="[self.flowProperty + ' ' +  self.name + ': any' + ' ['+self.lowerBound+'..'+self.upperBound.toString().replace('-1','*')+ '] '/]" labelAlignment="LEFT" resizeKind="NSEW" width="2" height="2">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>

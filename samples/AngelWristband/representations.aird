@@ -14,6 +14,10 @@
     </ownedViews>
     <ownedViews xmi:type="viewpoint:DView" uid="_pWTD8IJbEemAgY1aPZkh6w">
       <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']"/>
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_QVnV8JTsEem96Zo5oiE05Q" name="new Block Definition Diagram (Behavior BDD)" repPath="#_QRzM8JTsEem96Zo5oiE05Q">
+        <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']"/>
+        <target xmi:type="sysadl:Package" href="AngelWristband.sysadl#//@packages[name='Components']"/>
+      </ownedRepresentationDescriptors>
     </ownedViews>
     <ownedViews xmi:type="viewpoint:DView" uid="_pWgfUIJbEemAgY1aPZkh6w">
       <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Allocation']"/>
@@ -188,12 +192,90 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Requirements']/@ownedRepresentations[name='SysADL.Requirements.Main']/@defaultLayer"/>
     <target xmi:type="sysadl:Model" href="AngelWristband.sysadl#/"/>
   </diagram:DSemanticDiagram>
-  <table:DTable uid="_pXrkAIJbEemAgY1aPZkh6w" name="Allocation Table for SysADLArchitecture">
+  <table:DTable uid="_pXrkAIJbEemAgY1aPZkh6w" name="Allocation Table for SysADLArchitecture" headerColumnWidth="15">
     <target xmi:type="sysadl:Model" href="AngelWristband.sysadl#/"/>
-    <columns xmi:type="table:DFeatureColumn" uid="_pZlBcIJbEemAgY1aPZkh6w" label="Source" featureName="source">
+    <lines xmi:type="table:DLine" uid="_saRMIJTvEem96Zo5oiE05Q" label="Activity Allocation">
+      <target xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.0"/>
+      <semanticElements xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.0"/>
+      <originMapping xmi:type="description_2:LineMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Allocation']/@ownedRepresentations[name='SysADL.Allocation.Table']/@ownedLineMappings[name='SysADL.Alloc']"/>
+      <cells xmi:type="table:DCell" uid="_saToY5TvEem96Zo5oiE05Q" label="SensingAC" column="_pZlBcIJbEemAgY1aPZkh6w">
+        <target xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.0"/>
+        <semanticElements xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.0"/>
+      </cells>
+      <cells xmi:type="table:DCell" uid="_sadZYZTvEem96Zo5oiE05Q" label="AccelerometerCP" column="_pZoEwIJbEemAgY1aPZkh6w">
+        <target xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.0"/>
+        <semanticElements xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.0"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" uid="_wSLR0ZTvEem96Zo5oiE05Q" label="Activity Allocation">
+      <target xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.1"/>
+      <semanticElements xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.1"/>
+      <originMapping xmi:type="description_2:LineMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Allocation']/@ownedRepresentations[name='SysADL.Allocation.Table']/@ownedLineMappings[name='SysADL.Alloc']"/>
+      <cells xmi:type="table:DCell" uid="_wSMf8pTvEem96Zo5oiE05Q" label="SensingAC" column="_pZlBcIJbEemAgY1aPZkh6w">
+        <target xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.1"/>
+        <semanticElements xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.1"/>
+      </cells>
+      <cells xmi:type="table:DCell" uid="_wSMf9JTvEem96Zo5oiE05Q" label="TemperatureSensorCP" column="_pZoEwIJbEemAgY1aPZkh6w">
+        <target xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.1"/>
+        <semanticElements xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.1"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" uid="_0y5D8pTvEem96Zo5oiE05Q" label="Activity Allocation">
+      <target xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.2"/>
+      <semanticElements xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.2"/>
+      <originMapping xmi:type="description_2:LineMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Allocation']/@ownedRepresentations[name='SysADL.Allocation.Table']/@ownedLineMappings[name='SysADL.Alloc']"/>
+      <cells xmi:type="table:DCell" uid="_0y65IZTvEem96Zo5oiE05Q" label="SensingAC" column="_pZlBcIJbEemAgY1aPZkh6w">
+        <target xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.2"/>
+        <semanticElements xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.2"/>
+      </cells>
+      <cells xmi:type="table:DCell" uid="_0y65I5TvEem96Zo5oiE05Q" label="HeartRateSensorCP" column="_pZoEwIJbEemAgY1aPZkh6w">
+        <target xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.2"/>
+        <semanticElements xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.2"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" uid="_3iLUs5TvEem96Zo5oiE05Q" label="Activity Allocation">
+      <target xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.3"/>
+      <semanticElements xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.3"/>
+      <originMapping xmi:type="description_2:LineMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Allocation']/@ownedRepresentations[name='SysADL.Allocation.Table']/@ownedLineMappings[name='SysADL.Alloc']"/>
+      <cells xmi:type="table:DCell" uid="_3iOYAZTvEem96Zo5oiE05Q" label="StorageAC" column="_pZlBcIJbEemAgY1aPZkh6w">
+        <target xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.3"/>
+        <semanticElements xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.3"/>
+      </cells>
+      <cells xmi:type="table:DCell" uid="_3iO_EZTvEem96Zo5oiE05Q" label="DatabaseCP" column="_pZoEwIJbEemAgY1aPZkh6w">
+        <target xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.3"/>
+        <semanticElements xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.3"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" uid="_DDg_ApTyEem96Zo5oiE05Q" label="Activity Allocation">
+      <target xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.4"/>
+      <semanticElements xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.4"/>
+      <originMapping xmi:type="description_2:LineMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Allocation']/@ownedRepresentations[name='SysADL.Allocation.Table']/@ownedLineMappings[name='SysADL.Alloc']"/>
+      <cells xmi:type="table:DCell" uid="_DDoTx5TyEem96Zo5oiE05Q" label="ControllerAC" column="_pZlBcIJbEemAgY1aPZkh6w">
+        <target xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.4"/>
+        <semanticElements xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.4"/>
+      </cells>
+      <cells xmi:type="table:DCell" uid="_DDph4ZTyEem96Zo5oiE05Q" label="ControllerCP" column="_pZoEwIJbEemAgY1aPZkh6w">
+        <target xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.4"/>
+        <semanticElements xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.4"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" uid="_3XqXtZT4EempY_XZeYUjJw" label="Activity Allocation">
+      <target xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.5"/>
+      <semanticElements xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.5"/>
+      <originMapping xmi:type="description_2:LineMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Allocation']/@ownedRepresentations[name='SysADL.Allocation.Table']/@ownedLineMappings[name='SysADL.Alloc']"/>
+      <cells xmi:type="table:DCell" uid="_3X5oSZT4EempY_XZeYUjJw" label="ApplicationAC" column="_pZlBcIJbEemAgY1aPZkh6w">
+        <target xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.5"/>
+        <semanticElements xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.5"/>
+      </cells>
+      <cells xmi:type="table:DCell" uid="_3X5oS5T4EempY_XZeYUjJw" label="ApplicationCP" column="_pZoEwIJbEemAgY1aPZkh6w">
+        <target xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.5"/>
+        <semanticElements xmi:type="sysadl:ActivityAllocation" href="AngelWristband.sysadl#//@allocation/@allocs.5"/>
+      </cells>
+    </lines>
+    <columns xmi:type="table:DFeatureColumn" uid="_pZlBcIJbEemAgY1aPZkh6w" label="Source" cells="_saToY5TvEem96Zo5oiE05Q _wSMf8pTvEem96Zo5oiE05Q _0y65IZTvEem96Zo5oiE05Q _3iOYAZTvEem96Zo5oiE05Q _DDoTx5TyEem96Zo5oiE05Q _3X5oSZT4EempY_XZeYUjJw" width="115" featureName="source">
       <originMapping xmi:type="description_2:FeatureColumnMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Allocation']/@ownedRepresentations[name='SysADL.Allocation.Table']/@ownedColumnMappings[name='SysADL.Alloc.Source']"/>
     </columns>
-    <columns xmi:type="table:DFeatureColumn" uid="_pZoEwIJbEemAgY1aPZkh6w" label="Target" featureName="target">
+    <columns xmi:type="table:DFeatureColumn" uid="_pZoEwIJbEemAgY1aPZkh6w" label="Target" cells="_sadZYZTvEem96Zo5oiE05Q _wSMf9JTvEem96Zo5oiE05Q _0y65I5TvEem96Zo5oiE05Q _3iO_EZTvEem96Zo5oiE05Q _DDph4ZTyEem96Zo5oiE05Q _3X5oS5T4EempY_XZeYUjJw" width="167" featureName="target">
       <originMapping xmi:type="description_2:FeatureColumnMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Allocation']/@ownedRepresentations[name='SysADL.Allocation.Table']/@ownedColumnMappings[name='SysADL.Alloc.Target']"/>
     </columns>
     <description xmi:type="description_2:EditionTableDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Allocation']/@ownedRepresentations[name='SysADL.Allocation.Table']"/>
@@ -333,22 +415,6 @@
           <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="__PVDYoJ0EemASJCACP7q2w" id="(0.0,0.4666666666666667)"/>
           <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="__PVDY4J0EemASJCACP7q2w" id="(1.0,0.4666666666666667)"/>
         </edges>
-        <edges xmi:type="notation:Edge" xmi:id="_6M-HUIJ1EemASJCACP7q2w" type="4001" element="_6LdEYIJ1EemASJCACP7q2w" source="_zum7kIJbEemAgY1aPZkh6w" target="_Z6EApoJ1EemASJCACP7q2w">
-          <children xmi:type="notation:Node" xmi:id="_6M-HVIJ1EemASJCACP7q2w" type="6001">
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_6M-HVYJ1EemASJCACP7q2w" x="4" y="51"/>
-          </children>
-          <children xmi:type="notation:Node" xmi:id="_6M-HVoJ1EemASJCACP7q2w" type="6002">
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_6M-HV4J1EemASJCACP7q2w" x="-11" y="-5"/>
-          </children>
-          <children xmi:type="notation:Node" xmi:id="_6M-HWIJ1EemASJCACP7q2w" type="6003">
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_6M-HWYJ1EemASJCACP7q2w" x="-11" y="-4"/>
-          </children>
-          <styles xmi:type="notation:ConnectorStyle" xmi:id="_6M-HUYJ1EemASJCACP7q2w"/>
-          <styles xmi:type="notation:FontStyle" xmi:id="_6M-HUoJ1EemASJCACP7q2w" fontName="Segoe UI" fontHeight="8"/>
-          <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_6M-HU4J1EemASJCACP7q2w" points="[3, 4, 0, -74]$[3, 77, 0, -1]"/>
-          <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_6M-HWoJ1EemASJCACP7q2w" id="(0.5398230088495575,0.9333333333333333)"/>
-          <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_6M-HW4J1EemASJCACP7q2w" id="(0.5178571428571429,0.02)"/>
-        </edges>
         <edges xmi:type="notation:Edge" xmi:id="_aXf5UIPPEemGDtmAvDbALA" type="4001" element="_aVVWIIPPEemGDtmAvDbALA" source="_zum7kIJbEemAgY1aPZkh6w" target="_pbJuwIJbEemAgY1aPZkh6w">
           <children xmi:type="notation:Node" xmi:id="_aYgl8IPPEemGDtmAvDbALA" type="6001">
             <layoutConstraint xmi:type="notation:Bounds" xmi:id="_aYgl8YPPEemGDtmAvDbALA" x="-12" y="13"/>
@@ -364,6 +430,22 @@
           <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_aXf5U4PPEemGDtmAvDbALA" points="[0, 7, 231, 161]$[-239, 7, -8, 161]$[-239, -129, -8, 25]"/>
           <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_aYqW8IPPEemGDtmAvDbALA" id="(0.0,0.5833333333333334)"/>
           <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_aYqW8YPPEemGDtmAvDbALA" id="(1.0,0.5833333333333334)"/>
+        </edges>
+        <edges xmi:type="notation:Edge" xmi:id="_AoTHUJwlEem_rrAEiWwFcw" type="4001" element="_AkHK4JwlEem_rrAEiWwFcw" source="_zum7kIJbEemAgY1aPZkh6w" target="_Z6EApoJ1EemASJCACP7q2w">
+          <children xmi:type="notation:Node" xmi:id="_ApR-wJwlEem_rrAEiWwFcw" type="6001">
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ApR-wZwlEem_rrAEiWwFcw" x="4" y="-56"/>
+          </children>
+          <children xmi:type="notation:Node" xmi:id="_ApSl0JwlEem_rrAEiWwFcw" type="6002">
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ApSl0ZwlEem_rrAEiWwFcw" y="10"/>
+          </children>
+          <children xmi:type="notation:Node" xmi:id="_ApgoQJwlEem_rrAEiWwFcw" type="6003">
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ApgoQZwlEem_rrAEiWwFcw" y="10"/>
+          </children>
+          <styles xmi:type="notation:ConnectorStyle" xmi:id="_AoTHUZwlEem_rrAEiWwFcw"/>
+          <styles xmi:type="notation:FontStyle" xmi:id="_AoTHUpwlEem_rrAEiWwFcw" fontName="Segoe UI" fontHeight="8"/>
+          <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_AoTHU5wlEem_rrAEiWwFcw" points="[0, 0, 0, -73]$[0, 73, 0, 0]"/>
+          <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ApsOcJwlEem_rrAEiWwFcw" id="(0.5486725663716814,1.0)"/>
+          <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ApsOcZwlEem_rrAEiWwFcw" id="(0.5,0.0)"/>
         </edges>
       </data>
     </ownedAnnotationEntries>
@@ -410,7 +492,7 @@
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.Package']/@defaultLayer/@containerMappings[name='Pkg.Self']/@subNodeMappings[name='Pkg.Package']"/>
       </ownedDiagramElements>
-      <ownedDiagramElements xmi:type="diagram:DNode" uid="_zuEwEIJbEemAgY1aPZkh6w" name="&lt;&lt;package>>&#xA;Components" outgoingEdges="_309jkIJ0EemASJCACP7q2w _31H7oIJ0EemASJCACP7q2w _6LdEYIJ1EemASJCACP7q2w _aVVWIIPPEemGDtmAvDbALA" width="10" height="6" resizeKind="NSEW">
+      <ownedDiagramElements xmi:type="diagram:DNode" uid="_zuEwEIJbEemAgY1aPZkh6w" name="&lt;&lt;package>>&#xA;Components" outgoingEdges="_309jkIJ0EemASJCACP7q2w _31H7oIJ0EemASJCACP7q2w _aVVWIIPPEemGDtmAvDbALA _AkHK4JwlEem_rrAEiWwFcw" width="10" height="6" resizeKind="NSEW">
         <target xmi:type="sysadl:Package" href="AngelWristband.sysadl#//@packages[name='Components']"/>
         <semanticElements xmi:type="sysadl:Package" href="AngelWristband.sysadl#//@packages[name='Components']"/>
         <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
@@ -421,7 +503,7 @@
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.Package']/@defaultLayer/@containerMappings[name='Pkg.Self']/@subNodeMappings[name='Pkg.Package']"/>
       </ownedDiagramElements>
-      <ownedDiagramElements xmi:type="diagram:DNode" uid="_Z4-bgIJ1EemASJCACP7q2w" name="&lt;&lt;style>>&#xA;IoTStyle" incomingEdges="_6LdEYIJ1EemASJCACP7q2w" width="3" height="3" resizeKind="NSEW">
+      <ownedDiagramElements xmi:type="diagram:DNode" uid="_Z4-bgIJ1EemASJCACP7q2w" name="&lt;&lt;style>>&#xA;IoTStyle" incomingEdges="_AkHK4JwlEem_rrAEiWwFcw" width="3" height="3" resizeKind="NSEW">
         <target xmi:type="sysadl:Style" href="AngelWristband.sysadl#//@styles[name='IoTStyle']"/>
         <semanticElements xmi:type="sysadl:Style" href="AngelWristband.sysadl#//@styles[name='IoTStyle']"/>
         <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
@@ -465,14 +547,6 @@
       </ownedStyle>
       <actualMapping xmi:type="description_1:EdgeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.Package']/@defaultLayer/@edgeMappings[name='Pkg.Import']"/>
     </ownedDiagramElements>
-    <ownedDiagramElements xmi:type="diagram:DEdge" uid="_6LdEYIJ1EemASJCACP7q2w" name="&lt;&lt;satisfies>>" sourceNode="_zuEwEIJbEemAgY1aPZkh6w" targetNode="_Z4-bgIJ1EemASJCACP7q2w">
-      <target xmi:type="sysadl:Package" href="AngelWristband.sysadl#//@packages[name='Components']"/>
-      <ownedStyle xmi:type="diagram:EdgeStyle" uid="_6LdrcIJ1EemASJCACP7q2w" size="2">
-        <description xmi:type="style:EdgeStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.Package']/@defaultLayer/@edgeMappings[name='Pkg.AppliedStyle']/@style"/>
-        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_6LdrcYJ1EemASJCACP7q2w" showIcon="false"/>
-      </ownedStyle>
-      <actualMapping xmi:type="description_1:EdgeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.Package']/@defaultLayer/@edgeMappings[name='Pkg.AppliedStyle']"/>
-    </ownedDiagramElements>
     <ownedDiagramElements xmi:type="diagram:DEdge" uid="_aVVWIIPPEemGDtmAvDbALA" name="&lt;&lt;imports>>" sourceNode="_zuEwEIJbEemAgY1aPZkh6w" targetNode="_pa5QEoJbEemAgY1aPZkh6w">
       <target xmi:type="sysadl:Package" href="AngelWristband.sysadl#//@packages[name='Components']"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_aVV9MIPPEemGDtmAvDbALA" size="2">
@@ -480,6 +554,14 @@
         <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_aVV9MYPPEemGDtmAvDbALA" showIcon="false"/>
       </ownedStyle>
       <actualMapping xmi:type="description_1:EdgeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.Package']/@defaultLayer/@edgeMappings[name='Pkg.Import']"/>
+    </ownedDiagramElements>
+    <ownedDiagramElements xmi:type="diagram:DEdge" uid="_AkHK4JwlEem_rrAEiWwFcw" name="&lt;&lt;satisfies>>" sourceNode="_zuEwEIJbEemAgY1aPZkh6w" targetNode="_Z4-bgIJ1EemASJCACP7q2w">
+      <target xmi:type="sysadl:Package" href="AngelWristband.sysadl#//@packages[name='Components']"/>
+      <ownedStyle xmi:type="diagram:EdgeStyle" uid="_AkHx8JwlEem_rrAEiWwFcw" size="2">
+        <description xmi:type="style:EdgeStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.Package']/@defaultLayer/@edgeMappings[name='Pkg.AppliedStyle']/@style"/>
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_AkHx8ZwlEem_rrAEiWwFcw" showIcon="false"/>
+      </ownedStyle>
+      <actualMapping xmi:type="description_1:EdgeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.Package']/@defaultLayer/@edgeMappings[name='Pkg.AppliedStyle']"/>
     </ownedDiagramElements>
     <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.Package']"/>
     <filterVariableHistory xmi:type="diagram:FilterVariableHistory" uid="_paKQQIJbEemAgY1aPZkh6w"/>
@@ -821,18 +903,18 @@
         </edges>
         <edges xmi:type="notation:Edge" xmi:id="_JCcXYIPiEemGDtmAvDbALA" type="4001" element="_JCKDqIPiEemGDtmAvDbALA" source="_FBzi4IJ2EemASJCACP7q2w" target="_uEpckIPTEemGDtmAvDbALA">
           <children xmi:type="notation:Node" xmi:id="_JCcXZIPiEemGDtmAvDbALA" type="6001">
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_JCcXZYPiEemGDtmAvDbALA" x="1" y="-8"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_JCcXZYPiEemGDtmAvDbALA" x="3" y="-8"/>
           </children>
           <children xmi:type="notation:Node" xmi:id="_JCcXZoPiEemGDtmAvDbALA" type="6002">
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_JCcXZ4PiEemGDtmAvDbALA" x="-4" y="10"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_JCcXZ4PiEemGDtmAvDbALA" x="-5" y="10"/>
           </children>
           <children xmi:type="notation:Node" xmi:id="_JCcXaIPiEemGDtmAvDbALA" type="6003">
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_JCcXaYPiEemGDtmAvDbALA" x="-3" y="10"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_JCcXaYPiEemGDtmAvDbALA" x="-4" y="10"/>
           </children>
           <styles xmi:type="notation:ConnectorStyle" xmi:id="_JCcXYYPiEemGDtmAvDbALA"/>
           <styles xmi:type="notation:FontStyle" xmi:id="_JCcXYoPiEemGDtmAvDbALA" fontName="Segoe UI" fontHeight="8"/>
-          <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_JCcXY4PiEemGDtmAvDbALA" points="[0, 0, 7, -97]$[-7, 93, 0, -4]"/>
-          <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_JCcXaoPiEemGDtmAvDbALA" id="(0.25,1.0)"/>
+          <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_JCcXY4PiEemGDtmAvDbALA" points="[-5, 0, 0, -117]$[-5, 114, 0, -3]"/>
+          <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_JCcXaoPiEemGDtmAvDbALA" id="(0.19444444444444445,1.0)"/>
           <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_JCcXa4PiEemGDtmAvDbALA" id="(0.8402777777777778,0.046511627906976744)"/>
         </edges>
         <edges xmi:type="notation:Edge" xmi:id="_B7KgwIPkEemGDtmAvDbALA" type="4001" element="_B69FcIPkEemGDtmAvDbALA" source="_CEjuoIJ2EemASJCACP7q2w" target="_l7pVIIPTEemGDtmAvDbALA">
@@ -1024,7 +1106,7 @@
         <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
         <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
         <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
-        <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="_c8W3gIJ2EemASJCACP7q2w" iconPath="/org.sysadl.viewpoints/icons/Component.gif" borderSize="1" borderSizeComputationExpression="1" backgroundStyle="GradientTopToBottom" foregroundColor="114,159,207">
+        <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="_EAAqBJwlEem_rrAEiWwFcw" iconPath="/org.sysadl.viewpoints/icons/Component.gif" borderSize="1" borderSizeComputationExpression="1" backgroundStyle="GradientTopToBottom" foregroundColor="114,159,207">
           <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ComponentDef']/@conditionnalStyles.1/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ComponentDef']"/>
@@ -1037,12 +1119,12 @@
           <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ComponentDef']/@subNodeMappings[name='BDD.CompDef.Configuration']"/>
         </ownedElements>
       </ownedDiagramElements>
-      <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_emmy0IJ2EemASJCACP7q2w" name="&lt;&lt;component>>&#xA;Application" incomingEdges="_IQZ2eIPiEemGDtmAvDbALA">
-        <target xmi:type="sysadl:ComponentDef" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='Application']"/>
-        <semanticElements xmi:type="sysadl:ComponentDef" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='Application']"/>
+      <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_emmy0IJ2EemASJCACP7q2w" name="&lt;&lt;component>>&#xA;ApplicationCP" incomingEdges="_IQZ2eIPiEemGDtmAvDbALA">
+        <target xmi:type="sysadl:ComponentDef" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ApplicationCP']"/>
+        <semanticElements xmi:type="sysadl:ComponentDef" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ApplicationCP']"/>
         <ownedBorderedNodes xmi:type="diagram:DNode" uid="_JAsMRoPUEemGDtmAvDbALA" name="rOut : RequestOPT [1,1] " tooltipText="Port rOut" width="2" height="2" resizeKind="NSEW">
-          <target xmi:type="sysadl:PortUse" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='Application']/@ports[name='rOut']"/>
-          <semanticElements xmi:type="sysadl:PortUse" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='Application']/@ports[name='rOut']"/>
+          <target xmi:type="sysadl:PortUse" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ApplicationCP']/@ports[name='rOut']"/>
+          <semanticElements xmi:type="sysadl:PortUse" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ApplicationCP']/@ports[name='rOut']"/>
           <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
           <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
           <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
@@ -1052,8 +1134,8 @@
           <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ComponentDef']/@borderedNodeMappings[name='BDD.ComDef.Ports']"/>
         </ownedBorderedNodes>
         <ownedBorderedNodes xmi:type="diagram:DNode" uid="_KO-kUYPUEemGDtmAvDbALA" name="rIn : ResponseIPT [1,1] " tooltipText="Port rIn" width="2" height="2" resizeKind="NSEW">
-          <target xmi:type="sysadl:PortUse" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='Application']/@ports[name='rIn']"/>
-          <semanticElements xmi:type="sysadl:PortUse" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='Application']/@ports[name='rIn']"/>
+          <target xmi:type="sysadl:PortUse" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ApplicationCP']/@ports[name='rIn']"/>
+          <semanticElements xmi:type="sysadl:PortUse" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ApplicationCP']/@ports[name='rIn']"/>
           <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
           <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
           <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
@@ -1063,8 +1145,8 @@
           <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ComponentDef']/@borderedNodeMappings[name='BDD.ComDef.Ports']"/>
         </ownedBorderedNodes>
         <ownedBorderedNodes xmi:type="diagram:DNode" uid="__4fbMYPfEemGDtmAvDbALA" name="dOut : DataOPT [1,1] " tooltipText="Port dOut" width="2" height="2" resizeKind="NSEW">
-          <target xmi:type="sysadl:PortUse" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='Application']/@ports[name='dOut']"/>
-          <semanticElements xmi:type="sysadl:PortUse" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='Application']/@ports[name='dOut']"/>
+          <target xmi:type="sysadl:PortUse" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ApplicationCP']/@ports[name='dOut']"/>
+          <semanticElements xmi:type="sysadl:PortUse" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ApplicationCP']/@ports[name='dOut']"/>
           <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
           <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
           <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
@@ -1074,8 +1156,8 @@
           <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ComponentDef']/@borderedNodeMappings[name='BDD.ComDef.Ports']"/>
         </ownedBorderedNodes>
         <ownedBorderedNodes xmi:type="diagram:DNode" uid="_AxdqlIPgEemGDtmAvDbALA" name="dIn : DataIPT [1,1] " tooltipText="Port dIn" width="2" height="2" resizeKind="NSEW">
-          <target xmi:type="sysadl:PortUse" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='Application']/@ports[name='dIn']"/>
-          <semanticElements xmi:type="sysadl:PortUse" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='Application']/@ports[name='dIn']"/>
+          <target xmi:type="sysadl:PortUse" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ApplicationCP']/@ports[name='dIn']"/>
+          <semanticElements xmi:type="sysadl:PortUse" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ApplicationCP']/@ports[name='dIn']"/>
           <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
           <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
           <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
@@ -1205,7 +1287,7 @@
         <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
         <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
         <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
-        <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="_vTa814PTEemGDtmAvDbALA" iconPath="/org.sysadl.viewpoints/icons/Component.gif" borderSize="1" borderSizeComputationExpression="1" backgroundStyle="GradientTopToBottom" foregroundColor="114,159,207">
+        <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="_FgMDU5wlEem_rrAEiWwFcw" iconPath="/org.sysadl.viewpoints/icons/Component.gif" borderSize="1" borderSizeComputationExpression="1" backgroundStyle="GradientTopToBottom" foregroundColor="114,159,207">
           <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ComponentDef']/@conditionnalStyles.1/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ComponentDef']"/>
@@ -2617,12 +2699,12 @@
         </ownedStyle>
         <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']"/>
         <ownedElements xmi:type="diagram:DNodeListElement" uid="_BVV7IJQwEemfHZfnt4wK6w" name="out data: any">
-          <target xmi:type="sysadl:AbstractPin" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@definitions[name='Monitoring']/@outParameters[name='data']"/>
-          <semanticElements xmi:type="sysadl:AbstractPin" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@definitions[name='Monitoring']/@outParameters[name='data']"/>
           <ownedStyle xmi:type="diagram:Dot" uid="_BVxY8JQwEemfHZfnt4wK6w" showIcon="false" labelPosition="node">
             <description xmi:type="style:DotDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@subNodeMappings[name='Style.AbstractActivity.OutParams']/@style"/>
           </ownedStyle>
           <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@subNodeMappings[name='Style.AbstractActivity.OutParams']"/>
+          <target xmi:type="sysadl:AbstractPin" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@definitions[name='Monitoring']/@outParameters[name='data']"/>
+          <semanticElements xmi:type="sysadl:AbstractPin" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@definitions[name='Monitoring']/@outParameters[name='data']"/>
         </ownedElements>
       </ownedDiagramElements>
       <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_BU7EYJQwEemfHZfnt4wK6w" name="&lt;&lt;abstract>>&#xA;&lt;&lt;activity>>&#xA;Analysis">
@@ -2636,20 +2718,20 @@
         </ownedStyle>
         <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']"/>
         <ownedElements xmi:type="diagram:DNodeListElement" uid="_BWIlUJQwEemfHZfnt4wK6w" name="in data: any">
-          <target xmi:type="sysadl:AbstractPin" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@definitions[name='Analysis']/@inParameters[name='data']"/>
-          <semanticElements xmi:type="sysadl:AbstractPin" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@definitions[name='Analysis']/@inParameters[name='data']"/>
           <ownedStyle xmi:type="diagram:Dot" uid="_BXBWIJQwEemfHZfnt4wK6w" showIcon="false" labelPosition="node">
             <description xmi:type="style:DotDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@subNodeMappings[name='Style.AbstractActivity.InParams']/@style"/>
           </ownedStyle>
           <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@subNodeMappings[name='Style.AbstractActivity.InParams']"/>
+          <target xmi:type="sysadl:AbstractPin" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@definitions[name='Analysis']/@inParameters[name='data']"/>
+          <semanticElements xmi:type="sysadl:AbstractPin" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@definitions[name='Analysis']/@inParameters[name='data']"/>
         </ownedElements>
         <ownedElements xmi:type="diagram:DNodeListElement" uid="_BXCkQJQwEemfHZfnt4wK6w" name="out changeRequest: any">
-          <target xmi:type="sysadl:AbstractPin" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@definitions[name='Analysis']/@outParameters[name='changeRequest']"/>
-          <semanticElements xmi:type="sysadl:AbstractPin" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@definitions[name='Analysis']/@outParameters[name='changeRequest']"/>
           <ownedStyle xmi:type="diagram:Dot" uid="_BXCkQZQwEemfHZfnt4wK6w" showIcon="false" labelPosition="node">
             <description xmi:type="style:DotDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@subNodeMappings[name='Style.AbstractActivity.OutParams']/@style"/>
           </ownedStyle>
           <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@subNodeMappings[name='Style.AbstractActivity.OutParams']"/>
+          <target xmi:type="sysadl:AbstractPin" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@definitions[name='Analysis']/@outParameters[name='changeRequest']"/>
+          <semanticElements xmi:type="sysadl:AbstractPin" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@definitions[name='Analysis']/@outParameters[name='changeRequest']"/>
         </ownedElements>
       </ownedDiagramElements>
       <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_BVS30JQwEemfHZfnt4wK6w" name="&lt;&lt;abstract>>&#xA;&lt;&lt;activity>>&#xA;Planning">
@@ -2663,20 +2745,20 @@
         </ownedStyle>
         <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']"/>
         <ownedElements xmi:type="diagram:DNodeListElement" uid="_BXDLUJQwEemfHZfnt4wK6w" name="in changeRequest: any">
-          <target xmi:type="sysadl:AbstractPin" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@definitions[name='Planning']/@inParameters[name='changeRequest']"/>
-          <semanticElements xmi:type="sysadl:AbstractPin" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@definitions[name='Planning']/@inParameters[name='changeRequest']"/>
           <ownedStyle xmi:type="diagram:Dot" uid="_BXDLUZQwEemfHZfnt4wK6w" showIcon="false" labelPosition="node">
             <description xmi:type="style:DotDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@subNodeMappings[name='Style.AbstractActivity.InParams']/@style"/>
           </ownedStyle>
           <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@subNodeMappings[name='Style.AbstractActivity.InParams']"/>
+          <target xmi:type="sysadl:AbstractPin" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@definitions[name='Planning']/@inParameters[name='changeRequest']"/>
+          <semanticElements xmi:type="sysadl:AbstractPin" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@definitions[name='Planning']/@inParameters[name='changeRequest']"/>
         </ownedElements>
         <ownedElements xmi:type="diagram:DNodeListElement" uid="_BXDLUpQwEemfHZfnt4wK6w" name="out command: any">
-          <target xmi:type="sysadl:AbstractPin" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@definitions[name='Planning']/@outParameters[name='command']"/>
-          <semanticElements xmi:type="sysadl:AbstractPin" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@definitions[name='Planning']/@outParameters[name='command']"/>
           <ownedStyle xmi:type="diagram:Dot" uid="_BXDyYJQwEemfHZfnt4wK6w" showIcon="false" labelPosition="node">
             <description xmi:type="style:DotDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@subNodeMappings[name='Style.AbstractActivity.OutParams']/@style"/>
           </ownedStyle>
           <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@subNodeMappings[name='Style.AbstractActivity.OutParams']"/>
+          <target xmi:type="sysadl:AbstractPin" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@definitions[name='Planning']/@outParameters[name='command']"/>
+          <semanticElements xmi:type="sysadl:AbstractPin" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@definitions[name='Planning']/@outParameters[name='command']"/>
         </ownedElements>
       </ownedDiagramElements>
       <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_BVTe4ZQwEemfHZfnt4wK6w" name="&lt;&lt;abstract>>&#xA;&lt;&lt;activity>>&#xA;Execution">
@@ -2690,12 +2772,12 @@
         </ownedStyle>
         <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']"/>
         <ownedElements xmi:type="diagram:DNodeListElement" uid="_BXEZcJQwEemfHZfnt4wK6w" name="in command: any">
-          <target xmi:type="sysadl:AbstractPin" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@definitions[name='Execution']/@inParameters[name='command']"/>
-          <semanticElements xmi:type="sysadl:AbstractPin" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@definitions[name='Execution']/@inParameters[name='command']"/>
           <ownedStyle xmi:type="diagram:Dot" uid="_BXFAgJQwEemfHZfnt4wK6w" showIcon="false" labelPosition="node">
             <description xmi:type="style:DotDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@subNodeMappings[name='Style.AbstractActivity.InParams']/@style"/>
           </ownedStyle>
           <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@subNodeMappings[name='Style.AbstractActivity.InParams']"/>
+          <target xmi:type="sysadl:AbstractPin" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@definitions[name='Execution']/@inParameters[name='command']"/>
+          <semanticElements xmi:type="sysadl:AbstractPin" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@definitions[name='Execution']/@inParameters[name='command']"/>
         </ownedElements>
       </ownedDiagramElements>
     </ownedDiagramElements>
@@ -3425,7 +3507,7 @@
                   <layoutConstraint xmi:type="notation:Bounds" xmi:id="_iCypsoPSEemGDtmAvDbALA"/>
                 </children>
                 <styles xmi:type="notation:ShapeStyle" xmi:id="_iCyCoYPSEemGDtmAvDbALA" fontName="Segoe UI" fontHeight="8"/>
-                <layoutConstraint xmi:type="notation:Bounds" xmi:id="_iCyCooPSEemGDtmAvDbALA" x="-12" y="49" width="20" height="20"/>
+                <layoutConstraint xmi:type="notation:Bounds" xmi:id="_iCyCooPSEemGDtmAvDbALA" x="-12" y="70" width="20" height="20"/>
               </children>
               <children xmi:type="notation:Node" xmi:id="_oTcvcIPSEemGDtmAvDbALA" type="3012" element="_oTXP4IPSEemGDtmAvDbALA">
                 <children xmi:type="notation:Node" xmi:id="_oTdWgIPSEemGDtmAvDbALA" type="5010">
@@ -3436,7 +3518,7 @@
                   <layoutConstraint xmi:type="notation:Bounds" xmi:id="_oTdWhIPSEemGDtmAvDbALA"/>
                 </children>
                 <styles xmi:type="notation:ShapeStyle" xmi:id="_oTcvcYPSEemGDtmAvDbALA" fontName="Segoe UI" fontHeight="8"/>
-                <layoutConstraint xmi:type="notation:Bounds" xmi:id="_oTcvcoPSEemGDtmAvDbALA" x="131" y="49" width="20" height="20"/>
+                <layoutConstraint xmi:type="notation:Bounds" xmi:id="_oTcvcoPSEemGDtmAvDbALA" x="159" y="70" width="20" height="20"/>
               </children>
               <children xmi:type="notation:Node" xmi:id="_fsW904PSEemGDtmAvDbALA" type="5004"/>
               <children xmi:type="notation:Node" xmi:id="_fsW91IPSEemGDtmAvDbALA" type="7003">
@@ -3444,7 +3526,7 @@
                 <styles xmi:type="notation:FilteringStyle" xmi:id="_fsW91oPSEemGDtmAvDbALA"/>
               </children>
               <styles xmi:type="notation:ShapeStyle" xmi:id="_fsW90YPSEemGDtmAvDbALA" fontName="Segoe UI" fontHeight="8"/>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_fsW90oPSEemGDtmAvDbALA" x="604" y="106" width="150" height="87"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_fsW90oPSEemGDtmAvDbALA" x="604" y="92" width="169" height="108"/>
             </children>
             <children xmi:type="notation:Node" xmi:id="_xp8KcIPiEemGDtmAvDbALA" type="3009" element="_xoWPAIPiEemGDtmAvDbALA">
               <children xmi:type="notation:Node" xmi:id="_zF2HwIPiEemGDtmAvDbALA" type="3012" element="_zFdGOIPiEemGDtmAvDbALA">
@@ -3595,17 +3677,17 @@
         </edges>
         <edges xmi:type="notation:Edge" xmi:id="_35YigIPSEemGDtmAvDbALA" type="4001" element="_33Y-cIPSEemGDtmAvDbALA" source="_iCyCoIPSEemGDtmAvDbALA" target="_oTcvcIPSEemGDtmAvDbALA">
           <children xmi:type="notation:Node" xmi:id="_35YihIPSEemGDtmAvDbALA" type="6001">
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_35YihYPSEemGDtmAvDbALA" x="2" y="14"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_35YihYPSEemGDtmAvDbALA" x="1" y="14"/>
           </children>
           <children xmi:type="notation:Node" xmi:id="_35YihoPSEemGDtmAvDbALA" type="6002">
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_35Yih4PSEemGDtmAvDbALA" y="10"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_35Yih4PSEemGDtmAvDbALA" y="9"/>
           </children>
           <children xmi:type="notation:Node" xmi:id="_35YiiIPSEemGDtmAvDbALA" type="6003">
             <layoutConstraint xmi:type="notation:Bounds" xmi:id="_35YiiYPSEemGDtmAvDbALA" y="10"/>
           </children>
           <styles xmi:type="notation:ConnectorStyle" xmi:id="_35YigYPSEemGDtmAvDbALA"/>
           <styles xmi:type="notation:FontStyle" xmi:id="_35YigoPSEemGDtmAvDbALA" fontName="Segoe UI" fontHeight="8"/>
-          <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_35Yig4PSEemGDtmAvDbALA" points="[0, 0, -118, 0]$[118, 0, 0, 0]"/>
+          <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_35Yig4PSEemGDtmAvDbALA" points="[0, 0, -151, 0]$[151, 0, 0, 0]"/>
           <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_35ZJkIPSEemGDtmAvDbALA" id="(1.0,0.5)"/>
           <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_35ZJkYPSEemGDtmAvDbALA" id="(0.0,0.5)"/>
         </edges>
@@ -3759,7 +3841,7 @@
         </ownedStyle>
         <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ConnectorDef']"/>
       </ownedDiagramElements>
-      <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_fqShQIPSEemGDtmAvDbALA" name="&lt;&lt;connector>>&#xA;sendResponseCN">
+      <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_fqShQIPSEemGDtmAvDbALA" name="&lt;&lt;DeviceDataCN>>&#xA;&lt;&lt;connector>>&#xA;sendResponseCN" tooltipText="Component sendResponseCN">
         <target xmi:type="sysadl:ConnectorDef" href="AngelWristband.sysadl#//@packages[name='Connectors']/@definitions[name='sendResponseCN']"/>
         <semanticElements xmi:type="sysadl:ConnectorDef" href="AngelWristband.sysadl#//@packages[name='Connectors']/@definitions[name='sendResponseCN']"/>
         <ownedBorderedNodes xmi:type="diagram:DNode" uid="_iCdShYPSEemGDtmAvDbALA" name="resp:~ResponseOPT" outgoingEdges="_33Y-cIPSEemGDtmAvDbALA" width="2" height="2" resizeKind="NSEW">
@@ -3787,8 +3869,8 @@
         <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
         <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
         <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
-        <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="_fqnRYIPSEemGDtmAvDbALA" iconPath="/org.sysadl.viewpoints/icons/Connector.gif" borderSize="1" borderSizeComputationExpression="1" backgroundStyle="GradientTopToBottom">
-          <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ConnectorDef']/@style"/>
+        <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="_LjqosJwlEem_rrAEiWwFcw" iconPath="/org.sysadl.viewpoints/icons/Component.gif" borderSize="1" borderSizeComputationExpression="1" backgroundStyle="GradientTopToBottom" foregroundColor="194,239,255">
+          <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ConnectorDef']/@conditionnalStyles.0/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ConnectorDef']"/>
       </ownedDiagramElements>
@@ -3820,7 +3902,7 @@
         <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
         <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
         <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
-        <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="_LJZfQZRpEemfHZfnt4wK6w" iconPath="/org.sysadl.viewpoints/icons/Component.gif" borderSize="1" borderSizeComputationExpression="1" backgroundStyle="GradientTopToBottom" foregroundColor="194,239,255">
+        <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="_M2oFYZwlEem_rrAEiWwFcw" iconPath="/org.sysadl.viewpoints/icons/Component.gif" borderSize="1" borderSizeComputationExpression="1" backgroundStyle="GradientTopToBottom" foregroundColor="194,239,255">
           <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ConnectorDef']/@conditionnalStyles.0/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ConnectorDef']"/>
@@ -4978,7 +5060,7 @@
         <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@style"/>
       </ownedStyle>
       <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']"/>
-      <ownedDiagramElements xmi:type="diagram:DNode" uid="_IQ3JdoPiEemGDtmAvDbALA" name="&lt;&lt;component>>&#xA;app:Application [1..1]" width="15" height="7" resizeKind="NSEW">
+      <ownedDiagramElements xmi:type="diagram:DNode" uid="_IQ3JdoPiEemGDtmAvDbALA" name="&lt;&lt;component>>&#xA;app:ApplicationCP [1..1]" width="15" height="7" resizeKind="NSEW">
         <target xmi:type="sysadl:ComponentUse" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='SmartphoneCP']/@composite/@components[name='app']"/>
         <semanticElements xmi:type="sysadl:ComponentUse" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='SmartphoneCP']/@composite/@components[name='app']"/>
         <ownedBorderedNodes xmi:type="diagram:DNode" uid="_IQ6MwoPiEemGDtmAvDbALA" name="rOut : RequestOPT" outgoingEdges="_gM_LYIPiEemGDtmAvDbALA" width="2" height="2" resizeKind="NSEW">
@@ -5273,5 +5355,279 @@
     <filterVariableHistory xmi:type="diagram:FilterVariableHistory" uid="_MW-gsYPWEemGDtmAvDbALA"/>
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer"/>
     <target xmi:type="sysadl:Configuration" href="AngelWristband.sysadl#//@packages[name='Connectors']/@definitions[name='RequestResponseCN']/@composite"/>
+  </diagram:DSemanticDiagram>
+  <diagram:DSemanticDiagram uid="_QRzM8JTsEem96Zo5oiE05Q" name="new Block Definition Diagram (Behavior BDD)">
+    <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_QVjEhJTsEem96Zo5oiE05Q" source="DANNOTATION_CUSTOMIZATION_KEY">
+      <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_QVjEhZTsEem96Zo5oiE05Q"/>
+    </ownedAnnotationEntries>
+    <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_QWDa0JTsEem96Zo5oiE05Q" source="GMF_DIAGRAMS">
+      <data xmi:type="notation:Diagram" xmi:id="_QWDa0ZTsEem96Zo5oiE05Q" type="Sirius" element="_QRzM8JTsEem96Zo5oiE05Q" measurementUnit="Pixel">
+        <children xmi:type="notation:Node" xmi:id="_QWHFMJTsEem96Zo5oiE05Q" type="2002" element="_QR_aMJTsEem96Zo5oiE05Q">
+          <children xmi:type="notation:Node" xmi:id="_QWLWoJTsEem96Zo5oiE05Q" type="5006"/>
+          <children xmi:type="notation:Node" xmi:id="_QWMkwJTsEem96Zo5oiE05Q" type="7001">
+            <children xmi:type="notation:Node" xmi:id="_ZDuVkJTsEem96Zo5oiE05Q" type="3009" element="_ZDGDcJTsEem96Zo5oiE05Q">
+              <children xmi:type="notation:Node" xmi:id="_ZDu8oJTsEem96Zo5oiE05Q" type="5004"/>
+              <children xmi:type="notation:Node" xmi:id="_ZDvjsJTsEem96Zo5oiE05Q" type="7003">
+                <children xmi:type="notation:Node" xmi:id="_ZDwx0JTsEem96Zo5oiE05Q" visible="false" type="3010" element="_ZDnn4pTsEem96Zo5oiE05Q">
+                  <styles xmi:type="notation:FontStyle" xmi:id="_ZDwx0ZTsEem96Zo5oiE05Q" fontName="Segoe UI" fontHeight="8"/>
+                  <layoutConstraint xmi:type="notation:Location" xmi:id="_ZDwx0pTsEem96Zo5oiE05Q"/>
+                </children>
+                <children xmi:type="notation:Node" xmi:id="_VS_ZcJTtEem96Zo5oiE05Q" type="3010" element="_VSxXApTtEem96Zo5oiE05Q">
+                  <styles xmi:type="notation:FontStyle" xmi:id="_VS_ZcZTtEem96Zo5oiE05Q" fontName="Segoe UI" fontHeight="8"/>
+                  <layoutConstraint xmi:type="notation:Location" xmi:id="_VS_ZcpTtEem96Zo5oiE05Q"/>
+                </children>
+                <styles xmi:type="notation:SortingStyle" xmi:id="_ZDvjsZTsEem96Zo5oiE05Q"/>
+                <styles xmi:type="notation:FilteringStyle" xmi:id="_ZDvjspTsEem96Zo5oiE05Q"/>
+              </children>
+              <styles xmi:type="notation:ShapeStyle" xmi:id="_ZDuVkZTsEem96Zo5oiE05Q" fontName="Segoe UI" fontHeight="8"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ZDuVkpTsEem96Zo5oiE05Q" x="9" y="43"/>
+            </children>
+            <children xmi:type="notation:Node" xmi:id="_gAUe0JTtEem96Zo5oiE05Q" type="3009" element="_f_mGEJTtEem96Zo5oiE05Q">
+              <children xmi:type="notation:Node" xmi:id="_gAUe05TtEem96Zo5oiE05Q" type="5004"/>
+              <children xmi:type="notation:Node" xmi:id="_gAUe1JTtEem96Zo5oiE05Q" type="7003">
+                <children xmi:type="notation:Node" xmi:id="_gAUe15TtEem96Zo5oiE05Q" visible="false" type="3010" element="_gARbgZTtEem96Zo5oiE05Q">
+                  <styles xmi:type="notation:FontStyle" xmi:id="_gAUe2JTtEem96Zo5oiE05Q" fontName="Segoe UI" fontHeight="8"/>
+                  <layoutConstraint xmi:type="notation:Location" xmi:id="_gAUe2ZTtEem96Zo5oiE05Q"/>
+                </children>
+                <children xmi:type="notation:Node" xmi:id="_rsvpsJTtEem96Zo5oiE05Q" type="3010" element="_rstNcZTtEem96Zo5oiE05Q">
+                  <styles xmi:type="notation:FontStyle" xmi:id="_rsvpsZTtEem96Zo5oiE05Q" fontName="Segoe UI" fontHeight="8"/>
+                  <layoutConstraint xmi:type="notation:Location" xmi:id="_rsvpspTtEem96Zo5oiE05Q"/>
+                </children>
+                <styles xmi:type="notation:SortingStyle" xmi:id="_gAUe1ZTtEem96Zo5oiE05Q"/>
+                <styles xmi:type="notation:FilteringStyle" xmi:id="_gAUe1pTtEem96Zo5oiE05Q"/>
+              </children>
+              <styles xmi:type="notation:ShapeStyle" xmi:id="_gAUe0ZTtEem96Zo5oiE05Q" fontName="Segoe UI" fontHeight="8"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_gAUe0pTtEem96Zo5oiE05Q" x="385" y="43"/>
+            </children>
+            <children xmi:type="notation:Node" xmi:id="_Xan3gJTxEem96Zo5oiE05Q" type="3009" element="_XXfrAJTxEem96Zo5oiE05Q">
+              <children xmi:type="notation:Node" xmi:id="_XaoekJTxEem96Zo5oiE05Q" type="5004"/>
+              <children xmi:type="notation:Node" xmi:id="_XaoekZTxEem96Zo5oiE05Q" type="7003">
+                <children xmi:type="notation:Node" xmi:id="_XaoelJTxEem96Zo5oiE05Q" visible="false" type="3010" element="_XYPR45TxEem96Zo5oiE05Q">
+                  <styles xmi:type="notation:FontStyle" xmi:id="_XaoelZTxEem96Zo5oiE05Q" fontName="Segoe UI" fontHeight="8"/>
+                  <layoutConstraint xmi:type="notation:Location" xmi:id="_XaoelpTxEem96Zo5oiE05Q"/>
+                </children>
+                <children xmi:type="notation:Node" xmi:id="_lkrikJTxEem96Zo5oiE05Q" type="3010" element="_li9EIZTxEem96Zo5oiE05Q">
+                  <styles xmi:type="notation:FontStyle" xmi:id="_lkrikZTxEem96Zo5oiE05Q" fontName="Segoe UI" fontHeight="8"/>
+                  <layoutConstraint xmi:type="notation:Location" xmi:id="_lkrikpTxEem96Zo5oiE05Q"/>
+                </children>
+                <children xmi:type="notation:Node" xmi:id="_p4_QQJTxEem96Zo5oiE05Q" type="3010" element="_p4dr1JTxEem96Zo5oiE05Q">
+                  <styles xmi:type="notation:FontStyle" xmi:id="_p4_QQZTxEem96Zo5oiE05Q" fontName="Segoe UI" fontHeight="8"/>
+                  <layoutConstraint xmi:type="notation:Location" xmi:id="_p4_QQpTxEem96Zo5oiE05Q"/>
+                </children>
+                <children xmi:type="notation:Node" xmi:id="_qsWm4JTxEem96Zo5oiE05Q" type="3010" element="_qrx_L5TxEem96Zo5oiE05Q">
+                  <styles xmi:type="notation:FontStyle" xmi:id="_qsWm4ZTxEem96Zo5oiE05Q" fontName="Segoe UI" fontHeight="8"/>
+                  <layoutConstraint xmi:type="notation:Location" xmi:id="_qsWm4pTxEem96Zo5oiE05Q"/>
+                </children>
+                <children xmi:type="notation:Node" xmi:id="_rm7YwJTxEem96Zo5oiE05Q" type="3010" element="_rmRRgJTxEem96Zo5oiE05Q">
+                  <styles xmi:type="notation:FontStyle" xmi:id="_rm7YwZTxEem96Zo5oiE05Q" fontName="Segoe UI" fontHeight="8"/>
+                  <layoutConstraint xmi:type="notation:Location" xmi:id="_rm7YwpTxEem96Zo5oiE05Q"/>
+                </children>
+                <children xmi:type="notation:Node" xmi:id="_tCgl8JTxEem96Zo5oiE05Q" type="3010" element="_tCEhIZTxEem96Zo5oiE05Q">
+                  <styles xmi:type="notation:FontStyle" xmi:id="_tCgl8ZTxEem96Zo5oiE05Q" fontName="Segoe UI" fontHeight="8"/>
+                  <layoutConstraint xmi:type="notation:Location" xmi:id="_tCgl8pTxEem96Zo5oiE05Q"/>
+                </children>
+                <styles xmi:type="notation:SortingStyle" xmi:id="_XaoekpTxEem96Zo5oiE05Q"/>
+                <styles xmi:type="notation:FilteringStyle" xmi:id="_Xaoek5TxEem96Zo5oiE05Q"/>
+              </children>
+              <styles xmi:type="notation:ShapeStyle" xmi:id="_Xan3gZTxEem96Zo5oiE05Q" fontName="Segoe UI" fontHeight="8"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Xan3gpTxEem96Zo5oiE05Q" x="205" y="8"/>
+            </children>
+            <children xmi:type="notation:Node" xmi:id="__p5ToJT4EempY_XZeYUjJw" type="3009" element="__nITgJT4EempY_XZeYUjJw">
+              <children xmi:type="notation:Node" xmi:id="__p56sJT4EempY_XZeYUjJw" type="5004"/>
+              <children xmi:type="notation:Node" xmi:id="__p56sZT4EempY_XZeYUjJw" type="7003">
+                <children xmi:type="notation:Node" xmi:id="__p6hwJT4EempY_XZeYUjJw" visible="false" type="3010" element="__oMqiZT4EempY_XZeYUjJw">
+                  <styles xmi:type="notation:FontStyle" xmi:id="__p6hwZT4EempY_XZeYUjJw" fontName="Segoe UI" fontHeight="8"/>
+                  <layoutConstraint xmi:type="notation:Location" xmi:id="__p6hwpT4EempY_XZeYUjJw"/>
+                </children>
+                <children xmi:type="notation:Node" xmi:id="_dqtcCJT5EempY_XZeYUjJw" type="3010" element="_dphJGZT5EempY_XZeYUjJw">
+                  <styles xmi:type="notation:FontStyle" xmi:id="_dqtcCZT5EempY_XZeYUjJw" fontName="Segoe UI" fontHeight="8"/>
+                  <layoutConstraint xmi:type="notation:Location" xmi:id="_dqtcCpT5EempY_XZeYUjJw"/>
+                </children>
+                <children xmi:type="notation:Node" xmi:id="_feDo_JT5EempY_XZeYUjJw" type="3010" element="_fdwG5pT5EempY_XZeYUjJw">
+                  <styles xmi:type="notation:FontStyle" xmi:id="_feDo_ZT5EempY_XZeYUjJw" fontName="Segoe UI" fontHeight="8"/>
+                  <layoutConstraint xmi:type="notation:Location" xmi:id="_feDo_pT5EempY_XZeYUjJw"/>
+                </children>
+                <styles xmi:type="notation:SortingStyle" xmi:id="__p56spT4EempY_XZeYUjJw"/>
+                <styles xmi:type="notation:FilteringStyle" xmi:id="__p56s5T4EempY_XZeYUjJw"/>
+              </children>
+              <styles xmi:type="notation:ShapeStyle" xmi:id="__p5ToZT4EempY_XZeYUjJw" fontName="Segoe UI" fontHeight="8"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="__p5TopT4EempY_XZeYUjJw" x="537" y="43"/>
+            </children>
+            <styles xmi:type="notation:SortingStyle" xmi:id="_QWMkwZTsEem96Zo5oiE05Q"/>
+            <styles xmi:type="notation:FilteringStyle" xmi:id="_QWMkwpTsEem96Zo5oiE05Q"/>
+          </children>
+          <styles xmi:type="notation:ShapeStyle" xmi:id="_QWHFMZTsEem96Zo5oiE05Q" fontName="Segoe UI" fontHeight="8"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_QWHFMpTsEem96Zo5oiE05Q" x="7" y="14" width="703" height="192"/>
+        </children>
+        <styles xmi:type="notation:DiagramStyle" xmi:id="_QWDa0pTsEem96Zo5oiE05Q"/>
+      </data>
+    </ownedAnnotationEntries>
+    <ownedDiagramElements xmi:type="diagram:DNodeContainer" uid="_QR_aMJTsEem96Zo5oiE05Q" name="bdd [Behavior] Components">
+      <target xmi:type="sysadl:Package" href="AngelWristband.sysadl#//@packages[name='Components']"/>
+      <semanticElements xmi:type="sysadl:Package" href="AngelWristband.sysadl#//@packages[name='Components']"/>
+      <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
+      <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
+      <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
+      <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="_QT9JEJTsEem96Zo5oiE05Q" showIcon="false" labelAlignment="LEFT" borderSize="1" borderSizeComputationExpression="1" foregroundColor="255,255,255">
+        <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@style"/>
+      </ownedStyle>
+      <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']"/>
+      <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_ZDGDcJTsEem96Zo5oiE05Q" name="&lt;&lt;activity>>&#xA;SensingAC">
+        <target xmi:type="sysadl:ActivityDef" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='SensingAC']"/>
+        <semanticElements xmi:type="sysadl:ActivityDef" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='SensingAC']"/>
+        <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
+        <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
+        <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
+        <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="_TCvmYZTzEempY_XZeYUjJw" iconPath="/org.sysadl.viewpoints/icons/Activity.gif" borderSize="1" borderSizeComputationExpression="1" backgroundStyle="GradientTopToBottom" foregroundColor="114,159,207">
+          <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@conditionnalStyles.0/@style"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']"/>
+        <ownedElements xmi:type="diagram:DNodeListElement" uid="_ZDnn4pTsEem96Zo5oiE05Q" name="Open Activity Diagram" visible="false">
+          <target xmi:type="sysadl:ActivityBody" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='SensingAC']/@body"/>
+          <semanticElements xmi:type="sysadl:ActivityBody" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='SensingAC']/@body"/>
+          <graphicalFilters xmi:type="diagram:HideFilter" uid="_TYb_AJTyEem96Zo5oiE05Q"/>
+          <ownedStyle xmi:type="diagram:Dot" uid="_ZDtugJTsEem96Zo5oiE05Q" showIcon="false">
+            <description xmi:type="style:DotDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.Body']/@style"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.Body']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" uid="_VSxXApTtEem96Zo5oiE05Q" name="out meassurement : Real">
+          <target xmi:type="sysadl:Pin" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='SensingAC']/@outParameters[name='meassurement']"/>
+          <semanticElements xmi:type="sysadl:Pin" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='SensingAC']/@outParameters[name='meassurement']"/>
+          <ownedStyle xmi:type="diagram:Dot" uid="_VS3doJTtEem96Zo5oiE05Q" showIcon="false">
+            <description xmi:type="style:DotDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.OutParams']/@style"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.OutParams']"/>
+        </ownedElements>
+      </ownedDiagramElements>
+      <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_f_mGEJTtEem96Zo5oiE05Q" name="&lt;&lt;activity>>&#xA;ApplicationAC">
+        <target xmi:type="sysadl:ActivityDef" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ApplicationAC']"/>
+        <semanticElements xmi:type="sysadl:ActivityDef" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ApplicationAC']"/>
+        <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
+        <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
+        <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
+        <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="_QgVXAZwlEem_rrAEiWwFcw" iconPath="/org.sysadl.viewpoints/icons/Activity.gif" borderSize="1" borderSizeComputationExpression="1" backgroundStyle="GradientTopToBottom" foregroundColor="114,159,207">
+          <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@conditionnalStyles.0/@style"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']"/>
+        <ownedElements xmi:type="diagram:DNodeListElement" uid="_gARbgZTtEem96Zo5oiE05Q" name="Open Activity Diagram" visible="false">
+          <target xmi:type="sysadl:ActivityBody" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ApplicationAC']/@body"/>
+          <semanticElements xmi:type="sysadl:ActivityBody" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ApplicationAC']/@body"/>
+          <graphicalFilters xmi:type="diagram:HideFilter" uid="_SiufAJTyEem96Zo5oiE05Q"/>
+          <ownedStyle xmi:type="diagram:Dot" uid="_gARbgpTtEem96Zo5oiE05Q" showIcon="false">
+            <description xmi:type="style:DotDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.Body']/@style"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.Body']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" uid="_rstNcZTtEem96Zo5oiE05Q" name="in response : String">
+          <target xmi:type="sysadl:Pin" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ApplicationAC']/@inParameters[name='response']"/>
+          <semanticElements xmi:type="sysadl:Pin" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ApplicationAC']/@inParameters[name='response']"/>
+          <ownedStyle xmi:type="diagram:Dot" uid="_rstNcpTtEem96Zo5oiE05Q" showIcon="false" labelPosition="node">
+            <description xmi:type="style:DotDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.InParams']/@style"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.InParams']"/>
+        </ownedElements>
+      </ownedDiagramElements>
+      <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_XXfrAJTxEem96Zo5oiE05Q" name="&lt;&lt;activity>>&#xA;ControllerAC">
+        <target xmi:type="sysadl:ActivityDef" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ControllerAC']"/>
+        <semanticElements xmi:type="sysadl:ActivityDef" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ControllerAC']"/>
+        <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
+        <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
+        <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
+        <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="_TC2UEZTzEempY_XZeYUjJw" iconPath="/org.sysadl.viewpoints/icons/Activity.gif" borderSize="1" borderSizeComputationExpression="1" backgroundStyle="GradientTopToBottom" foregroundColor="114,159,207">
+          <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@conditionnalStyles.0/@style"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']"/>
+        <ownedElements xmi:type="diagram:DNodeListElement" uid="_XYPR45TxEem96Zo5oiE05Q" name="Open Activity Diagram" visible="false">
+          <target xmi:type="sysadl:ActivityBody" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ControllerAC']/@body"/>
+          <semanticElements xmi:type="sysadl:ActivityBody" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ControllerAC']/@body"/>
+          <graphicalFilters xmi:type="diagram:HideFilter" uid="_QboPoJTyEem96Zo5oiE05Q"/>
+          <ownedStyle xmi:type="diagram:Dot" uid="_XYPR5JTxEem96Zo5oiE05Q" showIcon="false">
+            <description xmi:type="style:DotDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.Body']/@style"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.Body']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" uid="_li9EIZTxEem96Zo5oiE05Q" name="in request : String">
+          <target xmi:type="sysadl:Pin" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ControllerAC']/@inParameters[name='request']"/>
+          <semanticElements xmi:type="sysadl:Pin" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ControllerAC']/@inParameters[name='request']"/>
+          <ownedStyle xmi:type="diagram:Dot" uid="_li9rMJTxEem96Zo5oiE05Q" showIcon="false" labelPosition="node">
+            <description xmi:type="style:DotDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.InParams']/@style"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.InParams']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" uid="_p4dr1JTxEem96Zo5oiE05Q" name="in accelerometer : Real">
+          <target xmi:type="sysadl:Pin" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ControllerAC']/@inParameters[name='accelerometer']"/>
+          <semanticElements xmi:type="sysadl:Pin" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ControllerAC']/@inParameters[name='accelerometer']"/>
+          <ownedStyle xmi:type="diagram:Dot" uid="_p4dr1ZTxEem96Zo5oiE05Q" showIcon="false" labelPosition="node">
+            <description xmi:type="style:DotDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.InParams']/@style"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.InParams']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" uid="_qrx_L5TxEem96Zo5oiE05Q" name="in temperature : Real">
+          <target xmi:type="sysadl:Pin" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ControllerAC']/@inParameters[name='temperature']"/>
+          <semanticElements xmi:type="sysadl:Pin" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ControllerAC']/@inParameters[name='temperature']"/>
+          <ownedStyle xmi:type="diagram:Dot" uid="_qrx_MJTxEem96Zo5oiE05Q" showIcon="false" labelPosition="node">
+            <description xmi:type="style:DotDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.InParams']/@style"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.InParams']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" uid="_rmRRgJTxEem96Zo5oiE05Q" name="in heartRate : Real">
+          <target xmi:type="sysadl:Pin" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ControllerAC']/@inParameters[name='heartRate']"/>
+          <semanticElements xmi:type="sysadl:Pin" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ControllerAC']/@inParameters[name='heartRate']"/>
+          <ownedStyle xmi:type="diagram:Dot" uid="_rmRRgZTxEem96Zo5oiE05Q" showIcon="false" labelPosition="node">
+            <description xmi:type="style:DotDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.InParams']/@style"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.InParams']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" uid="_tCEhIZTxEem96Zo5oiE05Q" name="out response : String">
+          <target xmi:type="sysadl:Pin" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ControllerAC']/@outParameters[name='response']"/>
+          <semanticElements xmi:type="sysadl:Pin" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='ControllerAC']/@outParameters[name='response']"/>
+          <ownedStyle xmi:type="diagram:Dot" uid="_tCEhIpTxEem96Zo5oiE05Q" showIcon="false">
+            <description xmi:type="style:DotDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.OutParams']/@style"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.OutParams']"/>
+        </ownedElements>
+      </ownedDiagramElements>
+      <ownedDiagramElements xmi:type="diagram:DNodeList" uid="__nITgJT4EempY_XZeYUjJw" name="&lt;&lt;activity>>&#xA;StorageAC">
+        <target xmi:type="sysadl:ActivityDef" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='StorageAC']"/>
+        <semanticElements xmi:type="sysadl:ActivityDef" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='StorageAC']"/>
+        <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
+        <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
+        <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
+        <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="__njxUJT4EempY_XZeYUjJw" iconPath="/org.sysadl.viewpoints/icons/Activity.gif" borderSize="1" borderSizeComputationExpression="1" backgroundStyle="GradientTopToBottom" foregroundColor="114,159,207">
+          <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@conditionnalStyles.0/@style"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']"/>
+        <ownedElements xmi:type="diagram:DNodeListElement" uid="__oMqiZT4EempY_XZeYUjJw" name="Open Activity Diagram" visible="false">
+          <target xmi:type="sysadl:ActivityBody" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='StorageAC']/@body"/>
+          <semanticElements xmi:type="sysadl:ActivityBody" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='StorageAC']/@body"/>
+          <graphicalFilters xmi:type="diagram:HideFilter" uid="_hg0KwJT5EempY_XZeYUjJw"/>
+          <ownedStyle xmi:type="diagram:Dot" uid="__oMqipT4EempY_XZeYUjJw" showIcon="false">
+            <description xmi:type="style:DotDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.Body']/@style"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.Body']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" uid="_dphJGZT5EempY_XZeYUjJw" name="in dataIn : String">
+          <target xmi:type="sysadl:Pin" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='StorageAC']/@inParameters[name='dataIn']"/>
+          <semanticElements xmi:type="sysadl:Pin" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='StorageAC']/@inParameters[name='dataIn']"/>
+          <ownedStyle xmi:type="diagram:Dot" uid="_dphJGpT5EempY_XZeYUjJw" showIcon="false" labelPosition="node">
+            <description xmi:type="style:DotDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.InParams']/@style"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.InParams']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" uid="_fdwG5pT5EempY_XZeYUjJw" name="out dataOut : String">
+          <target xmi:type="sysadl:Pin" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='StorageAC']/@outParameters[name='dataOut']"/>
+          <semanticElements xmi:type="sysadl:Pin" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='StorageAC']/@outParameters[name='dataOut']"/>
+          <ownedStyle xmi:type="diagram:Dot" uid="_fdwG55T5EempY_XZeYUjJw" showIcon="false">
+            <description xmi:type="style:DotDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.OutParams']/@style"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer/@containerMappings[name='BDD.Behavior.Self']/@subContainerMappings[name='BDD.Activity']/@subNodeMappings[name='BDD.Activity.OutParams']"/>
+        </ownedElements>
+      </ownedDiagramElements>
+    </ownedDiagramElements>
+    <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']"/>
+    <filterVariableHistory xmi:type="diagram:FilterVariableHistory" uid="_QR0bEJTsEem96Zo5oiE05Q"/>
+    <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer"/>
+    <target xmi:type="sysadl:Package" href="AngelWristband.sysadl#//@packages[name='Components']"/>
   </diagram:DSemanticDiagram>
 </xmi:XMI>

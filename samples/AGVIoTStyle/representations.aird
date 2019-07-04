@@ -5538,7 +5538,7 @@
             <styles xmi:type="notation:FilteringStyle" xmi:id="_HcXwQ4Y5EemgIrbIYKSlAg"/>
           </children>
           <styles xmi:type="notation:ShapeStyle" xmi:id="_HcXJMYY5EemgIrbIYKSlAg" fontName="Segoe UI" fontHeight="8"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_HcXJMoY5EemgIrbIYKSlAg" x="112" y="14" width="1508" height="1011"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_HcXJMoY5EemgIrbIYKSlAg" x="112" y="21" width="1508" height="1011"/>
         </children>
         <styles xmi:type="notation:DiagramStyle" xmi:id="_HcWiIoY5EemgIrbIYKSlAg"/>
         <edges xmi:type="notation:Edge" xmi:id="_cyyFkIcoEem84bT2jU50Eg" type="4001" element="_cyTkcIcoEem84bT2jU50Eg" source="_Jth6kIY5EemgIrbIYKSlAg" target="_WSSJsIY7EemgIrbIYKSlAg">
@@ -8730,7 +8730,7 @@
                 <styles xmi:type="notation:FilteringStyle" xmi:id="_RBYEkpBeEemkffXYSj6CdA"/>
               </children>
               <styles xmi:type="notation:ShapeStyle" xmi:id="_RA7_sZBeEemkffXYSj6CdA" fontName="Segoe UI" fontHeight="8"/>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_RA7_spBeEemkffXYSj6CdA" x="465" y="478" width="143"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_RA7_spBeEemkffXYSj6CdA" x="465" y="463" width="143"/>
             </children>
             <children xmi:type="notation:Node" xmi:id="_sl1s4JBjEemkffXYSj6CdA" type="3009" element="_sjQ6AJBjEemkffXYSj6CdA">
               <children xmi:type="notation:Node" xmi:id="_sl1s45BjEemkffXYSj6CdA" type="5004"/>
@@ -8739,7 +8739,7 @@
                 <styles xmi:type="notation:FilteringStyle" xmi:id="_sl1s5pBjEemkffXYSj6CdA"/>
               </children>
               <styles xmi:type="notation:ShapeStyle" xmi:id="_sl1s4ZBjEemkffXYSj6CdA" fontName="Segoe UI" fontHeight="8"/>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_sl1s4pBjEemkffXYSj6CdA" x="739" y="478"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_sl1s4pBjEemkffXYSj6CdA" x="616" y="463"/>
             </children>
             <children xmi:type="notation:Node" xmi:id="_wKmNEJBjEemkffXYSj6CdA" type="3009" element="_wKFPsJBjEemkffXYSj6CdA">
               <children xmi:type="notation:Node" xmi:id="_wKm0IJBjEemkffXYSj6CdA" type="5004"/>
@@ -8748,7 +8748,7 @@
                 <styles xmi:type="notation:FilteringStyle" xmi:id="_wKm0I5BjEemkffXYSj6CdA"/>
               </children>
               <styles xmi:type="notation:ShapeStyle" xmi:id="_wKmNEZBjEemkffXYSj6CdA" fontName="Segoe UI" fontHeight="8"/>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_wKmNEpBjEemkffXYSj6CdA" x="618" y="478"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_wKmNEpBjEemkffXYSj6CdA" x="730" y="463"/>
             </children>
             <children xmi:type="notation:Node" xmi:id="_C_MNIJBnEemkffXYSj6CdA" type="3009" element="_C-mXQJBnEemkffXYSj6CdA">
               <children xmi:type="notation:Node" xmi:id="_C_M0MJBnEemkffXYSj6CdA" type="5004"/>
@@ -8757,7 +8757,7 @@
                 <styles xmi:type="notation:FilteringStyle" xmi:id="_C_M0M5BnEemkffXYSj6CdA"/>
               </children>
               <styles xmi:type="notation:ShapeStyle" xmi:id="_C_MNIZBnEemkffXYSj6CdA" fontName="Segoe UI" fontHeight="8"/>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_C_MNIpBnEemkffXYSj6CdA" x="863" y="478"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_C_MNIpBnEemkffXYSj6CdA" x="961" y="463"/>
             </children>
             <children xmi:type="notation:Node" xmi:id="_HZOIcJBnEemkffXYSj6CdA" type="3009" element="_HY-34JBnEemkffXYSj6CdA">
               <children xmi:type="notation:Node" xmi:id="_HZOvgJBnEemkffXYSj6CdA" type="5004"/>
@@ -8766,7 +8766,7 @@
                 <styles xmi:type="notation:FilteringStyle" xmi:id="_HZPWkpBnEemkffXYSj6CdA"/>
               </children>
               <styles xmi:type="notation:ShapeStyle" xmi:id="_HZOIcZBnEemkffXYSj6CdA" fontName="Segoe UI" fontHeight="8"/>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_HZOIcpBnEemkffXYSj6CdA" x="466" y="554"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_HZOIcpBnEemkffXYSj6CdA" x="466" y="539"/>
             </children>
             <children xmi:type="notation:Node" xmi:id="_MgrxgJBnEemkffXYSj6CdA" type="3009" element="_MgKNEJBnEemkffXYSj6CdA">
               <children xmi:type="notation:Node" xmi:id="_MgsYkJBnEemkffXYSj6CdA" type="5004"/>
@@ -8775,7 +8775,7 @@
                 <styles xmi:type="notation:FilteringStyle" xmi:id="_MgsYk5BnEemkffXYSj6CdA"/>
               </children>
               <styles xmi:type="notation:ShapeStyle" xmi:id="_MgrxgZBnEemkffXYSj6CdA" fontName="Segoe UI" fontHeight="8"/>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_MgrxgpBnEemkffXYSj6CdA" x="613" y="554"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_MgrxgpBnEemkffXYSj6CdA" x="613" y="539"/>
             </children>
             <children xmi:type="notation:Node" xmi:id="_qjJfkJBnEemkffXYSj6CdA" type="3009" element="_qi-gcJBnEemkffXYSj6CdA">
               <children xmi:type="notation:Node" xmi:id="_qjKGoJBnEemkffXYSj6CdA" type="5004"/>
@@ -8784,7 +8784,7 @@
                 <styles xmi:type="notation:FilteringStyle" xmi:id="_qjKGo5BnEemkffXYSj6CdA"/>
               </children>
               <styles xmi:type="notation:ShapeStyle" xmi:id="_qjJfkZBnEemkffXYSj6CdA" fontName="Segoe UI" fontHeight="8"/>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_qjJfkpBnEemkffXYSj6CdA" x="466" y="627"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_qjJfkpBnEemkffXYSj6CdA" x="466" y="612"/>
             </children>
             <children xmi:type="notation:Node" xmi:id="_Xw6ogZBqEemkffXYSj6CdA" type="3009" element="_XwlREJBqEemkffXYSj6CdA">
               <children xmi:type="notation:Node" xmi:id="_XxDyMJBqEemkffXYSj6CdA" type="5004"/>
@@ -8793,7 +8793,7 @@
                 <styles xmi:type="notation:FilteringStyle" xmi:id="_XxDyM5BqEemkffXYSj6CdA"/>
               </children>
               <styles xmi:type="notation:ShapeStyle" xmi:id="_Xw6ogpBqEemkffXYSj6CdA" fontName="Segoe UI" fontHeight="8"/>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Xw6og5BqEemkffXYSj6CdA" x="464" y="701"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Xw6og5BqEemkffXYSj6CdA" x="464" y="686"/>
             </children>
             <children xmi:type="notation:Node" xmi:id="_iEHWYJBqEemkffXYSj6CdA" type="3009" element="_iDtGsJBqEemkffXYSj6CdA">
               <children xmi:type="notation:Node" xmi:id="_iEH9cJBqEemkffXYSj6CdA" type="5004"/>
@@ -8802,7 +8802,7 @@
                 <styles xmi:type="notation:FilteringStyle" xmi:id="_iEH9c5BqEemkffXYSj6CdA"/>
               </children>
               <styles xmi:type="notation:ShapeStyle" xmi:id="_iEHWYZBqEemkffXYSj6CdA" fontName="Segoe UI" fontHeight="8"/>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_iEHWYpBqEemkffXYSj6CdA" x="466" y="770"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_iEHWYpBqEemkffXYSj6CdA" x="466" y="755"/>
             </children>
             <children xmi:type="notation:Node" xmi:id="__1YmwJBqEemkffXYSj6CdA" type="3009" element="__1MZgJBqEemkffXYSj6CdA">
               <children xmi:type="notation:Node" xmi:id="__1ZN0JBqEemkffXYSj6CdA" type="5004"/>
@@ -8811,7 +8811,7 @@
                 <styles xmi:type="notation:FilteringStyle" xmi:id="__1ZN05BqEemkffXYSj6CdA"/>
               </children>
               <styles xmi:type="notation:ShapeStyle" xmi:id="__1YmwZBqEemkffXYSj6CdA" fontName="Segoe UI" fontHeight="8"/>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="__1YmwpBqEemkffXYSj6CdA" x="818" y="627"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="__1YmwpBqEemkffXYSj6CdA" x="815" y="612"/>
             </children>
             <children xmi:type="notation:Node" xmi:id="_HTZQcJBrEemkffXYSj6CdA" type="3009" element="_HS_n0JBrEemkffXYSj6CdA">
               <children xmi:type="notation:Node" xmi:id="_HTZQc5BrEemkffXYSj6CdA" type="5004"/>
@@ -8820,7 +8820,7 @@
                 <styles xmi:type="notation:FilteringStyle" xmi:id="_HTZQdpBrEemkffXYSj6CdA"/>
               </children>
               <styles xmi:type="notation:ShapeStyle" xmi:id="_HTZQcZBrEemkffXYSj6CdA" fontName="Segoe UI" fontHeight="8"/>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_HTZQcpBrEemkffXYSj6CdA" x="886" y="701"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_HTZQcpBrEemkffXYSj6CdA" x="886" y="686"/>
             </children>
             <children xmi:type="notation:Node" xmi:id="_bycukJBrEemkffXYSj6CdA" type="3009" element="_bySWgJBrEemkffXYSj6CdA">
               <children xmi:type="notation:Node" xmi:id="_bycuk5BrEemkffXYSj6CdA" type="5004"/>
@@ -8829,7 +8829,7 @@
                 <styles xmi:type="notation:FilteringStyle" xmi:id="_byculpBrEemkffXYSj6CdA"/>
               </children>
               <styles xmi:type="notation:ShapeStyle" xmi:id="_bycukZBrEemkffXYSj6CdA" fontName="Segoe UI" fontHeight="8"/>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_bycukpBrEemkffXYSj6CdA" x="739" y="554"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_bycukpBrEemkffXYSj6CdA" x="739" y="539"/>
             </children>
             <children xmi:type="notation:Node" xmi:id="_h6fEIJBrEemkffXYSj6CdA" type="3009" element="_h6Lh0JBrEemkffXYSj6CdA">
               <children xmi:type="notation:Node" xmi:id="_h6fEI5BrEemkffXYSj6CdA" type="5004"/>
@@ -8838,73 +8838,67 @@
                 <styles xmi:type="notation:FilteringStyle" xmi:id="_h6fEJpBrEemkffXYSj6CdA"/>
               </children>
               <styles xmi:type="notation:ShapeStyle" xmi:id="_h6fEIZBrEemkffXYSj6CdA" fontName="Segoe UI" fontHeight="8"/>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_h6fEIpBrEemkffXYSj6CdA" x="464" y="842"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_h6fEIpBrEemkffXYSj6CdA" x="464" y="827"/>
             </children>
             <children xmi:type="notation:Node" xmi:id="_5AosYJKiEemfHZfnt4wK6w" type="3009" element="_49YkEJKiEemfHZfnt4wK6w">
               <children xmi:type="notation:Node" xmi:id="_5A4kAJKiEemfHZfnt4wK6w" type="5004"/>
               <children xmi:type="notation:Node" xmi:id="_5A5LEJKiEemfHZfnt4wK6w" type="7003">
-                <children xmi:type="notation:Node" xmi:id="_5A-qoJKiEemfHZfnt4wK6w" type="3010" element="_4_wioJKiEemfHZfnt4wK6w">
-                  <styles xmi:type="notation:FontStyle" xmi:id="_5A-qoZKiEemfHZfnt4wK6w" fontName="Segoe UI" fontHeight="8"/>
-                  <layoutConstraint xmi:type="notation:Location" xmi:id="_5A-qopKiEemfHZfnt4wK6w"/>
-                </children>
                 <styles xmi:type="notation:SortingStyle" xmi:id="_5A5LEZKiEemfHZfnt4wK6w"/>
                 <styles xmi:type="notation:FilteringStyle" xmi:id="_5A5LEpKiEemfHZfnt4wK6w"/>
               </children>
               <styles xmi:type="notation:ShapeStyle" xmi:id="_5AosYZKiEemfHZfnt4wK6w" fontName="Segoe UI" fontHeight="8"/>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_5AosYpKiEemfHZfnt4wK6w" x="1066" y="596"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_5AosYpKiEemfHZfnt4wK6w" x="824" y="755"/>
             </children>
             <children xmi:type="notation:Node" xmi:id="_5A5yIJKiEemfHZfnt4wK6w" type="3009" element="_4_tfUJKiEemfHZfnt4wK6w">
               <children xmi:type="notation:Node" xmi:id="_5A6ZMJKiEemfHZfnt4wK6w" type="5004"/>
               <children xmi:type="notation:Node" xmi:id="_5A6ZMZKiEemfHZfnt4wK6w" type="7003">
-                <children xmi:type="notation:Node" xmi:id="_5A-qo5KiEemfHZfnt4wK6w" type="3010" element="_4_66sJKiEemfHZfnt4wK6w">
-                  <styles xmi:type="notation:FontStyle" xmi:id="_5A-qpJKiEemfHZfnt4wK6w" fontName="Segoe UI" fontHeight="8"/>
-                  <layoutConstraint xmi:type="notation:Location" xmi:id="_5A-qpZKiEemfHZfnt4wK6w"/>
-                </children>
-                <children xmi:type="notation:Node" xmi:id="_5A_RsJKiEemfHZfnt4wK6w" type="3010" element="_5AErsJKiEemfHZfnt4wK6w">
-                  <styles xmi:type="notation:FontStyle" xmi:id="_5A_RsZKiEemfHZfnt4wK6w" fontName="Segoe UI" fontHeight="8"/>
-                  <layoutConstraint xmi:type="notation:Location" xmi:id="_5A_RspKiEemfHZfnt4wK6w"/>
-                </children>
                 <styles xmi:type="notation:SortingStyle" xmi:id="_5A6ZMpKiEemfHZfnt4wK6w"/>
                 <styles xmi:type="notation:FilteringStyle" xmi:id="_5A6ZM5KiEemfHZfnt4wK6w"/>
               </children>
               <styles xmi:type="notation:ShapeStyle" xmi:id="_5A5yIZKiEemfHZfnt4wK6w" fontName="Segoe UI" fontHeight="8"/>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_5A5yIpKiEemfHZfnt4wK6w" x="828" y="778"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_5A5yIpKiEemfHZfnt4wK6w" x="940" y="755"/>
             </children>
             <children xmi:type="notation:Node" xmi:id="_5A6ZNJKiEemfHZfnt4wK6w" type="3009" element="_4_utcZKiEemfHZfnt4wK6w">
               <children xmi:type="notation:Node" xmi:id="_5A7AQJKiEemfHZfnt4wK6w" type="5004"/>
               <children xmi:type="notation:Node" xmi:id="_5A7AQZKiEemfHZfnt4wK6w" type="7003">
-                <children xmi:type="notation:Node" xmi:id="_5A_4wJKiEemfHZfnt4wK6w" type="3010" element="_5AF50JKiEemfHZfnt4wK6w">
-                  <styles xmi:type="notation:FontStyle" xmi:id="_5A_4wZKiEemfHZfnt4wK6w" fontName="Segoe UI" fontHeight="8"/>
-                  <layoutConstraint xmi:type="notation:Location" xmi:id="_5A_4wpKiEemfHZfnt4wK6w"/>
-                </children>
-                <children xmi:type="notation:Node" xmi:id="_5A_4w5KiEemfHZfnt4wK6w" type="3010" element="_5AHH8JKiEemfHZfnt4wK6w">
-                  <styles xmi:type="notation:FontStyle" xmi:id="_5A_4xJKiEemfHZfnt4wK6w" fontName="Segoe UI" fontHeight="8"/>
-                  <layoutConstraint xmi:type="notation:Location" xmi:id="_5A_4xZKiEemfHZfnt4wK6w"/>
-                </children>
                 <styles xmi:type="notation:SortingStyle" xmi:id="_5A7AQpKiEemfHZfnt4wK6w"/>
                 <styles xmi:type="notation:FilteringStyle" xmi:id="_5A7AQ5KiEemfHZfnt4wK6w"/>
               </children>
               <styles xmi:type="notation:ShapeStyle" xmi:id="_5A6ZNZKiEemfHZfnt4wK6w" fontName="Segoe UI" fontHeight="8"/>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_5A6ZNpKiEemfHZfnt4wK6w" x="1010" y="778"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_5A6ZNpKiEemfHZfnt4wK6w" x="824" y="848"/>
             </children>
             <children xmi:type="notation:Node" xmi:id="_5A7ARJKiEemfHZfnt4wK6w" type="3009" element="_4_vUgpKiEemfHZfnt4wK6w">
               <children xmi:type="notation:Node" xmi:id="_5A7AR5KiEemfHZfnt4wK6w" type="5004"/>
               <children xmi:type="notation:Node" xmi:id="_5A7nUJKiEemfHZfnt4wK6w" type="7003">
-                <children xmi:type="notation:Node" xmi:id="_5BAf0JKiEemfHZfnt4wK6w" type="3010" element="_5AHvAZKiEemfHZfnt4wK6w">
-                  <styles xmi:type="notation:FontStyle" xmi:id="_5BAf0ZKiEemfHZfnt4wK6w" fontName="Segoe UI" fontHeight="8"/>
-                  <layoutConstraint xmi:type="notation:Location" xmi:id="_5BAf0pKiEemfHZfnt4wK6w"/>
-                </children>
                 <styles xmi:type="notation:SortingStyle" xmi:id="_5A7nUZKiEemfHZfnt4wK6w"/>
                 <styles xmi:type="notation:FilteringStyle" xmi:id="_5A7nUpKiEemfHZfnt4wK6w"/>
               </children>
               <styles xmi:type="notation:ShapeStyle" xmi:id="_5A7ARZKiEemfHZfnt4wK6w" fontName="Segoe UI" fontHeight="8"/>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_5A7ARpKiEemfHZfnt4wK6w" x="1038" y="478"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_5A7ARpKiEemfHZfnt4wK6w" x="940" y="848"/>
+            </children>
+            <children xmi:type="notation:Node" xmi:id="_fnEQUJT4EempY_XZeYUjJw" type="3009" element="_flTVwJT4EempY_XZeYUjJw">
+              <children xmi:type="notation:Node" xmi:id="_fnJv4JT4EempY_XZeYUjJw" type="5004"/>
+              <children xmi:type="notation:Node" xmi:id="_fnK-AJT4EempY_XZeYUjJw" type="7003">
+                <styles xmi:type="notation:SortingStyle" xmi:id="_fnK-AZT4EempY_XZeYUjJw"/>
+                <styles xmi:type="notation:FilteringStyle" xmi:id="_fnK-ApT4EempY_XZeYUjJw"/>
+              </children>
+              <styles xmi:type="notation:ShapeStyle" xmi:id="_fnEQUZT4EempY_XZeYUjJw" fontName="Segoe UI" fontHeight="8"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_fnEQUpT4EempY_XZeYUjJw" x="1052" y="799"/>
+            </children>
+            <children xmi:type="notation:Node" xmi:id="_AWuIIJUfEempY_XZeYUjJw" type="3009" element="_AVpKEJUfEempY_XZeYUjJw">
+              <children xmi:type="notation:Node" xmi:id="_AWuII5UfEempY_XZeYUjJw" type="5004"/>
+              <children xmi:type="notation:Node" xmi:id="_AWuIJJUfEempY_XZeYUjJw" type="7003">
+                <styles xmi:type="notation:SortingStyle" xmi:id="_AWuIJZUfEempY_XZeYUjJw"/>
+                <styles xmi:type="notation:FilteringStyle" xmi:id="_AWuIJpUfEempY_XZeYUjJw"/>
+              </children>
+              <styles xmi:type="notation:ShapeStyle" xmi:id="_AWuIIZUfEempY_XZeYUjJw" fontName="Segoe UI" fontHeight="8"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_AWuIIpUfEempY_XZeYUjJw" x="845" y="463"/>
             </children>
             <styles xmi:type="notation:SortingStyle" xmi:id="_hYzJAofZEemneMbpj00npQ"/>
             <styles xmi:type="notation:FilteringStyle" xmi:id="_hYzJA4fZEemneMbpj00npQ"/>
           </children>
           <styles xmi:type="notation:ShapeStyle" xmi:id="_hYveoYfZEemneMbpj00npQ" fontName="Segoe UI" fontHeight="8"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hYveoofZEemneMbpj00npQ" x="469" y="28" width="1193" height="956"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hYveoofZEemneMbpj00npQ" x="469" y="28" width="1179" height="956"/>
         </children>
         <styles xmi:type="notation:DiagramStyle" xmi:id="_hYtCYofZEemneMbpj00npQ"/>
         <edges xmi:type="notation:Edge" xmi:id="_On9mkIfhEemvJMQHHk4VWw" type="4001" element="_Omp_AIfhEemvJMQHHk4VWw" source="_OrbcMIffEemzs_w7WFC3GA" target="_bGlVUIffEemzs_w7WFC3GA">
@@ -9178,7 +9172,7 @@
       <ownedDiagramElements xmi:type="diagram:DNodeContainer" uid="_hWVD0IfZEemneMbpj00npQ" name="&lt;&lt;abstract>>&#xA;&lt;&lt;Component Def>> &#xA;SensorCP [1..*] " incomingEdges="_7Gf2wJBfEemkffXYSj6CdA _XD_cbJBgEemkffXYSj6CdA">
         <target xmi:type="sysadl:AbstractComponentDef" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='SensorCP']"/>
         <semanticElements xmi:type="sysadl:AbstractComponentDef" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='SensorCP']"/>
-        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_hWifMIfZEemneMbpj00npQ" name="out SensorOPT: any [1,*] " width="2" height="2" resizeKind="NSEW">
+        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_hWifMIfZEemneMbpj00npQ" name="out SensorOPT: any [1..*] " width="2" height="2" resizeKind="NSEW">
           <target xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='SensorCP']/@ports[name='SensorOPT']"/>
           <semanticElements xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='SensorCP']/@ports[name='SensorOPT']"/>
           <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
@@ -9200,7 +9194,7 @@
       <ownedDiagramElements xmi:type="diagram:DNodeContainer" uid="_hWgC8IfZEemneMbpj00npQ" name="&lt;&lt;abstract>>&#xA;&lt;&lt;Component Def>> &#xA;ActuatorCP [0..*] " incomingEdges="_EWzkgJBgEemkffXYSj6CdA _0eAqcpBgEemkffXYSj6CdA">
         <target xmi:type="sysadl:AbstractComponentDef" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='ActuatorCP']"/>
         <semanticElements xmi:type="sysadl:AbstractComponentDef" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='ActuatorCP']"/>
-        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_hWteUIfZEemneMbpj00npQ" name="in ActuatorIPT: any [1,*] " width="2" height="2" resizeKind="NSEW">
+        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_hWteUIfZEemneMbpj00npQ" name="in ActuatorIPT: any [1..*] " width="2" height="2" resizeKind="NSEW">
           <target xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='ActuatorCP']/@ports[name='ActuatorIPT']"/>
           <semanticElements xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='ActuatorCP']/@ports[name='ActuatorIPT']"/>
           <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
@@ -9222,7 +9216,7 @@
       <ownedDiagramElements xmi:type="diagram:DNodeContainer" uid="_hWgqAIfZEemneMbpj00npQ" name="&lt;&lt;abstract>>&#xA;&lt;&lt;Component Def>> &#xA;DeviceCP [1..*] " outgoingEdges="_DpOs1JBgEemkffXYSj6CdA _EWzkgJBgEemkffXYSj6CdA _KxRGhJBgEemkffXYSj6CdA _OIGffJBgEemkffXYSj6CdA _XD_cbJBgEemkffXYSj6CdA" incomingEdges="_y3X5MJBfEemkffXYSj6CdA">
         <target xmi:type="sysadl:AbstractComponentDef" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='DeviceCP']"/>
         <semanticElements xmi:type="sysadl:AbstractComponentDef" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='DeviceCP']"/>
-        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_hWuFYIfZEemneMbpj00npQ" name="in SensorIPT: any [0,*] " width="2" height="2" resizeKind="NSEW">
+        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_hWuFYIfZEemneMbpj00npQ" name="in SensorIPT: any [0..*] " width="2" height="2" resizeKind="NSEW">
           <target xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='DeviceCP']/@ports[name='SensorIPT']"/>
           <semanticElements xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='DeviceCP']/@ports[name='SensorIPT']"/>
           <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
@@ -9233,7 +9227,7 @@
           </ownedStyle>
           <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractComponent']/@borderedNodeMappings[name='org.sysadl.style.component.ports']"/>
         </ownedBorderedNodes>
-        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_hWuscofZEemneMbpj00npQ" name="out DeviceOPT: any [0,*] " width="2" height="2" resizeKind="NSEW">
+        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_hWuscofZEemneMbpj00npQ" name="out DeviceOPT: any [0..*] " width="2" height="2" resizeKind="NSEW">
           <target xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='DeviceCP']/@ports[name='DeviceOPT']"/>
           <semanticElements xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='DeviceCP']/@ports[name='DeviceOPT']"/>
           <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
@@ -9244,7 +9238,7 @@
           </ownedStyle>
           <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractComponent']/@borderedNodeMappings[name='org.sysadl.style.component.ports']"/>
         </ownedBorderedNodes>
-        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_hWvTgofZEemneMbpj00npQ" name="out ActuatorOPT: any [0,*] " width="2" height="2" resizeKind="NSEW">
+        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_hWvTgofZEemneMbpj00npQ" name="out ActuatorOPT: any [0..*] " width="2" height="2" resizeKind="NSEW">
           <target xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='DeviceCP']/@ports[name='ActuatorOPT']"/>
           <semanticElements xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='DeviceCP']/@ports[name='ActuatorOPT']"/>
           <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
@@ -9255,7 +9249,7 @@
           </ownedStyle>
           <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractComponent']/@borderedNodeMappings[name='org.sysadl.style.component.ports']"/>
         </ownedBorderedNodes>
-        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_VEbO0I3jEemJhcr-7oh8tw" name="in ServiceIPT: any [0,*] " width="2" height="2" resizeKind="NSEW">
+        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_VEbO0I3jEemJhcr-7oh8tw" name="in ServiceIPT: any [0..*] " width="2" height="2" resizeKind="NSEW">
           <target xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='DeviceCP']/@ports[name='ServiceIPT']"/>
           <semanticElements xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='DeviceCP']/@ports[name='ServiceIPT']"/>
           <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
@@ -9277,7 +9271,7 @@
       <ownedDiagramElements xmi:type="diagram:DNodeContainer" uid="_hWhREIfZEemneMbpj00npQ" name="&lt;&lt;abstract>>&#xA;&lt;&lt;Component Def>> &#xA;GatewayCP [0..*] " outgoingEdges="_L39o1JBgEemkffXYSj6CdA" incomingEdges="_q9J25I-qEemy4qPEUdlWyQ _OIGffJBgEemkffXYSj6CdA">
         <target xmi:type="sysadl:AbstractComponentDef" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='GatewayCP']"/>
         <semanticElements xmi:type="sysadl:AbstractComponentDef" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='GatewayCP']"/>
-        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_hWy94IfZEemneMbpj00npQ" name="in DeviceIPT: any [1,*] " width="2" height="2" resizeKind="NSEW">
+        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_hWy94IfZEemneMbpj00npQ" name="in DeviceIPT: any [1..*] " width="2" height="2" resizeKind="NSEW">
           <target xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='GatewayCP']/@ports[name='DeviceIPT']"/>
           <semanticElements xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='GatewayCP']/@ports[name='DeviceIPT']"/>
           <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
@@ -9288,7 +9282,7 @@
           </ownedStyle>
           <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractComponent']/@borderedNodeMappings[name='org.sysadl.style.component.ports']"/>
         </ownedBorderedNodes>
-        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_hW0MAofZEemneMbpj00npQ" name="in ServiceIPT: any [0,*] " width="2" height="2" resizeKind="NSEW">
+        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_hW0MAofZEemneMbpj00npQ" name="in ServiceIPT: any [0..*] " width="2" height="2" resizeKind="NSEW">
           <target xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='GatewayCP']/@ports[name='ServiceIPT']"/>
           <semanticElements xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='GatewayCP']/@ports[name='ServiceIPT']"/>
           <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
@@ -9299,7 +9293,7 @@
           </ownedStyle>
           <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractComponent']/@borderedNodeMappings[name='org.sysadl.style.component.ports']"/>
         </ownedBorderedNodes>
-        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_hW0zEofZEemneMbpj00npQ" name="out ServiceOPT: any [1,*] " width="2" height="2" resizeKind="NSEW">
+        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_hW0zEofZEemneMbpj00npQ" name="out ServiceOPT: any [1..*] " width="2" height="2" resizeKind="NSEW">
           <target xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='GatewayCP']/@ports[name='ServiceOPT']"/>
           <semanticElements xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='GatewayCP']/@ports[name='ServiceOPT']"/>
           <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
@@ -9321,7 +9315,7 @@
       <ownedDiagramElements xmi:type="diagram:DNodeContainer" uid="_hWhRE4fZEemneMbpj00npQ" name="&lt;&lt;abstract>>&#xA;&lt;&lt;Component Def>> &#xA;DataStoreCP [1..*] " incomingEdges="_-WzwAI-mEema45YGrq2c_w _KxRGhJBgEemkffXYSj6CdA _L39o1JBgEemkffXYSj6CdA">
         <target xmi:type="sysadl:AbstractComponentDef" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='DataStoreCP']"/>
         <semanticElements xmi:type="sysadl:AbstractComponentDef" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='DataStoreCP']"/>
-        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_hW2BMIfZEemneMbpj00npQ" name="in DataIPT: any [1,*] " width="2" height="2" resizeKind="NSEW">
+        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_hW2BMIfZEemneMbpj00npQ" name="in DataIPT: any [1..*] " width="2" height="2" resizeKind="NSEW">
           <target xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='DataStoreCP']/@ports[name='DataIPT']"/>
           <semanticElements xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='DataStoreCP']/@ports[name='DataIPT']"/>
           <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
@@ -9332,7 +9326,7 @@
           </ownedStyle>
           <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractComponent']/@borderedNodeMappings[name='org.sysadl.style.component.ports']"/>
         </ownedBorderedNodes>
-        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_hW2oQYfZEemneMbpj00npQ" name="out DataOPT: any [1,*] " width="2" height="2" resizeKind="NSEW">
+        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_hW2oQYfZEemneMbpj00npQ" name="out DataOPT: any [1..*] " width="2" height="2" resizeKind="NSEW">
           <target xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='DataStoreCP']/@ports[name='DataOPT']"/>
           <semanticElements xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='DataStoreCP']/@ports[name='DataOPT']"/>
           <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
@@ -9530,7 +9524,7 @@
       <ownedDiagramElements xmi:type="diagram:DNodeContainer" uid="_v5jBsI3kEemJhcr-7oh8tw" name="&lt;&lt;abstract>>&#xA;&lt;&lt;Component Def>> &#xA;ControllerCP [0..*] " incomingEdges="_DpOs1JBgEemkffXYSj6CdA">
         <target xmi:type="sysadl:AbstractComponentDef" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='ControllerCP']"/>
         <semanticElements xmi:type="sysadl:AbstractComponentDef" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='ControllerCP']"/>
-        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_Bx0DwI3lEemJhcr-7oh8tw" name="in SensorIPT: any [0,*] " width="2" height="2" resizeKind="NSEW">
+        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_Bx0DwI3lEemJhcr-7oh8tw" name="in SensorIPT: any [0..*] " width="2" height="2" resizeKind="NSEW">
           <target xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='ControllerCP']/@ports[name='SensorIPT']"/>
           <semanticElements xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='ControllerCP']/@ports[name='SensorIPT']"/>
           <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
@@ -9541,7 +9535,7 @@
           </ownedStyle>
           <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractComponent']/@borderedNodeMappings[name='org.sysadl.style.component.ports']"/>
         </ownedBorderedNodes>
-        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_EnM8gI3lEemJhcr-7oh8tw" name="out ActuatorOPT: any [0,*] " width="2" height="2" resizeKind="NSEW">
+        <ownedBorderedNodes xmi:type="diagram:DNode" uid="_EnM8gI3lEemJhcr-7oh8tw" name="out ActuatorOPT: any [0..*] " width="2" height="2" resizeKind="NSEW">
           <target xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='ControllerCP']/@ports[name='ActuatorOPT']"/>
           <semanticElements xmi:type="sysadl:AbstractPortUse" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='ControllerCP']/@ports[name='ActuatorOPT']"/>
           <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
@@ -9591,9 +9585,9 @@
         </ownedStyle>
         <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.Invariant']"/>
       </ownedDiagramElements>
-      <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_wKFPsJBjEemkffXYSj6CdA" name="&lt;&lt;Invariant>>&#xA;ExistsPins">
-        <target xmi:type="sysadl:Invariant" href="agv.sysadl#//@styles[name='IoTStyle']/@invariants[name='ExistsPins']"/>
-        <semanticElements xmi:type="sysadl:Invariant" href="agv.sysadl#//@styles[name='IoTStyle']/@invariants[name='ExistsPins']"/>
+      <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_wKFPsJBjEemkffXYSj6CdA" name="&lt;&lt;Invariant>>&#xA;MonitoringAct">
+        <target xmi:type="sysadl:Invariant" href="agv.sysadl#//@styles[name='IoTStyle']/@invariants[name='MonitoringAct']"/>
+        <semanticElements xmi:type="sysadl:Invariant" href="agv.sysadl#//@styles[name='IoTStyle']/@invariants[name='MonitoringAct']"/>
         <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
         <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
         <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
@@ -9722,14 +9716,6 @@
           <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']"/>
-        <ownedElements xmi:type="diagram:DNodeListElement" uid="_4_wioJKiEemfHZfnt4wK6w" name="out data: any">
-          <target xmi:type="sysadl:AbstractPin" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='Monitoring']/@outParameters[name='data']"/>
-          <semanticElements xmi:type="sysadl:AbstractPin" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='Monitoring']/@outParameters[name='data']"/>
-          <ownedStyle xmi:type="diagram:Dot" uid="_4_6ToJKiEemfHZfnt4wK6w" showIcon="false" labelPosition="node">
-            <description xmi:type="style:DotDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@subNodeMappings[name='Style.AbstractActivity.OutParams']/@style"/>
-          </ownedStyle>
-          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@subNodeMappings[name='Style.AbstractActivity.OutParams']"/>
-        </ownedElements>
       </ownedDiagramElements>
       <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_4_tfUJKiEemfHZfnt4wK6w" name="&lt;&lt;abstract>>&#xA;&lt;&lt;activity>>&#xA;Analysis">
         <target xmi:type="sysadl:AbstractActivityDef" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='Analysis']"/>
@@ -9741,22 +9727,6 @@
           <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']"/>
-        <ownedElements xmi:type="diagram:DNodeListElement" uid="_4_66sJKiEemfHZfnt4wK6w" name="in data: any">
-          <target xmi:type="sysadl:AbstractPin" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='Analysis']/@inParameters[name='data']"/>
-          <semanticElements xmi:type="sysadl:AbstractPin" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='Analysis']/@inParameters[name='data']"/>
-          <ownedStyle xmi:type="diagram:Dot" uid="_5ADdkJKiEemfHZfnt4wK6w" showIcon="false" labelPosition="node">
-            <description xmi:type="style:DotDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@subNodeMappings[name='Style.AbstractActivity.InParams']/@style"/>
-          </ownedStyle>
-          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@subNodeMappings[name='Style.AbstractActivity.InParams']"/>
-        </ownedElements>
-        <ownedElements xmi:type="diagram:DNodeListElement" uid="_5AErsJKiEemfHZfnt4wK6w" name="out changeRequest: any">
-          <target xmi:type="sysadl:AbstractPin" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='Analysis']/@outParameters[name='changeRequest']"/>
-          <semanticElements xmi:type="sysadl:AbstractPin" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='Analysis']/@outParameters[name='changeRequest']"/>
-          <ownedStyle xmi:type="diagram:Dot" uid="_5AErsZKiEemfHZfnt4wK6w" showIcon="false" labelPosition="node">
-            <description xmi:type="style:DotDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@subNodeMappings[name='Style.AbstractActivity.OutParams']/@style"/>
-          </ownedStyle>
-          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@subNodeMappings[name='Style.AbstractActivity.OutParams']"/>
-        </ownedElements>
       </ownedDiagramElements>
       <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_4_utcZKiEemfHZfnt4wK6w" name="&lt;&lt;abstract>>&#xA;&lt;&lt;activity>>&#xA;Planning">
         <target xmi:type="sysadl:AbstractActivityDef" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='Planning']"/>
@@ -9768,22 +9738,6 @@
           <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']"/>
-        <ownedElements xmi:type="diagram:DNodeListElement" uid="_5AF50JKiEemfHZfnt4wK6w" name="in changeRequest: any">
-          <target xmi:type="sysadl:AbstractPin" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='Planning']/@inParameters[name='changeRequest']"/>
-          <semanticElements xmi:type="sysadl:AbstractPin" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='Planning']/@inParameters[name='changeRequest']"/>
-          <ownedStyle xmi:type="diagram:Dot" uid="_5AGg4JKiEemfHZfnt4wK6w" showIcon="false" labelPosition="node">
-            <description xmi:type="style:DotDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@subNodeMappings[name='Style.AbstractActivity.InParams']/@style"/>
-          </ownedStyle>
-          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@subNodeMappings[name='Style.AbstractActivity.InParams']"/>
-        </ownedElements>
-        <ownedElements xmi:type="diagram:DNodeListElement" uid="_5AHH8JKiEemfHZfnt4wK6w" name="out command: any">
-          <target xmi:type="sysadl:AbstractPin" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='Planning']/@outParameters[name='command']"/>
-          <semanticElements xmi:type="sysadl:AbstractPin" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='Planning']/@outParameters[name='command']"/>
-          <ownedStyle xmi:type="diagram:Dot" uid="_5AHvAJKiEemfHZfnt4wK6w" showIcon="false" labelPosition="node">
-            <description xmi:type="style:DotDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@subNodeMappings[name='Style.AbstractActivity.OutParams']/@style"/>
-          </ownedStyle>
-          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@subNodeMappings[name='Style.AbstractActivity.OutParams']"/>
-        </ownedElements>
       </ownedDiagramElements>
       <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_4_vUgpKiEemfHZfnt4wK6w" name="&lt;&lt;abstract>>&#xA;&lt;&lt;activity>>&#xA;Execution">
         <target xmi:type="sysadl:AbstractActivityDef" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='Execution']"/>
@@ -9795,14 +9749,28 @@
           <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']"/>
-        <ownedElements xmi:type="diagram:DNodeListElement" uid="_5AHvAZKiEemfHZfnt4wK6w" name="in command: any">
-          <target xmi:type="sysadl:AbstractPin" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='Execution']/@inParameters[name='command']"/>
-          <semanticElements xmi:type="sysadl:AbstractPin" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='Execution']/@inParameters[name='command']"/>
-          <ownedStyle xmi:type="diagram:Dot" uid="_5AIWEJKiEemfHZfnt4wK6w" showIcon="false" labelPosition="node">
-            <description xmi:type="style:DotDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@subNodeMappings[name='Style.AbstractActivity.InParams']/@style"/>
-          </ownedStyle>
-          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@subNodeMappings[name='Style.AbstractActivity.InParams']"/>
-        </ownedElements>
+      </ownedDiagramElements>
+      <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_flTVwJT4EempY_XZeYUjJw" name="&lt;&lt;abstract>>&#xA;&lt;&lt;activity>>&#xA;Knowledge">
+        <target xmi:type="sysadl:AbstractActivityDef" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='Knowledge']"/>
+        <semanticElements xmi:type="sysadl:AbstractActivityDef" href="agv.sysadl#//@styles[name='IoTStyle']/@definitions[name='Knowledge']"/>
+        <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
+        <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
+        <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
+        <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="_fldGwJT4EempY_XZeYUjJw" showIcon="false" borderSize="1" borderSizeComputationExpression="1" backgroundStyle="GradientTopToBottom" foregroundColor="126,177,254">
+          <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']/@style"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractActivity']"/>
+      </ownedDiagramElements>
+      <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_AVpKEJUfEempY_XZeYUjJw" name="&lt;&lt;Invariant>>&#xA;KnowledgeAct">
+        <target xmi:type="sysadl:Invariant" href="agv.sysadl#//@styles[name='IoTStyle']/@invariants[name='KnowledgeAct']"/>
+        <semanticElements xmi:type="sysadl:Invariant" href="agv.sysadl#//@styles[name='IoTStyle']/@invariants[name='KnowledgeAct']"/>
+        <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
+        <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
+        <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
+        <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="_AV1XUJUfEempY_XZeYUjJw" showIcon="false" borderSize="1" borderSizeComputationExpression="1" foregroundColor="255,255,255">
+          <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.Invariant']/@style"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.Invariant']"/>
       </ownedDiagramElements>
     </ownedDiagramElements>
     <ownedDiagramElements xmi:type="diagram:DEdge" uid="_Omp_AIfhEemvJMQHHk4VWw" name="any" sourceNode="_OpY00IffEemzs_w7WFC3GA" targetNode="_bEfqoIffEemzs_w7WFC3GA">

@@ -14,29 +14,25 @@ package SysADL.types {
 	enum InfraredCode {
 		increase, decrease, turn_on, turn_off
 	}
-	datatype DataSensor {
-		attributes: id : String;
-		^value : String;
-		^type : TypeSensor;
+	enum statusAirCond {
+		on, off
 	}
-	datatype RestFulService {
-		attributes: ip : String;
-		^port : String;
-		path : String;
-		i : Intervention;
-		m : Measurement;
-	}
+	datatype SensorContext {
+		attributes:  
+		
+		sensor : Sensor;
+	lastMeasurement : Measurement ; }
 	datatype Sensor {
-		attributes:  room : Room;
+		attributes:  idRoom : String;
 		^type : TypeSensor;
 		id : String;
 	}
 	datatype Measurement {
 		attributes: ^value : String;
-		schedule : Schedule;
-		sensor : Sensor;
+		currentTime : Time;
+		idSensor : String;
 	}
-	datatype Schedule {
+	datatype Time {
 		attributes: timestamp : Int;
 	}
 	datatype Location {
@@ -49,15 +45,19 @@ package SysADL.types {
 	}
 	datatype Room {
 		attributes: id : String;
-		building : Building;
+		idBuilding : String;
 	}
+	datatype AirCondContext {
+		attributes:   
+		airCond : AirConditioner;
+	status : statusAirCond ; }
 	datatype AirConditioner {
-		attributes:   room : Room;
+		attributes:   idRoom : String;
 		id : String;
 	}
 	datatype Context {
-		attributes: sensor : Sensor; 
-		air_conditioner : AirConditioner;
+		attributes: sensor : SensorContext; 
+		airCond : AirCondContext;
 		room : Room;
 		building : Building;
 	}
@@ -65,17 +65,13 @@ package SysADL.types {
 		temperature, presence
 	, camera
 	}
-datatype UpdateDB {
-		attributes: idAirCond : String; 
-		currentTime : Schedule;
-		actionTemp : InfraredCode;
-	}
+
 	datatype FrameList {
 	}
 datatype Intervention {
 		attributes: cmd : InfraredCode; 
-		airCond : AirConditioner;
-		schedule : Schedule;
+		idAirCond : String;
+		currentTime : Time;
 	}
 dimension Temperature
 	value type Temp {
@@ -83,13 +79,8 @@ dimension Temperature
 		dimension = Temperature
 	}
 	unit Celsius {
-		dimension = Temperature } datatype Raspeberry {
-			attributes:
-			temperature : Temp;
-			presence : Boolean;
-		numPeople : Int;
-		}
-	}
+		dimension = Temperature } 
+	datatype SchedulesList { attributes : schedules : Time ; } datatype DataSQLite { attributes : measurement : Measurement ; intervention : Intervention ; schedules : SchedulesList ; } datatype DataPostgreSQL { attributes : measurement : Measurement ; intervention : Intervention ; } datatype Register { attributes : sensor : Sensor ; airCond : AirConditioner ; room : Room ; building : Building ; } }
 package SmartPlacePorts {
 	import SysADL.types;
 	port def TemperatureOPT {
@@ -99,10 +90,10 @@ package SmartPlacePorts {
 		flow in Temp
 	}	
 	port def ReservationIPT {
-		flow in Boolean
+		flow in SchedulesList
 	}
 	port def ReservationOPT {
-		flow out Boolean
+		flow out SchedulesList
 	}
 	port def RequestOPT {
 		flow out String
@@ -122,12 +113,6 @@ package SmartPlacePorts {
 	port def ContextIPT {
 		flow in Context
 	}
-	port def UndefinedOPT {
-		flow out Void
-	}
-	port def UndefinedIPT {
-		flow in Void
-	}	
 	port def CommandIPT {
 		flow in InfraredCode
 	}
@@ -135,24 +120,16 @@ package SmartPlacePorts {
 		flow out InfraredCode
 	}
 	port def RaspberryIPT {
-		flow in Raspeberry
+		flow in Measurement
 	}
 	port def RaspberryOPT {
-		flow out Raspeberry
+		flow out Measurement
+	}	
+port def DataIPT {
+		flow in DataPostgreSQL
 	}
-port def DataOPT {
-		flow out String
-	}
-	port def DataIPT {
-		flow in String
-	}
-
-	
-port def UpdateIPT {
-		flow in UpdateDB
-	}
-	port def UpdateOPT {
-		flow out UpdateDB
+	port def DataOPT {
+		flow out DataPostgreSQL
 	}
 port def FrameIPT {
 		flow in FrameList
@@ -185,15 +162,15 @@ port def FrameIPT {
 		}
 	}	
 port def ContextO2I {
-		ports: reqOC : RequestOPT {
+		ports: subscribeOut : RequestOPT {
 		}
-		respIC : ContextIPT {
+		publishIn : ContextIPT {
 		}
 	}
 	port def ContextI2O {
-		ports: reqIC : RequestIPT {
+		ports: subscribeIn : RequestIPT {
 		}
-		respOC : ContextOPT {
+		publishOut : ContextOPT {
 		}
 	}
 port def PresenceIPT {
@@ -208,39 +185,24 @@ port def PresenceIPT {
 		port def NumPeopleOPT {
 			flow out Int
 		}
-		port def ServiceGtwIPT {
-			flow in RestFulService
+	port def RegisterOPT {
+			flow out Register
 		}
-		port def ServiceGtwOPT {
-			flow out RestFulService
+		port def RegisterIPT {
+			flow in Register
 		}
-	port def ServiceAppOPT {
-			flow out Room
-		}
-		port def ServiceAppIPT {
-			flow in Room
-		}
-	}
+	port def DataSQLiteIPT { flow in DataSQLite } port def DataSQLiteOPT { flow out DataSQLite } port def DataSQLiteI2O { ports : reqI : RequestIPT ; respO : DataSQLiteOPT ; } port def DataSQLiteO2I { ports : reqO : RequestOPT ; respI : DataSQLiteIPT ; } }
 package SmartPlaceConnectors {
 	import SmartPlacePorts;
 	
-	connector def UndefinedCN {
-		participants: ~ undO : UndefinedOPT {
-		}
-		~ undI : UndefinedIPT {
-		}
-		flows: Void from undO to undI
-	}
-	connector def TemperatureCN {
-		participants: ~ tO : TemperatureOPT {
+	connector def TemperatureCN implements IoTStyle.SensorDataCN { participants : ~ tO : TemperatureOPT {
 		}
 		~ tI : TemperatureIPT {
 		}
 		flows: Temp from tO to tI
 	}
 
-	connector def CommandCN {
-		participants: ~ cmdI : CommandIPT {
+	connector def CommandCN implements IoTStyle.ServiceCN { participants : ~ cmdI : CommandIPT {
 		}
 		~ cmdO : CommandOPT {
 		}
@@ -248,12 +210,11 @@ package SmartPlaceConnectors {
 	}
 	
 	
-	connector def RaspberryCN {
-		participants: ~ restI : RaspberryIPT {
+	connector def RaspberryCN implements IoTStyle.DeviceDataCN { participants : ~ restI : RaspberryIPT {
 		}
 		~ restO : RaspberryOPT {
 		}
-		flows: Raspeberry from restO to restI
+		flows: Measurement from restO to restI
 	}
 	connector def ReservationDataCN {
 		participants: ~ rrRespI : ReservationIPT {
@@ -276,8 +237,7 @@ package SmartPlaceConnectors {
 		}
 		flows: Context from ciO to ciI
 	}
-	connector def InfraredCN {
-		participants: ~ isI : InfraredIPT {
+	connector def InfraredCN implements IoTStyle.ActuatorCommandCN { participants : ~ isI : InfraredIPT {
 		}
 		~ isO : InfraredOPT {
 		}
@@ -315,58 +275,42 @@ package SmartPlaceConnectors {
 		flows: String from psqlO to psqlI
 	}
 
-connector def FrameCN {
-		participants: ~ fI : FrameIPT {
+connector def FrameCN implements IoTStyle.SensorDataCN { participants : ~ fI : FrameIPT {
 		}
 		~ fO : FrameOPT {
 		}
 		flows: FrameList from fO to fI
 	}
-connector def QueryContextCN {
+connector def ContextCN {
 		participants: ~ cO : ContextO2I {
 		}
 		~ cI : ContextI2O {
 		}
 		configuration {
 		connectors:
-			req : RequestCN bindings reqOC = reqIC;
-			resp : ContextDataCN bindings respOC = respIC;
+			req : RequestCN bindings subscribeOut = subscribeIn;
+			resp : ContextDataCN bindings publishIn = publishOut;
 		}
 	}
-connector def PresenceCN {
-			participants:
+connector def PresenceCN implements IoTStyle.SensorDataCN { participants :
 			~pO : PresenceOPT;
 			~pI : PresenceIPT;
 			flows:
 			Boolean from pO to pI
 		}
-connector def UpdatePostgreSQLCN {
-			participants:
-			~psqlO : DataOPT;
-			~psqlI : DataIPT;
-			flows:
-			String from psqlO to psqlI
-		}
-		connector def UpdateOrionCN {
-			participants:
-			~sO : ServiceGtwOPT;
-			~cI : ContextIPT;
-			configuration {
-			}
-		}
-	connector def ServiceAppCN {
-			participants:
-			~sAppO : ServiceAppOPT;
-			~sAppI : ServiceAppIPT;
+
+	connector def RegisterCN implements IoTStyle.ServiceCN { participants :
+			~sAppO : RegisterOPT;
+			~sAppI : RegisterIPT;
 			flows:
 			Room from sAppO to sAppI
 		}
-	}
+	connector def DataSQLiteCN { participants : ~ sqliteO : DataSQLiteOPT ; ~ sqliteI : DataSQLiteIPT ; flows : DataSQLite from sqliteO to sqliteI } connector def QuerySQLiteCN { participants : ~ qI : DataSQLiteI2O ; ~ qO : DataSQLiteO2I ; configuration { connectors : sendRequest : RequestCN bindings reqO = reqI ; sendDataSQLite : DataSQLiteCN bindings respO = respI ; } } }
 package SmartPlaceComponents satisfies IoTStyle {
 	import SmartPlaceConnectors;
 	import SmartPlacePorts;
 	import SysADL.types;
-	component def SmartPlace {
+	component def SmartPlaceARCH {
 	configuration {
 		components:
 			app : WebApplicationCP {
@@ -374,11 +318,12 @@ package SmartPlaceComponents satisfies IoTStyle {
 				
 				dbr : DataBaseO2I {
 				}
-				us : UpdateOPT {
+				us : DataOPT {
 				}
 				cxr : ContextO2I {
 				}
-				sapps : ServiceAppOPT;
+				regs : RegisterOPT;
+				co : CommandOPT;
 			}
 			rrs : RoomReservationSystemCP {
 				using ports: riRrs : ReservationInformationI2O {
@@ -396,7 +341,7 @@ package SmartPlaceComponents satisfies IoTStyle {
 			psql : PostgreSQLCP {
 				using ports: dbs : DataBaseI2O {
 				}
-				ur : UpdateIPT {
+				ur : DataIPT {
 				}
 			}
 			ac : AirConditionerCP {
@@ -428,12 +373,13 @@ package SmartPlaceComponents satisfies IoTStyle {
 					ports:
 					rr : RaspberryIPT;
 					cs : CommandOPT;		
-					sappr : ServiceAppIPT;
+					regr : RegisterIPT;
 					cxs : ContextI2O {}
+					ci : CommandIPT;
 				}
 				connectors: 
 				sendQuery :	QueryPostgreSQLCN bindings dbr = dbs;
-				sendUpdate : UpdatePostgreSQLCN bindings us = ur;
+				sendUpdate : DataPostgreSQLCN bindings us = ur;
 				sendPresence : PresenceCN bindings ps = pr;
 				sendFrame : FrameCN bindings fs = fr;
 				sendTemp : TemperatureCN bindings	ts = tr;
@@ -441,37 +387,31 @@ package SmartPlaceComponents satisfies IoTStyle {
 				sendData : RaspberryCN bindings rs = rr;
 				sendCmd : CommandCN bindings cs = cr;
 				sendReservationData : ReservationCN bindings rir = riRrs;
-				sendQueryContext : QueryContextCN bindings cxs = cxr;
-				sendRoomInformation : ServiceAppCN bindings sapps = sappr;
-			}
+				sendContext : ContextCN bindings cxs = cxr;
+				sendRegistrationData : RegisterCN bindings regs = regr;
+			sendCommand : CommandCN bindings co = ci ; }
 	}
 	boundary component def RoomReservationSystemCP {
 		ports: ris : ReservationInformationI2O {
 		}
 	}
-	boundary component def OrionContextBrokerCP implements IoTStyle.DataStoreCP { ports : ci : ContextIPT {
-		}
+	boundary component def OrionContextBrokerCP implements IoTStyle.DataStoreCP { ports : ci : ContextIPT concrete IoTStyle.DataStoreCP.DataIPT ;
 		
-	co : ContextOPT;
+		ctx : ContextI2O concrete IoTStyle.DataStoreCP.DataOPT ;
 		}
 	boundary component def PostgreSQLCP {
 		ports: db : DataBaseI2O {
 		}
-	u : UpdateIPT {
+	u : DataIPT {
 		}
 	}
-	component def RaspberryPiCP implements IoTStyle.DeviceCP { ports : is : InfraredOPT {
-		}
+	component def RaspberryPiCP implements IoTStyle.DeviceCP { ports : is : InfraredOPT concrete IoTStyle.DeviceCP.ActuatorOPT ;
 		
-		fr : FrameIPT {
-		}
-		tr : TemperatureIPT {
-		}
-		pr : PresenceIPT {
-		}
-		rs : RaspberryOPT {
-		}
-			cr : CommandIPT;
+		fr : FrameIPT concrete IoTStyle.DeviceCP.SensorIPT ;
+		tr : TemperatureIPT concrete IoTStyle.DeviceCP.SensorIPT ;
+		pr : PresenceIPT concrete IoTStyle.DeviceCP.SensorIPT ;
+		rs : RaspberryOPT concrete IoTStyle.DeviceCP.DeviceOPT ;
+			cr : CommandIPT concrete IoTStyle.DeviceCP.ServiceIPT ;
 		rir : ReservationInformationO2I;
 	configuration {
 		components:
@@ -482,18 +422,7 @@ package SmartPlaceComponents satisfies IoTStyle {
 				}
 			}
 			
-			agg : AggregatorCP {
-				using ports: pr : PresenceIPT {
-				}
-				rraspTc : RaspberryOPT {
-				}
-				
-				tr : TemperatureIPT {
-				}
-				npr : NumPeopleIPT {
-				}
-				
-			}
+			
 			
 			l : Led {
 					using
@@ -506,13 +435,19 @@ package SmartPlaceComponents satisfies IoTStyle {
 					ports:
 					crgtw : CommandIPT;
 					cs : CommandOPT;
+					pr : PresenceIPT;
+					rraspTc : RaspberryOPT;
+					tr : TemperatureIPT;
+					npr : NumPeopleIPT;
+					rir : ReservationInformationO2I;
+					sqliteOut: DataSQLiteOPT;
+					sqliteIn: DataSQLiteO2I;
 				}
-				connectors:
+				sqlite : SQLiteCP { using ports : dtsqliteOut : DataSQLiteI2O ; dtsqliteIn : DataSQLiteIPT ; } connectors :
 			 countPeople : TemperatureCN bindings nps = npr;
 			 
 			sendCommand : CommandCN bindings cs = cr;
-				delegations:
-			fr to fr 
+				sendUpdate : DataSQLiteCN bindings sqliteOut = dtsqliteIn ; sendQuery : QuerySQLiteCN bindings dtsqliteOut = sqliteIn ; delegations : fr to fr 
 			pr to pr
 			tr to tr
 			 
@@ -521,18 +456,15 @@ package SmartPlaceComponents satisfies IoTStyle {
 			
 		is to is
 			crgtw to cr
-			}
+			rir to rir }
 	}
-	boundary component def MotionSensorCP implements IoTStyle.SensorCP { ports : ps : PresenceOPT {
-		}
-	}
-	component def AirConditionerCP implements IoTStyle.ActuatorCP { ports : ir : InfraredIPT {
-		}
+	boundary component def MotionSensorCP implements IoTStyle.SensorCP { ports : ps : PresenceOPT concrete IoTStyle.SensorCP.SensorOPT ;
+	} boundary
+	component def AirConditionerCP implements IoTStyle.ActuatorCP { ports : ir : InfraredIPT concrete IoTStyle.ActuatorCP.ActuatorIPT ;
 	
 	}
 	
-	boundary component def TemperatureSensorCP implements IoTStyle.SensorCP { ports : ts : TemperatureOPT {
-		}
+	boundary component def TemperatureSensorCP implements IoTStyle.SensorCP { ports : ts : TemperatureOPT concrete IoTStyle.SensorCP.SensorOPT ;
 	}
 	
 	
@@ -549,135 +481,68 @@ package SmartPlaceComponents satisfies IoTStyle {
 		
 		db : DataBaseO2I {
 		}
-		u : UpdateOPT {
+		u : DataOPT {
 		}
 		ctx : ContextO2I {
 		}
-			sapps : ServiceAppOPT;
+			reg : RegisterOPT;
+			co : CommandOPT;
 		configuration {
 			components:			
 			
-			rg : ReportGenerator {
-				using ports: a : ContextO2I {
+			rg : RegisterCP {
+				using ports: reg : RegisterOPT {
 				}
 			}
-			gg : GraphicsGenerator {
-				using ports: dbGg : DataBaseO2I {
-				}
-				ctxGg : ContextO2I {
-				}
-			}
-			hc : HistoricController {
-				using ports: rrHc : RaspberryIPT {
-				}
-				uHc : UpdateOPT {
-				}
-				ctxHc : ContextO2I {
-				}
-			}
-			delegations:
 			
-			a to ctx
-			ctxGg to ctx 
-			ctxHc to ctx 
-			uHc to u 
-			dbGg to db 
 			
+			ec : EnvironmentsControlCP { using ports : cmd : CommandOPT ; } dv : DataVisualizationCP { using ports : db : DataBaseO2I ; ctx : ContextIPT ; } s : SubscriberCP { using ports : subscribe : RequestOPT ; } dp : DataPersistenceCP { using ports : d : DataOPT ; c : ContextIPT ; } delegations : cmd to co db to db reg to reg ctx to publishIn subscribe to subscribeOut c to publishIn d to u }
+	} boundary
+	component def RegisterCP {
+		ports: reg : RegisterOPT {
 		}
 	}
-	component def ReportGenerator {
-		ports: a : ContextIPT {
-		}
-	}
-	component def AggregatorCP {
-		ports: pr : PresenceIPT {
-		}
-		rs : RaspberryOPT {
-		}		
-		
-		tr : TemperatureIPT {
-		}
-		npr : NumPeopleIPT {
-		}
-	
-	
-	}
 	
 	
 	
-	activity def GatewayAC (deviceData : Raspeberry, 
-		room : Room , reservation : Boolean ) : (
-	restful : RestFulService, cmd :
-			InfraredCode, query_reservation : String) {
+	
+	activity def SmartPlaceAirControlAC implements IoTStyle.Analysis , IoTStyle.Planning ( temperature : Temp ) ( 
+		presence : flow Boolean ) ( reservation : SchedulesList ) ( numPeoples : flow Int ) ( cmdApp : InfraredCode ) ( dataSQLite : DataSQLite ) : (
+	cmd :
+			InfraredCode,  dataSensing : Measurement , dataSQLiteOut : DataSQLite ) {
 		body {
 			actions : 	
-			
-			at : AdjustTemperatureAN {
-					using pins : lastAdjustTemp : Schedule;
-					lastPresence : Schedule;
-					currentTime : Schedule;
-				}
-				turnOff : TurnOffAN {
-					using pins : lastPres : Schedule;
-					currentTime : Schedule;
-					ddTOff : Raspeberry;
-				}
-				turnOn : TurnOnAN {
-					using pins : reservation : Boolean;
-					ddTOn : Raspeberry;
-				}
-				idt : IncreaseDecreaseTemperatureAN {
-					using pins : ddIncDec : Raspeberry;
-					adjustTemp : Boolean;
-				}
-				slp : SaveLastPresenceAN {
-					using pins : currentTime : Schedule;
-					deviceData : Raspeberry;
-				}
-				delegate reservation to reservation flow from at to adjustTemp
-			
-			delegate  cmd to turnOn
-			
-			delegate  cmd to turnOff
-			
-			delegate  cmd to idt flow from slp to LastPresence flow from LastPresence to
-				lastPresence flow from LastPresence to lastPres
-				delegate deviceData to deviceData
-				delegate deviceData to ddTOn
-				delegate deviceData to ddIncDec flow from LastChangeTemp to lastAdjustTemp
-				delegate deviceData to ddTOff
-			
-			databuffer LastPresence : SysADL.types.Schedule {
+				sca : SendCommandAppAN { using pins : cmdApp : InfraredCode ; } 
+				st : SendTemperatureAN { using pins : temperature : Temp ; } 
+				sp : SendPresenceAN { using pins : presence : Boolean ; } 
+				snp : SendNumPeoplesAN { using pins : numPeoples : Int ; } 
+				dc : DecideCommandAN { using pins : temp : Temp ; pres : Boolean ; numP : Int ; reserv : SchedulesList ; dataSQLite : DataSQLite;} sdSQLite : SendDataSQLiteAN { using pins : m : Measurement ; ic : InfraredCode ; res : SchedulesList ; } 
+				flow from LastPresence to presence flow from LastPresence to pres flow from lastTemp to temperature flow from lastTemp to temp flow from lastNumPeoples to numP flow from lastNumPeoples to numPeoples
+				delegate temperature to lastTemp
+				delegate presence to LastPresence
+				delegate numPeoples to lastNumPeoples
+				delegate reservation to reservation
+				delegate cmdApp to cmdApp
+				delegate dataSensing to Meassurements
+				delegate cmd to InfraredCode
+				delegate dataSQLiteOut to sdSQLite			
+				delegate dataSQLite to dataSQLite flow from reservation to res flow from reservation to reserv flow from sca to InfraredCode flow from InfraredCode to ic flow from dc to InfraredCode flow from st to Meassurements flow from sp to Meassurements flow from snp to Meassurements flow from Meassurements to m
+			databuffer LastPresence : SysADL.types.Boolean {
 				 
-			}
-			databuffer LastChangeTemp : SysADL.types.Schedule {
-				 
-			}
-		}
+			} datastore lastTemp : Temp datastore lastNumPeoples : Int datastore reservation : SchedulesList datastore InfraredCode : InfraredCode datastore Meassurements : Measurement }
 	}
 	
 	
-	constraint SaveLastPresenceEQ (deviceData : Raspeberry, currentTime : Schedule ) : ( lastPresence : Schedule) {
-		equation = (deviceData->presence == true || deviceData->numPeople > 0) ? lastPresence == currentTime : lastPresence == lastPresence
-	}
-	constraint TurnOnEQ (deviceData : Raspeberry, reservation : Boolean ) : ( ic : InfraredCode) {
-		equation = (reservation == true || deviceData->presence == true ||  deviceData->numPeople > 0) ? ic == InfraredCode::turn_on : ic == null
-	}
-	action def IncreaseDecreaseTemperatureAN ( adjustTemp : Boolean, deviceData : Raspeberry ) :
-	InfraredCode {
-		constraint: post-condition IncreaseDecreaseTemperatureEQ
-	}
-	constraint TurnOffEQ (deviceData : Raspeberry, lastPresence : Schedule, currentTime : Schedule ) :
-	( ic : InfraredCode) {
-		equation = deviceData->presence == false && deviceData->numPeople == 0 && (currentTime - lastPresence > 15) ? ic == InfraredCode::turn_off : ic == null
-	}
+	
+	
+	
+	
 
 	
 
 	
 	
-boundary component def CameraCP implements IoTStyle.SensorCP { ports : fs : FrameOPT {
-		}
+boundary component def CameraCP implements IoTStyle.SensorCP { ports : fs : FrameOPT concrete IoTStyle.SensorCP.SensorOPT ;
 	}
 	boundary component def CamMonitorCP {
 		ports: fr : FrameIPT {
@@ -686,87 +551,98 @@ boundary component def CameraCP implements IoTStyle.SensorCP { ports : fs : Fram
 		}
 	}
 	boundary component def SQLiteCP {
-		ports: ri : ReservationInformationI2O {
+		ports: dtsqliteOut : DataSQLiteI2O {
 		}
-	rresp : ReservationIPT {
+	dtsqliteIn : DataSQLiteIPT {
 		}
+	} boundary
+	component def EnvironmentsControlCP {
+		ports: 
+		cmd : CommandOPT {
+		}
+		
 	}
-	component def HistoricController {
-		ports: rr : RaspberryIPT {
-		}
-		u : UpdateOPT {
-		}
-		ctx : ContextO2I {
-		}
-	}
-	boundary component def GraphicsGenerator {
+	boundary component def DataVisualizationCP {
 		ports: db : DataBaseO2I {
 		}
-	ctx : ContextO2I {
+	ctx : ContextIPT {
 		}
 	}
 	
-action def SaveLastPresenceAN ( deviceData : Raspeberry, currentTime : Schedule ) :
-	Schedule {
-		constraint: post-condition SaveLastPresenceEQ
-	}
-	action def TurnOnAN ( deviceData : Raspeberry , reservation : Boolean ) :
-	InfraredCode {
-	constraint: post-condition TurnOnEQ
-	}
-action def TurnOffAN ( deviceData : Raspeberry, lastPresence : Schedule , currentTime :
-	Schedule ) : InfraredCode {
+
+	
+action def DecideCommandAN ( temperature : Temp,  presence : Boolean ,  numPeoples : Int , reservation : SchedulesList , dataSQLite : DataSQLite ) : InfraredCode {
 	}
 component def GatewayCP implements IoTStyle.GatewayCP { ports :
-			rr : RaspberryIPT;
-			cs : CommandOPT;
-			appr : ServiceAppIPT;
+			rr : RaspberryIPT concrete IoTStyle.GatewayCP.DeviceIPT ;
+			cs : CommandOPT concrete IoTStyle.GatewayCP.ServiceOPT ;
+			appr : RegisterIPT concrete IoTStyle.GatewayCP.ServiceIPT ;
 			ctx : ContextI2O;
+			ci : CommandIPT concrete IoTStyle.GatewayCP.ServiceIPT ;
 		configuration {
-			}
+			components : gb : GatewayBlackboardCP { using ports : rr : RaspberryIPT ; cs : CommandOPT ; appr : RegisterIPT ; cout : ContextOPT; ci : CommandIPT; 
+			 } ocb : OrionContextBrokerCP { using ports : cin : ContextIPT; ctx : ContextI2O; } connectors : saveContext : ContextDataCN bindings cout = cin ; delegations : rr to rr appr to appr cs to cs   ctx to ctx ci to ci }
 		}
-		component def SmartPlaceAirControlCP implements IoTStyle.ControllerCP { ports :
+		component def SmartPlaceAirControlCP implements IoTStyle.ControllerCP { 
+			ports :
 			cr : CommandIPT;
 			cs : CommandOPT;
+			pr : PresenceIPT concrete IoTStyle.ControllerCP.SensorIPT ;
+			rs : RaspberryOPT;
+			tr : TemperatureIPT concrete IoTStyle.ControllerCP.SensorIPT ;
+			npr : NumPeopleIPT concrete IoTStyle.ControllerCP.SensorIPT ;
+			rir : ReservationInformationO2I;
+		sqliteIn : DataSQLiteO2I ; sqliteOut : DataSQLiteOPT ; }
+	
+		
+		
+	
+	
+		 boundary
+	component def GatewayBlackboardCP {
+			ports: 
+			rr : RaspberryIPT;
+			cs : CommandOPT;
+			appr : RegisterIPT;
+			co : ContextOPT;
+			ci : CommandIPT;
+			
 		}
-	activity def AggregatorAC ( temperarure : Temp, presence : Boolean, numPeople :
-		Int ) : ( deviceData : Raspeberry ) {
-			body {
-			actions : agg : AggregatorAN {
-					using pins : presence : Boolean;
-					numPeople : Int;
-					temperature : Temp;
-				}
-				delegate deviceData to agg
-				delegate presence to presence
-				delegate temperarure to temperature
-				delegate numPeople to numPeople
-			}
-		}
-		action def AggregatorAN ( temperature : Temp, presence : Boolean, numPeople
-		: Int ) : Raspeberry {
-			constraint : post-condition AggregatorEQ
-		}
-		constraint AggregatorEQ ( temperature : Temp, presence : Boolean, numPeople
-		: Int ) : ( deviceData : Raspeberry ) {
-			equation = (deviceData->temperature == temperature) && (deviceData->presence == presence) && (deviceData->numPeople == numPeople)
-		}
-	constraint AdjustTemperatureEQ ( lastPresence : Schedule, lastAdjustTemp :
-		Schedule, currentTime : Schedule ) : ( adjustTemp : Boolean ) {
-			equation = (currentTime - lastPresence <= 15) && (currentTime - lastAdjustTemp > 10) ?  adjustTemp == true : adjustTemp == false
-		}
-	constraint IncreaseDecreaseTemperatureEQ ( adjustTemp : Boolean, deviceData :
-		Raspeberry ) : ( ic : InfraredCode ) {
-			equation = (adjustTemp == true && deviceData->temperature < 22) ? ic == InfraredCode::increase : 
-						(adjustTemp == true && deviceData->temperature > 22) ? ic == InfraredCode::decrease : ic == null
-		}
-		action def AdjustTemperatureAN ( lastPresence : Schedule, lastAdjustTemp :
-		Schedule, currentTime : Schedule ) : Boolean {
-			constraint : post-condition AdjustTemperatureEQ
-		}
-	component def BlackboardCP {
-		}
-	}
+	activity def TemperatureSensorAC implements IoTStyle.Monitoring : ( temperature : Temp ) { body { } } activity def MotionSensorAC implements IoTStyle.Monitoring : ( presence : Boolean ) { body { } } activity def CameraAC implements IoTStyle.Monitoring : ( frames : FrameList ) { body { } } activity def AirConditionerAC implements IoTStyle.Execution ( infraredSignal : Void ) { body { } } activity def OrionContextBrokerAC implements IoTStyle.Knowledge ( context : Context ) ( subscribe : String ) : ( publish : Context ) { body { } } activity def GatewayBlackboardAC ( dataSensing : Measurement ) ( registration : Register ) ( cmdApp : InfraredCode ) : ( context : Context , command : InfraredCode ) { 
+		body { 
+			actions : 
+			sdc : SaveDataContextAN { using pins : dataSensing : Measurement ; } 
+			sdr : SaveDataRegistrationAN { using pins : dataRegistration : Register ; } 
+			sca : SendCommandAppAN { using pins : cmdApp : InfraredCode ; } 
+			delegate dataSensing to dataSensing
+			delegate registration to dataRegistration
+			delegate cmdApp to cmdApp
+			delegate command to sca
+			delegate context to sdc
+			delegate context to sdr
+		} 
+	} action def SaveDataContextAN ( dataSensing : Measurement ) : Context { constraint : post-condition SaveDataContextEQ delegate SaveDataContextAN to ctx delegate dataSensing to dataSensing } action def SendCommandAppAN ( cmdApp : InfraredCode ) : InfraredCode { constraint : post-condition SendCommandAppEQ delegate SendCommandAppAN to cmd delegate cmdApp to cmdApp } action def SaveDataRegistrationAN ( dataRegistration : Register ) : Context { constraint : post-condition SaveDataRegistrationEQ delegate SaveDataRegistrationAN to ctx delegate dataRegistration to dataReg } 
+	constraint SaveDataRegistrationEQ ( dataReg : Register ) : ( ctx : Context ) { 
+		equation = ctx->building == dataReg->building && ctx->room == dataReg->room && 'ctx->sensor->sensor' == dataReg->sensor && 'ctx->airCond->airCond' == dataReg->airCond
+	} constraint SendCommandAppEQ ( cmdApp : InfraredCode ) : ( cmd : InfraredCode ) { 
+		equation = cmd == cmdApp
+	} constraint SaveDataContextEQ ( dataSensing : Measurement ) : ( ctx : Context ) { 
+		equation = 'ctx->sensor->sensor->id' == dataSensing->idSensor && 'ctx->sensor->lastMeasurement' == dataSensing
+	} action def SendTemperatureAN ( temperature : Temp ) : Measurement { constraint : post-condition SendTemperatureEQ delegate SendTemperatureAN to msrt delegate temperature to temp } 
+	constraint SendTemperatureEQ ( temp : Temp) : ( msrt : Measurement ) { 
+		equation = msrt->^value == toString(temp)
+	} 
+	constraint SendPresenceEQ ( pres : Boolean ) : ( msrt : Measurement ) { 
+		equation = msrt->^value == toString(pres)
+	} 
+	constraint SendNumPeoplesEQ ( numP : Int ) : ( msrt : Measurement ) { 
+		equation = msrt->^value == toString(numP)
+	} 
+	action def SendPresenceAN ( presence : Boolean ) : Measurement { constraint : post-condition SendPresenceEQ delegate SendPresenceAN to msrt delegate presence to pres } action def SendNumPeoplesAN ( numPeoples : Int ) : Measurement { constraint : post-condition SendNumPeoplesEQ delegate SendNumPeoplesAN to msrt delegate numPeoples to numP } action def SendDataSQLiteAN ( m : Measurement , ic : InfraredCode , reservation : SchedulesList ) : DataSQLite { constraint : post-condition SendDataSQLiteEQ delegate SendDataSQLiteAN to dataSQLite delegate m to m delegate ic to ic delegate reservation to reservation } 
+	constraint SendDataSQLiteEQ ( m : Measurement , ic : InfraredCode , reservation : SchedulesList ) : ( dataSQLite : DataSQLite ) { 
+		equation = dataSQLite->schedules == reservation && dataSQLite->measurement == m && 'dataSQLite->intervention->cmd' == ic
+	} component def SubscriberCP { ports : subscribe : RequestOPT ; } boundary
+	component def DataPersistenceCP { ports : d : DataOPT ; c : ContextIPT ; } }
 Requirement SmartPlace ( 0.0 ) {
 	text =
 	"The system must control the air conditioners automatically in order to optimize their energy consumption and use."
@@ -860,7 +736,5 @@ style IoTStyle {
 	invariant NumberSensorDataCNOfControllerCP 
 	invariant NumberActuatorOPTOfControllerCP 
 	invariant NumberActuatorCommandCNOfControllerCP 
-	abstract activity def Monitoring : ( data : ) 
-	abstract activity def Analysis ( data : ) : ( changeRequest : ) 
-	abstract activity def Planning ( changeRequest : ) : ( command : ) 
-	abstract activity def Execution ( command : ) }
+	abstract activity def Monitoring abstract activity def Analysis abstract activity def Planning abstract activity def Execution abstract activity def Knowledge } 
+	allocations { activity TemperatureSensorAC to TemperatureSensorCP activity MotionSensorAC to MotionSensorCP activity CameraAC to CameraCP activity AirConditionerAC to AirConditionerCP activity OrionContextBrokerAC to OrionContextBrokerCP activity GatewayBlackboardAC to GatewayBlackboardCP activity SmartPlaceAirControlAC to SmartPlaceAirControlCP }

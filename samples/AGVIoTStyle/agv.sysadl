@@ -101,7 +101,7 @@ style IoTStyle {
 	abstract connector def ServiceCN { participants : ~ ServiceOPT : out any ~ ServiceIPT : in any flows : flow ServiceOPT to ServiceIPT } 
 	invariant ExistsActivities = 'context Model : self.involvedElements->select(i | i.oclIsTypeOf(StructuralDef))->select(sd | sd.oclIsTypeOf(ComponentDef))->exists(c | c.abstractComponent = self.styles->select(s | s.name=IoTStyle)->select(s | s.definitions)->select(d | d.oclIsTypeOf(AbstractComponentDef))->select(ac | ac.name=SensorCP))'
 	invariant ActivitiesOrder 
-	invariant ExistsPins 
+	invariant MonitoringAct 
 	invariant SensorConnection 
 	invariant ActuatorConnection 
 	invariant Communication 
@@ -112,8 +112,5 @@ style IoTStyle {
 	invariant NumberSensorDataCNOfControllerCP 
 	invariant NumberActuatorOPTOfControllerCP 
 	invariant NumberActuatorCommandCNOfControllerCP 
-	abstract activity def Monitoring : ( data : ) 
-	abstract activity def Analysis ( data : ) : ( changeRequest : ) 
-	abstract activity def Planning ( changeRequest : ) : ( command : ) 
-	abstract activity def Execution ( command : ) } 
+	abstract activity def Monitoring abstract activity def Analysis abstract activity def Planning abstract activity def Execution invariant KnowledgeAct abstract activity def Knowledge } 
 	allocations { activity VehicleControlAC to VehicleControl activity VehicleTimerAC to VehicleTimer }

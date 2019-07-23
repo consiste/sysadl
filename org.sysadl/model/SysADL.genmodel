@@ -129,13 +129,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//AbstractPortUse/lowerBound"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//AbstractPortUse/upperBound"/>
     </genClasses>
-    <genClasses ecoreClass="sysadl.ecore#//AbstractActivityDef">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractActivityDef/inParameters"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractActivityDef/outParameters"/>
-    </genClasses>
-    <genClasses ecoreClass="sysadl.ecore#//AbstractPin">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//AbstractPin/isFlow"/>
-    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//AbstractActivityDef"/>
     <genClasses ecoreClass="sysadl.ecore#//Model">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Model/packages"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Model/requirements"/>
@@ -258,7 +252,6 @@
     </genClasses>
     <genClasses image="false" ecoreClass="sysadl.ecore#//Pin">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//Pin/isFlow"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//Pin/abstractPin"/>
     </genClasses>
     <genClasses ecoreClass="sysadl.ecore#//ConstraintDef">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ConstraintDef/equation"/>

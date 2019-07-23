@@ -75,17 +75,7 @@
         eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"
         defaultValueLiteral="1"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="AbstractActivityDef" eSuperTypes="#//AbstractDef">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="inParameters" upperBound="-1"
-        eType="#//AbstractPin" containment="true" resolveProxies="false" eKeys="#//NamedElement/name"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="outParameters" upperBound="-1"
-        eType="#//AbstractPin" containment="true" resolveProxies="false" eKeys="#//NamedElement/name"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="AbstractPin" eSuperTypes="#//AbstractDef">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isFlow" unique="false"
-        lowerBound="1" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"
-        defaultValueLiteral="false"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractActivityDef" eSuperTypes="#//AbstractDef"/>
   <eClassifiers xsi:type="ecore:EClass" name="Model" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="packages" upperBound="-1"
         eType="#//Package" containment="true" resolveProxies="false" eKeys="#//NamedElement/name"/>
@@ -266,8 +256,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="ActivityDef" eSuperTypes="#//BehaviorDef">
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//ActivityBody"
         containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="abstractActivity" eType="#//AbstractActivityDef"
-        eKeys="#//NamedElement/name"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="abstractActivity" upperBound="-1"
+        eType="#//AbstractActivityDef" eKeys="#//NamedElement/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ActionDef" eSuperTypes="#//BehaviorDef #//ActivityFlowable">
     <eStructuralFeatures xsi:type="ecore:EReference" name="returnType" eType="#//TypeDef"
@@ -286,7 +276,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isFlow" unique="false"
         lowerBound="1" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"
         defaultValueLiteral="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="abstractPin" eType="#//AbstractPin"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConstraintDef" eSuperTypes="#//BehaviorDef">
     <eStructuralFeatures xsi:type="ecore:EReference" name="equation" eType="#//Expression"

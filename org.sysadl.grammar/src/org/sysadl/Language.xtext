@@ -40,12 +40,8 @@ Invariant returns Invariant:
 AbstractActivityDef returns AbstractActivityDef:
 	{AbstractActivityDef}
 	'abstract' 'activity' 'def'
-	name=ID  ('(' inParameters+=AbstractPin (',' inParameters+=AbstractPin)* ')')? (':' '('outParameters+=AbstractPin (',' outParameters+=AbstractPin)* ')')? ;
+	name=ID ;
 
-AbstractPin returns AbstractPin:
-	{AbstractPin}
-	name=ID ':' (isFlow?='flow')? ;
-    
 AbstractComponentDef returns AbstractComponentDef:
    {AbstractComponentDef}
 	'abstract' 'component' 'def' name=ID ('[' lowerBound=EInt ',' upperBound=EInt ']')?
@@ -308,7 +304,8 @@ ActionDef returns ActionDef:
 ActivityDef returns ActivityDef:
 	{ActivityDef}
 	'activity' 'def'
-	name=ID  ('(' inParameters+=Pin (',' inParameters+=Pin)* ')') (':' '('outParameters+=Pin (',' outParameters+=Pin)* ')')?
+	name=ID ('implements' abstractActivity+=[AbstractActivityDef|QualifiedName] (',' abstractActivity+=[AbstractActivityDef|QualifiedName])*)? 
+	('(' inParameters+=Pin (',' inParameters+=Pin)* ')')* (':' '('outParameters+=Pin (',' outParameters+=Pin)* ')')?
 	'{'
 		(properties+=Property
 		| behaviorDefs+=BehaviorDef

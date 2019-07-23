@@ -51,7 +51,7 @@ AbstractComponentDef returns AbstractComponentDef:
 	'abstract' 'component' 'def' name=ID ('[' lowerBound=EInt ',' upperBound=EInt ']')?
 	'{'
 		('ports' ':' ports+=AbstractPortUse*)?
-		('compose {' composition+=[AbstractComponentDef|QualifiedName] (',' composition+=[AbstractComponentDef|QualifiedName])* '}')?//fazer escopo
+		('compose' '{' composition+=[AbstractComponentDef|QualifiedName] (',' composition+=[AbstractComponentDef|QualifiedName])* '}')?//fazer escopo
 	'}' ;
 
 AbstractPortUse returns AbstractPortUse:

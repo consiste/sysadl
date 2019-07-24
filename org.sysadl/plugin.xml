@@ -9,9 +9,9 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated SysADL -->
       <package
-            uri="org.sysadl"
+            uri="http://org.sysadl"
             class="org.sysadl.SysADLPackage"
-            genModel="model/SysADL.xcore"/>
+            genModel="model/SysADL.genmodel"/>
    </extension>
 
 </plugin>

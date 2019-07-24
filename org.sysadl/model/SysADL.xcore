@@ -1,4 +1,4 @@
-@xcore.lang.Ecore(nsURI="org.sysadl")
+@xcore.lang.Ecore(nsURI="http://org.sysadl")
 @xcore.lang.GenModel(modelDirectory="/org.sysadl/src", prefix="SysADL", fileExtensions="sysadl", modelName="SysADL",
 	importerID="org.eclipse.emf.importer.ecore")
 package org.sysadl

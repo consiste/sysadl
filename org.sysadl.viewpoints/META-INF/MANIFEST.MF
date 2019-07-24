@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SysADL Viewpoints
 Bundle-SymbolicName: org.sysadl.viewpoints;singleton:=true
-Bundle-Version: 2.5.1
+Bundle-Version: 2.6.0
 Bundle-Activator: defaultpackage.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -18,4 +18,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: org.eclipse.ui.ide,
  org.eclipse.ui.texteditor
-
+Automatic-Module-Name: org.sysadl.viewpoints
+Bundle-Vendor: ConSiste UFRN

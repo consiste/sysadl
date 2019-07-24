@@ -2,9 +2,10 @@
 <feature
       id="org.sysadl.feature.diagrams"
       label="SysADL Diagrams"
-      version="2.5.1"
+      version="2.6.0"
+      provider-name="ConSiste UFRN"
       license-feature="org.sysadl.feature.core"
-      license-feature-version="2.5.1">
+      license-feature-version="2.6.0">
 
    <description url="http://sysadl.imd.ufrn.br/">
       SysADL Studio Diagrams
@@ -301,27 +302,22 @@ You may add additional accurate notices of copyright ownership.
    </url>
 
    <requires>
-      <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.sirius"/>
-      <import plugin="org.eclipse.sirius.common.acceleo.mtl"/>
       <import plugin="org.eclipse.core.resources" version="3.9.0" match="greaterOrEqual"/>
-      <import plugin="SysADL_Sintax" version="2.1.0" match="greaterOrEqual"/>
-      <import plugin="SysADL_Sintax.edit"/>
-      <import plugin="SysADL_Sintax.editor" version="2.1.0" match="greaterOrEqual"/>
       <import plugin="com.google.inject"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.sirius.common.acceleo.mtl"/>
+      <import plugin="org.sysadl"/>
       <import plugin="org.eclipse.xtext"/>
       <import plugin="org.eclipse.sirius.diagram"/>
+      <import plugin="org.sysadl.grammar"/>
+      <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.ui.editors"/>
-      <import feature="org.eclipse.sirius.runtime" version="5.1.0.201710261549"/>
-      <import feature="org.eclipse.sirius.runtime.aql" version="5.1.0.201710261549"/>
-      <import feature="org.eclipse.sirius.runtime.ide.ui" version="5.1.0.201710261549"/>
-      <import feature="org.eclipse.sirius.runtime.ide.xtext" version="5.1.0.201710261549"/>
-      <import feature="org.eclipse.sirius.properties.feature" version="5.1.0.201710261549"/>
    </requires>
 
    <plugin
-         id="SysADL.viewpoints"
+         id="org.sysadl.viewpoints"
          download-size="0"
          install-size="0"
          version="0.0.0"

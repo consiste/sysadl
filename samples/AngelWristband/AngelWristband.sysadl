@@ -2,7 +2,7 @@ Model SysADLArchitecture ;
 package SysADL.types { value type Int { } value type Boolean { } value type String { } value type Void { } value type Real { } } 
 package Ports{ import SysADL.types ; port def RequestOPT { flow out String } port def RequestIPT { flow in String } port def ResponseOPT { flow out String } port def ResponseIPT { flow in String } port def SmartphoneCPT { ports : req : RequestOPT ; resp : ResponseIPT ; } port def WristbandCPT { ports : req : RequestIPT ; resp : ResponseOPT ; } port def DataIPT { flow in String } port def DataOPT { flow out String } port def TemperatureIPT { flow in Real } port def TemperatureOPT { flow out Real } port def AccelerometerIPT { flow in Real } port def AccelerometerOPT { flow out Real } port def HeartRateIPT { flow in Real } port def HeartRateOPT { flow out Real } }
 package Connectors { import Ports ; connector def RequestResponseCN { participants : ~ w : WristbandCPT ; ~ sp : SmartphoneCPT ; configuration { } } connector def sendRequestCN { participants : ~ req : RequestOPT ; ~ reqI : RequestIPT ; flows : String from req to reqI } connector def sendResponseCN implements IoTStyle.DeviceDataCN { participants : ~ resp : ResponseOPT ; ~ reqi : ResponseIPT ; flows : String from resp to reqi } connector def DataCN implements IoTStyle.DatastoreCN { participants : ~ dOut : DataOPT ; ~ dIn : DataIPT ; flows : String from dOut to dIn } connector def AccelerationCN implements IoTStyle.SensorDataCN { participants : ~ aOut : AccelerometerOPT ; ~ aIn : AccelerometerIPT ; flows : Real from aOut to aIn } connector def TemperatureCN implements IoTStyle.SensorDataCN { participants : ~ tOut : TemperatureOPT ; ~ tIn : TemperatureIPT ; flows : Real from tOut to tIn } connector def HeartRateCN implements IoTStyle.SensorDataCN { participants : ~ hrOut : HeartRateOPT ; ~ hrIn : HeartRateIPT ; flows : Real from hrOut to hrIn } }
-package Components satisfies IoTStyle { import Ports ; import Connectors ; import SysADL.types ; 
+package Components uses IoTStyle { import Ports ; import Connectors ; import SysADL.types ; 
 	boundary component def AccelerometerCP implements IoTStyle.SensorCP { ports : as : AccelerometerOPT concrete IoTStyle.SensorCP.SensorOPT ; } 
 	boundary component def TemperatureSensorCP implements IoTStyle.SensorCP { ports : ts : TemperatureOPT concrete IoTStyle.SensorCP.SensorOPT ; }
 	component def WristbandCP implements IoTStyle.DeviceCP { ports : aw : WristbandCPT concrete IoTStyle.DeviceCP.DeviceOPT ; configuration { components : ControllerCP : ControllerCP { using ports : rIn : RequestIPT ; rOut : ResponseOPT ; a : AccelerometerIPT ; hs : HeartRateIPT ; t : TemperatureIPT ; } a : AccelerometerCP { using ports : as : AccelerometerOPT ; } t : TemperatureSensorCP { using ports : ts : TemperatureOPT ; } hr : HeartRateSensorCP { using ports : hrs : HeartRateOPT ; } connectors : sendHeartRate : HeartRateCN bindings hrs = hs ; sendTemperature : TemperatureCN bindings ts = t ; sendAcceleration : AccelerationCN bindings as = a ; delegations : rIn to req rOut to resp } } boundary
@@ -16,7 +16,7 @@ package Components satisfies IoTStyle { import Ports ; import Connectors ; impor
 		connectors : sendMeasurements : RequestResponseCN bindings aw = sp ;
 	} }
 	component def ControllerCP implements IoTStyle.ControllerCP { ports : rIn : RequestIPT ; rOut : ResponseOPT ; a : AccelerometerIPT concrete IoTStyle.ControllerCP.SensorIPT ; hs : HeartRateIPT concrete IoTStyle.ControllerCP.SensorIPT ; t : TemperatureIPT concrete IoTStyle.ControllerCP.SensorIPT ; } boundary
-	component def DatabaseCP implements IoTStyle.DataStoreCP { ports : dIn : DataIPT concrete IoTStyle.DataStoreCP.DataIPT ; dOut : DataOPT concrete IoTStyle.DataStoreCP.DataOPT ; } activity def SensingAC implements IoTStyle.Monitoring : ( meassurement : Real ) { body { } } activity def ApplicationAC implements IoTStyle.Planning , IoTStyle.Execution ( response : String ) { body { } } activity def ControllerAC implements IoTStyle.Analysis ( request : String ) ( accelerometer : Real ) ( temperature : Real ) ( heartRate : Real ) : ( response : String ) { body { } } activity def StorageAC implements IoTStyle.Knowledge ( dataIn : String ) : ( dataOut : String ) { body { } } }
+	component def DatabaseCP implements IoTStyle.DataStoreCP { ports : dIn : DataIPT concrete IoTStyle.DataStoreCP.DataIPT ; dOut : DataOPT concrete IoTStyle.DataStoreCP.DataOPT ; } activity def SensingAC implements IoTStyle.Monitoring : ( meassurement : Real ) { body { } } activity def ApplicationAC implements IoTStyle.Planning , IoTStyle.Execution ( response : String ) { body { } } activity def ControllerAC implements IoTStyle.Analysis ( request : String ) ( accelerometer : Real ) ( temperature : Real ) ( heartRate : Real ) : ( response : String ) { body { } } activity def StorageAC ( dataIn : String ) : ( dataOut : String ) { body { } } }
 Requirement teste(1.1){
 	
 }
@@ -35,9 +35,28 @@ style IoTStyle {
 	abstract connector def DeviceDataCN { participants : ~ DeviceOPT : out any ~ DeviceIPT : in any flows : flow DeviceOPT to DeviceIPT }  
 	abstract connector def DatastoreCN { participants : ~ DataIPT : in any ~ DataOPT : out any flows : flow DataOPT to DataIPT } 
 	abstract connector def ServiceCN { participants : ~ ServiceOPT : out any ~ ServiceIPT : in any flows : flow ServiceOPT to ServiceIPT } 
-	invariant ExistsSensorCP = 'context Model : self.involvedElements->select(i | i.oclIsTypeOf(StructuralDef))->select(sd | sd.oclIsTypeOf(ComponentDef))->exists(c | c.abstractComponent = self.styles->select(s | s.name=IoTStyle)->select(s | s.definitions)->select(d | d.oclIsTypeOf(AbstractComponentDef))->select(ac | ac.name=SensorCP))'
-	invariant ExistsDataStoreCP 
-	invariant ExistsDeviceCP 
+	invariant ExistsActivities = 
+	"
+	helper context sysadl!Model def : C1() : Boolean =
+	if (self.getInstancesOfAbstractActivity('IoTStyle', 'Monitoring').size()>0) and 
+		(self.getInstancesOfAbstractActivity('IoTStyle', 'Analysis').size()>0) and
+		(self.getInstancesOfAbstractActivity('IoTStyle', 'Planning').size()>0) and
+		(self.getInstancesOfAbstractActivity('IoTStyle', 'Execution').size()>0) then
+		true
+	else
+		false
+	endif
+	;
+	helper context sysadl!Model def : getInstancesOfAbstractActivity(nameStyle : String, abstractActivity : String) : Collection(sysadl!ActivityDef) = 
+	self.involvedElements->select(i | i.oclIsTypeOf(sysadl!BehaviorDef))->
+	select(bd | bd.oclIsTypeOf(sysadl!ActivityDef))->select(act | act.abstractActivity = 
+		self.styles->select(s | s.name=nameStyle)->select(s | s.definitions)->
+		select(d | d.oclIsTypeOf(sysadl!AbstractActivityDef))->select(ac | ac.name=abstractActivity)
+	)
+	;
+	"
+	invariant ActivitiesOrder 
+	invariant MonitoringAct 
 	invariant SensorConnection 
 	invariant ActuatorConnection 
 	invariant Communication 
@@ -48,5 +67,5 @@ style IoTStyle {
 	invariant NumberSensorDataCNOfControllerCP 
 	invariant NumberActuatorOPTOfControllerCP 
 	invariant NumberActuatorCommandCNOfControllerCP 
-	abstract activity def Monitoring abstract activity def Analysis abstract activity def Planning abstract activity def Execution abstract activity def Knowledge } 
+	abstract activity def Monitoring abstract activity def Analysis abstract activity def Planning abstract activity def Execution } 
 	allocations { activity SensingAC to AccelerometerCP activity SensingAC to TemperatureSensorCP activity SensingAC to HeartRateSensorCP activity StorageAC to DatabaseCP activity ControllerAC to ControllerCP activity ApplicationAC to ApplicationCP }

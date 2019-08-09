@@ -7,6 +7,7 @@ import java.util.Map;
 import org.eclipse.ocl.OCL;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
+import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.helper.ConstraintKind;
 import org.eclipse.ocl.helper.OCLHelper;
 import org.sysadl.Invariant;
@@ -19,11 +20,12 @@ public class SysADLConstraintVerifier {
 	private Map<org.sysadl.Package, List<org.sysadl.Invariant>> invariantsPerPackage;
 	private Map<org.sysadl.Invariant, Object> invariants;
 	private OCLHelper<?, ?, ?, ?> helper; 
+	private OCL<?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?> ocl;
 	
 	public SysADLConstraintVerifier(Model m) {
 		this.model = m;
 		EcoreEnvironmentFactory fac = new EcoreEnvironmentFactory();
-		OCL<?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?> ocl = OCL.newInstance(fac);
+		ocl = OCL.newInstance(fac);
 		helper = ocl.createOCLHelper();
 		helper.setInstanceContext(SysADLPackage.PACKAGE);
 		try {
@@ -52,6 +54,13 @@ public class SysADLConstraintVerifier {
 	}
 	
 	public void verifyPackage(org.sysadl.Package p) {
+		
+	}
+	
+	public void checkAll() throws VerificationException {
+		for (Object c : invariants.values()) {
+			ocl.check(model, c);
+		}
 		
 	}
 }

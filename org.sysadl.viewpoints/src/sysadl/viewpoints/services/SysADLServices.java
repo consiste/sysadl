@@ -56,7 +56,7 @@ public class SysADLServices {
 	public List<EObject> possibleStyle(EObject entry) {
 		ArrayList<EObject> result = new ArrayList<EObject>();
 		org.sysadl.Package p = SysADLUtil.upToPackage(entry);
-		Style s = p.getAppliedStyle();
+		EList<Style> s = p.getAppliedStyle();
 		Class<?> filterClass = null;
 
 		if (entry instanceof ComponentDef)
@@ -66,9 +66,11 @@ public class SysADLServices {
 		else if (entry instanceof PortUse)
 			filterClass = AbstractPortUse.class;
 
-		for (AbstractDef d : s.getDefinitions()) {
-			if (d.getClass().equals(filterClass)) {
-				result.add(d);
+		for (Style style : s) {
+			for (AbstractDef d : style.getDefinitions()) {
+				if (d.getClass().equals(filterClass)) {
+					result.add(d);
+				}
 			}
 		}
 		return result;

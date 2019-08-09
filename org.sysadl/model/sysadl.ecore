@@ -25,8 +25,8 @@
         eType="#//ElementDef" eKeys="#//NamedElement/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="definitions" upperBound="-1"
         eType="#//ElementDef" containment="true" resolveProxies="false" eKeys="#//NamedElement/name"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="appliedStyle" eType="#//Style"
-        eKeys="#//NamedElement/name"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="appliedStyle" upperBound="-1"
+        eType="#//Style" eKeys="#//NamedElement/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Style" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="invariants" upperBound="-1"
@@ -167,6 +167,8 @@
         defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="abstractComponent" eType="#//AbstractComponentDef"
         eKeys="#//NamedElement/name"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="appliedStyle" upperBound="-1"
+        eType="#//Style" eKeys="#//NamedElement/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ArchitectureDef" eSuperTypes="#//ComponentDef"/>
   <eClassifiers xsi:type="ecore:EClass" name="ComponentUse" eSuperTypes="#//StructuralUse">

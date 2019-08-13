@@ -14,7 +14,7 @@ class Package extends NamedElement {
 	refers Package[] imports keys name
 	refers ElementDef[] importedDefinitions keys name
 	contains ElementDef[] definitions keys name
-	refers Style appliedStyle keys name
+	refers Style[] appliedStyle keys name
 }
 
 class Style extends NamedElement {
@@ -138,6 +138,7 @@ class ComponentDef extends StructuralDef {
 	boolean[1] isBoundary = "false"
 	//refers ComponentUse[] instances opposite definition keys name
 	refers AbstractComponentDef abstractComponent keys name
+	refers Style[] appliedStyle keys name
 }
 
 class ArchitectureDef extends ComponentDef {

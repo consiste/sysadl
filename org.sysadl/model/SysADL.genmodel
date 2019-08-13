@@ -185,6 +185,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//ComponentDef/composite"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//ComponentDef/isBoundary"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ComponentDef/abstractComponent"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//ComponentDef/appliedStyle"/>
     </genClasses>
     <genClasses ecoreClass="sysadl.ecore#//ArchitectureDef"/>
     <genClasses ecoreClass="sysadl.ecore#//ComponentUse">

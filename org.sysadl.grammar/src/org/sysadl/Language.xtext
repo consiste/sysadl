@@ -90,7 +90,9 @@ DataDef returns DataDef:
 	DataTypeDef | DimensionDef | UnitDef | ValueTypeDef | Enumeration;
 
 ComponentDef returns ComponentDef:
-	(isBoundary?='boundary')? 'component' 'def' name=ID ('implements' abstractComponent=[AbstractComponentDef|QualifiedName])?
+	(isBoundary?='boundary')? 'component' 'def' name=ID 
+	('styles' appliedStyle+=[Style|QualifiedName] ( "," appliedStyle+=[Style|QualifiedName])* )?
+	('implements' abstractComponent=[AbstractComponentDef|QualifiedName])?
 	'{'
 		('ports' ':' ports+=PortUse*)?
 		(properties+=Property
@@ -103,7 +105,8 @@ ComponentDef returns ComponentDef:
 
 ArchitectureDef returns ArchitectureDef:
 	// alternatively, a component might be an architecture 
-	'architecture' 'def' name=ID // TODO shall an architecture implement a style, instead of a package?
+	'architecture' 'def' name=ID 
+	('styles' appliedStyle+=[Style|QualifiedName] ( "," appliedStyle+=[Style|QualifiedName])* )?
 	'{'
 		'ports' ':' ports+=PortUse*
 		properties+=Property*
@@ -155,7 +158,8 @@ Property returns Property:
 
 Package returns Package:
 	{Package}
-	'package' name=QualifiedName ('satisfies' appliedStyle=[Style|QualifiedName])? '{'
+	'package' name=QualifiedName 
+	('uses' appliedStyle+=[Style|QualifiedName] ( "," appliedStyle+=[Style|QualifiedName])* )? '{'
 		('import' imports+=[Package|QualifiedName] ';')*
 		('using' importedDefinitions+=[ElementDef|QualifiedName] ';')*
 		(properties+=Property

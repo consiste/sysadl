@@ -107,7 +107,7 @@
     </genClasses>
     <genClasses ecoreClass="sysadl.ecore#//ExampleArchitecture"/>
     <genClasses ecoreClass="sysadl.ecore#//Invariant">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Invariant/expr"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute sysadl.ecore#//Invariant/expr"/>
     </genClasses>
     <genClasses image="false" ecoreClass="sysadl.ecore#//AbstractDef"/>
     <genClasses ecoreClass="sysadl.ecore#//AbstractComponentDef">

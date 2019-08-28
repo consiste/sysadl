@@ -1955,8 +1955,8 @@
             </style>
           </subContainerMappings>
           <subContainerMappings name="Style.Invariant" semanticCandidatesExpression="feature:invariants" domainClass="Invariant" childrenPresentation="List">
-            <subNodeMappings name="Style.Invariant.Expression" semanticCandidatesExpression="feature:expr" domainClass="Expression">
-              <style xsi:type="style:DotDescription" showIcon="false" labelExpression="['invariant: ' + nodeText(self)/]" resizeKind="NSEW">
+            <subNodeMappings name="Style.Invariant.Expression" semanticCandidatesExpression="var:self" domainClass="Invariant">
+              <style xsi:type="style:DotDescription" showIcon="false" labelExpression="['invariant: ' + expr/]" resizeKind="NSEW">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>

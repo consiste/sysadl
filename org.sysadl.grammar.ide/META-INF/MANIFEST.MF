@@ -3,7 +3,7 @@ Automatic-Module-Name: org.sysadl.grammar.ide
 Bundle-ManifestVersion: 2
 Bundle-Name: org.sysadl.grammar.ide
 Bundle-Vendor: ConSiste UFRN
-Bundle-Version: 2.0.0
+Bundle-Version: 2.1.0
 Bundle-SymbolicName: org.sysadl.grammar.ide; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.sysadl.grammar,

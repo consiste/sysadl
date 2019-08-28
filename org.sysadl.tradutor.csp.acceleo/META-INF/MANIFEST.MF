@@ -1,0 +1,33 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Acceleo Translater Module Runtime Plug-in
+Bundle-SymbolicName: org.sysadl.tradutor.csp.acceleo
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.csp.translater.Activator
+Bundle-Vendor: Eclipse Modeling Project
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore.xmi,
+ org.eclipse.ocl,
+ org.eclipse.ocl.ecore,
+ org.eclipse.acceleo.common;bundle-version="3.3.0",
+ org.eclipse.acceleo.model;bundle-version="3.3.0",
+ org.eclipse.acceleo.profiler;bundle-version="3.3.0",
+ org.eclipse.acceleo.engine;bundle-version="3.3.0",
+ org.sysadl,
+ org.eclipse.sirius,
+ org.eclipse.emf.compare.diagram.sirius,
+ org.eclipse.sirius.table,
+ org.eclipse.sirius.diagram,
+ org.eclipse.sirius.common,
+ org.eclipse.gmf.runtime.notation,
+ com.google.guava,
+ org.sysadl.grammar,
+ org.eclipse.xtext,
+ org.apache.log4j
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-ActivationPolicy: lazy
+Eclipse-LazyStart: true
+Export-Package: org.csp.translater.main
+

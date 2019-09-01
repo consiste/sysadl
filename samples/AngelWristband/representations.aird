@@ -7684,7 +7684,7 @@
         </ownedStyle>
         <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer/@containerMappings[name='BDD']/@subContainerMappings[name='BDD.ComponentDef']"/>
       </ownedDiagramElements>
-      <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_9Sl9MrrYEemmr8Ti_WHgYQ" name="&lt;&lt;DeviceCP>>&#xA;&lt;&lt;component>>&#xA;SmartphoneCP" tooltipText="Component SmartphoneCP" outgoingEdges="_9TpGHLrYEemmr8Ti_WHgYQ _9TptJLrYEemmr8Ti_WHgYQ" incomingEdges="_9TptLrrYEemmr8Ti_WHgYQ">
+      <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_9Sl9MrrYEemmr8Ti_WHgYQ" name="&lt;&lt;ActuatorCP>>&#xA;&lt;&lt;component>>&#xA;SmartphoneCP" tooltipText="Component SmartphoneCP" outgoingEdges="_9TpGHLrYEemmr8Ti_WHgYQ _9TptJLrYEemmr8Ti_WHgYQ" incomingEdges="_9TptLrrYEemmr8Ti_WHgYQ">
         <target xmi:type="sysadl:ComponentDef" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='SmartphoneCP']"/>
         <semanticElements xmi:type="sysadl:ComponentDef" href="AngelWristband.sysadl#//@packages[name='Components']/@definitions[name='SmartphoneCP']"/>
         <ownedBorderedNodes xmi:type="diagram:DNode" uid="_9TPdcrrYEemmr8Ti_WHgYQ" name="sp : SmartphoneCPT [1,1] " tooltipText="Port sp" width="2" height="2" resizeKind="NSEW">
@@ -9940,6 +9940,15 @@
               <styles xmi:type="notation:ShapeStyle" xmi:id="_TKUvZbriEemmr8Ti_WHgYQ" fontName="Segoe UI" fontHeight="8"/>
               <layoutConstraint xmi:type="notation:Bounds" xmi:id="_TKUvZrriEemmr8Ti_WHgYQ" x="115" y="134"/>
             </children>
+            <children xmi:type="notation:Node" xmi:id="_HKGFwM0MEemlu62Fmmt08Q" type="3009" element="_HDDpoM0MEemlu62Fmmt08Q">
+              <children xmi:type="notation:Node" xmi:id="_HMR3EM0MEemlu62Fmmt08Q" type="5004"/>
+              <children xmi:type="notation:Node" xmi:id="_HMc2MM0MEemlu62Fmmt08Q" type="7003">
+                <styles xmi:type="notation:SortingStyle" xmi:id="_HMc2Mc0MEemlu62Fmmt08Q"/>
+                <styles xmi:type="notation:FilteringStyle" xmi:id="_HMc2Ms0MEemlu62Fmmt08Q"/>
+              </children>
+              <styles xmi:type="notation:ShapeStyle" xmi:id="_HKGFwc0MEemlu62Fmmt08Q" fontName="Segoe UI" fontHeight="8"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_HKGFws0MEemlu62Fmmt08Q" x="429" y="222"/>
+            </children>
             <styles xmi:type="notation:SortingStyle" xmi:id="_a3NmwrrbEemmr8Ti_WHgYQ"/>
             <styles xmi:type="notation:FilteringStyle" xmi:id="_a3Nmw7rbEemmr8Ti_WHgYQ"/>
           </children>
@@ -10633,6 +10642,14 @@
         <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
         <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
         <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="_TI2vwLriEemmr8Ti_WHgYQ" showIcon="false" borderSize="1" borderSizeComputationExpression="1" foregroundColor="255,255,255">
+          <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.Invariant']/@style"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.Invariant']"/>
+      </ownedDiagramElements>
+      <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_HDDpoM0MEemlu62Fmmt08Q" name="&lt;&lt;Invariant>>&#xA;newInvariant">
+        <target xmi:type="sysadl:Invariant" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@invariants[name='newInvariant']"/>
+        <semanticElements xmi:type="sysadl:Invariant" href="AngelWristband.sysadl#//@styles[name='IoTStyle']/@invariants[name='newInvariant']"/>
+        <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="_HDMzkM0MEemlu62Fmmt08Q" showIcon="false" borderSize="1" borderSizeComputationExpression="1" foregroundColor="255,255,255">
           <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.Invariant']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.Invariant']"/>

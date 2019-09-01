@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ocl.OCL;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.Query;
+import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
 import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.helper.OCLHelper;
@@ -26,10 +27,6 @@ import org.sysadl.Style;
 import org.sysadl.SysADLPackage;
 
 public class Action implements IExternalJavaAction {
-
-	private OCLHelper<?, ?, ?, ?> helper; 
-	private OCL<?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?> ocl;
-	
 	
 	public Action() {
 		// TODO Auto-generated constructor stub
@@ -55,31 +52,40 @@ public class Action implements IExternalJavaAction {
 		}
 		
 		for (Style s : abs) {
+			int total = s.getInvariants().size();
+			int violations = 0;
+			boolean isValid;
 			System.out.println("Verification ["+c.getName()+"]: Checking Style "+s.getName());
+			System.out.println("Number of Invariants: "+s.getInvariants().size());
 			for (Invariant i : s.getInvariants()) {
 				System.out.println("Verification ["+c.getName()+"]: Checking invariant "+i.getName());
 				try {
-					System.out.println("Invariant "+i.getName()+(i.getExpr()==null? ": " : " ("+i.getExpr()+"): ")+(checkInvariant(c,i.getExpr())? "valid" : "violated"));
+					isValid = checkInvariant(c,i.getExpr());
+					if (!isValid) violations++;
+					System.out.println("Invariant "+i.getName()+(i.getExpr()==null? ": " : " ("+i.getExpr()+"): ")+(isValid? "valid" : "violated"));
 				} catch (ParserException e) {
 					System.out.println("[ERROR] Invariant "+i.getName()+ " has shown an error: "+e.getMessage());
 				}
 
 			}
 			System.out.println("Verification ["+c.getName()+"]: End verification of style "+s.getName());
+			System.out.println("Invariants: "+total+" (total); "+violations+" (violated)");
+			System.out.println(((total-violations)/total)*100+"% constraints validated");
 		}
 	}
 
 	private boolean checkInvariant(ComponentDef c, String expr) throws ParserException {
 		if (expr==null || expr.isBlank()) return true;
-		EcoreEnvironmentFactory fac = new EcoreEnvironmentFactory();
-		ocl = OCL.newInstance(fac);
+		
+		OCL<?, EClassifier, ?, ?, ?, ?, ?, ?, ?, Constraint, EClass, EObject> ocl;
+	    ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE);
+	    OCLHelper<EClassifier, ?, ?, Constraint> helper = ocl.createOCLHelper();
 		
 		helper = ocl.createOCLHelper();
-		helper.setInstanceContext(SysADLPackage.CONFIGURATION);
+		helper.setContext(SysADLPackage.Literals.CONFIGURATION);
 		
-		OCLExpression query = (OCLExpression) helper.createInvariant(expr);
-		Query<EClassifier, EClass, EObject> eval = ocl.createQuery(query);
-		return eval.check(c.getComposite());
+		Constraint query = helper.createInvariant(expr);
+		return ocl.check(c.getComposite(), query);
 	}
 
 }

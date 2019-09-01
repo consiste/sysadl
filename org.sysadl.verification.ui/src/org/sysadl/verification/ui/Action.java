@@ -59,7 +59,7 @@ public class Action implements IExternalJavaAction {
 			for (Invariant i : s.getInvariants()) {
 				System.out.println("Verification ["+c.getName()+"]: Checking invariant "+i.getName());
 				try {
-					System.out.println("Invariant "+i.getName()+(i.getExpr()==null? ":" : " ("+i.getExpr()+"): ")+(checkInvariant(c,i.getExpr())? "valid" : "violated"));
+					System.out.println("Invariant "+i.getName()+(i.getExpr()==null? ": " : " ("+i.getExpr()+"): ")+(checkInvariant(c,i.getExpr())? "valid" : "violated"));
 				} catch (ParserException e) {
 					System.out.println("[ERROR] Invariant "+i.getName()+ " has shown an error: "+e.getMessage());
 				}

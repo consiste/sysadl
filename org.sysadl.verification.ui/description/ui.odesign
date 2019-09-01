@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:tool="http://www.eclipse.org/sirius/description/tool/1.1.0" name="ui" version="12.0.0.2017041100">
   <ownedViewpoints name="org.sysadl.verification" label="SysADL Verification Tools" modelFileExtension="sysadl">
-    <ownedRepresentationExtensions xsi:type="description_1:DiagramExtensionDescription" name="org.sysadl.verification.ui" viewpointURI="viewpoint:/org.sysadl.viewpoints/SysADL.Structural" representationName="SysADL.BDD">
-      <layers name="org.sysadl.verification.ui" label="Verification" activeByDefault="true" optional="false">
-        <toolSections name="org.sysadl.verification.ui.tool" label="Verification">
-          <ownedTools xsi:type="tool:OperationAction" name="org.sysadl.verification.ui.tool.check" label="Check Constraints" precondition="[container.oclIsTypeOf(ComponentDef)/]">
-            <view name="views"/>
-            <initialOperation>
-              <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="service:verify()"/>
-            </initialOperation>
+    <ownedRepresentationExtensions xsi:type="description_1:DiagramExtensionDescription" name="org.sysadl.verification.ui.extension" viewpointURI="viewpoint:/org.sysadl.viewpoints/SysADL.Structural" representationName=".*">
+      <layers name="org.sysadl.verification.layer" label="SysADL Verification">
+        <toolSections name="org.sysadl.verification.tools" label="Verification">
+          <ownedTools xsi:type="tool:ExternalJavaAction" name="org.sysadl.verification.button" label="Verify Constraints" id="org.sysadl.verification.ui.action">
+            <parameters name="component" value="var:self"/>
           </ownedTools>
         </toolSections>
       </layers>

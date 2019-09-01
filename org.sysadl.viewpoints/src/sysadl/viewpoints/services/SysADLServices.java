@@ -144,5 +144,6 @@ public class SysADLServices {
 				&& (second.getDefinition() instanceof CompositePortDef);
 		return b;
 	}
+	
 
 }

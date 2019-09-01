@@ -7,4 +7,11 @@
 	       name="ui">
     </component>
   </extension>
+  <extension
+        point="org.eclipse.sirius.externalJavaAction">
+     <javaActions
+           actionClass="org.sysadl.verification.ui.Action"
+           id="org.sysadl.verification.ui.action">
+     </javaActions>
+  </extension>
 </plugin>

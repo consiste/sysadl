@@ -50,7 +50,8 @@ public class SysADLConstraintVerifier {
 	}
 
 	private static List<Invariant> getInvariants(org.sysadl.Package p) {
-		return p.getAppliedStyle().getInvariants();
+		//return p.getAppliedStyle().getInvariants();
+		return null;
 	}
 	
 	public void verifyPackage(org.sysadl.Package p) {
@@ -59,7 +60,8 @@ public class SysADLConstraintVerifier {
 	
 	public void checkAll() throws VerificationException {
 		for (Object c : invariants.values()) {
-			ocl.check(model, c);
+			//helper.createQuery(c);
+			//ocl.check(model, c);
 		}
 		
 	}

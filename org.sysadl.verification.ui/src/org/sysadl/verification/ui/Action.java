@@ -75,7 +75,7 @@ public class Action implements IExternalJavaAction {
 	}
 
 	private boolean checkInvariant(ComponentDef c, String expr) throws ParserException {
-		if (expr==null || expr.isBlank()) return true;
+		if (expr==null || expr.isEmpty()) return true;
 		
 		OCL<?, EClassifier, ?, ?, ?, ?, ?, ?, ?, Constraint, EClass, EObject> ocl;
 	    ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE);

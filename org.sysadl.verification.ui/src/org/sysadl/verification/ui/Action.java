@@ -102,7 +102,6 @@ public class Action implements IExternalJavaAction {
 	private void setupOCL() throws ParserException {
 	    ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE);
 		helper = ocl.createOCLHelper();
-		helper = ocl.createOCLHelper();
 		helper.setContext(SysADLPackage.Literals.CONFIGURATION);
 		
 	    helper.defineOperation("checkPortUseAbstractComponent(portUse : PortUse, abstractComponent : String) : Boolean = " + 

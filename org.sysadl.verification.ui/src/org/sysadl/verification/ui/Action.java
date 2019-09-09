@@ -26,7 +26,14 @@ import org.sysadl.Invariant;
 import org.sysadl.Style;
 import org.sysadl.SysADLPackage;
 
+/**
+ * 
+ * @author Eduardo Silva
+ *
+ */
 public class Action implements IExternalJavaAction {
+	OCL<?, EClassifier, ?, ?, ?, ?, ?, ?, ?, Constraint, EClass, EObject> ocl;
+	OCLHelper<EClassifier, ?, ?, Constraint> helper;
 	
 	public Action() {
 		// TODO Auto-generated constructor stub
@@ -34,7 +41,7 @@ public class Action implements IExternalJavaAction {
 
 	@Override
 	public boolean canExecute(Collection<? extends EObject> arg0) {
-		// TODO Auto-generated method stub
+		// TODO Can only execute on ComponentDefs or ArchitectureDefs
 		return true;
 	}
 
@@ -42,7 +49,20 @@ public class Action implements IExternalJavaAction {
 	public void execute(Collection<? extends EObject> arg0, Map<String, Object> arg1) {
 		DNodeListSpec d = (DNodeListSpec) arg1.get("component");
 		ComponentDef c = (ComponentDef) d.getTarget();
-		//System.out.println(k + ": "+ arg1.get(k));
+		
+		checkComponent(c);
+	}
+
+	/**
+	 * Checks the invariants of a specific component
+	 * @param c the component to be verified
+	 */
+	private void checkComponent(ComponentDef c) {
+		try {
+			setupOCL();
+		} catch (ParserException e1) {
+			// TODO Auto-generated catch block
+		}
 		
 		System.out.println("Starting Verification of Component "+c.getName()+"...");
 		List<Style> abs = c.getAppliedStyle();
@@ -74,17 +94,34 @@ public class Action implements IExternalJavaAction {
 		}
 	}
 
-	private boolean checkInvariant(ComponentDef c, String expr) throws ParserException {
-		if (expr==null || expr.isEmpty()) return true;
-		
-		OCL<?, EClassifier, ?, ?, ?, ?, ?, ?, ?, Constraint, EClass, EObject> ocl;
+	/**
+	 * Sets up the OCL environment for verification
+	 * Initialize attributes ocl and helper, and define the functions may be used by the invariants
+	 * @throws ParserException when there is a syntax error in any function
+	 */
+	private void setupOCL() throws ParserException {
 	    ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE);
-	    OCLHelper<EClassifier, ?, ?, Constraint> helper = ocl.createOCLHelper();
-		
+		helper = ocl.createOCLHelper();
 		helper = ocl.createOCLHelper();
 		helper.setContext(SysADLPackage.Literals.CONFIGURATION);
 		
-		Constraint query = helper.createInvariant(expr);
+	    helper.defineOperation("checkPortUseAbstractComponent(portUse : PortUse, abstractComponent : String) : Boolean = " + 
+	    		"self.components->select(cp | cp.definition.abstractComponent.name = abstractComponent)->" + 
+	    		"collect(cpUseSensor | cpUseSensor.ports)->exists(p | p = portUse)");
+
+	}
+
+	/**
+	 * Check a specific invariant
+	 * @param c the component that will be checked
+	 * @param expr the invariant expression
+	 * @return false when the invariant is violated, true otherwise
+	 * @throws ParserException when there is a syntax error in the invariant
+	 */
+	private boolean checkInvariant(ComponentDef c, String expr) throws ParserException {
+		if (expr==null || expr.isEmpty()) return true;
+		
+	    Constraint query = helper.createInvariant(expr);
 		return ocl.check(c.getComposite(), query);
 	}
 

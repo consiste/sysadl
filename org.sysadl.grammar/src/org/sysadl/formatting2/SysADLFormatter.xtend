@@ -4,24 +4,20 @@
 package org.sysadl.formatting2
 
 import com.google.inject.Inject
-import org.eclipse.xtext.formatting2.AbstractFormatter2
-import org.eclipse.xtext.formatting2.IFormattableDocument
 import org.sysadl.Model
 import org.sysadl.Style
-import org.sysadl.services.SysADLGrammarAccess
 import org.sysadl.ComponentDef
+import org.eclipse.xtext.formatting2.AbstractFormatter2
+import org.eclipse.xtext.formatting2.IFormattableDocument
 
 class SysADLFormatter extends AbstractFormatter2 {
 	
-	@Inject extension SysADLGrammarAccess
 	def dispatch void format(Model model, extension IFormattableDocument document) {
 		model.interior[indent];
 		
-		for (v : model.regionFor.keywords("{")) {
-			v.append[autowrap]
-		}
-		for (v : model.regionFor.keywords("}")) {
-			v.prepend[autowrap]
+		for (v : model.regionFor.keywordPairs("{", "}")) {
+			v.interior[autowrap]
+			v.interior[indent]
 		}
 		
 		for (property : model.properties) {

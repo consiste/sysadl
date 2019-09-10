@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
 [module generate('http://org.sysadl')]
+[import org::csp::translater::query::auxQuery /]
 
 [template public generateModel(aModel : sysadl::Model)]
 [comment @main/]
@@ -19,6 +20,7 @@ CONNECTORS =[for (pck : Package | aModel.packages)]
 					[/for]										
 				[/for]
 			[/for]
+|||DELEGATIONS
 
 assert DIAGRAM:['['/]deadlock free]
 assert DIAGRAM:['['/]livelock free]
@@ -159,10 +161,11 @@ channel [compUse.name/]_[portUse.name/]_[compPort.name/]_[portUse.definition.nam
 [connector.name/]_[connector.definition.name/]_[bind.source.name/]_To_[bind.destination.name/]
 							[/for]					
 														
-						[/for]						
+						[/for]									
 					[/if]
 				[/let]
 		[/for]						
 	[/for]
+[aModel.getDelegations(aModel)/]	
 [/file]
 [/template]

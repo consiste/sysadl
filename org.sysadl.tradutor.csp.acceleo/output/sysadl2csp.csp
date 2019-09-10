@@ -18,6 +18,7 @@ CONNECTORS =dataExchange_interactionAGVAndSupervisory_in_outDataS_To_in_outDataA
 |||currentLocation_locationVehicle_location_cs_To_location_vt
 |||sendNotificationMotor_notificationMotor_outAck_To_ack_ca
 |||sendNotificationMotor_notificationMotor_outAck_To_ack_cs
+|||DELEGATIONS
 
 assert DIAGRAM:[deadlock free]
 assert DIAGRAM:[livelock free]
@@ -232,3 +233,60 @@ cs_ack_cs_inNotificationFromMotor!notificationfrommotor->
 nm_outAck_outNotificationFromMotor?notificationfrommotor->								
 sendNotificationMotor_notificationMotor_outAck_To_ack_cs
 														
+Delegation_sendStatus_To_sendStatus= vc_sendStatus_outStatus?status ->
+agvs_sendStatus_outStatus!status ->
+Delegation_sendStatus_To_sendStatus
+
+Delegation_in_outData_To_in_outData= vc_in_outData_inMoveToStation_IAGVSystem!vehicledata->
+vc_in_outData_outNotifications_IAGVSystem!notificationtosupervisory->
+Delegation_in_outData_To_in_outData
+
+Delegation_ack_To_outNotifications= nm_ack_outNotificationToSupervisory?notificationtosupervisory ->
+vc_in_outData_outNotifications_IAGVSystem!notificationtosupervisory ->
+Delegation_ack_To_outNotifications
+
+Delegation_arrivedStatus_To_outNotifications= na_arrivedStatus_outNotificationToSupervisory?notificationtosupervisory ->
+vc_in_outData_outNotifications_IAGVSystem!notificationtosupervisory ->
+Delegation_arrivedStatus_To_outNotifications
+
+Delegation_move_To_inMoveToStation= Delegation_move_To_inMoveToStation
+
+Delegation_passed_To_outNotifications= cs_passed_outNotificationToSupervisory?notificationtosupervisory ->
+vc_in_outData_outNotifications_IAGVSystem!notificationtosupervisory ->
+Delegation_passed_To_outNotifications
+
+Delegation_loaded_unloaded_To_startedArm= Delegation_loaded_unloaded_To_startedArm
+
+Delegation_inAck_To_started_stopped= Delegation_inAck_To_started_stopped
+
+Delegation_startArm_To_startArm= ca_startArm_outCommandToArm?commandtoarm ->
+vc_startArm_outCommandToArm!commandtoarm ->
+Delegation_startArm_To_startArm
+
+Delegation_AGVStatus_To_sendStatus= vt_AGVStatus_outStatus?status ->
+vc_sendStatus_outStatus!status ->
+Delegation_AGVStatus_To_sendStatus
+
+Delegation_start_To_start_stop= sm_start_outCommandToMotor?commandtomotor ->
+Delegation_start_To_start_stop
+
+Delegation_stop_To_start_stop= cs_stop_outCommandToMotor?commandtomotor ->
+Delegation_stop_To_start_stop
+
+Delegation_arrivalDetected_To_arrivalDetected= cs_arrivalDetected_inLocation!location ->
+Delegation_arrivalDetected_To_arrivalDetected
+
+DELEGATIONS = Delegation_sendStatus_To_sendStatus ||| 
+Delegation_in_outData_To_in_outData ||| 
+Delegation_ack_To_outNotifications ||| 
+Delegation_arrivedStatus_To_outNotifications ||| 
+Delegation_move_To_inMoveToStation ||| 
+Delegation_passed_To_outNotifications ||| 
+Delegation_loaded_unloaded_To_startedArm ||| 
+Delegation_inAck_To_started_stopped ||| 
+Delegation_startArm_To_startArm ||| 
+Delegation_AGVStatus_To_sendStatus ||| 
+Delegation_start_To_start_stop ||| 
+Delegation_stop_To_start_stop ||| 
+Delegation_arrivalDetected_To_arrivalDetected
+	

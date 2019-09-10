@@ -1,0 +1,7 @@
+[comment encoding = Cp1252 /]
+[module auxQuery('http://org.sysadl')/]
+
+[query public getDelegations(model : Model) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getDelegations(org.sysadl.Model)', Sequence{model}) /]
+
+

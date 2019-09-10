@@ -10,16 +10,23 @@ Requirement AutomacaoResidencial ( 1 ) {
 	Requirement DetectarIncendio ( 1.8 ) { } 
 	Requirement DetectarInvasao ( 1.9 ) { } 
 	Requirement GerenciarLuminosidade ( 1.5 ) { } 
-	Requirement GerenciarPortas ( 1.3 ) { Requirement AbrirPortaPresenca ( 1.3.1 ) { text = "As portas devem ser abertas se for detectada presença" } Requirement FecharPortaPresenca ( 1.3.2 ) { text = "As portas devem ser fechadas se não for detectada presença" } Requirement AbrirPortaDigital ( 1.3.3 ) { text = "As portas com controle de acesso só podem ser abertas após a validação da digital do usuário" } } 
-	Requirement RealizarCadastros ( 1.1 ) { 
-		Requirement CadastrarUsuarios ( 1.1.1 ) { } 
-		Requirement CadastrarHorarios ( 1.1.2 ) { } 
-		Requirement CadastrarLinhaTelefonica ( 1.1.3 ) { } 
-		Requirement CadastrarPortas ( 1.1.4 ) { } 
-		Requirement CadastrarDigitais ( 1.1.5 ) { }
-	} 
+	Requirement GerenciarPortas ( 1.3 ) { text = "O sistema deve controlar a abertura e fechamento das portas" 
+		Requirement FecharPortas ( 1.3.2 ) { text = "As portas devem ser fechadas se não for detectada presença" } 
+	Requirement AbrirPortas ( 1.3.1 ) { text = "O sistema deve abrir as portas apenas se as condições de abertura forem satisfeitas" derive AbrirPortaPresenca , AbrirPortaDigital ; } } 
+	Requirement RealizarCadastros ( 1.1 ) { text = "O sistema deve permitir a realização de cadastro" derive CadastrarUsuarios , CadastrarHorarios , CadastrarLinhaTelefonica , CadastrarPortas , CadastrarDigitais ; }
+
+	Requirement ExibirStatus ( 1.10 ) { text = "O sistema deve exibir o status dos dispositivos" derive ExibirStatusPainel , ExibirStatusWeb , ExibirStatusApp ; } Requirement EfetuarAutenticacao ( 1.2 ) { text = "O acesso ao sistema Web ou ao aplicativo só pode ser concedido após a validação de login e senha" } } Requirement CadastrarUsuarios ( 1.1.1 ) { } 
+	Requirement CadastrarHorarios ( 1.1.2 ) { } 
+	Requirement CadastrarLinhaTelefonica ( 1.1.3 ) { } 
+	Requirement CadastrarPortas ( 1.1.4 ) { } 
+	Requirement CadastrarDigitais ( 1.1.5 ) { } 
 	Requirement GerenciarJanelas ( 1.4 ) { } 
-	Requirement ExibirStatus ( 1.10 ) { text = "O status dos dispositivos deve ser exibido nos Painéis, no sistema Web e no aplicativo" } Requirement EfetuarAutenticacao ( 1.2 ) { text = "O acesso ao sistema Web ou ao aplicativo só pode ser concedido após a validação de login e senha" } } style IoTStyle { 
+	Requirement AbrirPortaPresenca ( 1.3.1.2 ) { text = "As portas devem ser abertas se for detectada presença" } 
+		Requirement AbrirPortaDigital ( 1.3.1.1 ) { text = "As portas com controle de acesso só podem ser abertas após a validação da digital do usuário" }
+	
+	Requirement ExibirStatusPainel ( 1.10.1 ) { text = "O sistema deve exibir o status dos dispositivos nos paineis" } Requirement ExibirStatusWeb ( 1.10.2 ) { text = "O sistema deve exibir o status dos dispositivos no sistema web" } Requirement ExibirStatusApp ( 1.10.3 ) { text = "O sistema deve exibir o status dos dispositivos no aplicativo para celular" }
+	
+	style IoTStyle { 
 	abstract component def SensorCP [ 1 , -1 ] { ports : SensorOPT : out any [ 1 , -1 ] } 
 	abstract component def ActuatorCP [ 0 , -1 ] { ports : ActuatorIPT : in any [ 1 , -1 ] } 
 	abstract component def DeviceCP [ 1 , -1 ] { ports : SensorIPT : in any [ 0 , -1 ] DeviceOPT : out any [ 0 , -1 ] ActuatorOPT : out any [ 0 , -1 ]  ServiceIPT : in any [ 0 , -1 ] compose {ControllerCP, ActuatorCP, DataStoreCP, GatewayCP, SensorCP} } 
@@ -60,4 +67,4 @@ Requirement AutomacaoResidencial ( 1 ) {
 	abstract activity def Analysis 
 	abstract activity def Planning 
 	abstract activity def Execution
-} 
+}

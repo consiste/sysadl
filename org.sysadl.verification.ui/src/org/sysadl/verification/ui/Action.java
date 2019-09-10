@@ -62,6 +62,7 @@ public class Action implements IExternalJavaAction {
 			setupOCL();
 		} catch (ParserException e1) {
 			// TODO Auto-generated catch block
+			System.out.println(e1.getMessage());
 		}
 		
 		System.out.println("Starting Verification of Component "+c.getName()+"...");

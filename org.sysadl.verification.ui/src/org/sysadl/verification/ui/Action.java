@@ -74,7 +74,7 @@ public class Action implements IExternalJavaAction {
 			System.out.println("Verification ["+c.getName()+"]: Checking Style "+s.getName());
 			System.out.println("Number of Invariants: "+s.getInvariants().size());
 			for (Invariant i : s.getInvariants()) {
-				System.out.println("Verification ["+c.getName()+"]: Checking invariant "+i.getName());
+				System.out.println("\n"+"Verification ["+c.getName()+"]: Checking invariant "+i.getName());
 				try {
 					isValid = checkInvariant(c,i.getExpr());
 					if (!isValid) violations++;
@@ -107,7 +107,35 @@ public class Action implements IExternalJavaAction {
 	    helper.defineOperation("checkPortUseAbstractComponent(portUse : PortUse, abstractComponent : String) : Boolean = " + 
 	    		"self.components->select(cp | cp.definition.abstractComponent.name = abstractComponent)->" + 
 	    		"collect(cpUseSensor | cpUseSensor.ports)->exists(p | p = portUse)");
-
+	    
+	    
+	    helper.defineOperation("checkCPRecursive(configuration : Configuration, abstractComponent : String) : Boolean =  "
+	    		+ "if configuration.components->exists(cp | (not cp.definition.abstractComponent.oclIsUndefined()) and cp.definition.abstractComponent.name = abstractComponent) then "
+	    		+ "true "
+	    		+ "else "
+	    		+ "configuration.components->exists(cp | (not cp.definition.composite.oclIsUndefined()) and self.checkCPRecursive(cp.definition.composite, abstractComponent)) "
+	    		+ "endif");
+	    
+	    helper.defineOperation("checkCNRecursive(configuration : Configuration, abstractConnector : String) : Boolean =	"
+	    		+ "if configuration.connectors->exists(cn | (not cn.definition.abstractConnector.oclIsUndefined()) and cn.definition.abstractConnector.name = abstractConnector) then "
+	    		+ "true "
+	    		+ "else "
+	    		+ "configuration.components->exists(cp | (not cp.definition.composite.oclIsUndefined()) and self.checkCNRecursive(cp.definition.composite, abstractConnector)) or "
+	    		+ "configuration.connectors->exists(cn | (not cn.definition.composite.oclIsUndefined()) and self.checkCNRecursive(cn.definition.composite, abstractConnector)) "
+	    		+ "endif");
+	    
+	    helper.defineOperation("checkPTRecursive(configuration : Configuration, abstractPort : String) : Boolean = "
+	    		+ "if configuration.components->exists(cp | cp.ports->exists(pt | (not pt.abstractPort.oclIsUndefined()) and pt.abstractPort.name = abstractPort)) then "
+	    		+ "true "
+	    		+ "else "
+	    		+ "configuration.components->exists(cp | (not cp.definition.composite.oclIsUndefined()) and self.checkPTRecursive(cp.definition.composite, abstractPort)) "
+	    		+ "endif");	    
+	    
+	    helper.defineOperation("checkBindingsRecursive(configuration : Configuration, abstractConnector : String) : Boolean = "
+	    		+ "(not (configuration.connectors->select(cn | (not cn.definition.abstractConnector.oclIsUndefined()) and cn.definition.abstractConnector.name = abstractConnector)->exists(cn1 | cn1.bindings->size()>1))) and "
+	    		+ "configuration.components->forAll(cp | (not cp.definition.composite.oclIsUndefined()) implies self.checkBindingsRecursive(cp.definition.composite, abstractConnector)) and "
+	    		+ "configuration.connectors->forAll(cn | (not cn.definition.composite.oclIsUndefined()) implies self.checkBindingsRecursive(cn.definition.composite, abstractConnector))");
+	   
 	}
 
 	/**

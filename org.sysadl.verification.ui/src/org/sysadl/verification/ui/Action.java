@@ -1,11 +1,8 @@
 package org.sysadl.verification.ui;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -13,17 +10,13 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.ocl.OCL;
 import org.eclipse.ocl.ParserException;
-import org.eclipse.ocl.Query;
 import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
-import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.helper.OCLHelper;
 import org.eclipse.ocl.options.ParsingOptions;
 import org.eclipse.sirius.diagram.business.internal.metamodel.spec.DNodeListSpec;
 import org.eclipse.sirius.tools.api.ui.IExternalJavaAction;
-import org.sysadl.AbstractComponentDef;
 import org.sysadl.ComponentDef;
-import org.sysadl.Configuration;
 import org.sysadl.Invariant;
 import org.sysadl.Style;
 import org.sysadl.SysADLPackage;
@@ -107,6 +100,7 @@ public class Action implements IExternalJavaAction {
 	    ParsingOptions.setOption(ocl.getEnvironment(),
 	    	    ParsingOptions.implicitRootClass(ocl.getEnvironment()),
 	    	    EcorePackage.Literals.EOBJECT);
+	    
 		helper = ocl.createOCLHelper();
 		helper.setContext(SysADLPackage.Literals.CONFIGURATION);
 		

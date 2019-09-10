@@ -1,0 +1,70 @@
+Model SysADLArchitecture ; 
+package SysADL.types { 
+	value type Int { } value type Boolean { } value type String { } value type Void { } value type Real { }
+} 
+
+Requirement AutomacaoResidencial ( 1 ) { 
+	text = "O sistema deve conectar os dispositivos e permitir aos habitantes da casa monitorá-la, configurá-la e controlá-la a partir de diferentes interfaces, inclusive remotamente" 
+	Requirement SimularPresenca ( 1.7 ) { } 
+	Requirement GerenciarTemperatura ( 1.6 ) { } 
+	Requirement DetectarIncendio ( 1.8 ) { } 
+	Requirement DetectarInvasao ( 1.9 ) { } 
+	Requirement GerenciarLuminosidade ( 1.5 ) { } 
+	Requirement GerenciarPortas ( 1.3 ) { text = "O sistema deve controlar a abertura e fechamento das portas" 
+		Requirement FecharPortas ( 1.3.2 ) { text = "As portas devem ser fechadas se não for detectada presença" } 
+	Requirement AbrirPortas ( 1.3.1 ) { text = "O sistema deve abrir as portas apenas se as condições de abertura forem satisfeitas" derive AbrirPortaPresenca , AbrirPortaDigital ; } } 
+	Requirement RealizarCadastros ( 1.1 ) { text = "O sistema deve permitir a realização de cadastro" derive CadastrarUsuarios , CadastrarHorarios , CadastrarLinhaTelefonica , CadastrarPortas , CadastrarDigitais ; }
+
+	Requirement ExibirStatus ( 1.10 ) { text = "O sistema deve exibir o status dos dispositivos" derive ExibirStatusPainel , ExibirStatusWeb , ExibirStatusApp ; } Requirement EfetuarAutenticacao ( 1.2 ) { text = "O acesso ao sistema Web ou ao aplicativo só pode ser concedido após a validação de login e senha" } } Requirement CadastrarUsuarios ( 1.1.1 ) { } 
+	Requirement CadastrarHorarios ( 1.1.2 ) { } 
+	Requirement CadastrarLinhaTelefonica ( 1.1.3 ) { } 
+	Requirement CadastrarPortas ( 1.1.4 ) { } 
+	Requirement CadastrarDigitais ( 1.1.5 ) { } 
+	Requirement GerenciarJanelas ( 1.4 ) { } 
+	Requirement AbrirPortaPresenca ( 1.3.1.2 ) { text = "As portas devem ser abertas se for detectada presença" } 
+		Requirement AbrirPortaDigital ( 1.3.1.1 ) { text = "As portas com controle de acesso só podem ser abertas após a validação da digital do usuário" }
+	
+	Requirement ExibirStatusPainel ( 1.10.1 ) { text = "O sistema deve exibir o status dos dispositivos nos paineis" } Requirement ExibirStatusWeb ( 1.10.2 ) { text = "O sistema deve exibir o status dos dispositivos no sistema web" } Requirement ExibirStatusApp ( 1.10.3 ) { text = "O sistema deve exibir o status dos dispositivos no aplicativo para celular" }
+	
+	style IoTStyle { 
+	abstract component def SensorCP [ 1 , -1 ] { ports : SensorOPT : out any [ 1 , -1 ] } 
+	abstract component def ActuatorCP [ 0 , -1 ] { ports : ActuatorIPT : in any [ 1 , -1 ] } 
+	abstract component def DeviceCP [ 1 , -1 ] { ports : SensorIPT : in any [ 0 , -1 ] DeviceOPT : out any [ 0 , -1 ] ActuatorOPT : out any [ 0 , -1 ]  ServiceIPT : in any [ 0 , -1 ] compose {ControllerCP, ActuatorCP, DataStoreCP, GatewayCP, SensorCP} } 
+	abstract component def GatewayCP [ 0 , -1 ] { ports : DeviceIPT : in any [ 1 , -1 ]  ServiceIPT : in any [ 0 , -1 ] ServiceOPT : out any [ 1 , -1 ] compose {DataStoreCP} } 
+	abstract component def DataStoreCP [ 1 , -1 ] { ports : DataIPT : in any [ 1 , -1 ] DataOPT : out any [ 1 , -1 ] }
+	abstract component def IoTARCH { compose {DataStoreCP, GatewayCP, DeviceCP, SensorCP, ActuatorCP} } 
+	abstract component def ControllerCP [ 0 , -1 ] { ports : SensorIPT : in any [ 0 , -1 ] ActuatorOPT : out any [ 0 , -1 ] } 
+	abstract connector def SensorDataCN { participants : ~ SensorOPT : out any ~ SensorIPT : in any flows : flow SensorOPT to SensorIPT }
+	abstract connector def ActuatorCommandCN { participants : ~ ActuatorOPT : out any ~ ActuatorIPT : in any flows : flow ActuatorOPT to ActuatorIPT } 
+	abstract connector def DeviceDataCN { participants : ~ DeviceOPT : out any ~ DeviceIPT : in any flows : flow DeviceOPT to DeviceIPT }  
+	abstract connector def DatastoreCN { participants : ~ DataIPT : in any ~ DataOPT : out any flows : flow DataOPT to DataIPT } 
+	abstract connector def ServiceCN { participants : ~ ServiceOPT : out any ~ ServiceIPT : in any flows : flow ServiceOPT to ServiceIPT } 
+	invariant ExistsActivitiesC1
+	invariant ActivitiesOrderC2
+	invariant MonitoringActC3
+	invariant ControllerCPEmbeddedC4 = "not (self.eContainer.abstractComponent.name <> 'DeviceCP' and self.components->exists(cpUse | cpUse.definition.abstractComponent.name = 'ControllerCP'))"
+	invariant SensorConnectionC5
+	invariant ActuatorConnectionC6
+	invariant CommunicationC7
+	invariant SensorDataCNBindingsC8 = "self.connectors->select(cn | cn.definition.abstractConnector.name = 'SensorDataCN')->forAll(sensordataCN | sensordataCN.bindings->size()=1)"
+	invariant ActuatorCommandCNBindingsC9 = "self.connectors->select(cn | cn.definition.abstractConnector.name = 'ActuatorCommandCN')->forAll(sensordataCN | sensordataCN.bindings->size()=1)"
+	invariant DeviceDataCNBindingsC10 = "self.connectors->select(cn | cn.definition.abstractConnector.name = 'DeviceDataCN')->forAll(sensordataCN | sensordataCN.bindings->size()=1)"
+	invariant checkSensorCP = "self.components->exists(cp | cp.definition.abstractComponent.name = 'SensorCP')"
+	invariant checkDataStoreCP = "self.components->exists(cp | cp.definition.abstractComponent.name = 'DataStoreCP')"
+	invariant checkDeviceCP = "self.components->exists(cp | cp.definition.abstractComponent.name = 'DeviceCP')"
+	invariant checkSensorOPT = "self.components->select(cp | cp.definition.abstractComponent.name = 'SensorCP')->forAll(sensorCP | sensorCP.ports->exists(pt | pt.abstractPort.name = 'SensorOPT'))"
+	invariant checkActuatorIPT = "self.components->select(cp | cp.definition.abstractComponent.name = 'ActuatorCP')->forAll(sensorCP | sensorCP.ports->exists(pt | pt.abstractPort.name = 'ActuatorIPT'))"
+	invariant checkDataIPT = "self.components->select(cp | cp.definition.abstractComponent.name = 'DataStoreCP')->forAll(sensorCP | sensorCP.ports->exists(pt | pt.abstractPort.name = 'DataIPT'))"
+	invariant checkDataOPT = "self.components->select(cp | cp.definition.abstractComponent.name = 'DataStoreCP')->forAll(sensorCP | sensorCP.ports->exists(pt | pt.abstractPort.name = 'DataOPT'))"
+	invariant checkServiceOPT = "self.components->select(cp | cp.definition.abstractComponent.name = 'GatewayCP')->forAll(sensorCP | sensorCP.ports->exists(pt | pt.abstractPort.name = 'ServiceOPT'))"
+	invariant checkDeviceIPT = "self.components->select(cp | cp.definition.abstractComponent.name = 'GatewayCP')->forAll(sensorCP | sensorCP.ports->exists(pt | pt.abstractPort.name = 'DeviceIPT'))"
+	invariant checkSensorDataCN = "self.connectors->exists(cn | cn.definition.abstractConnector.name = 'SensorDataCN')"
+	invariant checkDataStoreCN = "self.connectors->exists(cn | cn.definition.abstractConnector.name = 'DataStoreCN')"
+	invariant checkActuatorCommandCN = "not (self.components->exists(cp | cp.definition.abstractComponent.name = 'ActuatorCP') xor self.connectors->exists(cn | cn.definition.abstractConnector.name = 'ActuatorCommandCN'))"
+	invariant checkServiceCN = "not (self.components->exists(cp | cp.definition.abstractComponent.name = 'GatewayCP') xor self.connectors->exists(cn | cn.definition.abstractConnector.name = 'ServiceCN'))"
+	invariant checkDeviceDataCN = "not (self.components->collect(cp | cp.ports)->exists(p | p.definition.abstractPort.name = 'DeviceOPT') xor self.connectors->exists(cn | cn.definition.abstractConnector.name = 'DeviceDataCN'))"
+	abstract activity def Monitoring
+	abstract activity def Analysis 
+	abstract activity def Planning 
+	abstract activity def Execution
+}

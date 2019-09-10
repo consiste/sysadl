@@ -2,7 +2,7 @@
 <feature
       id="org.sysadl.feature.diagrams"
       label="SysADL Diagrams"
-      version="2.7.0"
+      version="2.7.1"
       provider-name="ConSiste UFRN"
       license-feature="org.sysadl.feature.core"
       license-feature-version="2.7.0">

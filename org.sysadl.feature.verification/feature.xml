@@ -5,7 +5,7 @@
       version="1.0.0"
       provider-name="ConSiste UFRN"
       license-feature="org.sysadl.feature.core"
-      license-feature-version="2.6.0">
+      license-feature-version="2.7.0">
 
    <description url="http://sysadl.imd.ufrn.br/">
       SysADL Studio Tools for verification of Styles
@@ -29,8 +29,8 @@
       <import plugin="org.eclipse.ocl"/>
       <import plugin="org.eclipse.ocl.ecore"/>
       <import plugin="org.eclipse.emf.ecore"/>
-      <import plugin="org.sysadl"/>
       <import plugin="org.sysadl.viewpoints"/>
+      <import plugin="org.sysadl.grammar"/>
    </requires>
 
    <plugin

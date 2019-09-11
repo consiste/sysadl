@@ -3,13 +3,13 @@
    <description name="SysADL Studio Update Site" url="http://consiste.dimap.ufrn.br/sysadl/update">
       SysADL Studio Update Site
    </description>
-   <feature url="features/org.sysadl.feature.verification_1.0.0.jar" id="org.sysadl.feature.verification" version="1.0.0">
-      <category name="SysADL Studio"/>
-   </feature>
    <feature url="features/org.sysadl.feature.core_2.7.0.jar" id="org.sysadl.feature.core" version="2.7.0">
       <category name="SysADL Studio"/>
    </feature>
    <feature url="features/org.sysadl.feature.diagrams_2.7.1.jar" id="org.sysadl.feature.diagrams" version="2.7.1">
+      <category name="SysADL Studio"/>
+   </feature>
+   <feature url="features/org.sysadl.feature.verification_1.0.1.jar" id="org.sysadl.feature.verification" version="1.0.1">
       <category name="SysADL Studio"/>
    </feature>
    <category-def name="SysADL Studio" label="SysADL Studio">

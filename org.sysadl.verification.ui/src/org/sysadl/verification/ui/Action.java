@@ -12,8 +12,10 @@ import org.eclipse.ocl.OCL;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
+import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.helper.OCLHelper;
 import org.eclipse.ocl.options.ParsingOptions;
+import org.eclipse.sirius.diagram.DNode;
 import org.eclipse.sirius.diagram.business.internal.metamodel.spec.DNodeListSpec;
 import org.eclipse.sirius.tools.api.ui.IExternalJavaAction;
 import org.sysadl.ComponentDef;
@@ -36,7 +38,11 @@ public class Action implements IExternalJavaAction {
 
 	@Override
 	public boolean canExecute(Collection<? extends EObject> arg0) {
-		// TODO Can only execute on ComponentDefs or ArchitectureDefs
+		// Can only execute on ComponentDefs or ArchitectureDefs
+		/*
+		 * for (EObject e : arg0) { if (e instanceof ComponentDef) { // ArchitectureDef
+		 * is also a ComponentDef continue; } else return false; }
+		 */
 		return true;
 	}
 
@@ -56,7 +62,6 @@ public class Action implements IExternalJavaAction {
 		try {
 			setupOCL();
 		} catch (ParserException e1) {
-			// TODO Auto-generated catch block
 			System.out.println(e1.getMessage());
 		}
 		
@@ -74,8 +79,16 @@ public class Action implements IExternalJavaAction {
 			System.out.println("Verification ["+c.getName()+"]: Checking Style "+s.getName());
 			System.out.println("Number of Invariants: "+s.getInvariants().size());
 			for (Invariant i : s.getInvariants()) {
-				System.out.println("\n"+"Verification ["+c.getName()+"]: Checking invariant "+i.getName());
 				try {
+					// for debugging
+					if (i.getExpr()!= null && i.getExpr().startsWith("debug:")) {
+						Object value = debugInvariant(c, i.getExpr().substring(6));
+						System.err.println("[DEBUG] "+i.getName());
+						System.err.println("[DEBUG]: "+value);
+						continue;
+					}
+					// else
+					System.out.println("\n"+"Verification ["+c.getName()+"]: Checking invariant "+i.getName());
 					isValid = checkInvariant(c,i.getExpr());
 					if (!isValid) violations++;
 					System.out.println("Invariant "+i.getName()+(i.getExpr()==null? ": " : " ("+i.getExpr()+"): ")+(isValid? "valid" : "violated"));
@@ -150,6 +163,15 @@ public class Action implements IExternalJavaAction {
 		
 	    Constraint query = helper.createInvariant(expr);
 		return ocl.check(c.getComposite(), query);
+	}
+
+
+	private Object debugInvariant(ComponentDef c, String expr) throws ParserException {
+		if (expr==null || expr.isEmpty()) return true;
+		
+		OCLExpression exp = helper.createQuery(expr);
+		Object value = ocl.evaluate(c.getComposite(), exp);
+		return value;
 	}
 
 }

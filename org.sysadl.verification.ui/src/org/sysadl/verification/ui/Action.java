@@ -105,8 +105,8 @@ public class Action implements IExternalJavaAction {
 		helper.setContext(SysADLPackage.Literals.CONFIGURATION);
 		
 	    helper.defineOperation("checkPortUseAbstractComponent(portUse : PortUse, abstractComponent : String) : Boolean = " + 
-	    		"self.components->select(cp | cp.definition.abstractComponent.name = abstractComponent)->" + 
-	    		"collect(cpUseSensor | cpUseSensor.ports)->exists(p | p = portUse)");
+	    		"self.components->select(cp | (not cp.definition.abstractComponent.oclIsUndefined()) and cp.definition.abstractComponent.name = abstractComponent)->" + 
+	    		"collect(cpUseSensor | cpUseSensor.ports)->exists(p | p.name = portUse.name)");
 	    
 	    
 	    helper.defineOperation("checkCPRecursive(configuration : Configuration, abstractComponent : String) : Boolean =  "
@@ -130,12 +130,35 @@ public class Action implements IExternalJavaAction {
 	    		+ "else "
 	    		+ "configuration.components->exists(cp | (not cp.definition.composite.oclIsUndefined()) and self.checkPTRecursive(cp.definition.composite, abstractPort)) "
 	    		+ "endif");	    
+	    	   
+	    helper.defineOperation("ControllerCPEmbedded(configuration : Configuration) : Boolean = "
+	    		+ "let cpDef : ComponentDef = configuration.eContainer().oclAsType(ComponentDef) in "
+	    		+ "((not cpDef.abstractComponent.oclIsUndefined()) and cpDef.abstractComponent.name = 'DeviceCP') or "
+	    		+ "(not configuration.components->exists(cp | (not cp.definition.abstractComponent.oclIsUndefined()) and cp.definition.abstractComponent.name = 'ControllerCP')) "
+	    		+ "and "
+	    		+ "configuration.components->forAll(cp | (not cp.definition.composite.oclIsUndefined()) implies self.ControllerCPEmbedded(cp.definition.composite))");
+	    
 	    
 	    helper.defineOperation("checkBindingsRecursive(configuration : Configuration, abstractConnector : String) : Boolean = "
-	    		+ "(not (configuration.connectors->select(cn | (not cn.definition.abstractConnector.oclIsUndefined()) and cn.definition.abstractConnector.name = abstractConnector)->exists(cn1 | cn1.bindings->size()>1))) and "
-	    		+ "configuration.components->forAll(cp | (not cp.definition.composite.oclIsUndefined()) implies self.checkBindingsRecursive(cp.definition.composite, abstractConnector)) and "
-	    		+ "configuration.connectors->forAll(cn | (not cn.definition.composite.oclIsUndefined()) implies self.checkBindingsRecursive(cn.definition.composite, abstractConnector))");
-	   
+	    		+ "let cnStyle : OrderedSet(ConnectorUse) = configuration.connectors->select(cn | (not cn.definition.abstractConnector.oclIsUndefined()) and cn.definition.abstractConnector.name = abstractConnector) in "
+	    		+ "(cnStyle->isEmpty() or cnStyle->forAll(cnUse | cnUse.bindings->size()=1)) "
+	    		+ "and "
+	    		+ "configuration.components->forAll(cp | (not cp.definition.composite.oclIsUndefined()) implies self.checkBindingsRecursive(cp.definition.composite, abstractConnector)) "
+	    		+ "and "
+	    		+ "configuration.connectors->forAll(cn | (not cn.definition.composite.oclIsUndefined()) implies self.checkBindingsRecursive(cn.definition.composite, abstractConnector))"
+	    			);
+	    			    
+	    helper.defineOperation("SensorConnection(configuration : Configuration) : Boolean = "
+	    		+ "let cpSensors : OrderedSet(ComponentUse) = configuration.components->select(cp | (not cp.definition.abstractComponent.oclIsUndefined()) and cp.definition.abstractComponent.name = 'SensorCP') in "
+	    		+ "(cpSensors->isEmpty() or cpSensors->forAll(sensorCP | "
+	    		+ "configuration.connectors->exists(cn |(self.checkPortUseAbstractComponent(cn.bindings->first().destination, 'DeviceCP') or "
+	    		+ "self.checkPortUseAbstractComponent(cn.bindings->first().destination, 'ControllerCP')) and "
+	    		+ "sensorCP.ports->exists(p | p.name = cn.bindings->first().source.name))))"
+	    		+ "and "
+	    		+ "configuration.components->forAll(cp | (not cp.definition.composite.oclIsUndefined()) implies self.SensorConnection(cp.definition.composite))"
+	    		);
+	    
+	    
 	}
 
 	/**

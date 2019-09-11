@@ -117,11 +117,10 @@ public class Action implements IExternalJavaAction {
 		helper = ocl.createOCLHelper();
 		helper.setContext(SysADLPackage.Literals.CONFIGURATION);
 		
-	    helper.defineOperation("checkPortUseAbstractComponent(portUse : PortUse, abstractComponent : String) : Boolean = " + 
-	    		"self.components->select(cp | (not cp.definition.abstractComponent.oclIsUndefined()) and cp.definition.abstractComponent.name = abstractComponent)->" + 
-	    		"collect(cpUseSensor | cpUseSensor.ports)->exists(p | p.name = portUse.name)");
-	    
-	    
+	    helper.defineOperation("checkPortUseAbstractComponent(portUse : PortUse, abstractComponent : String) : Boolean = "
+	    		+ "let abs : AbstractComponentDef = portUse.eContainer().oclAsType(ComponentUse).definition.abstractComponent in "
+	    		+ "(not abs.oclIsUndefined()) and abs.name = abstractComponent");
+	    	    
 	    helper.defineOperation("checkCPRecursive(configuration : Configuration, abstractComponent : String) : Boolean =  "
 	    		+ "if configuration.components->exists(cp | (not cp.definition.abstractComponent.oclIsUndefined()) and cp.definition.abstractComponent.name = abstractComponent) then "
 	    		+ "true "
@@ -150,28 +149,35 @@ public class Action implements IExternalJavaAction {
 	    		+ "(not configuration.components->exists(cp | (not cp.definition.abstractComponent.oclIsUndefined()) and cp.definition.abstractComponent.name = 'ControllerCP')) "
 	    		+ "and "
 	    		+ "configuration.components->forAll(cp | (not cp.definition.composite.oclIsUndefined()) implies self.ControllerCPEmbedded(cp.definition.composite))");
-	    
-	    
+	    	    
 	    helper.defineOperation("checkBindingsRecursive(configuration : Configuration, abstractConnector : String) : Boolean = "
 	    		+ "let cnStyle : OrderedSet(ConnectorUse) = configuration.connectors->select(cn | (not cn.definition.abstractConnector.oclIsUndefined()) and cn.definition.abstractConnector.name = abstractConnector) in "
 	    		+ "(cnStyle->isEmpty() or cnStyle->forAll(cnUse | cnUse.bindings->size()=1)) "
 	    		+ "and "
 	    		+ "configuration.components->forAll(cp | (not cp.definition.composite.oclIsUndefined()) implies self.checkBindingsRecursive(cp.definition.composite, abstractConnector)) "
 	    		+ "and "
-	    		+ "configuration.connectors->forAll(cn | (not cn.definition.composite.oclIsUndefined()) implies self.checkBindingsRecursive(cn.definition.composite, abstractConnector))"
-	    			);
+	    		+ "configuration.connectors->forAll(cn | (not cn.definition.composite.oclIsUndefined()) implies self.checkBindingsRecursive(cn.definition.composite, abstractConnector))");
 	    			    
-	    helper.defineOperation("SensorConnection(configuration : Configuration) : Boolean = "
-	    		+ "let cpSensors : OrderedSet(ComponentUse) = configuration.components->select(cp | (not cp.definition.abstractComponent.oclIsUndefined()) and cp.definition.abstractComponent.name = 'SensorCP') in "
+	    helper.defineOperation("Connection(configuration : Configuration, abstractComponent : String) : Boolean = "
+	    		+ "let cpSensors : OrderedSet(ComponentUse) = configuration.components->select(cp | (not cp.definition.abstractComponent.oclIsUndefined()) and cp.definition.abstractComponent.name = abstractComponent) in "
 	    		+ "(cpSensors->isEmpty() or cpSensors->forAll(sensorCP | "
 	    		+ "configuration.connectors->exists(cn |(self.checkPortUseAbstractComponent(cn.bindings->first().destination, 'DeviceCP') or "
 	    		+ "self.checkPortUseAbstractComponent(cn.bindings->first().destination, 'ControllerCP')) and "
 	    		+ "sensorCP.ports->exists(p | p.name = cn.bindings->first().source.name))))"
 	    		+ "and "
-	    		+ "configuration.components->forAll(cp | (not cp.definition.composite.oclIsUndefined()) implies self.SensorConnection(cp.definition.composite))"
-	    		);
+	    		+ "configuration.components->forAll(cp | (not cp.definition.composite.oclIsUndefined()) implies self.Connection(cp.definition.composite, abstractComponent))");
 	    
-	    
+	    helper.defineOperation("Communication(configuration : Configuration) : Boolean = "
+	    		+ "configuration.connectors->forAll(cn | cn.bindings->forAll(b | "
+	    		+ "let sourceSensor : Boolean = self.checkPortUseAbstractComponent(b.source, 'SensorCP') in "
+	    		+ "let sourceActuator : Boolean = self.checkPortUseAbstractComponent(b.source, 'ActuatorCP') in "
+	    		+ "let destinationSensor : Boolean = self.checkPortUseAbstractComponent(b.destination, 'SensorCP') in "
+	    		+ "let destinationActuator : Boolean = self.checkPortUseAbstractComponent(b.destination, 'ActuatorCP') in "
+	    		+ "not ((sourceSensor and destinationActuator) or (sourceActuator and destinationSensor))"
+	    		+ ")) "
+	    		+ "and "
+	    		+ "configuration.components->forAll(cp | (not cp.definition.composite.oclIsUndefined()) implies self.Communication(cp.definition.composite))");
+		    
 	}
 
 	/**

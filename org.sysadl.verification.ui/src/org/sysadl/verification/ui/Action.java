@@ -148,15 +148,25 @@ public class Action implements IExternalJavaAction {
 	    		+ "configuration.connectors->forAll(cn | (not cn.definition.composite.oclIsUndefined()) implies self.checkBindingsRecursive(cn.definition.composite, abstractConnector))"
 	    			);
 	    			    
-	    helper.defineOperation("SensorConnection(configuration : Configuration) : Boolean = "
-	    		+ "let cpSensors : OrderedSet(ComponentUse) = configuration.components->select(cp | (not cp.definition.abstractComponent.oclIsUndefined()) and cp.definition.abstractComponent.name = 'SensorCP') in "
+	    helper.defineOperation("Connection(configuration : Configuration, abstractComponent : String) : Boolean = "
+	    		+ "let cpSensors : OrderedSet(ComponentUse) = configuration.components->select(cp | (not cp.definition.abstractComponent.oclIsUndefined()) and cp.definition.abstractComponent.name = abstractComponent) in "
 	    		+ "(cpSensors->isEmpty() or cpSensors->forAll(sensorCP | "
 	    		+ "configuration.connectors->exists(cn |(self.checkPortUseAbstractComponent(cn.bindings->first().destination, 'DeviceCP') or "
 	    		+ "self.checkPortUseAbstractComponent(cn.bindings->first().destination, 'ControllerCP')) and "
 	    		+ "sensorCP.ports->exists(p | p.name = cn.bindings->first().source.name))))"
 	    		+ "and "
-	    		+ "configuration.components->forAll(cp | (not cp.definition.composite.oclIsUndefined()) implies self.SensorConnection(cp.definition.composite))"
+	    		+ "configuration.components->forAll(cp | (not cp.definition.composite.oclIsUndefined()) implies self.Connection(cp.definition.composite, abstractComponent))"
 	    		);
+	    
+	    helper.defineOperation("Communication(configuration : Configuration) : Boolean = "
+	    		+ "configuration.connectors->forAll(cn | cn.bindings->forAll(b | "
+	    		+ "let sourceSensor : Boolean = self.checkPortUseAbstractComponent(b.source, 'SensorCP') in "
+	    		+ "let sourceActuator : Boolean = self.checkPortUseAbstractComponent(b.source, 'ActuatorCP') in "
+	    		+ "let destinationSensor : Boolean = self.checkPortUseAbstractComponent(b.destination, 'SensorCP') in "
+	    		+ "let destinationActuator : Boolean = self.checkPortUseAbstractComponent(b.destination, 'ActuatorCP') in "
+	    		+ "(not (sourceSensor = true and destinationActuator = true)) and (not (sourceActuator = true and destinationSensor = true)))) "
+	    		+ "and "
+	    		+ "configuration.components->forAll(cp | (not cp.definition.composite.oclIsUndefined()) implies self.Communication(cp.definition.composite))");
 	    
 	    
 	}

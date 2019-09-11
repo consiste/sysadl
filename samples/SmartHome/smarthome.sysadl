@@ -5,26 +5,24 @@ package SysADL.types {
 
 Requirement AutomacaoResidencial ( 1 ) { 
 	text = "O sistema deve conectar os dispositivos e permitir aos habitantes da casa monitorá-la, configurá-la e controlá-la a partir de diferentes interfaces, inclusive remotamente" 
-	Requirement SimularPresenca ( 1.7 ) { } 
-	Requirement GerenciarTemperatura ( 1.6 ) { } 
+	Requirement SimularPresenca ( 1.7 ) { text = "Os usuários podem ativar a simulação de presença através do sistema Web ou aplicativo para smartphone. Na simulação de presença as luzes são ligadas/desligadas aleatoriamente e as persianas abertas/fechadas automaticamente." } 
+	Requirement GerenciarTemperatura ( 1.6 ) { text = "O sistema deve controlar a temperatura da casa usando aquecedores e resfriadores de ar" Requirement ControleAutomaticoTemperatura ( 1.6.1 ) { text = "O sistema deve desligar todos os aquecedores e resfriadores de ar quando não houverem pessoas dentro da casa. A temperatura a ser alcançada é cadastrada nas preferências de cada usuário" derive ControleTemperaturaHorarios ; } Requirement GerenciaTemperaturaAdaptavel ( 1.6.2 ) { text = "O sistema deve se adaptar aos padrões dos fabricantes, suportando condicionadores de ar e sensores que trabalham em celcius ou fahrenheit" } } 
 	Requirement DetectarIncendio ( 1.8 ) { } 
 	Requirement DetectarInvasao ( 1.9 ) { } 
-	Requirement GerenciarLuminosidade ( 1.5 ) { } 
+	Requirement GerenciarLuminosidade ( 1.5 ) { text = "O sistema deve controlar as luzes da casa" Requirement GerenciarLuminosidadeManual ( 1.5.2 ) { text = "O sistema deve controlar a luz dos ambientes quando solicitado pelo usuário através de um sistema web, app ou painel" } Requirement GerenciarLuminosidadeAutomatico ( 1.5.1 ) { text = "O sistema deve controlar automaticamente a luz dos ambientes, considerando a luz natural disponível e a presença de pessoas na casa" } } 
 	Requirement GerenciarPortas ( 1.3 ) { text = "O sistema deve controlar a abertura e fechamento das portas" 
 		Requirement FecharPortas ( 1.3.2 ) { text = "As portas devem ser fechadas se não for detectada presença" } 
 	Requirement AbrirPortas ( 1.3.1 ) { text = "O sistema deve abrir as portas apenas se as condições de abertura forem satisfeitas" derive AbrirPortaPresenca , AbrirPortaDigital ; } } 
-	Requirement RealizarCadastros ( 1.1 ) { text = "O sistema deve permitir a realização de cadastro" derive CadastrarUsuarios , CadastrarHorarios , CadastrarLinhaTelefonica , CadastrarPortas , CadastrarDigitais ; }
+	Requirement RealizarCadastros ( 1.1 ) { text = "O sistema deve permitir a realização de cadastro"  Requirement CadastrarUsuarios ( 1.1.1 ) { text = "Os usuários podem se cadastrar e adicionar suas preferências de temperatura e luminosidade" } Requirement CadastrarHorarios ( 1.1.2 ) { text = "Os usuários podem cadastrar os horários nos quais estarão presentes na casa" } Requirement CadastrarPortas ( 1.1.4 ) { text = "Os usuários podem indicar quais portas precisam de controle de acesso através de digitais" } Requirement CadastrarDigitais ( 1.1.5 ) { text = "Os usuários podem cadastrar digitais para autorizar a abertura de portas com controle de acesso" } Requirement CadastrarLinhaTelefonica ( 1.1.3 ) { text = "Os usuários podem cadastrar linhas telefônicas para contatos de emergência" } }
 
-	Requirement ExibirStatus ( 1.10 ) { text = "O sistema deve exibir o status dos dispositivos" derive ExibirStatusPainel , ExibirStatusWeb , ExibirStatusApp ; } Requirement EfetuarAutenticacao ( 1.2 ) { text = "O acesso ao sistema Web ou ao aplicativo só pode ser concedido após a validação de login e senha" } } Requirement CadastrarUsuarios ( 1.1.1 ) { } 
-	Requirement CadastrarHorarios ( 1.1.2 ) { } 
-	Requirement CadastrarLinhaTelefonica ( 1.1.3 ) { } 
-	Requirement CadastrarPortas ( 1.1.4 ) { } 
-	Requirement CadastrarDigitais ( 1.1.5 ) { } 
-	Requirement GerenciarJanelas ( 1.4 ) { } 
+	Requirement ExibirStatus ( 1.10 ) { text = "O sistema deve exibir o status dos dispositivos" derive ExibirStatusPainel , ExibirStatusWeb , ExibirStatusApp ; } Requirement EfetuarAutenticacao ( 1.2 ) { text = "O acesso ao sistema Web ou ao aplicativo só pode ser concedido após a validação de login e senha" } Requirement GerenciarJanelas ( 1.4 ) { text = "O sistema deve ser capaz de abrir e fechar as janelas e persianas" derive GerenciarJanelasApp ; } } 
 	Requirement AbrirPortaPresenca ( 1.3.1.2 ) { text = "As portas devem ser abertas se for detectada presença" } 
 		Requirement AbrirPortaDigital ( 1.3.1.1 ) { text = "As portas com controle de acesso só podem ser abertas após a validação da digital do usuário" }
 	
 	Requirement ExibirStatusPainel ( 1.10.1 ) { text = "O sistema deve exibir o status dos dispositivos nos paineis" } Requirement ExibirStatusWeb ( 1.10.2 ) { text = "O sistema deve exibir o status dos dispositivos no sistema web" } Requirement ExibirStatusApp ( 1.10.3 ) { text = "O sistema deve exibir o status dos dispositivos no aplicativo para celular" }
+	
+	Requirement GerenciarJanelasApp ( 1.4.1 ) { text = "O sistema deve permitir que o usuário controle as janelas por um app" } 
+	Requirement ControleTemperaturaHorarios ( 1.6.1.1 ) { text = "O sistema deve ligar os condicionadores de ar 15 minutos antes da chegada de pessoas, a partir dos horários programados" }
 	
 	style IoTStyle { 
 	abstract component def SensorCP [ 1 , -1 ] { ports : SensorOPT : out any [ 1 , -1 ] } 

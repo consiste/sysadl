@@ -314,6 +314,8 @@ You may add additional accurate notices of copyright ownership.
       <import plugin="org.sysadl.grammar"/>
       <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.ui.editors"/>
+      <import feature="org.eclipse.sirius.runtime.ide.ui" version="6.2.2.201907100713"/>
+      <import feature="org.eclipse.sirius.runtime.ide.xtext" version="6.2.2.201907100713"/>
    </requires>
 
    <plugin

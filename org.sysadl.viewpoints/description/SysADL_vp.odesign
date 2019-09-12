@@ -663,6 +663,7 @@
                             <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:newPort">
                               <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="[i.name/]"/>
                               <subModelOperations xsi:type="tool_1:SetValue" featureName="definition" valueExpression="[i.definition/]"/>
+                              <subModelOperations xsi:type="tool_1:SetValue" featureName="abstractPort" valueExpression="[i.abstractPort/]"/>
                             </subModelOperations>
                           </subModelOperations>
                         </subModelOperations>

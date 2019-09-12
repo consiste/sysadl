@@ -7,12 +7,12 @@ package Components uses IoTStyle { import Ports ; import Connectors ; import Sys
 	boundary component def TemperatureSensorCP implements IoTStyle.SensorCP { ports : ts : TemperatureOPT concrete IoTStyle.SensorCP.SensorOPT ; }
 	component def WristbandCP implements IoTStyle.DeviceCP { ports : aw : WristbandCPT concrete IoTStyle.DeviceCP.DeviceOPT ; configuration { components : ControllerCP : ControllerCP { using ports : rIn : RequestIPT ; rOut : ResponseOPT ; a : AccelerometerIPT ; hs : HeartRateIPT ; t : TemperatureIPT ; } a : AccelerometerCP { using ports : as : AccelerometerOPT ; } t : TemperatureSensorCP { using ports : ts : TemperatureOPT ; } hr : HeartRateSensorCP { using ports : hrs : HeartRateOPT ; } connectors : sendHeartRate : HeartRateCN bindings hrs = hs ; sendTemperature : TemperatureCN bindings ts = t ; sendAcceleration : AccelerationCN bindings as = a ; delegations : rIn to req rOut to resp } } boundary
 	component def HeartRateSensorCP implements IoTStyle.SensorCP { ports : hrs : HeartRateOPT concrete IoTStyle.SensorCP.SensorOPT ; }
-	component def SmartphoneCP implements IoTStyle.DeviceCP { ports : sp : SmartphoneCPT concrete IoTStyle.DeviceCP.ServiceIPT ; configuration { components : app : ApplicationCP { using ports : rOut : RequestOPT ; rIn : ResponseIPT ; dOut : DataOPT ; dIn : DataIPT ; } 
+	component def SmartphoneCP implements IoTStyle.ActuatorCP { ports : sp : SmartphoneCPT concrete IoTStyle.DeviceCP.ServiceIPT ; configuration { components : app : ApplicationCP { using ports : rOut : RequestOPT ; rIn : ResponseIPT ; dOut : DataOPT ; dIn : DataIPT ; } 
 		db : DatabaseCP { using ports : dataIn : DataIPT ; dataOut : DataOPT ; } 
 		connectors : sendData : DataCN bindings dataOut = dIn ; saveData : DataCN bindings dOut = dataIn ; delegations : rOut to req rIn to resp
 	} }
 	component def ApplicationCP { ports : rOut : RequestOPT ; rIn : ResponseIPT ; dOut : DataOPT ; dIn : DataIPT ; }
-	component def WristbandARCH { configuration { components : w : WristbandCP { using ports : aw : WristbandCPT ; } s : SmartphoneCP { using ports : sp : SmartphoneCPT ; } 
+	component def WristbandARCH styles IoTStyle { configuration { components : w : WristbandCP { using ports : aw : WristbandCPT ; } s : SmartphoneCP { using ports : sp : SmartphoneCPT ; } 
 		connectors : sendMeasurements : RequestResponseCN bindings aw = sp ;
 	} }
 	component def ControllerCP implements IoTStyle.ControllerCP { ports : rIn : RequestIPT ; rOut : ResponseOPT ; a : AccelerometerIPT concrete IoTStyle.ControllerCP.SensorIPT ; hs : HeartRateIPT concrete IoTStyle.ControllerCP.SensorIPT ; t : TemperatureIPT concrete IoTStyle.ControllerCP.SensorIPT ; } boundary
@@ -35,27 +35,7 @@ style IoTStyle {
 	abstract connector def DeviceDataCN { participants : ~ DeviceOPT : out any ~ DeviceIPT : in any flows : flow DeviceOPT to DeviceIPT }  
 	abstract connector def DatastoreCN { participants : ~ DataIPT : in any ~ DataOPT : out any flows : flow DataOPT to DataIPT } 
 	abstract connector def ServiceCN { participants : ~ ServiceOPT : out any ~ ServiceIPT : in any flows : flow ServiceOPT to ServiceIPT } 
-	invariant ExistsActivities = 
-	"
-	helper context sysadl!Model def : C1() : Boolean =
-	if (self.getInstancesOfAbstractActivity('IoTStyle', 'Monitoring').size()>0) and 
-		(self.getInstancesOfAbstractActivity('IoTStyle', 'Analysis').size()>0) and
-		(self.getInstancesOfAbstractActivity('IoTStyle', 'Planning').size()>0) and
-		(self.getInstancesOfAbstractActivity('IoTStyle', 'Execution').size()>0) then
-		true
-	else
-		false
-	endif
-	;
-	helper context sysadl!Model def : getInstancesOfAbstractActivity(nameStyle : String, abstractActivity : String) : Collection(sysadl!ActivityDef) = 
-	self.involvedElements->select(i | i.oclIsTypeOf(sysadl!BehaviorDef))->
-	select(bd | bd.oclIsTypeOf(sysadl!ActivityDef))->select(act | act.abstractActivity = 
-		self.styles->select(s | s.name=nameStyle)->select(s | s.definitions)->
-		select(d | d.oclIsTypeOf(sysadl!AbstractActivityDef))->select(ac | ac.name=abstractActivity)
-	)
-	;
-	"
-	invariant ActivitiesOrder 
+	invariant ExistsActivities invariant ActivitiesOrder = "" 
 	invariant MonitoringAct 
 	invariant SensorConnection 
 	invariant ActuatorConnection 
@@ -67,5 +47,5 @@ style IoTStyle {
 	invariant NumberSensorDataCNOfControllerCP 
 	invariant NumberActuatorOPTOfControllerCP 
 	invariant NumberActuatorCommandCNOfControllerCP 
-	abstract activity def Monitoring abstract activity def Analysis abstract activity def Planning abstract activity def Execution } 
+	abstract activity def Monitoring abstract activity def Analysis abstract activity def Planning abstract activity def Execution invariant newInvariant = "self.components->exists(cp | cp.definition.abstractComponent.name = \'ActuatorCP\')" } 
 	allocations { activity SensingAC to AccelerometerCP activity SensingAC to TemperatureSensorCP activity SensingAC to HeartRateSensorCP activity StorageAC to DatabaseCP activity ControllerAC to ControllerCP activity ApplicationAC to ApplicationCP }

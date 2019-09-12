@@ -38,4 +38,11 @@
            id="org.sysadl.viewpoints.applyStyle">
      </javaActions>
   </extension>
+  <extension
+        point="org.eclipse.sirius.externalJavaAction">
+     <javaActions
+           actionClass="org.sysadl.viewpoints.Verify"
+           id="org.sysadl.viewpoints.verify">
+     </javaActions>
+  </extension>
 </plugin>

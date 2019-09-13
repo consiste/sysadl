@@ -2,7 +2,7 @@
 <feature
       id="org.sysadl.feature.verification"
       label="SysADL Verification"
-      version="1.0.1"
+      version="1.0.2"
       provider-name="ConSiste UFRN"
       license-feature="org.sysadl.feature.core"
       license-feature-version="2.7.0">
@@ -30,7 +30,8 @@
       <import plugin="org.eclipse.ocl.ecore"/>
       <import plugin="org.eclipse.emf.ecore"/>
       <import plugin="org.sysadl.viewpoints"/>
-      <import plugin="org.sysadl.grammar"/>
+      <import plugin="org.eclipse.ui.console" version="3.8.400" match="greaterOrEqual"/>
+      <import plugin="org.sysadl"/>
    </requires>
 
    <plugin

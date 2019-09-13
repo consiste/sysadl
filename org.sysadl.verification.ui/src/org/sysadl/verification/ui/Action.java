@@ -229,7 +229,7 @@ public class Action implements IExternalJavaAction {
 	private void print(String string) {
 		MessageConsole myConsole = findConsole(CONSOLE_NAME);
 		MessageConsoleStream out = myConsole.newMessageStream();
-		out.println("Hello from Generic console sample action");
+		out.println(string);
 	}
 
 }

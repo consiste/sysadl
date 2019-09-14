@@ -158,14 +158,23 @@ public class Action implements IExternalJavaAction {
 	    		+ "and "
 	    		+ "configuration.connectors->forAll(cn | (not cn.definition.composite.oclIsUndefined()) implies self.checkBindingsRecursive(cn.definition.composite, abstractConnector))");
 	    			    
-	    helper.defineOperation("Connection(configuration : Configuration, abstractComponent : String) : Boolean = "
-	    		+ "let cpSensors : OrderedSet(ComponentUse) = configuration.components->select(cp | (not cp.definition.abstractComponent.oclIsUndefined()) and cp.definition.abstractComponent.name = abstractComponent) in "
+	    helper.defineOperation("SensorConnection(configuration : Configuration) : Boolean = "
+	    		+ "let cpSensors : OrderedSet(ComponentUse) = configuration.components->select(cp | (not cp.definition.abstractComponent.oclIsUndefined()) and cp.definition.abstractComponent.name = 'SensorCP') in "
 	    		+ "(cpSensors->isEmpty() or cpSensors->forAll(sensorCP | "
 	    		+ "configuration.connectors->exists(cn |(self.checkPortUseAbstractComponent(cn.bindings->first().destination, 'DeviceCP') or "
 	    		+ "self.checkPortUseAbstractComponent(cn.bindings->first().destination, 'ControllerCP')) and "
 	    		+ "sensorCP.ports->exists(p | p.name = cn.bindings->first().source.name))))"
 	    		+ "and "
-	    		+ "configuration.components->forAll(cp | (not cp.definition.composite.oclIsUndefined()) implies self.Connection(cp.definition.composite, abstractComponent))");
+	    		+ "configuration.components->forAll(cp | (not cp.definition.composite.oclIsUndefined()) implies self.SensorConnection(cp.definition.composite))");
+	    
+	    helper.defineOperation("ActuatorConnection(configuration : Configuration) : Boolean = "
+	    		+ "let cpActuators : OrderedSet(ComponentUse) = configuration.components->select(cp | (not cp.definition.abstractComponent.oclIsUndefined()) and cp.definition.abstractComponent.name = 'ActuatorCP') in "
+	    		+ "(cpActuators->isEmpty() or cpActuators->forAll(actuatorCP | "
+	    		+ "configuration.connectors->exists(cn |(self.checkPortUseAbstractComponent(cn.bindings->first().source, 'DeviceCP') or "
+	    		+ "self.checkPortUseAbstractComponent(cn.bindings->first().source, 'ControllerCP')) and "
+	    		+ "actuatorCP.ports->exists(p | p.name = cn.bindings->first().destination.name))))"
+	    		+ "and "
+	    		+ "configuration.components->forAll(cp | (not cp.definition.composite.oclIsUndefined()) implies self.ActuatorConnection(cp.definition.composite))");
 	    
 	    helper.defineOperation("Communication(configuration : Configuration) : Boolean = "
 	    		+ "configuration.connectors->forAll(cn | cn.bindings->forAll(b | "

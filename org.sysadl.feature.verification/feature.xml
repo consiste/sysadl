@@ -30,7 +30,7 @@
       <import plugin="org.eclipse.ocl.ecore"/>
       <import plugin="org.eclipse.emf.ecore"/>
       <import plugin="org.sysadl.viewpoints"/>
-      <import plugin="org.eclipse.ui.console" version="3.8.400" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.console"/>
       <import plugin="org.sysadl"/>
    </requires>
 

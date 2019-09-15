@@ -15,7 +15,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ocl.ecore,
  org.eclipse.emf.ecore,
  org.sysadl.viewpoints,
- org.eclipse.ui.console;bundle-version="3.8.400"
+ org.eclipse.ui.console
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: %providerName

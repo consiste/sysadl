@@ -119,6 +119,7 @@ public class Action implements IExternalJavaAction {
 	private void setupOCL() throws ParserException {
 	    ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE);
 	    ParsingOptions.setOption(ocl.getEnvironment(),
+	    		ParsingOptions.implicitRootClass(ocl.getEnvironment()),
 				EcorePackage.Literals.EOBJECT);
 
 		helper = ocl.createOCLHelper();

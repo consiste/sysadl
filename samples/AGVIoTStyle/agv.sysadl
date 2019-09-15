@@ -115,10 +115,10 @@ style IoTStyle {
 	invariant ConstraintC4 = "self.ControllerCPEmbedded(self)"
 	
 //	Componentes SensorCP devem ser conectados a componentes DeviceCP ou ControllerCP
-	invariant ConstraintC5 = "self.Connection(self, 'SensorCP')"
+	invariant ConstraintC5 = "self.SensorConnection(self)"
 	
 //	Componentes ActuatorCP devem ser conectados a componentes DeviceCP ou ControllerCP
-	invariant ConstraintC6 = "self.Connection(self, 'ActuatorCP')"
+	invariant ConstraintC6 = "self.ActuatorConnection(self)"
 	
 //	Componentes dos tipos SensorCP e ActuatorCP não se comunicam diretamente
 	invariant ConstraintC7 = "self.Communication(self)"

@@ -55,9 +55,12 @@ public class Action implements IExternalJavaAction {
 	@Override
 	public void execute(Collection<? extends EObject> arg0, Map<String, Object> arg1) {
 		DNodeListSpec d = (DNodeListSpec) arg1.get("component");
-		ComponentDef c = (ComponentDef) d.getTarget();
-		
-		checkComponent(c);
+		try {
+			ComponentDef c = (ComponentDef) d.getTarget();
+			checkComponent(c);
+		} catch (Exception e) {
+			print("[ERROR] Some error occurred, unable to start verification");
+		}
 	}
 
 	/**

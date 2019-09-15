@@ -295,6 +295,7 @@ You may add additional accurate notices of copyright ownership.
    </license>
 
    <url>
+      <update label="SysADL Update Site" url="http://sysadl.org/update"/>
       <discovery label="SysADL Studio Update Site" url="http://consiste.dimap.ufrn.br/sysadl/update"/>
    </url>
 

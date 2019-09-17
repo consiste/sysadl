@@ -35,7 +35,7 @@
       <import plugin="org.eclipse.emf.ecore"/>
       <import plugin="org.sysadl.viewpoints"/>
       <import plugin="org.eclipse.ui.console"/>
-      <import plugin="org.sysadl.grammar"/>
+      <import plugin="org.sysadl"/>
    </requires>
 
    <plugin

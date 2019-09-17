@@ -33,7 +33,10 @@ datatype [aux.name/] = [for (literal : EnumLiteralValue | aux.literals)separator
 			[/let]		
 			[let datatype : DataTypeDef = self]
 [datatype.name/] = { [for (attribute : TypeUse | datatype.attributes)separator('.')][attribute.name/][/for] | [for (attributeDef : TypeUse | datatype.attributes) separator (',')][attributeDef.name/]<- [if (attributeDef.definition.name.equalsIgnoreCase('String'))]Char[else][attributeDef.definition.name/][/if] [/for] }
+[for (attribute : TypeUse | datatype.attributes)separator ('\n')]get[attribute.name/][datatype.name/]([for (attribute : TypeUse | datatype.attributes)separator('.')][attribute.name/][/for]) = [attribute.name/][/for]
 			[/let]
+			
+	[comment Traduzindo Canais /]
 			[let compDef : ComponentDef = self]
 					[if (not compDef.isBoundary and compDef.composite <> null)]		
 						[for (compUse : ComponentUse| compDef.composite.components)]
@@ -163,6 +166,13 @@ channel [compUse.name/]_[portUse.name/]_[compPort.name/]_[portUse.definition.nam
 														
 						[/for]									
 					[/if]
+				[/let]
+				[let activity : ActivityDef = self]
+[activity.name/]([for (param : Pin | activity.inParameters)separator (',')][param.name/][/for]) =					
+					[for (action : ActionUse | activity._body.actions)separator ('|||')]
+[action.name/]_[action.definition.name/]([for (param : Pin | action.pinIn)separator ('')][param.name/] -> [for (activityRelation : ActivityRelation| activity._body.flows)separator (',')][if (param = activityRelation.target)][activityRelation.source.oclAsType(Pin).name/][/if][/for][/for])
+					[/for]
+
 				[/let]
 		[/for]						
 	[/for]

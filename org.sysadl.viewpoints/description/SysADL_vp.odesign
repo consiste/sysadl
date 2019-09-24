@@ -401,7 +401,7 @@
               <variable name="container"/>
               <viewVariable name="containerView"/>
               <initialOperation>
-                <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="Enumeration" referenceName="definitions">
+                <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="sysadl.Enumeration" referenceName="definitions">
                   <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newEnum"/>
                   </subModelOperations>
@@ -822,7 +822,7 @@
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="Package" referenceName="packages"/>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="sysadl.Package" referenceName="packages"/>
             </initialOperation>
           </ownedTools>
           <ownedTools xsi:type="tool:EdgeCreationDescription" name="Pkg.Tools.Import" label="Import" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.Package']/@defaultLayer/@edgeMappings[name='Pkg.Import']">

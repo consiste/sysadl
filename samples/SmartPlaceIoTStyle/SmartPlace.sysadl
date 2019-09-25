@@ -640,49 +640,49 @@ Requirement SmartPlace ( 0.0 ) {
 			text = "The system must decide when to turn the air conditioner on or off."
 			Requirement TurnOnAirConditioning ( 2.2 ) {
 					text = "Air conditioners must be turned on automatically whenever there is at least one person in the room and the appliances are turned off."
-			}
+			satisfied by SmartPlaceComponents.AirConditionerCP , SmartPlaceComponents.GatewayBlackboardCP , SmartPlaceComponents.SmartPlaceAirControlCP ; }
 			Requirement TurnOffAirConditioning ( 2.4 ) {
 					text = "Air conditioners should be automatically switched off when there are no people in the room in the last 15 minutes, when there is no reserve for that room within the next 15 minutes and if the temperature is found to be lower than or equal to the temperature default - 4."
-			}
+			satisfied by SmartPlaceComponents.AirConditionerCP , SmartPlaceComponents.GatewayBlackboardCP , SmartPlaceComponents.SmartPlaceAirControlCP ; }
 		}
 		Requirement SendInfraredSignal ( 2.9 ) {
 			text = "The on, off and set temperature commands should be converted to infrared code and sent to air conditioners."
-		}
+		satisfied by SmartPlaceComponents.Led ; }
 		Requirement ControlTemperature ( 2.6 ) {
 			text = "If any presence has been recorded in the last 15 minutes and the last temperature change occurred in a time greater than 10 minutes, the system must decide the temperature."
 			Requirement DecreaseTemperature ( 2.7 ) {
 				text = "If the current temperature is greater than or equal to the default temperature + 2, a command will be sent to decrease the temperature."
-			}
+			satisfied by SmartPlaceComponents.AirConditionerCP , SmartPlaceComponents.GatewayBlackboardCP , SmartPlaceComponents.SmartPlaceAirControlCP ; }
 			Requirement IncreaseTemperature ( 2.8 ) {
 				text = "If the current temperature is less than or equal to the default temperature - 2, a command will be sent to increase the temperature."
-			}
+			satisfied by SmartPlaceComponents.AirConditionerCP , SmartPlaceComponents.GatewayBlackboardCP , SmartPlaceComponents.SmartPlaceAirControlCP ; }
 		}
 	}
 	Requirement PersistData ( 3.0 ) {
 		text = "The system shall record the measurements/changes temperature and presence data, associating these data with the measurement place, date, time, and identifier of the sensors and air conditioners."
-	}
+	satisfied by SmartPlaceComponents.PostgreSQLCP ; }
 	Requirement MaintainingContextScience ( 4.0 ) {
 		text = "The system must save context information from sensors, air conditioners, rooms and buildings so that they can be used by other applications."
-	}
+	satisfied by SmartPlaceComponents.OrionContextBrokerCP ; }
 	Requirement AcquireSensorData ( 1.0 ) {
 		text = "Send every 5 minutes the room temperature to the raspberry-pi, and whenever movement is detected, send this information to the raspberry-pi"
 	}
 }
 Requirement DetectPresence ( 1.1 ) {
 	text = "The system should automatically detect whether or not people are in the environment"
-	derive SmartPlace.AcquireSensorData;
+	satisfied by SmartPlaceComponents.CamMonitorCP , SmartPlaceComponents.MotionSensorCP , SmartPlaceComponents.CameraCP ; derive SmartPlace.AcquireSensorData;
 }
 Requirement DetectTemperature ( 1.2 ) {
 	text = "The system must automatically detect the ambient temperature."
-	derive SmartPlace.AcquireSensorData;
+	satisfied by SmartPlaceComponents.TemperatureSensorCP ; derive SmartPlace.AcquireSensorData;
 }
 Requirement CheckAirConditioningStatus ( 2.3 ) {
 	text = "The system must detect whether the air conditioners are switched on or off."
-	derive SmartPlace.AirConditioningControl.TurnOn_TurnOff_AirConditioning.TurnOnAirConditioning;
+	satisfied by SmartPlaceComponents.SQLiteCP , SmartPlaceComponents.SmartPlaceAirControlCP ; derive SmartPlace.AirConditioningControl.TurnOn_TurnOff_AirConditioning.TurnOnAirConditioning;
 }
 Requirement CheckRoomReservation ( 2.5 ) {
 	text = "The system should consult the Reservation Manager to check if there is a reservation for a particular room within the next 15 minutes."
-	derive SmartPlace.AirConditioningControl.TurnOn_TurnOff_AirConditioning.TurnOffAirConditioning;
+	satisfied by SmartPlaceComponents.RoomReservationSystemCP , SmartPlaceComponents.SmartPlaceAirControlCP ; derive SmartPlace.AirConditioningControl.TurnOn_TurnOff_AirConditioning.TurnOffAirConditioning;
 }
 
 style IoTStyle { 

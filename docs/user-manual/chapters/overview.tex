@@ -1,4 +1,40 @@
 \chapter{Overview}
+This manual describes SysADL Studio and its features, focusing on how the modeling is performed with this tool support. Further information about SysADL can be found in \url{http://sysadl.org}, the official page of the language.
+
 \section{About SysADL}
+SysADL is an Architecture Description Language designed based on the OMG SysML \footnote{\url{http://sysml.org}}. The language encompasses a set of complimentary views that supports architectural modeling from the conceptual, high-level perspective to the lower, close to implementation, level. The language is under constant validation, receiving feedback provided by the industry and students of Brazilian and French universities.
+
+The language plays a key role in the book \cite{}, in which it is used to illustrate software architecture concepts.
+
 \section{Overall Information}
+SysADL Studio is a toolset that encompasses four plugins, in which the core plugin is the only mandatory to supports SysADL modeling. Each additional plugin provides a set of features that extends the core functionalities providing a complete environment that supports modeling, both textual and graphic, verification and execution.
+
+The toolset was build using a set of modern, consolidated frameworks. Specifically, we combine EMF, Sirius and Xtext to provide a complete modeling environment. However, the tool is not restrained to those frameworks, additional plugins enhance the user experience and provide useful tools for architectural modeling.
+
 \section{Plugins and Features}
+Table \ref{overview:plugins} summarizes the plugins, presenting their current versions and the feature it adds to the environment. Please note that the presented versions correspond to the date of the publication of this manual, they might vary with no impact in the features hereby described.
+\begin{table}
+	\centering
+	\begin{tabular}{l | c | p{5.9cm}}
+		\hline
+		\textbf{Plugin} & \textbf{Version} & \textbf{Description} \\\hline
+		SysADL Core & 2.7.0 & Core Plugin\\\hline
+		SysADL Viewpoints & 2.7.2 & Enables Graphical Modeling of SysADL\\\hline
+		SysADL Verification & 1.0.3 & Supports Model Verification over Styles and provide tools for calculating architectural metrics\\ \hline
+		SysADL Execution & 0.5.qualifier & Enables Model Execution (not available for download)\\ \hline
+	\end{tabular}
+	\caption{\label{overview:plugins}SysADL Plugin Ecosystem}
+\end{table}
+
+\subsection{SysADL Core}
+SysADL Core is the plugin responsible for allowing creation and manipulation of SysADL Models, it is the main plugin in the infrastructure of SysADL Studio and its installation is always mandatory. The plugin provides a textual editor for SysADL, and also an extensible infrastructure over which SysADL Studio's environment is built.
+\subsection{SysADL Viewpoints}
+SysADL Viewpoints is the plugin responsible for providing an additional, graphical, mean of creating, manipulating and visualizing SysADL Models. It enhances the environment by adding a set of viewpoints that encompasses the SysADL diagrams.
+
+\subsection{SysADL Verification}
+SysADL Verification is an extension plugin for SysADL Viewpoints, it enhances the diagrams to support verification of constraints described in OCL. These constraints can be defined in a \textit{Style} and are verified when applied to an \textit{Architecture}.
+
+Further, the verification plugin also provides the user a set of tools to calculate architecture metrics, such as cohesion and coupling.
+
+\subsection{SysADL Execution}
+SysADL Execution extends the environment by adding a Debug Perspective that allows SysADL models to be executed and hence simulated. The plugin encompasses a powerful execution engine that understands SysADL syntax and implements its semantics, allowing the user to observe the execution step-by-step.

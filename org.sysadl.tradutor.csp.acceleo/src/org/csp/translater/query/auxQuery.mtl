@@ -3,5 +3,7 @@
 
 [query public getDelegations(model : Model) : String = 
 		invoke('org.csp.translater.query.AuxiliarsQuery', 'getDelegations(org.sysadl.Model)', Sequence{model}) /]
+[query public getActivity(model : Model) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getActivity(org.sysadl.Model)', Sequence{model}) /]
 
 

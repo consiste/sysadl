@@ -166,16 +166,11 @@ channel [compUse.name/]_[portUse.name/]_[compPort.name/]_[portUse.definition.nam
 														
 						[/for]									
 					[/if]
-				[/let]
-				[let activity : ActivityDef = self]
-[activity.name/]([for (param : Pin | activity.inParameters)separator (',')][param.name/][/for]) =					
-					[for (action : ActionUse | activity._body.actions)separator ('|||')]
-[action.name/]_[action.definition.name/]([for (param : Pin | action.pinIn)separator ('')][param.name/] -> [for (activityRelation : ActivityRelation| activity._body.flows)separator (',')][if (param = activityRelation.target)][activityRelation.source.oclAsType(Pin).name/][/if][/for][/for])
-					[/for]
-
-				[/let]
+				[/let]								
 		[/for]						
 	[/for]
-[aModel.getDelegations(aModel)/]	
+[aModel.getActivity(aModel)/]
+[aModel.getDelegations(aModel)/]
+
 [/file]
 [/template]

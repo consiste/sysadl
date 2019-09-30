@@ -1090,7 +1090,7 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="BDD.Behavior.Tools.ParamOut" label="Parameter (Out)" precondition="[container.oclIsKindOf(BehaviorDef)/]" candidatesExpression="[self.eContainer().oclAsType(Package).eContents(TypeDef)->union(self.eContainer().oclAsType(Package).imports.eContents(TypeDef))/]" rootExpression="var:self" childrenExpression="var:self" message="Select Parameter Type" iconPath="/org.sysadl.viewpoints/icons/Parameter.gif" windowTitle="Select Type" windowImagePath="/org.sysadl.viewpoints/icons/Parameter.gif">
+          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="BDD.Behavior.Tools.ParamOut" label="Parameter (Out)" precondition="[container.oclIsKindOf(BehaviorDef) and not(container.oclIsKindOf(ActionDef))/]" candidatesExpression="[self.eContainer().oclAsType(Package).eContents(TypeDef)->union(self.eContainer().oclAsType(Package).imports.eContents(TypeDef))/]" rootExpression="var:self" childrenExpression="var:self" message="Select Parameter Type" iconPath="/org.sysadl.viewpoints/icons/Parameter.gif" windowTitle="Select Type" windowImagePath="/org.sysadl.viewpoints/icons/Parameter.gif">
             <element name="element"/>
             <containerView name="containerView"/>
             <container name="container"/>

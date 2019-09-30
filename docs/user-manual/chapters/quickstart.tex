@@ -1,11 +1,64 @@
 \chapter{Quickstart}
+This chapter provides the basics understanding about the more trivial processes in SysADL Studio: the Installation and creation of our first SysADL Model.
 
 \section{Installation}
-\subsection{Prerequisites}
+\subsection{\label{quickstart:install:req}Prerequisites}
 We recommend to install SysADL Studio in the latest version of Eclipse. We also recommend that the installation is done on the Modeling distribution, since SysADL Studio has several dependencies that are met by this distribution and may be absent in other packages.
 
 By the date of this manual, the most recent version is \versionEclipse. Eclipse can be downloaded in \url{https://eclipse.org}, Modeling distribution can be found in \url{https://www.eclipse.org/downloads/packages/}.
 
 \subsection{Installing SysADL Studio}
+To install SysADL Studio you will need to fulfill the prerequisites described in Section \ref{quickstart:install:req}.
+
+The installation process is simple, find the menu Help > Install New Software on your Eclipse, as presented by Fig. \ref{quickstart:install:menu}.
+
+\begin{figure}
+	\caption{\label{quickstart:install:menu}Install New Software Menu}
+\end{figure}
+
+The SysADL Update Site is the repository in which our plugins are stored, the page is located at: \url{\sysadlupdate}. It is important to highlight that this page \textbf{is not} a website, hence it \textbf{can't be opened by a web browser} such as Microsoft Edge, Google Chrome or Mozilla Firefox.
+
+Type the SysADLStudio update site in the \textit{Work With} box, as presented in Fig. \ref{quickstart:install:site} and press enter, Eclipse will then load the update site.
+
+\begin{figure}
+	\caption{\label{quickstart:install:site}Inserting the update site}
+\end{figure}
+
+Select the desired plugins (potentially all of them), as illustrated by Fig. \ref{quickstart:install:plugins} and follow the instructions to conclude installation. During the installation, Eclipse will warn you about the unsafety of the update site, \textbf{this is an expected behavior and it is normal}, since SysADL Studio is not hosted in \url{http://eclipse.org}.
+
+\begin{figure}
+	\caption{\label{quickstart:install:plugins}Selecting Plugins for installation}
+\end{figure}
+
+After the installation, it is necessary to restart your IDE, do it as soon as possible. SysADL Models and tools will be available next time your IDE starts.
 
 \section{First SysADL Model}
+To work with SysADL it is necessary to create a SysADL Model. These models can be created in any project, although we recommend the use of \textbf{Modeling Projects}.
+
+First, create a project (preferred a Modeling Project) and name it as desired. Then, create a SysADL Model, as illustrated by Fig. \ref{quickstart:create:model}. SysADL Textual Editor can be used to edit these models and it is further described in Chapter \ref{text}.
+
+\begin{figure}
+	\caption{\label{quickstart:create:model}New SysADL Model}
+\end{figure}
+
+After creating a SysADL Model it is possible to edit graphically using the SysADL Editor. However, if willing to use the graphical editor, it is important to ensure your IDE has the \textit{SysADL Diagrams} plugin installed.
+
+If the required plugin is present, it is possible to associate graphical viewpoints to edit the SysADL Model. This requires Sirius Perspective, that can be selected using the Change Perspective menu, located in top-right of your IDE, as shown in Fig. \ref{quickstart:create:perspective}. Open the menu and select Sirius, your IDE will reconfigure to the adequate environment.
+
+\begin{figure}
+	\caption{\label{quickstart:create:perspective}Changing Perspective}
+\end{figure}
+
+Whilst in Sirius Perspective, a right click in a project that contains a SysADL Model allows to Select Viewpoints, as illustrated by Fig. \ref{quickstart:create:viewpoints}. Select the desired SysADL Viewpoints and press \textit{Ok}. It is important to notice that besides an initial processing, the number of selected viewpoints does not interfere in the performance of your IDE.
+
+\begin{figure}
+	\caption{\label{quickstart:create:viewpoints}Viewpoint Selection}
+\end{figure}
+
+Viewpoints selected it is possible to navigate through the diagrams using the \textit{Model Explorer}, using a tree structure in this navigation unit, as shown by Fig. \ref{quickstart:create:explorer}. Any SysADL diagram can be accessed through this method, although some can be easier accessed by a in-diagram navigation feature. Further information about overall diagrams editors are introduced in Chapter \ref{graphics}.
+
+\begin{figure}
+	\caption{\label{quickstart:create:explorer}Model Explorer}
+\end{figure}
+
+Before start editing your SysADL Model, it is important to highlight that SysADL Models come with an default package, named \textit{SysADL.types}. This package \textbf{should not be edited} and contains a set of basic types SysADL Studio understands.

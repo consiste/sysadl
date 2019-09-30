@@ -1489,6 +1489,18 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="IBD.Tools.Delegation.java" label="Delegation java" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Delegation.In'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Delegation.Out']" iconPath="/org.sysadl.viewpoints/icons/Delegation.gif">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ExternalJavaAction" name="IBD.Tools.Action.Create.Delegation" id="org.sysadl.viewpoints.createAcDelegation">
+                <parameters name="source" value="var:source"/>
+                <parameters name="target" value="var:target"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
         </toolSections>
         <toolSections name="ADNew.Tools.Conditional" label="Conditional Relationships">
           <ownedTools xsi:type="tool:EdgeCreationDescription" name="ADNew.Tool.SwitchFlow" label="Switch Flow" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Flows'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Flows.SwitchCase']" iconPath="/org.sysadl.viewpoints/icons/if.gif">

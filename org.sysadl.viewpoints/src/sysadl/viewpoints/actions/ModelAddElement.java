@@ -27,7 +27,7 @@ public class ModelAddElement extends AbstractExternalJavaAction {
 	public void execute(Collection<? extends EObject> arg0, Map<String, Object> arg1) {
 		SysADLFactory fac = SysADLFactory.eINSTANCE;
 		for (EObject o : arg0) {
-			System.out.println(o);
+			//System.out.println(o);
 			switch ((String) arg1.get("type")) {
 			case "Package":
 				if (o instanceof Model)

@@ -146,4 +146,12 @@ public class SysADLServices {
 	}
 	
 
+	public Boolean canDelegate(ActivityFlowable source, ActivityFlowable target) {
+		ActivityDef d = (ActivityDef) source.eContainer();
+		if (target instanceof ActionUse) {
+			return d.getOutParameters().contains(source);
+		} else {
+			return d.getInParameters().contains(source);
+		}
+	}
 }

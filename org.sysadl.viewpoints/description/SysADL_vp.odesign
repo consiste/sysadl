@@ -1465,31 +1465,7 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:EdgeCreationDescription" name="ADNew.Tools.Delegation" label="Delegation" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Delegation.In'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Delegation.Out']" iconPath="/org.sysadl.viewpoints/icons/Delegation.gif">
-            <sourceVariable name="source"/>
-            <targetVariable name="target"/>
-            <sourceViewVariable name="sourceView"/>
-            <targetViewVariable name="targetView"/>
-            <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[self.eContainer(ActivityDef).body/]">
-                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="ActivityDelegation" referenceName="flows">
-                  <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
-                    <subModelOperations xsi:type="tool_1:SetValue" featureName="source" valueExpression="var:source"/>
-                    <subModelOperations xsi:type="tool_1:SetValue" featureName="target" valueExpression="var:target"/>
-                  </subModelOperations>
-                </subModelOperations>
-              </firstModelOperations>
-            </initialOperation>
-          </ownedTools>
-          <ownedTools xsi:type="tool:DirectEditLabel" name="ADNew.Tools.EditCondition">
-            <mask mask="{0}"/>
-            <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[self.condition/]">
-                <subModelOperations xsi:type="tool_1:SetValue" featureName="value" valueExpression="var:arg0"/>
-              </firstModelOperations>
-            </initialOperation>
-          </ownedTools>
-          <ownedTools xsi:type="tool:EdgeCreationDescription" name="IBD.Tools.Delegation.java" label="Delegation java" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Delegation.In'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Delegation.Out']" iconPath="/org.sysadl.viewpoints/icons/Delegation.gif">
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="ADNew.Tools.Delegation" label="Delegation" precondition="service:canDelegate(preTarget)" edgeMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Delegation.In'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Delegation.Out']" iconPath="/org.sysadl.viewpoints/icons/Delegation.gif">
             <sourceVariable name="source"/>
             <targetVariable name="target"/>
             <sourceViewVariable name="sourceView"/>
@@ -1498,6 +1474,14 @@
               <firstModelOperations xsi:type="tool_1:ExternalJavaAction" name="IBD.Tools.Action.Create.Delegation" id="org.sysadl.viewpoints.createAcDelegation">
                 <parameters name="source" value="var:source"/>
                 <parameters name="target" value="var:target"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:DirectEditLabel" name="ADNew.Tools.EditCondition">
+            <mask mask="{0}"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[self.condition/]">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="value" valueExpression="var:arg0"/>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>

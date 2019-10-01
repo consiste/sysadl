@@ -2,10 +2,10 @@
 <feature
       id="org.sysadl.feature.diagrams"
       label="SysADL Diagrams"
-      version="2.7.1"
+      version="2.7.2"
       provider-name="ConSiste UFRN"
       license-feature="org.sysadl.feature.core"
-      license-feature-version="2.7.0">
+      license-feature-version="2.7.1">
 
    <description url="http://sysadl.imd.ufrn.br/">
       SysADL Studio Diagrams

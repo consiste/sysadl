@@ -2,7 +2,7 @@
 <feature
       id="org.sysadl.feature.core"
       label="SysADL Studio"
-      version="2.7.0"
+      version="2.7.1"
       provider-name="ConSiste UFRN">
 
    <description url="http://sysadl.imd.ufrn.br/">

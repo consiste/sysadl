@@ -12,7 +12,6 @@ org.sysadl.editor/src/org/presentation/SysADLActionBarContributor.java
 /org.sysadl.editor/.classpath
 /org.sysadl.editor/.gitignore
 /org.sysadl.editor/.project
-/org.sysadl.editor/META-INF/MANIFEST.MF
 /org.sysadl.editor/build.properties
 /org.sysadl.editor/plugin.properties
 /org.sysadl.editor/plugin.xml

@@ -58,7 +58,7 @@ import org.eclipse.swt.events.ModifyEvent;
 
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -172,6 +172,8 @@ public class SysADLModelWizard extends Wizard implements INewWizard {
 	protected List initialObjectNames;
 
 	private SysADLModelWizardNewProjectCreationPage newProjectCreationPage;
+
+	private StylesPage stylePage;
 
 	//private ViewpointSelection viewpointSelectionPage;
 
@@ -359,6 +361,9 @@ public class SysADLModelWizard extends Wizard implements INewWizard {
 		}
 	}
 
+	
+	
+	
 	public class SysADLModelWizardNewProjectCreationPage extends WizardNewProjectCreationPage {
 		public SysADLModelWizardNewProjectCreationPage(String pageName) {
 			super(pageName);
@@ -573,6 +578,46 @@ public class SysADLModelWizard extends Wizard implements INewWizard {
 		}
 	}
 
+	public class StylesPage extends WizardPage {
+
+		private Button clientServer;
+
+		protected StylesPage(String pageName) {
+			super(pageName);
+		}
+
+		@Override
+		public void createControl(Composite parent) {
+			Composite composite = new Composite(parent, SWT.NONE); {
+				GridLayout layout = new GridLayout();
+				layout.numColumns = 1;
+				layout.verticalSpacing = 12;
+				composite.setLayout(layout);
+
+				GridData data = new GridData();
+				data.verticalAlignment = GridData.FILL;
+				data.grabExcessVerticalSpace = true;
+				data.horizontalAlignment = GridData.FILL;
+				composite.setLayoutData(data);
+			}
+			Label containerLabel = new Label(composite, SWT.LEFT);
+			{
+				containerLabel.setText("Client-Server");
+
+				GridData data = new GridData();
+				data.horizontalAlignment = GridData.FILL;
+				containerLabel.setLayoutData(data);
+			}
+			clientServer = new Button(composite,SWT.CHECK);
+			{
+				GridData data = new GridData();
+				data.horizontalAlignment = GridData.FILL;
+				data.grabExcessHorizontalSpace = true;
+				clientServer.setLayoutData(data);
+			}
+		}
+		
+	}
 	/**
 	 * The framework calls this to create the contents of the wizard.
 	 * <!-- begin-user-doc -->
@@ -621,6 +666,12 @@ public class SysADLModelWizard extends Wizard implements INewWizard {
 				}
 			}
 		}
+		
+		stylePage = new StylesPage("Whatever");
+		stylePage.setTitle("Select Imported Styles");
+		stylePage.setDescription("Select Styles to import to SysADL Model");
+		addPage(stylePage);
+		
 		initialObjectCreationPage = new SysADLModelWizardInitialObjectCreationPage("Whatever2");
 		initialObjectCreationPage.setTitle(SysADLEditorPlugin.INSTANCE.getString("_UI_SysADLModelWizard_label"));
 		initialObjectCreationPage.setDescription(SysADLEditorPlugin.INSTANCE.getString("_UI_Wizard_initial_object_description"));

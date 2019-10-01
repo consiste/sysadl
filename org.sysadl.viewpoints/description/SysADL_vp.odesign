@@ -856,7 +856,7 @@
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="Style" referenceName="styles"/>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="sysadl.Style" referenceName="styles"/>
             </initialOperation>
           </ownedTools>
           <ownedTools xsi:type="tool:EdgeCreationDescription" name="Pkg.Tools.ApplyStyle" label="Apply Style" edgeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.Package']/@defaultLayer/@edgeMappings[name='Pkg.AppliedStyle']">

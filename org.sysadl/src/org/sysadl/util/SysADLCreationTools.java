@@ -56,7 +56,6 @@ public class SysADLCreationTools {
 		typeReal.setName("Real");
 		p.getDefinitions().add(typeReal);
 		
-		m.getStyles().add(createClientServer());
 		return m;
 	}
 	

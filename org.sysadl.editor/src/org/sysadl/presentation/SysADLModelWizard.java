@@ -61,8 +61,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
@@ -101,7 +102,7 @@ public class SysADLModelWizard extends Wizard implements INewWizard {
 	/**
 	 * @generated NOT
 	 */
-	protected Button clientServer;
+	protected boolean addClientServer = false;
 
 	/**
 	 * The supported extensions for created files. <!-- begin-user-doc --> <!--
@@ -264,13 +265,11 @@ public class SysADLModelWizard extends Wizard implements INewWizard {
 						// Add the initial model object to the contents.
 						//
 						Model rootObject = (Model) createInitialModel();
-						if (clientServer!= null && clientServer.getSelection()) { 
+						if (addClientServer) { 
 							Style s = SysADLCreationTools.createClientServer();
 							rootObject.getStyles().add(s);
 						}
-						if (rootObject != null) {
-							resource.getContents().add(rootObject);
-						}
+						resource.getContents().add(rootObject);
 
 						// Save the contents of the resource to the file system.
 						//
@@ -582,6 +581,8 @@ public class SysADLModelWizard extends Wizard implements INewWizard {
 	 */
 	public class StylesPage extends WizardPage {
 
+		private Button clientServer;
+
 		protected StylesPage(String pageName) {
 			super(pageName);
 		}
@@ -609,6 +610,12 @@ public class SysADLModelWizard extends Wizard implements INewWizard {
 				data.grabExcessHorizontalSpace = true;
 				clientServer.setLayoutData(data);
 				clientServer.setText("Client-Server");
+				clientServer.addListener(SWT.Selection, new Listener() {
+					@Override
+					public void handleEvent(Event event) {
+						addClientServer = clientServer.getSelection();
+					}
+				});
 				clientServer.setSelection(false);
 			}
 

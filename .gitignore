@@ -14,7 +14,6 @@ org.sysadl.editor/src/org/presentation/SysADLActionBarContributor.java
 /org.sysadl.editor/.project
 /org.sysadl.editor/build.properties
 /org.sysadl.editor/plugin.properties
-/org.sysadl.editor/plugin.xml
 /org.sysadl.editor/src/org/sysadl/presentation/SysADLActionBarContributor.java
 /org.sysadl.execution/.gitignore
 /org.sysadl.grammar.ide/.gitignore

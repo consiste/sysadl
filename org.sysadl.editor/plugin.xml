@@ -12,11 +12,11 @@
             id="org.sysadl.wizards"
             name="%_UI_SysADLCat_label"/>
       <wizard
-            id="org.sysadl.presentation.SysADLModelWizardID"
-            name="%_UI_SysADLModelWizard_label"
-            class="org.sysadl.presentation.SysADLModelWizard"
             category="org.sysadl.wizards"
-            icon="icons/full/obj16/SysADLModelFile.gif">
+            class="org.sysadl.presentation.SysADLModelWizard"
+            icon="icons/full/obj16/SysADLModelFile.gif"
+            id="org.sysadl.presentation.SysADLModelWizardID"
+            name="%_UI_SysADLModelWizard_label">
          <description>%_UI_SysADLModelWizard_description</description>
          <selection class="org.eclipse.core.resources.IResource"/>
       </wizard>

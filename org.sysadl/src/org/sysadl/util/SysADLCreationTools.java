@@ -28,37 +28,6 @@ import org.sysadl.SysADLFactory;
 import org.sysadl.impl.SysADLFactoryImpl;
 
 public class SysADLCreationTools {
-	public static Model getInitialModelObject() {
-		SysADLFactory factory = SysADLFactoryImpl.eINSTANCE; 
-		// Model
-		org.sysadl.Model m = factory.createModel();
-		m.setName("SysADLArchitecture");
-		
-		// Initial Package
-		org.sysadl.Package p = factory.createPackage();
-		p.setName("SysADL.types");
-		m.getPackages().add(p);
-		
-		// Basic types
-		org.sysadl.ValueTypeDef typeInt = factory.createValueTypeDef();
-		typeInt.setName("Int");
-		p.getDefinitions().add(typeInt);
-		org.sysadl.ValueTypeDef typeBool = factory.createValueTypeDef();
-		typeBool.setName("Boolean");
-		p.getDefinitions().add(typeBool);
-		org.sysadl.ValueTypeDef typeString = factory.createValueTypeDef();
-		typeString.setName("String");
-		p.getDefinitions().add(typeString);
-		org.sysadl.ValueTypeDef typeVoid = factory.createValueTypeDef();
-		typeVoid.setName("Void");
-		p.getDefinitions().add(typeVoid);
-		org.sysadl.ValueTypeDef typeReal = factory.createValueTypeDef();
-		typeReal.setName("Real");
-		p.getDefinitions().add(typeReal);
-		
-		return m;
-	}
-	
 	public static EList clonePorts(PortUse p) {
 		EList l = new BasicEList();
 		if (p.getDefinition() instanceof CompositePortDef) {
@@ -141,30 +110,5 @@ public class SysADLCreationTools {
 		return exp;
 	}
 	
-	public static Style createClientServer() {
-		Style clientServer = SysADLFactory.eINSTANCE.createStyle();
-		clientServer.setName("ClientServer");
-		
-		// types
-		AbstractComponentDef client = SysADLFactory.eINSTANCE.createAbstractComponentDef();
-		client.setName("AClient");
-		AbstractComponentDef server = SysADLFactory.eINSTANCE.createAbstractComponentDef();
-		server.setName("AServer");
-		
-		// constraints
-		Invariant clientConnectToServer = SysADLFactory.eINSTANCE.createInvariant();
-		clientConnectToServer.setName("ClientMustConnectToServer");
-		clientConnectToServer.setExpr("self.ExistsConnectionForAll('AClient', 'AServer')");
-
-		Invariant clientShouldntConnectToClient = SysADLFactory.eINSTANCE.createInvariant();
-		clientShouldntConnectToClient.setName("ClientShouldntConnectToClient");
-		clientShouldntConnectToClient.setExpr("not(self.ExistsConnection('AClient', 'AClient'))");
-		
-		clientServer.getDefinitions().add(client);
-		clientServer.getDefinitions().add(server);
-		clientServer.getInvariants().add(clientConnectToServer);
-		clientServer.getInvariants().add(clientShouldntConnectToClient);
-		return clientServer;
-	}
 	
 }

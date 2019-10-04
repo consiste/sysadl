@@ -10,7 +10,8 @@ Automatic-Module-Name: org.sysadl
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.sysadl,
  org.sysadl.impl,
- org.sysadl.util
+ org.sysadl.util,
+ org.sysadl.util.builder
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.emf.ecore.xcore.lib,
  org.eclipse.core.runtime,

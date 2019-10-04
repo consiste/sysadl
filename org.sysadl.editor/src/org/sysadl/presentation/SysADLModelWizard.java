@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -14,20 +15,12 @@ import java.util.MissingResourceException;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import javax.swing.ProgressMonitor;
-
-import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
-
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-
-import org.eclipse.emf.ecore.EObject;
 
 import org.eclipse.emf.ecore.xmi.XMLResource;
 
@@ -37,17 +30,12 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.layout.LayoutConstants;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.wizard.ProgressMonitorPart;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 
@@ -75,12 +63,11 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.ISetSelectionTarget;
 
 import org.sysadl.Model;
-import org.sysadl.Style;
 import org.sysadl.SysADLFactory;
 import org.sysadl.SysADLPackage;
 import org.sysadl.provider.SysADLEditPlugin;
-import org.sysadl.util.SysADLCreationTools;
-
+import org.sysadl.util.builder.ModelBuilder;
+import org.sysadl.util.builder.ModelBuilderOption;
 import org.eclipse.core.runtime.Path;
 
 import org.eclipse.jface.viewers.ISelection;
@@ -99,11 +86,8 @@ import org.eclipse.ui.PartInitException;
  */
 public class SysADLModelWizard extends Wizard implements INewWizard {
 
-	/**
-	 * @generated NOT
-	 */
-	protected boolean addClientServer = false;
-
+	private Set<ModelBuilderOption> builderOptions;
+	
 	/**
 	 * The supported extensions for created files. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
@@ -220,20 +204,6 @@ public class SysADLModelWizard extends Wizard implements INewWizard {
 	}
 
 	/**
-	 * Create a new model. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated NOT
-	 */
-	protected EObject createInitialModel() {
-		/*
-		 * EClass eClass =
-		 * (EClass)sysADLPackage.getEClassifier(initialObjectCreationPage.
-		 * getInitialObjectName()); EObject rootObject = sysADLFactory.create(eClass);
-		 */
-		return SysADLCreationTools.getInitialModelObject();
-	}
-
-	/**
 	 * Do the work after everything is specified. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -264,11 +234,10 @@ public class SysADLModelWizard extends Wizard implements INewWizard {
 
 						// Add the initial model object to the contents.
 						//
-						Model rootObject = (Model) createInitialModel();
-						if (addClientServer) { 
-							Style s = SysADLCreationTools.createClientServer();
-							rootObject.getStyles().add(s);
-						}
+						ModelBuilder builder = new ModelBuilder();
+						builder.setOption(builderOptions);
+						Model rootObject = builder.build();
+						
 						resource.getContents().add(rootObject);
 
 						// Save the contents of the resource to the file system.
@@ -580,15 +549,13 @@ public class SysADLModelWizard extends Wizard implements INewWizard {
 	 * @generated NOT
 	 */
 	public class StylesPage extends WizardPage {
-
-		private Button clientServer;
-
 		protected StylesPage(String pageName) {
 			super(pageName);
 		}
 
 		@Override
 		public void createControl(Composite parent) {
+			builderOptions = new HashSet<ModelBuilderOption>();
 			Composite composite = new Composite(parent, SWT.NONE);
 			{
 				GridLayout layout = new GridLayout();
@@ -603,22 +570,34 @@ public class SysADLModelWizard extends Wizard implements INewWizard {
 				composite.setLayoutData(data);
 			}
 			
-			clientServer = new Button(composite, SWT.CHECK);
-			{
-				GridData data = new GridData();
-				data.horizontalAlignment = GridData.FILL;
-				data.grabExcessHorizontalSpace = true;
-				clientServer.setLayoutData(data);
-				clientServer.setText("Client-Server");
-				clientServer.addListener(SWT.Selection, new Listener() {
+			/**
+			 * Here I'll build selections for all possible packages
+			 */
+			GridData data = new GridData();
+			data.horizontalAlignment = GridData.FILL;
+			data.grabExcessHorizontalSpace = true;
+			for (ModelBuilderOption opt : ModelBuilderOption.values()) {
+				Button optButton = new Button(composite, SWT.CHECK);
+				optButton.setLayoutData(data);
+				optButton.setText(opt.getStr());
+				optButton.addListener(SWT.Selection, new Listener() {
 					@Override
 					public void handleEvent(Event event) {
-						addClientServer = clientServer.getSelection();
+						if (optButton.getSelection()) {
+							builderOptions.add(opt);
+						} else {
+							builderOptions.remove(opt);
+						}
 					}
 				});
-				clientServer.setSelection(false);
+				optButton.setSelection(false);
+				if (opt.isMandatory()) { 
+					optButton.setSelection(true);
+					optButton.setEnabled(false);
+					builderOptions.add(opt);
+				}
 			}
-
+			
 			setPageComplete(true);
 			setControl(composite);
 		}
@@ -678,8 +657,8 @@ public class SysADLModelWizard extends Wizard implements INewWizard {
 		}
 
 		stylePage = new StylesPage("Whatever");
-		stylePage.setTitle("Select Imported Styles");
-		stylePage.setDescription("Select Styles to import to SysADL Model");
+		stylePage.setTitle("Select Packages to Import");
+		stylePage.setDescription("Select Packages to import to SysADL Model. You will be able to add those packages later.");
 		addPage(stylePage);
 
 		initialObjectCreationPage = new SysADLModelWizardInitialObjectCreationPage("Whatever2");

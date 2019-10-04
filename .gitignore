@@ -1,6 +1,7 @@
 /.metadata/
 /*/bin/*
 /*/src-gen/*
+org.sysadl/src/org/sysadl/impl/*
 *.gif
 org.sysadl.edit/*
 /*/xtend-gen/*

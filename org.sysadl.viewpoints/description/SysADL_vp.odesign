@@ -401,7 +401,7 @@
               <variable name="container"/>
               <viewVariable name="containerView"/>
               <initialOperation>
-                <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="Enumeration" referenceName="definitions">
+                <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="sysadl.Enumeration" referenceName="definitions">
                   <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="newEnum"/>
                   </subModelOperations>
@@ -822,7 +822,7 @@
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="Package" referenceName="packages"/>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="sysadl.Package" referenceName="packages"/>
             </initialOperation>
           </ownedTools>
           <ownedTools xsi:type="tool:EdgeCreationDescription" name="Pkg.Tools.Import" label="Import" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.Package']/@defaultLayer/@edgeMappings[name='Pkg.Import']">
@@ -856,7 +856,7 @@
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="Style" referenceName="styles"/>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="sysadl.Style" referenceName="styles"/>
             </initialOperation>
           </ownedTools>
           <ownedTools xsi:type="tool:EdgeCreationDescription" name="Pkg.Tools.ApplyStyle" label="Apply Style" edgeMappings="//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.Package']/@defaultLayer/@edgeMappings[name='Pkg.AppliedStyle']">
@@ -1090,7 +1090,7 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="BDD.Behavior.Tools.ParamOut" label="Parameter (Out)" precondition="[container.oclIsKindOf(BehaviorDef)/]" candidatesExpression="[self.eContainer().oclAsType(Package).eContents(TypeDef)->union(self.eContainer().oclAsType(Package).imports.eContents(TypeDef))/]" rootExpression="var:self" childrenExpression="var:self" message="Select Parameter Type" iconPath="/org.sysadl.viewpoints/icons/Parameter.gif" windowTitle="Select Type" windowImagePath="/org.sysadl.viewpoints/icons/Parameter.gif">
+          <ownedTools xsi:type="tool_1:SelectionWizardDescription" name="BDD.Behavior.Tools.ParamOut" label="Parameter (Out)" precondition="[container.oclIsKindOf(BehaviorDef) and not(container.oclIsKindOf(ActionDef))/]" candidatesExpression="[self.eContainer().oclAsType(Package).eContents(TypeDef)->union(self.eContainer().oclAsType(Package).imports.eContents(TypeDef))/]" rootExpression="var:self" childrenExpression="var:self" message="Select Parameter Type" iconPath="/org.sysadl.viewpoints/icons/Parameter.gif" windowTitle="Select Type" windowImagePath="/org.sysadl.viewpoints/icons/Parameter.gif">
             <element name="element"/>
             <containerView name="containerView"/>
             <container name="container"/>
@@ -1465,19 +1465,15 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:EdgeCreationDescription" name="ADNew.Tools.Delegation" label="Delegation" forceRefresh="true" edgeMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Delegation.In'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Delegation.Out']" iconPath="/org.sysadl.viewpoints/icons/Delegation.gif">
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="ADNew.Tools.Delegation" label="Delegation" precondition="service:canDelegate(preTarget)" edgeMappings="//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Delegation.In'] //@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer/@edgeMappings[name='ADNew.Delegation.Out']" iconPath="/org.sysadl.viewpoints/icons/Delegation.gif">
             <sourceVariable name="source"/>
             <targetVariable name="target"/>
             <sourceViewVariable name="sourceView"/>
             <targetViewVariable name="targetView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[self.eContainer(ActivityDef).body/]">
-                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="ActivityDelegation" referenceName="flows">
-                  <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
-                    <subModelOperations xsi:type="tool_1:SetValue" featureName="source" valueExpression="var:source"/>
-                    <subModelOperations xsi:type="tool_1:SetValue" featureName="target" valueExpression="var:target"/>
-                  </subModelOperations>
-                </subModelOperations>
+              <firstModelOperations xsi:type="tool_1:ExternalJavaAction" name="IBD.Tools.Action.Create.Delegation" id="org.sysadl.viewpoints.createAcDelegation">
+                <parameters name="source" value="var:source"/>
+                <parameters name="target" value="var:target"/>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>

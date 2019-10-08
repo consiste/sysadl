@@ -230,8 +230,7 @@ package SmartPlaceConnectors {
 		}
 		flows: String from rReqO to rReqI
 	}
-	connector def ContextDataCN {
-		participants: ~ ciI : ContextIPT {
+	connector def ContextDataCN implements IoTStyle.DataStoreCN { participants : ~ ciI : ContextIPT {
 		}
 		~ ciO : ContextOPT {
 		}
@@ -281,8 +280,7 @@ connector def FrameCN implements IoTStyle.SensorDataCN { participants : ~ fI : F
 		}
 		flows: FrameList from fO to fI
 	}
-connector def ContextCN {
-		participants: ~ cO : ContextO2I {
+connector def ContextCN implements IoTStyle.DataStoreCN { participants : ~ cO : ContextO2I {
 		}
 		~ cI : ContextI2O {
 		}
@@ -306,11 +304,11 @@ connector def PresenceCN implements IoTStyle.SensorDataCN { participants :
 			Room from sAppO to sAppI
 		}
 	connector def DataSQLiteCN { participants : ~ sqliteO : DataSQLiteOPT ; ~ sqliteI : DataSQLiteIPT ; flows : DataSQLite from sqliteO to sqliteI } connector def QuerySQLiteCN { participants : ~ qI : DataSQLiteI2O ; ~ qO : DataSQLiteO2I ; configuration { connectors : sendRequest : RequestCN bindings reqO = reqI ; sendDataSQLite : DataSQLiteCN bindings respO = respI ; } } }
-package SmartPlaceComponents satisfies IoTStyle {
+package SmartPlaceComponents uses IoTStyle {
 	import SmartPlaceConnectors;
 	import SmartPlacePorts;
 	import SysADL.types;
-	component def SmartPlaceARCH {
+	component def SmartPlaceARCH styles IoTStyle {
 	configuration {
 		components:
 			app : WebApplicationCP {
@@ -331,12 +329,10 @@ package SmartPlaceComponents satisfies IoTStyle {
 			}
 			
 			ts : TemperatureSensorCP {
-				using ports: ts : TemperatureOPT {
-				}
+				using ports: ts : TemperatureOPT concrete IoTStyle.SensorDataCN.SensorOPT ;
 			}
 			ms : MotionSensorCP {
-				using ports: ps : PresenceOPT {
-				}
+				using ports: ps : PresenceOPT concrete IoTStyle.SensorDataCN.SensorOPT ;
 			}
 			psql : PostgreSQLCP {
 				using ports: dbs : DataBaseI2O {
@@ -345,37 +341,29 @@ package SmartPlaceComponents satisfies IoTStyle {
 				}
 			}
 			ac : AirConditionerCP {
-				using ports: ir : InfraredIPT {
-				}
+				using ports: ir : InfraredIPT concrete IoTStyle.ActuatorCommandCN.ActuatorIPT ;
 			}
 			
 			r : RaspberryPiCP {
-				using ports: is : InfraredOPT {
-				}
-				cr : CommandIPT {
-				}
-				fr : FrameIPT {
-				}
-				tr : TemperatureIPT {
-				}
-				pr : PresenceIPT {
-				}
-				rs : RaspberryOPT {
-				}
+				using ports: is : InfraredOPT concrete IoTStyle.ControllerCP.ActuatorOPT ;
+				cr : CommandIPT concrete IoTStyle.GatewayCP.ServiceIPT ;
+				fr : FrameIPT concrete IoTStyle.ControllerCP.SensorIPT ;
+				tr : TemperatureIPT concrete IoTStyle.ControllerCP.SensorIPT ;
+				pr : PresenceIPT concrete IoTStyle.ControllerCP.SensorIPT ;
+				rs : RaspberryOPT concrete IoTStyle.DeviceCP.DeviceOPT ;
 				rir : ReservationInformationO2I;
 			}
 			c : CameraCP {
-				using ports: fs : FrameOPT {
-				}
+				using ports: fs : FrameOPT concrete IoTStyle.SensorDataCN.SensorOPT ;
 			}
 			g : GatewayCP {
 					using
 					ports:
-					rr : RaspberryIPT;
-					cs : CommandOPT;		
-					regr : RegisterIPT;
-					cxs : ContextI2O {}
-					ci : CommandIPT;
+					rr : RaspberryIPT concrete IoTStyle.GatewayCP.DeviceIPT ;
+					cs : CommandOPT concrete IoTStyle.GatewayCP.ServiceOPT ;		
+					regr : RegisterIPT concrete IoTStyle.GatewayCP.ServiceIPT ;
+					cxs : ContextI2O concrete IoTStyle.DataStoreCN.DataOPT ;
+					ci : CommandIPT concrete IoTStyle.GatewayCP.ServiceIPT ;
 				}
 				connectors: 
 				sendQuery :	QueryPostgreSQLCN bindings dbr = dbs;
@@ -577,11 +565,11 @@ component def GatewayCP implements IoTStyle.GatewayCP { ports :
 			rr : RaspberryIPT concrete IoTStyle.GatewayCP.DeviceIPT ;
 			cs : CommandOPT concrete IoTStyle.GatewayCP.ServiceOPT ;
 			appr : RegisterIPT concrete IoTStyle.GatewayCP.ServiceIPT ;
-			ctx : ContextI2O;
+			ctx : ContextI2O concrete IoTStyle.DataStoreCN.DataOPT ;
 			ci : CommandIPT concrete IoTStyle.GatewayCP.ServiceIPT ;
 		configuration {
 			components : gb : GatewayBlackboardCP { using ports : rr : RaspberryIPT ; cs : CommandOPT ; appr : RegisterIPT ; cout : ContextOPT; ci : CommandIPT; 
-			 } ocb : OrionContextBrokerCP { using ports : cin : ContextIPT; ctx : ContextI2O; } connectors : saveContext : ContextDataCN bindings cout = cin ; delegations : rr to rr appr to appr cs to cs   ctx to ctx ci to ci }
+			 } ocb : OrionContextBrokerCP { using ports : cin : ContextIPT concrete IoTStyle.DataStoreCN.DataIPT ; ctx : ContextI2O concrete IoTStyle.DataStoreCN.DataOPT ; } connectors : saveContext : ContextDataCN bindings cout = cin ; delegations : rr to rr appr to appr cs to cs   ctx to ctx ci to ci }
 		}
 		component def SmartPlaceAirControlCP implements IoTStyle.ControllerCP { 
 			ports :
@@ -608,7 +596,7 @@ component def GatewayCP implements IoTStyle.GatewayCP { ports :
 			ci : CommandIPT;
 			
 		}
-	activity def TemperatureSensorAC implements IoTStyle.Monitoring : ( temperature : Temp ) { body { } } activity def MotionSensorAC implements IoTStyle.Monitoring : ( presence : Boolean ) { body { } } activity def CameraAC implements IoTStyle.Monitoring : ( frames : FrameList ) { body { } } activity def AirConditionerAC implements IoTStyle.Execution ( infraredSignal : Void ) { body { } } activity def OrionContextBrokerAC implements IoTStyle.Knowledge ( context : Context ) ( subscribe : String ) : ( publish : Context ) { body { } } activity def GatewayBlackboardAC ( dataSensing : Measurement ) ( registration : Register ) ( cmdApp : InfraredCode ) : ( context : Context , command : InfraredCode ) { 
+	activity def TemperatureSensorAC implements IoTStyle.Monitoring : ( temperature : Temp ) { body { } } activity def MotionSensorAC implements IoTStyle.Monitoring : ( presence : Boolean ) { body { } } activity def CameraAC implements IoTStyle.Monitoring : ( frames : FrameList ) { body { } } activity def AirConditionerAC implements IoTStyle.Execution ( infraredSignal : Void ) { body { } } activity def OrionContextBrokerAC ( context : Context ) ( subscribe : String ) : ( publish : Context ) { body { } } activity def GatewayBlackboardAC ( dataSensing : Measurement ) ( registration : Register ) ( cmdApp : InfraredCode ) : ( context : Context , command : InfraredCode ) { 
 		body { 
 			actions : 
 			sdc : SaveDataContextAN { using pins : dataSensing : Measurement ; } 
@@ -643,98 +631,122 @@ component def GatewayCP implements IoTStyle.GatewayCP { ports :
 		equation = dataSQLite->schedules == reservation && dataSQLite->measurement == m && 'dataSQLite->intervention->cmd' == ic
 	} component def SubscriberCP { ports : subscribe : RequestOPT ; } boundary
 	component def DataPersistenceCP { ports : d : DataOPT ; c : ContextIPT ; } }
+
 Requirement SmartPlace ( 0.0 ) {
-	text =
-	"The system must control the air conditioners automatically in order to optimize their energy consumption and use."
-Requirement AirConditioningControl ( 2.0 ) {
-	text =
-	"The system must control the air conditioners by turning the power on, off, reducing or raising the temperature as needed."
-Requirement TurnOn_TurnOff_AirConditioning ( 2.1 ) {
+	text = "The system must control the air conditioners automatically in order to optimize their energy consumption and use."
+	Requirement AirConditioningControl ( 2.0 ) {
+			text = "The system must control the air conditioners by turning the power on, off, reducing or raising the temperature as needed."
+		Requirement TurnOn_TurnOff_AirConditioning ( 2.1 ) {
 			text = "The system must decide when to turn the air conditioner on or off."
 			Requirement TurnOnAirConditioning ( 2.2 ) {
-				text =
-				"Air conditioners must be turned on automatically whenever there is at least one person in the room and the appliances are turned off."
+					text = "Air conditioners must be turned on automatically whenever there is at least one person in the room and the appliances are turned off."
 			}
 			Requirement TurnOffAirConditioning ( 2.4 ) {
-				text =
-				"Air conditioners should be automatically switched off when there are no people in the room in the last 15 minutes, when there is no reserve for that room within the next 15 minutes and if the temperature is found to be lower than or equal to the temperature default - 4."
+					text = "Air conditioners should be automatically switched off when there are no people in the room in the last 15 minutes, when there is no reserve for that room within the next 15 minutes and if the temperature is found to be lower than or equal to the temperature default - 4."
 			}
 		}
 		Requirement SendInfraredSignal ( 2.9 ) {
-			text =
-			"The on, off and set temperature commands should be converted to infrared code and sent to air conditioners."
+			text = "The on, off and set temperature commands should be converted to infrared code and sent to air conditioners."
 		}
 		Requirement ControlTemperature ( 2.6 ) {
-			text =
-			"If any presence has been recorded in the last 15 minutes and the last temperature change occurred in a time greater than 10 minutes, the system must decide the temperature."
+			text = "If any presence has been recorded in the last 15 minutes and the last temperature change occurred in a time greater than 10 minutes, the system must decide the temperature."
 			Requirement DecreaseTemperature ( 2.7 ) {
-				text =
-				"If the current temperature is greater than or equal to the default temperature + 2, a command will be sent to decrease the temperature."
+				text = "If the current temperature is greater than or equal to the default temperature + 2, a command will be sent to decrease the temperature."
 			}
 			Requirement IncreaseTemperature ( 2.8 ) {
-				text =
-				"If the current temperature is less than or equal to the default temperature - 2, a command will be sent to increase the temperature."
+				text = "If the current temperature is less than or equal to the default temperature - 2, a command will be sent to increase the temperature."
 			}
 		}
 	}
 	Requirement PersistData ( 3.0 ) {
-	text =
-	"The system shall record the measurements/changes temperature and presence data, associating these data with the measurement place, date, time, and identifier of the sensors and air conditioners."
-}
+		text = "The system shall record the measurements/changes temperature and presence data, associating these data with the measurement place, date, time, and identifier of the sensors and air conditioners."
+	}
 	Requirement MaintainingContextScience ( 4.0 ) {
-	text =
-	"The system must save context information from sensors, air conditioners, rooms and buildings so that they can be used by other applications."
-}
+		text = "The system must save context information from sensors, air conditioners, rooms and buildings so that they can be used by other applications."
+	}
 	Requirement AcquireSensorData ( 1.0 ) {
-	text =
-	"Send every 5 minutes the room temperature to the raspberry-pi, and whenever movement is detected, send this information to the raspberry-pi"
-}
+		text = "Send every 5 minutes the room temperature to the raspberry-pi, and whenever movement is detected, send this information to the raspberry-pi"
+	}
 }
 Requirement DetectPresence ( 1.1 ) {
-	text =
-	"The system should automatically detect whether or not people are in the environment"
+	text = "The system should automatically detect whether or not people are in the environment"
 	derive SmartPlace.AcquireSensorData;
 }
 Requirement DetectTemperature ( 1.2 ) {
-	text = "The system must automatically detect the ambient temperature." derive
-	SmartPlace.AcquireSensorData;
+	text = "The system must automatically detect the ambient temperature."
+	derive SmartPlace.AcquireSensorData;
 }
 Requirement CheckAirConditioningStatus ( 2.3 ) {
-	text =
-	"The system must detect whether the air conditioners are switched on or off."
-	derive
-	SmartPlace.AirConditioningControl.TurnOn_TurnOff_AirConditioning.TurnOnAirConditioning;
+	text = "The system must detect whether the air conditioners are switched on or off."
+	derive SmartPlace.AirConditioningControl.TurnOn_TurnOff_AirConditioning.TurnOnAirConditioning;
 }
 Requirement CheckRoomReservation ( 2.5 ) {
-	text =
-	"The system should consult the Reservation Manager to check if there is a reservation for a particular room within the next 15 minutes."
-	derive
-	SmartPlace.AirConditioningControl.TurnOn_TurnOff_AirConditioning.TurnOffAirConditioning;
+	text = "The system should consult the Reservation Manager to check if there is a reservation for a particular room within the next 15 minutes."
+	derive SmartPlace.AirConditioningControl.TurnOn_TurnOff_AirConditioning.TurnOffAirConditioning;
 }
+
 style IoTStyle { 
-	abstract component def SensorCP [ 1 , -1 ] { ports : SensorOPT : out any } 
-	abstract component def ActuatorCP [ 0 , -1 ] { ports : ActuatorIPT : in any } 
-	abstract component def DeviceCP [ 1 , -1 ] { ports : SensorIPT : in any [ 0 , -1 ] DeviceOPT : out any [ 0 , 1 ] ActuatorOPT : out any [ 0 , -1 ]  ServiceIPT : in any [ 0 , -1 ] compose {ControllerCP, ActuatorCP, DataStoreCP, GatewayCP, SensorCP} } 
+	abstract component def SensorCP [ 1 , -1 ] { ports : SensorOPT : out any [ 1 , -1 ] } 
+	abstract component def ActuatorCP [ 0 , -1 ] { ports : ActuatorIPT : in any [ 1 , -1 ] } 
+	abstract component def DeviceCP [ 1 , -1 ] { ports : SensorIPT : in any [ 0 , -1 ] DeviceOPT : out any [ 0 , -1 ] ActuatorOPT : out any [ 0 , -1 ]  ServiceIPT : in any [ 0 , -1 ] compose {ControllerCP, ActuatorCP, DataStoreCP, GatewayCP, SensorCP} } 
 	abstract component def GatewayCP [ 0 , -1 ] { ports : DeviceIPT : in any [ 1 , -1 ]  ServiceIPT : in any [ 0 , -1 ] ServiceOPT : out any [ 1 , -1 ] compose {DataStoreCP} } 
-	abstract component def DataStoreCP [ 1 , -1 ] { ports : DataIPT : in any DataOPT : out any } abstract connector def SensorDataCN { participants : ~ SensorOPT : out any ~ SensorIPT : in any flows : flow SensorOPT to SensorIPT } 
+	abstract component def DataStoreCP [ 1 , -1 ] { ports : DataIPT : in any [ 1 , -1 ] DataOPT : out any [ 1 , -1 ] }
 	abstract component def IoTARCH { compose {DataStoreCP, GatewayCP, DeviceCP, SensorCP, ActuatorCP} } 
 	abstract component def ControllerCP [ 0 , -1 ] { ports : SensorIPT : in any [ 0 , -1 ] ActuatorOPT : out any [ 0 , -1 ] } 
+	abstract connector def SensorDataCN { participants : ~ SensorOPT : out any ~ SensorIPT : in any flows : flow SensorOPT to SensorIPT }
 	abstract connector def ActuatorCommandCN { participants : ~ ActuatorOPT : out any ~ ActuatorIPT : in any flows : flow ActuatorOPT to ActuatorIPT } 
 	abstract connector def DeviceDataCN { participants : ~ DeviceOPT : out any ~ DeviceIPT : in any flows : flow DeviceOPT to DeviceIPT }  
-	abstract connector def DatastoreCN { participants : ~ DataIPT : in any ~ DataOPT : out any flows : flow DataOPT to DataIPT } 
+	abstract connector def DataStoreCN { participants : ~ DataIPT : in any ~ DataOPT : out any flows : flow DataOPT to DataIPT } 
 	abstract connector def ServiceCN { participants : ~ ServiceOPT : out any ~ ServiceIPT : in any flows : flow ServiceOPT to ServiceIPT } 
-	invariant ExistsSensorCP = 'context Model : self.involvedElements->select(i | i.oclIsTypeOf(StructuralDef))->select(sd | sd.oclIsTypeOf(ComponentDef))->exists(c | c.abstractComponent = self.styles->select(s | s.name=IoTStyle)->select(s | s.definitions)->select(d | d.oclIsTypeOf(AbstractComponentDef))->select(ac | ac.name=SensorCP))'
-	invariant ExistsDataStoreCP 
-	invariant ExistsDeviceCP 
-	invariant SensorConnection 
-	invariant ActuatorConnection 
-	invariant Communication 
-	invariant NumberSensorIPTAndSensorDataCNOfDeviceCP 
-	invariant NumberActuatorOPTAndActuatorCommandCNOfDeviceCP 
-	invariant NumberDeviceIPTAndDeviceDataCNOfGatewayCP 
-	invariant NumberSensorIPTOfControllerCP 
-	invariant NumberSensorDataCNOfControllerCP 
-	invariant NumberActuatorOPTOfControllerCP 
-	invariant NumberActuatorCommandCNOfControllerCP 
-	abstract activity def Monitoring abstract activity def Analysis abstract activity def Planning abstract activity def Execution abstract activity def Knowledge } 
+
+	abstract activity def Monitoring
+	abstract activity def Analysis 
+	abstract activity def Planning 
+	abstract activity def Execution
+	
+//	invariant ExistsActivitiesC1
+//	invariant ActivitiesOrderC2
+//	invariant MonitoringActC3
+	
+//	Componentes ControllerCP devem ser embutidos no DeviceCP
+	invariant ConstraintC4 = "self.ControllerCPEmbedded(self)"
+	
+//	Componentes SensorCP devem ser conectados a componentes DeviceCP ou ControllerCP
+	invariant ConstraintC5 = "self.SensorConnection(self)"
+	
+//	Componentes ActuatorCP devem ser conectados a componentes DeviceCP ou ControllerCP
+	invariant ConstraintC6 = "self.ActuatorConnection(self)"
+	
+//	Componentes dos tipos SensorCP e ActuatorCP não se comunicam diretamente
+	invariant ConstraintC7 = "self.Communication(self)"
+	
+//	Conectores do tipo SensorDataCN devem possuir apenas uma origem e um destino
+	invariant ConstraintC8 = "self.checkBindingsRecursive(self, 'SensorDataCN')"
+	
+//	Conectores do tipo ActuatorCommandCN devem possuir apenas uma origem e um destino
+	invariant ConstraintC9 = "self.checkBindingsRecursive(self, 'ActuatorCommandCN')"
+	
+//	Conectores do tipo DeviceDataCN  devem possuir apenas uma origem e um destino
+	invariant ConstraintC10 = "self.checkBindingsRecursive(self, 'DeviceDataCN')"
+	
+//	Verifica a existência dos componentes obrigatórios
+	invariant checkSensorCP = "self.checkCPRecursive(self, 'SensorCP')"
+	invariant checkDataStoreCP = "self.checkCPRecursive(self, 'DataStoreCP')"
+	invariant checkDeviceCP = "self.checkCPRecursive(self, 'DeviceCP')"
+	
+//	Verifica a existência das portas obrigatórias
+	invariant checkSensorOPT = "self.checkPTRecursive(self, 'SensorOPT')"
+	invariant checkActuatorIPT = "not (self.checkCPRecursive(self, 'ActuatorCP') xor self.checkPTRecursive(self, 'ActuatorIPT'))"
+	invariant checkDataIPT = "self.checkPTRecursive(self, 'DataIPT')"
+	invariant checkDataOPT = "self.checkPTRecursive(self, 'DataOPT')"
+	invariant checkServiceOPT = "not (self.checkCPRecursive(self, 'GatewayCP') xor self.checkPTRecursive(self, 'ServiceOPT'))"
+	invariant checkDeviceIPT = "not (self.checkCPRecursive(self, 'GatewayCP') xor self.checkPTRecursive(self, 'DeviceIPT'))"
+	
+//	Verifica a existência dos conectores obrigatórios
+	invariant checkSensorDataCN = "self.checkCNRecursive(self, 'SensorDataCN')"
+	invariant checkDataStoreCN = "self.checkCNRecursive(self, 'DataStoreCN')"
+	invariant checkActuatorCommandCN = "not (self.checkCPRecursive(self, 'ActuatorCP') xor self.checkCNRecursive(self, 'ActuatorCommandCN'))"
+	invariant checkServiceCN = "not (self.checkCPRecursive(self, 'GatewayCP') xor self.checkCNRecursive(self, 'ServiceCN'))"
+	invariant checkDeviceDataCN = "not (self.checkPTRecursive(self, 'DeviceOPT') xor self.checkCNRecursive(self, 'DeviceDataCN'))"
+} 
 	allocations { activity TemperatureSensorAC to TemperatureSensorCP activity MotionSensorAC to MotionSensorCP activity CameraAC to CameraCP activity AirConditionerAC to AirConditionerCP activity OrionContextBrokerAC to OrionContextBrokerCP activity GatewayBlackboardAC to GatewayBlackboardCP activity SmartPlaceAirControlAC to SmartPlaceAirControlCP }

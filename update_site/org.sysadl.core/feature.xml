@@ -2,7 +2,7 @@
 <feature
       id="org.sysadl.feature.core"
       label="SysADL Studio"
-      version="2.7.0"
+      version="2.7.1"
       provider-name="ConSiste UFRN">
 
    <description url="http://sysadl.imd.ufrn.br/">
@@ -295,6 +295,7 @@ You may add additional accurate notices of copyright ownership.
    </license>
 
    <url>
+      <update label="SysADL Update Site" url="http://sysadl.org/update"/>
       <discovery label="SysADL Studio Update Site" url="http://consiste.dimap.ufrn.br/sysadl/update"/>
    </url>
 

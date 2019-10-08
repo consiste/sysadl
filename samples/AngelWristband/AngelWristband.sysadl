@@ -1,22 +1,26 @@
 Model SysADLArchitecture ; 
 package SysADL.types { value type Int { } value type Boolean { } value type String { } value type Void { } value type Real { } } 
-package Ports{ import SysADL.types ; port def RequestOPT { flow out String } port def RequestIPT { flow in String } port def ResponseOPT { flow out String } port def ResponseIPT { flow in String } port def SmartphoneCPT { ports : req : RequestOPT ; resp : ResponseIPT ; } port def WristbandCPT { ports : req : RequestIPT ; resp : ResponseOPT ; } port def DataIPT { flow in String } port def DataOPT { flow out String } port def TemperatureIPT { flow in Real } port def TemperatureOPT { flow out Real } port def AccelerometerIPT { flow in Real } port def AccelerometerOPT { flow out Real } port def HeartRateIPT { flow in Real } port def HeartRateOPT { flow out Real } }
-package Connectors { import Ports ; connector def RequestResponseCN { participants : ~ w : WristbandCPT ; ~ sp : SmartphoneCPT ; configuration { } } connector def sendRequestCN { participants : ~ req : RequestOPT ; ~ reqI : RequestIPT ; flows : String from req to reqI } connector def sendResponseCN implements IoTStyle.DeviceDataCN { participants : ~ resp : ResponseOPT ; ~ reqi : ResponseIPT ; flows : String from resp to reqi } connector def DataCN implements IoTStyle.DatastoreCN { participants : ~ dOut : DataOPT ; ~ dIn : DataIPT ; flows : String from dOut to dIn } connector def AccelerationCN implements IoTStyle.SensorDataCN { participants : ~ aOut : AccelerometerOPT ; ~ aIn : AccelerometerIPT ; flows : Real from aOut to aIn } connector def TemperatureCN implements IoTStyle.SensorDataCN { participants : ~ tOut : TemperatureOPT ; ~ tIn : TemperatureIPT ; flows : Real from tOut to tIn } connector def HeartRateCN implements IoTStyle.SensorDataCN { participants : ~ hrOut : HeartRateOPT ; ~ hrIn : HeartRateIPT ; flows : Real from hrOut to hrIn } }
+package Ports{ import SysADL.types ; port def RequestOPT { flow out String } port def RequestIPT { flow in String } port def ResponseOPT { flow out String } port def ResponseIPT { flow in String } port def SmartphoneCPT { ports : reqSout : RequestOPT ; respSin : ResponseIPT ; } port def WristbandCPT { ports : reqWin : RequestIPT ; respWout : ResponseOPT ; } port def DataIPT { flow in String } port def DataOPT { flow out String } port def TemperatureIPT { flow in Real } port def TemperatureOPT { flow out Real } port def AccelerometerIPT { flow in Real } port def AccelerometerOPT { flow out Real } port def HeartRateIPT { flow in Real } port def HeartRateOPT { flow out Real } }
+package Connectors uses IoTStyle { import Ports ; connector def RequestResponseCN { participants : ~ w : WristbandCPT ; ~ sp : SmartphoneCPT ; 
+	configuration { connectors : rq : sendRequestCN bindings reqSout = reqWin ; rp : sendResponseCN bindings respWout = respSin ; }
+	//configuration { connectors : rq : sendRequestCN bindings reqSout = reqWin ; rp : sendResponseCN bindings respWout = respSin, respWout = respSin ; }
+} connector def sendRequestCN { participants : ~ req : RequestOPT ; ~ reqI : RequestIPT ; flows : String from req to reqI } connector def sendResponseCN implements IoTStyle.DeviceDataCN { participants : ~ resp : ResponseOPT ; ~ reqi : ResponseIPT ; flows : String from resp to reqi } connector def DataCN implements IoTStyle.DataStoreCN { participants : ~ dOut : DataOPT ; ~ dIn : DataIPT ; flows : String from dOut to dIn } connector def AccelerationCN implements IoTStyle.SensorDataCN { participants : ~ aOut : AccelerometerOPT ; ~ aIn : AccelerometerIPT ; flows : Real from aOut to aIn } connector def TemperatureCN implements IoTStyle.SensorDataCN { participants : ~ tOut : TemperatureOPT ; ~ tIn : TemperatureIPT ; flows : Real from tOut to tIn } connector def HeartRateCN implements IoTStyle.SensorDataCN { participants : ~ hrOut : HeartRateOPT ; ~ hrIn : HeartRateIPT ; flows : Real from hrOut to hrIn } }
 package Components uses IoTStyle { import Ports ; import Connectors ; import SysADL.types ; 
 	boundary component def AccelerometerCP implements IoTStyle.SensorCP { ports : as : AccelerometerOPT concrete IoTStyle.SensorCP.SensorOPT ; } 
-	boundary component def TemperatureSensorCP implements IoTStyle.SensorCP { ports : ts : TemperatureOPT concrete IoTStyle.SensorCP.SensorOPT ; }
-	component def WristbandCP implements IoTStyle.DeviceCP { ports : aw : WristbandCPT concrete IoTStyle.DeviceCP.DeviceOPT ; configuration { components : ControllerCP : ControllerCP { using ports : rIn : RequestIPT ; rOut : ResponseOPT ; a : AccelerometerIPT ; hs : HeartRateIPT ; t : TemperatureIPT ; } a : AccelerometerCP { using ports : as : AccelerometerOPT ; } t : TemperatureSensorCP { using ports : ts : TemperatureOPT ; } hr : HeartRateSensorCP { using ports : hrs : HeartRateOPT ; } connectors : sendHeartRate : HeartRateCN bindings hrs = hs ; sendTemperature : TemperatureCN bindings ts = t ; sendAcceleration : AccelerationCN bindings as = a ; delegations : rIn to req rOut to resp } } boundary
+	boundary component def TemperatureSensorCP { ports : ts : TemperatureOPT ; }
+	component def WristbandCP styles IoTStyle implements IoTStyle.DeviceCP { ports : aw : WristbandCPT concrete IoTStyle.DeviceCP.DeviceOPT ; configuration { components : ControllerCP : ControllerCP { using ports : rIn : RequestIPT ; rOut : ResponseOPT ; a : AccelerometerIPT ; hs : HeartRateIPT ; t : TemperatureIPT ; } a : AccelerometerCP { using ports : as : AccelerometerOPT ; } t : TemperatureSensorCP { using ports : ts : TemperatureOPT ; } hr : HeartRateSensorCP { using ports : hrs : HeartRateOPT concrete IoTStyle.SensorCP.SensorOPT; } connectors : sendHeartRate : HeartRateCN bindings hrs = hs ; sendTemperature : TemperatureCN bindings ts = t; sendAcceleration : AccelerationCN bindings as = a ;       delegations : rIn to reqWin rOut to respWout } } boundary
+	//component def WristbandCP styles IoTStyle implements IoTStyle.DeviceCP { ports : aw : WristbandCPT concrete IoTStyle.DeviceCP.DeviceOPT ; configuration { components : ControllerCP : ControllerCP { using ports : rIn : RequestIPT ; rOut : ResponseOPT ; a : AccelerometerIPT ; hs : HeartRateIPT ; t : TemperatureIPT ; } a : AccelerometerCP { using ports : as : AccelerometerOPT ; } t : TemperatureSensorCP { using ports : ts : TemperatureOPT ; } hr : HeartRateSensorCP { using ports : hrs : HeartRateOPT concrete IoTStyle.SensorCP.SensorOPT; } connectors :  sendTemperature : TemperatureCN bindings ts = t, ts = hs ;  delegations : rIn to reqWin rOut to respWout } } boundary
 	component def HeartRateSensorCP implements IoTStyle.SensorCP { ports : hrs : HeartRateOPT concrete IoTStyle.SensorCP.SensorOPT ; }
-	component def SmartphoneCP implements IoTStyle.ActuatorCP { ports : sp : SmartphoneCPT concrete IoTStyle.DeviceCP.ServiceIPT ; configuration { components : app : ApplicationCP { using ports : rOut : RequestOPT ; rIn : ResponseIPT ; dOut : DataOPT ; dIn : DataIPT ; } 
-		db : DatabaseCP { using ports : dataIn : DataIPT ; dataOut : DataOPT ; } 
-		connectors : sendData : DataCN bindings dataOut = dIn ; saveData : DataCN bindings dOut = dataIn ; delegations : rOut to req rIn to resp
+	component def SmartphoneCP implements IoTStyle.DeviceCP { ports : sp : SmartphoneCPT ; configuration { components : app : ApplicationCP { using ports : rOut : RequestOPT ; rIn : ResponseIPT ; dOut : DataOPT ; dIn : DataIPT ; } 
+		db : DatabaseCP { using ports : dataIn : DataIPT concrete IoTStyle.DataStoreCP.DataIPT ; dataOut : DataOPT concrete IoTStyle.DataStoreCP.DataOPT ; } 
+		connectors : sendData : DataCN bindings dataOut = dIn ; saveData : DataCN bindings dOut = dataIn ; delegations : rOut to reqSout rIn to respSin
 	} }
 	component def ApplicationCP { ports : rOut : RequestOPT ; rIn : ResponseIPT ; dOut : DataOPT ; dIn : DataIPT ; }
-	component def WristbandARCH styles IoTStyle { configuration { components : w : WristbandCP { using ports : aw : WristbandCPT ; } s : SmartphoneCP { using ports : sp : SmartphoneCPT ; } 
-		connectors : sendMeasurements : RequestResponseCN bindings aw = sp ;
-	} }
-	component def ControllerCP implements IoTStyle.ControllerCP { ports : rIn : RequestIPT ; rOut : ResponseOPT ; a : AccelerometerIPT concrete IoTStyle.ControllerCP.SensorIPT ; hs : HeartRateIPT concrete IoTStyle.ControllerCP.SensorIPT ; t : TemperatureIPT concrete IoTStyle.ControllerCP.SensorIPT ; } boundary
-	component def DatabaseCP implements IoTStyle.DataStoreCP { ports : dIn : DataIPT concrete IoTStyle.DataStoreCP.DataIPT ; dOut : DataOPT concrete IoTStyle.DataStoreCP.DataOPT ; } activity def SensingAC implements IoTStyle.Monitoring : ( meassurement : Real ) { body { } } activity def ApplicationAC implements IoTStyle.Planning , IoTStyle.Execution ( response : String ) { body { } } activity def ControllerAC implements IoTStyle.Analysis ( request : String ) ( accelerometer : Real ) ( temperature : Real ) ( heartRate : Real ) : ( response : String ) { body { } } activity def StorageAC ( dataIn : String ) : ( dataOut : String ) { body { } } }
+	component def WristbandARCH styles IoTStyle { configuration { components : w : WristbandCP { using ports : aw : WristbandCPT concrete IoTStyle.DeviceDataCN.DeviceOPT ; } s : SmartphoneCP { using ports : sp : SmartphoneCPT ; } 
+		   connectors : sendMeasurements : RequestResponseCN bindings aw = sp;
+	   } }
+	component def ControllerCP implements IoTStyle.ControllerCP { ports : rIn : RequestIPT ; rOut : ResponseOPT ; a : AccelerometerIPT concrete IoTStyle.ControllerCP.SensorIPT ; hs : HeartRateIPT concrete IoTStyle.ControllerCP.SensorIPT ; t : TemperatureIPT ; } boundary
+	component def DatabaseCP implements IoTStyle.DataStoreCP { ports : dIn : DataIPT concrete IoTStyle.DataStoreCP.DataIPT ; dOut : DataOPT concrete IoTStyle.DataStoreCP.DataOPT ; } activity def SensingAC implements IoTStyle.Monitoring : ( meassurement : Real ) {  } activity def ApplicationAC implements IoTStyle.Planning , IoTStyle.Execution ( response : String ) { body { } } activity def ControllerAC implements IoTStyle.Analysis ( request : String ) ( accelerometer : Real ) ( temperature : Real ) ( heartRate : Real ) : ( response : String ) { body { } } }
 Requirement teste(1.1){
 	
 }
@@ -24,28 +28,67 @@ Requirement teste1(1.2){
 	derive teste ; 
 } 
 style IoTStyle { 
-	abstract component def SensorCP [ 1 , -1 ] { ports : SensorOPT : out any } 
-	abstract component def ActuatorCP [ 0 , -1 ] { ports : ActuatorIPT : in any } 
-	abstract component def DeviceCP [ 1 , -1 ] { ports : SensorIPT : in any [ 0 , -1 ] DeviceOPT : out any [ 0 , 1 ] ActuatorOPT : out any [ 0 , -1 ]  ServiceIPT : in any [ 0 , -1 ] compose {ControllerCP, ActuatorCP, DataStoreCP, GatewayCP, SensorCP} } 
+	abstract component def SensorCP [ 1 , -1 ] { ports : SensorOPT : out any [ 1 , -1 ] } 
+	abstract component def ActuatorCP [ 0 , -1 ] { ports : ActuatorIPT : in any [ 1 , -1 ] } 
+	abstract component def DeviceCP [ 1 , -1 ] { ports : SensorIPT : in any [ 0 , -1 ] DeviceOPT : out any [ 0 , -1 ] ActuatorOPT : out any [ 0 , -1 ]  ServiceIPT : in any [ 0 , -1 ] compose {ControllerCP, ActuatorCP, DataStoreCP, GatewayCP, SensorCP} } 
 	abstract component def GatewayCP [ 0 , -1 ] { ports : DeviceIPT : in any [ 1 , -1 ]  ServiceIPT : in any [ 0 , -1 ] ServiceOPT : out any [ 1 , -1 ] compose {DataStoreCP} } 
-	abstract component def DataStoreCP [ 1 , -1 ] { ports : DataIPT : in any DataOPT : out any } abstract connector def SensorDataCN { participants : ~ SensorOPT : out any ~ SensorIPT : in any flows : flow SensorOPT to SensorIPT } 
+	abstract component def DataStoreCP [ 1 , -1 ] { ports : DataIPT : in any [ 1 , -1 ] DataOPT : out any [ 1 , -1 ] }
 	abstract component def IoTARCH { compose {DataStoreCP, GatewayCP, DeviceCP, SensorCP, ActuatorCP} } 
 	abstract component def ControllerCP [ 0 , -1 ] { ports : SensorIPT : in any [ 0 , -1 ] ActuatorOPT : out any [ 0 , -1 ] } 
+	abstract connector def SensorDataCN { participants : ~ SensorOPT : out any ~ SensorIPT : in any flows : flow SensorOPT to SensorIPT }
 	abstract connector def ActuatorCommandCN { participants : ~ ActuatorOPT : out any ~ ActuatorIPT : in any flows : flow ActuatorOPT to ActuatorIPT } 
 	abstract connector def DeviceDataCN { participants : ~ DeviceOPT : out any ~ DeviceIPT : in any flows : flow DeviceOPT to DeviceIPT }  
-	abstract connector def DatastoreCN { participants : ~ DataIPT : in any ~ DataOPT : out any flows : flow DataOPT to DataIPT } 
+	abstract connector def DataStoreCN { participants : ~ DataIPT : in any ~ DataOPT : out any flows : flow DataOPT to DataIPT } 
 	abstract connector def ServiceCN { participants : ~ ServiceOPT : out any ~ ServiceIPT : in any flows : flow ServiceOPT to ServiceIPT } 
-	invariant ExistsActivities invariant ActivitiesOrder = "" 
-	invariant MonitoringAct 
-	invariant SensorConnection 
-	invariant ActuatorConnection 
-	invariant Communication 
-	invariant NumberSensorIPTAndSensorDataCNOfDeviceCP 
-	invariant NumberActuatorOPTAndActuatorCommandCNOfDeviceCP 
-	invariant NumberDeviceIPTAndDeviceDataCNOfGatewayCP 
-	invariant NumberSensorIPTOfControllerCP 
-	invariant NumberSensorDataCNOfControllerCP 
-	invariant NumberActuatorOPTOfControllerCP 
-	invariant NumberActuatorCommandCNOfControllerCP 
-	abstract activity def Monitoring abstract activity def Analysis abstract activity def Planning abstract activity def Execution invariant newInvariant = "self.components->exists(cp | cp.definition.abstractComponent.name = \'ActuatorCP\')" } 
-	allocations { activity SensingAC to AccelerometerCP activity SensingAC to TemperatureSensorCP activity SensingAC to HeartRateSensorCP activity StorageAC to DatabaseCP activity ControllerAC to ControllerCP activity ApplicationAC to ApplicationCP }
+
+	abstract activity def Monitoring
+	abstract activity def Analysis 
+	abstract activity def Planning 
+	abstract activity def Execution
+	
+//	invariant ExistsActivitiesC1
+//	invariant ActivitiesOrderC2
+//	invariant MonitoringActC3
+	
+//	Componentes ControllerCP devem ser embutidos no DeviceCP
+	invariant ConstraintC4 = "self.ControllerCPEmbedded(self)"
+	
+//	Componentes SensorCP devem ser conectados a componentes DeviceCP ou ControllerCP
+	invariant ConstraintC5 = "self.SensorConnection(self)"
+	
+//	Componentes ActuatorCP devem ser conectados a componentes DeviceCP ou ControllerCP
+	invariant ConstraintC6 = "self.ActuatorConnection(self)"
+	
+//	Componentes dos tipos SensorCP e ActuatorCP não se comunicam diretamente
+	invariant ConstraintC7 = "self.Communication(self)"
+	
+//	Conectores do tipo SensorDataCN devem possuir apenas uma origem e um destino
+	invariant ConstraintC8 = "self.checkBindingsRecursive(self, 'SensorDataCN')"
+	
+//	Conectores do tipo ActuatorCommandCN devem possuir apenas uma origem e um destino
+	invariant ConstraintC9 = "self.checkBindingsRecursive(self, 'ActuatorCommandCN')"
+	
+//	Conectores do tipo DeviceDataCN  devem possuir apenas uma origem e um destino
+	invariant ConstraintC10 = "self.checkBindingsRecursive(self, 'DeviceDataCN')"
+	
+//	Verifica a existência dos componentes obrigatórios
+	invariant checkSensorCP = "self.checkCPRecursive(self, 'SensorCP')"
+	invariant checkDataStoreCP = "self.checkCPRecursive(self, 'DataStoreCP')"
+	invariant checkDeviceCP = "self.checkCPRecursive(self, 'DeviceCP')"
+	
+//	Verifica a existência das portas obrigatórias
+	invariant checkSensorOPT = "self.checkPTRecursive(self, 'SensorOPT')"
+	invariant checkActuatorIPT = "not (self.checkCPRecursive(self, 'ActuatorCP') xor self.checkPTRecursive(self, 'ActuatorIPT'))"
+	invariant checkDataIPT = "self.checkPTRecursive(self, 'DataIPT')"
+	invariant checkDataOPT = "self.checkPTRecursive(self, 'DataOPT')"
+	invariant checkServiceOPT = "not (self.checkCPRecursive(self, 'GatewayCP') xor self.checkPTRecursive(self, 'ServiceOPT'))"
+	invariant checkDeviceIPT = "not (self.checkCPRecursive(self, 'GatewayCP') xor self.checkPTRecursive(self, 'DeviceIPT'))"
+	
+//	Verifica a existência dos conectores obrigatórios
+	invariant checkSensorDataCN = "self.checkCNRecursive(self, 'SensorDataCN')"
+	invariant checkDataStoreCN = "self.checkCNRecursive(self, 'DataStoreCN')"
+	invariant checkActuatorCommandCN = "not (self.checkCPRecursive(self, 'ActuatorCP') xor self.checkCNRecursive(self, 'ActuatorCommandCN'))"
+	invariant checkServiceCN = "not (self.checkCPRecursive(self, 'GatewayCP') xor self.checkCNRecursive(self, 'ServiceCN'))"
+	invariant checkDeviceDataCN = "not (self.checkPTRecursive(self, 'DeviceOPT') xor self.checkCNRecursive(self, 'DeviceDataCN'))"
+} 
+	allocations { activity SensingAC to AccelerometerCP activity SensingAC to TemperatureSensorCP activity SensingAC to HeartRateSensorCP  activity ControllerAC to ControllerCP activity ApplicationAC to ApplicationCP }

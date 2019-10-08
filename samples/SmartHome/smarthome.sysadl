@@ -5,26 +5,44 @@ package SysADL.types {
 
 Requirement AutomacaoResidencial ( 1 ) { 
 	text = "O sistema deve conectar os dispositivos e permitir aos habitantes da casa monitorá-la, configurá-la e controlá-la a partir de diferentes interfaces, inclusive remotamente" 
-	Requirement SimularPresenca ( 1.7 ) { text = "Os usuários podem ativar a simulação de presença através do sistema Web ou aplicativo para smartphone. Na simulação de presença as luzes são ligadas/desligadas aleatoriamente e as persianas abertas/fechadas automaticamente." } 
-	Requirement GerenciarTemperatura ( 1.6 ) { text = "O sistema deve controlar a temperatura da casa usando aquecedores e resfriadores de ar" Requirement ControleAutomaticoTemperatura ( 1.6.1 ) { text = "O sistema deve desligar todos os aquecedores e resfriadores de ar quando não houverem pessoas dentro da casa. A temperatura a ser alcançada é cadastrada nas preferências de cada usuário" derive ControleTemperaturaHorarios ; } Requirement GerenciaTemperaturaAdaptavel ( 1.6.2 ) { text = "O sistema deve se adaptar aos padrões dos fabricantes, suportando condicionadores de ar e sensores que trabalham em celcius ou fahrenheit" } } 
-	Requirement DetectarIncendio ( 1.8 ) { text = "O sistema deve monitorar os níveis de fumaça e, quando detectado níveis elevados, disparar a reação à incendios" Requirement EnviarMensagemAlerta ( 1.8.3 ) { text = "O sistema deve enviar mensagem de alerta para os usuários" } Requirement DetectarNiveisFumaca ( 1.8.1 ) { text = "O sistema deve detectar os níveis de fumaça e disparar os alarmes quando o nível for elevado" } Requirement RealizarChamadaEmergencia ( 1.8.2 ) { text = "O sistema deve realizar chamadas para números de emergência para acionar os bombeiros" } Requirement ControleIncendio ( 1.8.4 ) { text = "O sistema deve alterar o comportamento da casa para o modo incêndio" Requirement AtivarExtintores ( 1.8.4.1 ) { text = "No modo incêndio, os extintores são ativados para combater as chamas" } Requirement DestravarSaidas ( 1.8.4.2 ) { text = "No modo incêndio, todas as saídas são destravadas automaticamente." } Requirement AtivarModoIncendio ( 1.8.4.0 ) { text = "O sistema deve possuir um modo incêndio, que anula todos os comportamentos comuns da casa e ativa comportamentos de emergência." } } } 
-	Requirement DetectarInvasao ( 1.9 ) { text = "O sistema deve possibilitar a ativação do modo anti-invasão através da interface web ou app" Requirement DetectarVidroQuebrados ( 1.9.1 ) { text = "Através de sensores nas janelas, o sistema é capaz de detectar janelas com vidros partidos" } Requirement DetectarPresencaIndesejada ( 1.9.2 ) { text = "Através de sensores em portas e sensores de presença, o sistema deve detectar possíveis invasores" } Requirement EnviarNotificacaoInvasao ( 1.9.3 ) { text = "Se detectada presença indesejada, o sistema deve contactar os números de emergência para acionar a polícia e enviar notificação para sistema web e app" } } 
-	Requirement GerenciarLuminosidade ( 1.5 ) { text = "O sistema deve controlar as luzes da casa" Requirement GerenciarLuminosidadeManual ( 1.5.2 ) { text = "O sistema deve controlar a luz dos ambientes quando solicitado pelo usuário através de um sistema web, app ou painel" } Requirement GerenciarLuminosidadeAutomatico ( 1.5.1 ) { text = "O sistema deve controlar automaticamente a luz dos ambientes, considerando a luz natural disponível e a presença de pessoas na casa" } } 
+	Requirement GerenciarTemperatura ( 1.6 ) { text = "O sistema deve controlar a temperatura da casa usando condicionadores de ar" 
+		Requirement ControleAutomaticoTemperatura ( 1.6.1 ) { text = "O sistema deve desligar todos os condicionadores de ar quando não houverem pessoas dentro da casa. A temperatura a ser alcançada é cadastrada nas preferências de cada usuário" derive ControleTemperaturaHorarios ; } 
+		Requirement GerenciaTemperaturaAdaptavel ( 1.6.2 ) { text = "O sistema deve se adaptar aos padrões dos fabricantes, suportando condicionadores de ar e sensores que trabalham em celsius ou fahrenheit" }
+	} 
+	Requirement DetectarIncendio ( 1.8 ) { text = "O sistema deve monitorar os níveis de fumaça e, quando detectado níveis elevados, disparar a reação à incendios" 
+		Requirement EnviarMensagemAlerta ( 1.8.3 ) { text = "O sistema deve enviar mensagem de alerta para os usuários" } 
+		Requirement DetectarNiveisFumaca ( 1.8.1 ) { text = "O sistema deve detectar os níveis de fumaça" } 
+		Requirement AcionarAlarme ( 1.8.2 ) { text = "O sistema deve acionar o alarme quando o nível for elevado" } 
+		Requirement ControleIncendio ( 1.8.4 ) { text = "O sistema deve alterar o comportamento da casa para o modo incêndio" 
+			Requirement AtivarExtintores ( 1.8.4.1 ) { text = "No modo incêndio, os extintores são ativados para combater as chamas" } 
+			Requirement DestravarSaidas ( 1.8.4.2 ) { text = "No modo incêndio, todas as saídas de emergência são destravadas automaticamente." } 
+		}
+	} 
+	Requirement GerenciarLuminosidade ( 1.5 ) { text = "O sistema deve controlar as luzes da casa" 
+		Requirement GerenciarLuminosidadeManual ( 1.5.2 ) { text = "O sistema deve controlar a luz dos ambientes quando solicitado pelo usuário através de um sistema web, app ou painel" } 
+		Requirement GerenciarLuminosidadeAutomatico ( 1.5.1 ) { text = "O sistema deve controlar automaticamente a luz dos ambientes, considerando a luz natural disponível e a presença de pessoas na casa" }
+	} 
 	Requirement GerenciarPortas ( 1.3 ) { text = "O sistema deve controlar a abertura e fechamento das portas" 
 		Requirement FecharPortas ( 1.3.2 ) { text = "As portas devem ser fechadas se não for detectada presença" } 
-	Requirement AbrirPortas ( 1.3.1 ) { text = "O sistema deve abrir as portas apenas se as condições de abertura forem satisfeitas" derive AbrirPortaPresenca , AbrirPortaDigital ; } } 
-	Requirement RealizarCadastros ( 1.1 ) { text = "O sistema deve permitir a realização de cadastro"  Requirement CadastrarUsuarios ( 1.1.1 ) { text = "Os usuários podem se cadastrar e adicionar suas preferências de temperatura e luminosidade" } Requirement CadastrarHorarios ( 1.1.2 ) { text = "Os usuários podem cadastrar os horários nos quais estarão presentes na casa" } Requirement CadastrarPortas ( 1.1.4 ) { text = "Os usuários podem indicar quais portas precisam de controle de acesso através de digitais" } Requirement CadastrarDigitais ( 1.1.5 ) { text = "Os usuários podem cadastrar digitais para autorizar a abertura de portas com controle de acesso" } Requirement CadastrarLinhaTelefonica ( 1.1.3 ) { text = "Os usuários podem cadastrar linhas telefônicas para contatos de emergência" } }
-
-	Requirement ExibirStatus ( 1.10 ) { text = "O sistema deve exibir o status dos dispositivos" derive ExibirStatusPainel , ExibirStatusWeb , ExibirStatusApp ; } Requirement EfetuarAutenticacao ( 1.2 ) { text = "O acesso ao sistema Web ou ao aplicativo só pode ser concedido após a validação de login e senha" } Requirement GerenciarJanelas ( 1.4 ) { text = "O sistema deve ser capaz de abrir e fechar as janelas e persianas" derive GerenciarJanelasApp ; } } 
+		Requirement AbrirPortas ( 1.3.1 ) { text = "O sistema deve abrir as portas apenas se as condições de abertura forem satisfeitas" derive AbrirPortaPresenca , AbrirPortaDigital ; } 
+	} 
+	Requirement RealizarCadastros ( 1.1 ) { text = "O sistema deve permitir a realização de cadastro"  
+		Requirement CadastrarUsuarios ( 1.1.1 ) { text = "Os usuários podem se cadastrar e adicionar suas preferências de temperatura e luminosidade" } 
+		Requirement CadastrarHorarios ( 1.1.2 ) { text = "Os usuários podem cadastrar os horários nos quais estarão presentes na casa" } 
+		Requirement CadastrarPortas ( 1.1.4 ) { text = "Os usuários podem indicar quais portas precisam de controle de acesso através de digitais e as saídas de emergência" } 
+		Requirement CadastrarDigitais ( 1.1.5 ) { text = "Os usuários podem cadastrar digitais para autorizar a abertura de portas com controle de acesso" } 
+	}
+	Requirement ExibirStatus ( 1.10 ) { text = "O sistema deve exibir o status dos dispositivos" derive ExibirStatusPainel , ExibirStatusWeb , ExibirStatusApp ; } 
+	Requirement EfetuarAutenticacao ( 1.2 ) { text = "O acesso ao sistema Web ou ao aplicativo só pode ser concedido após a validação de login e senha" } 
+	}
 	Requirement AbrirPortaPresenca ( 1.3.1.2 ) { text = "As portas devem ser abertas se for detectada presença" } 
-		Requirement AbrirPortaDigital ( 1.3.1.1 ) { text = "As portas com controle de acesso só podem ser abertas após a validação da digital do usuário" }
-	
-	Requirement ExibirStatusPainel ( 1.10.1 ) { text = "O sistema deve exibir o status dos dispositivos nos paineis" } Requirement ExibirStatusWeb ( 1.10.2 ) { text = "O sistema deve exibir o status dos dispositivos no sistema web" } Requirement ExibirStatusApp ( 1.10.3 ) { text = "O sistema deve exibir o status dos dispositivos no aplicativo para celular" }
-	
-	Requirement GerenciarJanelasApp ( 1.4.1 ) { text = "O sistema deve permitir que o usuário controle as janelas por um app" } 
+	Requirement AbrirPortaDigital ( 1.3.1.1 ) { text = "As portas com controle de acesso só podem ser abertas após a validação da digital do usuário" }
+	Requirement ExibirStatusPainel ( 1.10.1 ) { text = "O sistema deve exibir o status dos dispositivos nos paineis" } 
+	Requirement ExibirStatusWeb ( 1.10.2 ) { text = "O sistema deve exibir o status dos dispositivos no sistema web" } 
+	Requirement ExibirStatusApp ( 1.10.3 ) { text = "O sistema deve exibir o status dos dispositivos no aplicativo para celular" }
 	Requirement ControleTemperaturaHorarios ( 1.6.1.1 ) { text = "O sistema deve ligar os condicionadores de ar 15 minutos antes da chegada de pessoas, a partir dos horários programados" }
 	
-	style IoTStyle { 
+style IoTStyle { 
 	abstract component def SensorCP [ 1 , -1 ] { ports : SensorOPT : out any [ 1 , -1 ] } 
 	abstract component def ActuatorCP [ 0 , -1 ] { ports : ActuatorIPT : in any [ 1 , -1 ] } 
 	abstract component def DeviceCP [ 1 , -1 ] { ports : SensorIPT : in any [ 0 , -1 ] DeviceOPT : out any [ 0 , -1 ] ActuatorOPT : out any [ 0 , -1 ]  ServiceIPT : in any [ 0 , -1 ] compose {ControllerCP, ActuatorCP, DataStoreCP, GatewayCP, SensorCP} } 
@@ -35,34 +53,56 @@ Requirement AutomacaoResidencial ( 1 ) {
 	abstract connector def SensorDataCN { participants : ~ SensorOPT : out any ~ SensorIPT : in any flows : flow SensorOPT to SensorIPT }
 	abstract connector def ActuatorCommandCN { participants : ~ ActuatorOPT : out any ~ ActuatorIPT : in any flows : flow ActuatorOPT to ActuatorIPT } 
 	abstract connector def DeviceDataCN { participants : ~ DeviceOPT : out any ~ DeviceIPT : in any flows : flow DeviceOPT to DeviceIPT }  
-	abstract connector def DatastoreCN { participants : ~ DataIPT : in any ~ DataOPT : out any flows : flow DataOPT to DataIPT } 
+	abstract connector def DataStoreCN { participants : ~ DataIPT : in any ~ DataOPT : out any flows : flow DataOPT to DataIPT } 
 	abstract connector def ServiceCN { participants : ~ ServiceOPT : out any ~ ServiceIPT : in any flows : flow ServiceOPT to ServiceIPT } 
-	invariant ExistsActivitiesC1
-	invariant ActivitiesOrderC2
-	invariant MonitoringActC3
-	invariant ControllerCPEmbeddedC4 = "not (self.eContainer.abstractComponent.name <> 'DeviceCP' and self.components->exists(cpUse | cpUse.definition.abstractComponent.name = 'ControllerCP'))"
-	invariant SensorConnectionC5
-	invariant ActuatorConnectionC6
-	invariant CommunicationC7
-	invariant SensorDataCNBindingsC8 = "self.connectors->select(cn | cn.definition.abstractConnector.name = 'SensorDataCN')->forAll(sensordataCN | sensordataCN.bindings->size()=1)"
-	invariant ActuatorCommandCNBindingsC9 = "self.connectors->select(cn | cn.definition.abstractConnector.name = 'ActuatorCommandCN')->forAll(sensordataCN | sensordataCN.bindings->size()=1)"
-	invariant DeviceDataCNBindingsC10 = "self.connectors->select(cn | cn.definition.abstractConnector.name = 'DeviceDataCN')->forAll(sensordataCN | sensordataCN.bindings->size()=1)"
-	invariant checkSensorCP = "self.components->exists(cp | cp.definition.abstractComponent.name = 'SensorCP')"
-	invariant checkDataStoreCP = "self.components->exists(cp | cp.definition.abstractComponent.name = 'DataStoreCP')"
-	invariant checkDeviceCP = "self.components->exists(cp | cp.definition.abstractComponent.name = 'DeviceCP')"
-	invariant checkSensorOPT = "self.components->select(cp | cp.definition.abstractComponent.name = 'SensorCP')->forAll(sensorCP | sensorCP.ports->exists(pt | pt.abstractPort.name = 'SensorOPT'))"
-	invariant checkActuatorIPT = "self.components->select(cp | cp.definition.abstractComponent.name = 'ActuatorCP')->forAll(sensorCP | sensorCP.ports->exists(pt | pt.abstractPort.name = 'ActuatorIPT'))"
-	invariant checkDataIPT = "self.components->select(cp | cp.definition.abstractComponent.name = 'DataStoreCP')->forAll(sensorCP | sensorCP.ports->exists(pt | pt.abstractPort.name = 'DataIPT'))"
-	invariant checkDataOPT = "self.components->select(cp | cp.definition.abstractComponent.name = 'DataStoreCP')->forAll(sensorCP | sensorCP.ports->exists(pt | pt.abstractPort.name = 'DataOPT'))"
-	invariant checkServiceOPT = "self.components->select(cp | cp.definition.abstractComponent.name = 'GatewayCP')->forAll(sensorCP | sensorCP.ports->exists(pt | pt.abstractPort.name = 'ServiceOPT'))"
-	invariant checkDeviceIPT = "self.components->select(cp | cp.definition.abstractComponent.name = 'GatewayCP')->forAll(sensorCP | sensorCP.ports->exists(pt | pt.abstractPort.name = 'DeviceIPT'))"
-	invariant checkSensorDataCN = "self.connectors->exists(cn | cn.definition.abstractConnector.name = 'SensorDataCN')"
-	invariant checkDataStoreCN = "self.connectors->exists(cn | cn.definition.abstractConnector.name = 'DataStoreCN')"
-	invariant checkActuatorCommandCN = "not (self.components->exists(cp | cp.definition.abstractComponent.name = 'ActuatorCP') xor self.connectors->exists(cn | cn.definition.abstractConnector.name = 'ActuatorCommandCN'))"
-	invariant checkServiceCN = "not (self.components->exists(cp | cp.definition.abstractComponent.name = 'GatewayCP') xor self.connectors->exists(cn | cn.definition.abstractConnector.name = 'ServiceCN'))"
-	invariant checkDeviceDataCN = "not (self.components->collect(cp | cp.ports)->exists(p | p.definition.abstractPort.name = 'DeviceOPT') xor self.connectors->exists(cn | cn.definition.abstractConnector.name = 'DeviceDataCN'))"
+
 	abstract activity def Monitoring
 	abstract activity def Analysis 
 	abstract activity def Planning 
 	abstract activity def Execution
-}
+	
+//	invariant ExistsActivitiesC1
+//	invariant ActivitiesOrderC2
+//	invariant MonitoringActC3
+	
+//	Componentes ControllerCP devem ser embutidos no DeviceCP
+	invariant ConstraintC4 = "self.ControllerCPEmbedded(self)"
+	
+//	Componentes SensorCP devem ser conectados a componentes DeviceCP ou ControllerCP
+	invariant ConstraintC5 = "self.SensorConnection(self)"
+	
+//	Componentes ActuatorCP devem ser conectados a componentes DeviceCP ou ControllerCP
+	invariant ConstraintC6 = "self.ActuatorConnection(self)"
+	
+//	Componentes dos tipos SensorCP e ActuatorCP não se comunicam diretamente
+	invariant ConstraintC7 = "self.Communication(self)"
+	
+//	Conectores do tipo SensorDataCN devem possuir apenas uma origem e um destino
+	invariant ConstraintC8 = "self.checkBindingsRecursive(self, 'SensorDataCN')"
+	
+//	Conectores do tipo ActuatorCommandCN devem possuir apenas uma origem e um destino
+	invariant ConstraintC9 = "self.checkBindingsRecursive(self, 'ActuatorCommandCN')"
+	
+//	Conectores do tipo DeviceDataCN  devem possuir apenas uma origem e um destino
+	invariant ConstraintC10 = "self.checkBindingsRecursive(self, 'DeviceDataCN')"
+	
+//	Verifica a existência dos componentes obrigatórios
+	invariant checkSensorCP = "self.checkCPRecursive(self, 'SensorCP')"
+	invariant checkDataStoreCP = "self.checkCPRecursive(self, 'DataStoreCP')"
+	invariant checkDeviceCP = "self.checkCPRecursive(self, 'DeviceCP')"
+	
+//	Verifica a existência das portas obrigatórias
+	invariant checkSensorOPT = "self.checkPTRecursive(self, 'SensorOPT')"
+	invariant checkActuatorIPT = "not (self.checkCPRecursive(self, 'ActuatorCP') xor self.checkPTRecursive(self, 'ActuatorIPT'))"
+	invariant checkDataIPT = "self.checkPTRecursive(self, 'DataIPT')"
+	invariant checkDataOPT = "self.checkPTRecursive(self, 'DataOPT')"
+	invariant checkServiceOPT = "not (self.checkCPRecursive(self, 'GatewayCP') xor self.checkPTRecursive(self, 'ServiceOPT'))"
+	invariant checkDeviceIPT = "not (self.checkCPRecursive(self, 'GatewayCP') xor self.checkPTRecursive(self, 'DeviceIPT'))"
+	
+//	Verifica a existência dos conectores obrigatórios
+	invariant checkSensorDataCN = "self.checkCNRecursive(self, 'SensorDataCN')"
+	invariant checkDataStoreCN = "self.checkCNRecursive(self, 'DataStoreCN')"
+	invariant checkActuatorCommandCN = "not (self.checkCPRecursive(self, 'ActuatorCP') xor self.checkCNRecursive(self, 'ActuatorCommandCN'))"
+	invariant checkServiceCN = "not (self.checkCPRecursive(self, 'GatewayCP') xor self.checkCNRecursive(self, 'ServiceCN'))"
+	invariant checkDeviceDataCN = "not (self.checkPTRecursive(self, 'DeviceOPT') xor self.checkCNRecursive(self, 'DeviceDataCN'))"
+} 

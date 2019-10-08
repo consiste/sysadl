@@ -37,6 +37,10 @@
            actionClass="sysadl.viewpoints.actions.ApplyStyle"
            id="org.sysadl.viewpoints.applyStyle">
      </javaActions>
+     <javaActions
+           actionClass="org.sysadl.viewpoints.actions.CreateAcDelegation"
+           id="org.sysadl.viewpoints.createAcDelegation">
+     </javaActions>
   </extension>
   <extension
         point="org.eclipse.sirius.externalJavaAction">

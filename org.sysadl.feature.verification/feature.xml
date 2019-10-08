@@ -2,10 +2,10 @@
 <feature
       id="org.sysadl.feature.verification"
       label="SysADL Verification"
-      version="1.0.1"
+      version="1.0.4"
       provider-name="ConSiste UFRN"
       license-feature="org.sysadl.feature.core"
-      license-feature-version="2.7.0">
+      license-feature-version="2.7.1">
 
    <description url="http://sysadl.imd.ufrn.br/">
       SysADL Studio Tools for verification of Styles
@@ -19,6 +19,10 @@
       [Enter License Description here.]
    </license>
 
+   <url>
+      <update label="SysADL Update Site" url="http://sysadl.org/update"/>
+   </url>
+
    <requires>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
@@ -30,7 +34,8 @@
       <import plugin="org.eclipse.ocl.ecore"/>
       <import plugin="org.eclipse.emf.ecore"/>
       <import plugin="org.sysadl.viewpoints"/>
-      <import plugin="org.sysadl.grammar"/>
+      <import plugin="org.eclipse.ui.console"/>
+      <import plugin="org.sysadl"/>
    </requires>
 
    <plugin

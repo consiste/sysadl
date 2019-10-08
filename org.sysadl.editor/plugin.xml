@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated SysADL -->
+      <category
+            id="org.sysadl.wizards"
+            name="%_UI_SysADLCat_label"/>
+      <wizard
+            category="org.sysadl.wizards"
+            class="org.sysadl.presentation.SysADLModelWizard"
+            icon="icons/full/obj16/SysADLModelFile.gif"
+            id="org.sysadl.presentation.SysADLModelWizardID"
+            name="%_UI_SysADLModelWizard_label">
+         <description>%_UI_SysADLModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated SysADL -->
+      <editor
+            id="org.sysadl.presentation.SysADLEditorID"
+            name="%_UI_SysADLEditor_label"
+            icon="icons/full/obj16/SysADLModelFile.gif"
+            extensions="sysadl"
+            class="org.sysadl.presentation.SysADLEditor"
+            contributorClass="org.sysadl.presentation.SysADLActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>

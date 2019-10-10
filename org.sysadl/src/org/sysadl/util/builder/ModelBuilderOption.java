@@ -3,6 +3,7 @@ package org.sysadl.util.builder;
 import org.sysadl.util.builder.pkg.ElementBuilder;
 import org.sysadl.util.builder.pkg.StyleClientServerBuilder;
 import org.sysadl.util.builder.pkg.StyleIoTBuilder;
+import org.sysadl.util.builder.pkg.StylePipeFilterBuilder;
 import org.sysadl.util.builder.pkg.PackageTypesBuilder;
 /**
  * This enum lists all possible model builder options
@@ -14,6 +15,7 @@ import org.sysadl.util.builder.pkg.PackageTypesBuilder;
 public enum ModelBuilderOption {
 	TYPES ("Package Basic Types", new PackageTypesBuilder(), true),
 	CLIENT_SERVER("Style Client-Server", new StyleClientServerBuilder()),
+	PIPES_FILTERS("Style Pipes-and-Filters", new StylePipeFilterBuilder()),
 	IOT("Style IoT", new StyleIoTBuilder());
 	
 	private ElementBuilder builder;

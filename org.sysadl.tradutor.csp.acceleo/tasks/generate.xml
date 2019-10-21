@@ -16,8 +16,8 @@
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.equinox.preferences_3.7.400.v20190516-1504.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.core.contenttype_3.7.300.v20190215-2048.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.equinox.app_1.4.200.v20190516-1504.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.ecore_2.18.0.v20190528-0845.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.common_2.16.0.v20190528-0845.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.ecore_2.19.0.v20190822-1451.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.common_2.16.0.v20190625-1131.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.ecore.xmi_2.16.0.v20190528-0725.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.ocl_3.10.300.v20190603-1146.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/lpg.runtime.java_2.0.17.v201004271640.jar"/>
@@ -27,17 +27,17 @@
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.acceleo.model_3.7.8.201902261618.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.acceleo.profiler_3.7.8.201902261618.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.acceleo.engine_3.7.8.201902261618.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.codegen.ecore_2.18.0.v20190528-0725.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.codegen_2.16.0.v20190418-0907.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/org.sysadl_2.6.0.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.codegen.ecore_2.19.0.v20190822-1451.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.codegen_2.19.0.v20190821-1536.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.sysadl_2.7.0.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.sirius_6.2.0.201903051604.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.compare.diagram.sirius_1.1.0.201905300200.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.sirius.table_6.2.0.201903051604.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.sirius.diagram_6.2.0.201903051604.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.sirius.common_6.2.0.201903051604.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.gmf.runtime.notation_1.9.0.201805221301.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/com.google.guava_21.0.0.v20170206-1425.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/org.sysadl.grammar_1.0.0.201907241019.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/com.google.guava_27.1.0.v20190517-1946.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.sysadl.grammar_2.1.0.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.xtext_2.18.0.v20190603-1042.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.antlr.runtime_3.2.0.v201101311130.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/com.google.inject_3.0.0.v201605172100.jar"/>
@@ -46,6 +46,7 @@
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.mwe2.runtime_2.11.0.201906111547.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.mwe.utils_1.5.0.201906111547.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.xtext.util_2.18.0.v20190603-1042.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/com.google.guava_21.0.0.v20170206-1425.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.apache.log4j_1.2.15.v201012070815.jar"/>
     </path>
 

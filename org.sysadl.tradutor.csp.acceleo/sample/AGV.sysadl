@@ -185,7 +185,7 @@ package ComponentsAGV {
 			agvs : AGVSystem [ 1, -1 ] {
 				using ports: sendStatus : outStatus {
 				}
-				in_outDataAgv : IAGVSystem {
+				in_outData : IAGVSystem {
 				}
 			}
 			ds : DisplaySystem {
@@ -193,7 +193,7 @@ package ComponentsAGV {
 				}
 			}
 			connectors:
-			dataExchange : interactionAGVAndSupervisory bindings in_outDataS = in_outDataAgv;
+			dataExchange : interactionAGVAndSupervisory bindings in_outDataS = in_outData;
 			updateStatus : status bindings sendStatus = receiveStatus;
 		}
 	}
@@ -461,8 +461,10 @@ action def SendStartMotorAN ( move : VehicleData ) : CommandToMotor {
 			nsm : NotifySupervisoryFromMotorAN {
 				using pins: statusMotor : NotificationFromMotor;
 			}
-			delegate outStatusMotor to nagvm delegate ack to nsm delegate inStatusMotor
-			to statusMotor delegate inStatusMotor to statusMotor
+			delegate outStatusMotor to nagvm 
+			delegate ack to nsm 
+			delegate inStatusMotor to statusMotor 
+			delegate inStatusMotor to statusMotor
 		}
 	}
 	action def NotifyAGVFromMotorAN ( statusMotor : NotificationFromMotor ) : NotificationFromMotor {

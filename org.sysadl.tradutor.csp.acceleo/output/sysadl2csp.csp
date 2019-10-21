@@ -4,7 +4,7 @@ COMPONENTS =FactoryAutomationSystem
 |||AGVSystem									
 |||VehicleControl									
 
-CONNECTORS =dataExchange_interactionAGVAndSupervisory_in_outDataS_To_in_outDataAgv
+CONNECTORS =dataExchange_interactionAGVAndSupervisory_in_outDataS_To_in_outData
 |||updateStatus_status_sendStatus_To_receiveStatus
 |||arrived_locationVehicle_arrivalDetected_out_To_arrivalDetected_in
 |||ackArm_notificationArm_started_To_startedArm
@@ -23,50 +23,98 @@ CONNECTORS =dataExchange_interactionAGVAndSupervisory_in_outDataS_To_in_outDataA
 assert DIAGRAM:[deadlock free]
 assert DIAGRAM:[livelock free]
 
+			
+			
+			
+			
+			
 datatype NotificationToSupervisory = departed|arrived|passed|traveling 					
+			
 datatype NotificationFromArm = loaded|unloaded 					
+			
 datatype CommandToArm = load|unload|idle 					
+			
 datatype NotificationFromMotor = started|stopped 					
+			
 datatype CommandToMotor = start|stop 					
+			
 Status = { location.destination.command | location<- Location ,destination<- Location ,command<- CommandToArm  }
+getlocationStatus(location.destination.command) = location
+getdestinationStatus(location.destination.command) = destination
+getcommandStatus(location.destination.command) = command
+			
 Location = { location | location<- Char  }
+getlocationLocation(location) = location
+			
 VehicleData = { destination.command | destination<- Location ,command<- CommandToArm  }
+getdestinationVehicleData(destination.command) = destination
+getcommandVehicleData(destination.command) = command
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 channel ss_in_outDataS_outMoveToStation_ISupervisorySystem : VehicleData
 channel ss_in_outDataS_inNotifications_ISupervisorySystem : NotificationToSupervisory
 channel agvs_sendStatus_outStatus : Status
-channel agvs_in_outDataAgv_inMoveToStation_IAGVSystem : VehicleData
-channel agvs_in_outDataAgv_outNotifications_IAGVSystem : NotificationToSupervisory
+channel agvs_in_outData_inMoveToStation_IAGVSystem : VehicleData
+channel agvs_in_outData_outNotifications_IAGVSystem : NotificationToSupervisory
 channel ds_receiveStatus_inStatus : Status
 
 FactoryAutomationSystem = ss_SupervisorySystem|||agvs_AGVSystem|||ds_DisplaySystem
 						
 ss_SupervisorySystem = 
-ss_in_outDataS_inNotifications_ISupervisorySystem?notificationtosupervisory ->										 												
-|~|vehicledata:VehicleData @ ss_in_outDataS_outMoveToStation_ISupervisorySystem!vehicledata ->										 												
+ss_in_outDataS_inNotifications_ISupervisorySystem?innotifications ->
+|~|outmovetostation:VehicleData @ ss_in_outDataS_outMoveToStation_ISupervisorySystem!outmovetostation ->
 ss_SupervisorySystem
 
 agvs_AGVSystem = 								
-agvs_in_outDataAgv_inMoveToStation_IAGVSystem?vehicledata ->											 												
-agvs_sendStatus_outStatus!status ->																			
-agvs_in_outDataAgv_outNotifications_IAGVSystem!notificationtosupervisory ->												 												
+agvs_in_outData_inMoveToStation_IAGVSystem?inmovetostation ->
+agvs_sendStatus_outStatus!sendstatus ->																			
+agvs_in_outData_outNotifications_IAGVSystem!outnotifications ->
 agvs_AGVSystem
-			
+
 ds_DisplaySystem = 
-ds_receiveStatus_inStatus?status ->
+ds_receiveStatus_inStatus?receivestatus ->
 ds_DisplaySystem
 
-dataExchange_interactionAGVAndSupervisory_in_outDataS_To_in_outDataAgv =
+dataExchange_interactionAGVAndSupervisory_in_outDataS_To_in_outData =
 ss_in_outDataS_inNotifications_ISupervisorySystem?notificationtosupervisory	->																																
 ss_in_outDataS_outMoveToStation_ISupervisorySystem!vehicledata	->																																
-agvs_in_outDataAgv_inMoveToStation_IAGVSystem?vehicledata ->																																
-agvs_in_outDataAgv_outNotifications_IAGVSystem!notificationtosupervisory ->																																	
-dataExchange_interactionAGVAndSupervisory_in_outDataS_To_in_outDataAgv
-														
+agvs_in_outData_inMoveToStation_IAGVSystem?vehicledata ->																																
+agvs_in_outData_outNotifications_IAGVSystem!notificationtosupervisory ->																																	
+dataExchange_interactionAGVAndSupervisory_in_outDataS_To_in_outData
 updateStatus_status_sendStatus_To_receiveStatus =
 agvs_sendStatus_outStatus?status->								
 ds_receiveStatus_inStatus!status->								
 updateStatus_status_sendStatus_To_receiveStatus
-														
+			
+			
+			
 channel m_start_stop_in_inCommandToMotor : CommandToMotor
 channel m_started_stopped_out_outNotificationFromMotor : NotificationFromMotor
 channel as_arrivalDetected_out_outLocation : Location
@@ -84,55 +132,54 @@ channel vc_in_outData_outNotifications_IAGVSystem : NotificationToSupervisory
 AGVSystem = m_Motor|||as_ArrivalSensor|||ra_RobotArm|||vc_VehicleControl
 						
 m_Motor = 
-m_start_stop_in_inCommandToMotor?commandtomotor ->
-|~| notificationfrommotor:NotificationFromMotor @ m_started_stopped_out_outNotificationFromMotor!notificationfrommotor ->
+m_start_stop_in_inCommandToMotor?start_stop_in ->
+|~| started_stopped_out:NotificationFromMotor @ m_started_stopped_out_outNotificationFromMotor!started_stopped_out ->
 m_Motor
 
 as_ArrivalSensor = 
-|~| location:Location @ as_arrivalDetected_out_outLocation!location ->
+|~| arrivaldetected_out:Location @ as_arrivalDetected_out_outLocation!arrivaldetected_out ->
 as_ArrivalSensor
 
 ra_RobotArm = 
-ra_start_inCommandToArm?commandtoarm ->
-|~| notificationfromarm:NotificationFromArm @ ra_started_outNotificationFromArm!notificationfromarm ->
+ra_start_inCommandToArm?start ->
+|~| started:NotificationFromArm @ ra_started_outNotificationFromArm!started ->
 ra_RobotArm
 
 vc_VehicleControl = 								
-vc_arrivalDetected_in_inLocation?location ->																				
-vc_startedArm_inNotificationFromArm?notificationfromarm ->																				
-vc_started_stopped_in_inNotificationFromMotor?notificationfrommotor ->																				
-vc_in_outData_inMoveToStation_IAGVSystem?vehicledata ->											 												
-vc_sendStatus_outStatus!status ->																			
-vc_startArm_outCommandToArm!commandtoarm ->																			
-vc_start_stop_out_outCommandToMotor!commandtomotor ->																			
-vc_in_outData_outNotifications_IAGVSystem!notificationtosupervisory ->												 												
+vc_arrivalDetected_in_inLocation?arrivaldetected_in ->																				
+vc_startedArm_inNotificationFromArm?startedarm ->																				
+vc_started_stopped_in_inNotificationFromMotor?started_stopped_in ->																				
+vc_in_outData_inMoveToStation_IAGVSystem?inmovetostation ->
+vc_sendStatus_outStatus!sendstatus ->																			
+vc_startArm_outCommandToArm!startarm ->																			
+vc_start_stop_out_outCommandToMotor!start_stop_out ->																			
+vc_in_outData_outNotifications_IAGVSystem!outnotifications ->
 vc_VehicleControl
-			
+
 arrived_locationVehicle_arrivalDetected_out_To_arrivalDetected_in =
 as_arrivalDetected_out_outLocation?location->								
 vc_arrivalDetected_in_inLocation!location->								
 arrived_locationVehicle_arrivalDetected_out_To_arrivalDetected_in
-														
 ackArm_notificationArm_started_To_startedArm =
 ra_started_outNotificationFromArm?notificationfromarm->								
 vc_startedArm_inNotificationFromArm!notificationfromarm->								
 ackArm_notificationArm_started_To_startedArm
-														
 cmdArm_commandArm_startArm_To_start =
 ra_start_inCommandToArm!commandtoarm->								
 vc_startArm_outCommandToArm?commandtoarm->								
 cmdArm_commandArm_startArm_To_start
-														
 ackMotor_notificationMotor_started_stopped_out_To_started_stopped_in =
 m_started_stopped_out_outNotificationFromMotor?notificationfrommotor->								
 vc_started_stopped_in_inNotificationFromMotor!notificationfrommotor->								
 ackMotor_notificationMotor_started_stopped_out_To_started_stopped_in
-														
 cmdMotor_commandMotor_start_stop_out_To_start_stop_in =
 m_start_stop_in_inCommandToMotor!commandtomotor->								
 vc_start_stop_out_outCommandToMotor?commandtomotor->								
 cmdMotor_commandMotor_start_stop_out_To_start_stop_in
-														
+			
+			
+			
+			
 channel cs_ack_cs_inNotificationFromMotor : NotificationFromMotor
 channel cs_location_cs_outLocation : Location
 channel cs_destination_cs_inLocation : Location
@@ -159,85 +206,217 @@ channel vt_cmd_inCommandToArm : CommandToArm
 VehicleControl = cs_CheckStation|||ca_ControlArm|||nm_NotifierMotor|||sm_StartMoving|||na_NotifierArm|||vt_VehicleTimer
 						
 cs_CheckStation = 								
-cs_ack_cs_inNotificationFromMotor?notificationfrommotor ->																				
-cs_destination_cs_inLocation?location ->																				
-cs_arrivalDetected_inLocation?location ->																				
-cs_location_cs_outLocation!location ->																			
-cs_stop_outCommandToMotor!commandtomotor ->																			
-cs_passed_outNotificationToSupervisory!notificationtosupervisory ->																			
+cs_ack_cs_inNotificationFromMotor?ack_cs ->																				
+cs_destination_cs_inLocation?destination_cs ->																				
+cs_arrivalDetected_inLocation?arrivaldetected ->																				
+CheckStationAC(ack_cs, destination_cs, arrivaldetected);
 cs_CheckStation
-			
+
 ca_ControlArm = 								
-ca_cmd_ca_inCommandToArm?commandtoarm ->																				
-ca_ack_ca_inNotificationFromMotor?notificationfrommotor ->																				
-ca_startArm_outCommandToArm!commandtoarm ->																			
+ca_cmd_ca_inCommandToArm?cmd_ca ->																				
+ca_ack_ca_inNotificationFromMotor?ack_ca ->																				
+ControlArmAC(cmd_ca, ack_ca);
 ca_ControlArm
-			
+
 nm_NotifierMotor = 								
-nm_inAck_inNotificationFromMotor?notificationfrommotor ->																				
-nm_ack_outNotificationToSupervisory!notificationtosupervisory ->																			
-nm_outAck_outNotificationFromMotor!notificationfrommotor ->																			
+nm_inAck_inNotificationFromMotor?inack ->																				
+NotifierMotorAC(inack);
 nm_NotifierMotor
-			
+
 sm_StartMoving = 								
-sm_move_inVehicleData?vehicledata ->																				
-sm_cmd_sm_outCommandToArm!commandtoarm ->																			
-sm_destination_outLocation!location ->																			
-sm_start_outCommandToMotor!commandtomotor ->																			
+sm_move_inVehicleData?move ->																				
+StartMovingAC(move);
 sm_StartMoving
-			
+
 na_NotifierArm = 								
-na_loaded_unloaded_inNotificationFromArm?notificationfromarm ->																				
-na_arrivedStatus_outNotificationToSupervisory!notificationtosupervisory ->																			
+na_loaded_unloaded_inNotificationFromArm?loaded_unloaded ->																				
+NotifierArmAC(loaded_unloaded);
 na_NotifierArm
-			
+
 vt_VehicleTimer = 								
-vt_location_vt_inLocation?location ->																				
-vt_destination_vt_inLocation?location ->																				
-vt_cmd_inCommandToArm?commandtoarm ->																				
-vt_AGVStatus_outStatus!status ->																			
+vt_location_vt_inLocation?location_vt ->																				
+vt_destination_vt_inLocation?destination_vt ->																				
+vt_cmd_inCommandToArm?cmd ->																				
+VehicleTimerAC(location_vt, destination_vt, cmd);
 vt_VehicleTimer
-			
+
 destinationStation_locationVehicle_destination_To_destination_vt =
 sm_destination_outLocation?location->								
 vt_destination_vt_inLocation!location->								
 destinationStation_locationVehicle_destination_To_destination_vt
-														
 destinationStation_locationVehicle_destination_To_destination_cs =
 cs_destination_cs_inLocation!location->								
 sm_destination_outLocation?location->								
 destinationStation_locationVehicle_destination_To_destination_cs
-														
 command_commandArm_cmd_sm_To_cmd =
 sm_cmd_sm_outCommandToArm?commandtoarm->								
 vt_cmd_inCommandToArm!commandtoarm->								
 command_commandArm_cmd_sm_To_cmd
-														
 command_commandArm_cmd_sm_To_cmd_ca =
 ca_cmd_ca_inCommandToArm!commandtoarm->								
 sm_cmd_sm_outCommandToArm?commandtoarm->								
 command_commandArm_cmd_sm_To_cmd_ca
-														
 currentLocation_locationVehicle_location_cs_To_location_vt =
 cs_location_cs_outLocation?location->								
 vt_location_vt_inLocation!location->								
 currentLocation_locationVehicle_location_cs_To_location_vt
-														
 sendNotificationMotor_notificationMotor_outAck_To_ack_ca =
 ca_ack_ca_inNotificationFromMotor!notificationfrommotor->								
 nm_outAck_outNotificationFromMotor?notificationfrommotor->								
 sendNotificationMotor_notificationMotor_outAck_To_ack_ca
-														
 sendNotificationMotor_notificationMotor_outAck_To_ack_cs =
 cs_ack_cs_inNotificationFromMotor!notificationfrommotor->								
 nm_outAck_outNotificationFromMotor?notificationfrommotor->								
 sendNotificationMotor_notificationMotor_outAck_To_ack_cs
-														
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+SendStartMotorEQ(x) =  x==start 
+			
+SendDestinationEQ(x,move) =  x==getdestinationVehicleData(move) 
+			
+NotifyAGVFromMotorEQ(x,inStatusMotor) =  x==inStatusMotor 
+			
+SendCommandEQ(x,move) =  x==getcommandVehicleData(move) 
+			
+NotifySupervisoryFromMotorEQ(x,statusMotor) = if( statusMotor==started ) then x==departed else x==traveling 
+			
+NotificationMotorIsStartedEQ(x,statusMotor) =  statusMotor==started 
+			
+CompareStationsEQ(x,dest,loc) = if( dest==loc ) then x==true else x==false 
+			
+StopMotorEQ(x,result) = if( result==true ) then x==stop else x==SysADL.types.Void 
+			
+PassedMotorEQ(x,result) = if( result==false ) then x==passed else x==SysADL.types.Void 
+			
+SendCurrentLocationEQ(x,inLocation) =  x==inLocation 
+			
+ControlArmEQ(x,cmd,statusMotor) = if( statusMotor==stopped ) then x==cmd else x==idle 
+			
+NotifierArmEQ(x) =  x==arrived 
+			
+VehicleTimerEQ(x,dest,loc,cmd) =  getdestinationStatus(x)==dest and getlocationStatus(x)==loc and getcommandStatus(x)==cmd 
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+SendCommandAN(move) = 
+ |~| destination: {x | x <- Location,SendCommandEQ(x,move)} @ 
+sm_destination_outLocation!destination->
+SendCommandAN(move)
+
+SendDestinationAN(move) = 
+ |~| cmd: {x | x <- CommandToArm,SendDestinationEQ(x,move)} @ 
+sm_cmd_sm_outCommandToArm!cmd->
+SendDestinationAN(move)
+
+SendStartMotorAN(move) = 
+ |~| start: {x | x <- CommandToMotor,SendStartMotorEQ(x)} @ 
+sm_start_outCommandToMotor!start->
+SendStartMotorAN(move)
+
+NotifyAGVFromMotorAN(inStatusMotor) = 
+ |~| outStatusMotor: {x | x <- NotificationFromMotor,NotifyAGVFromMotorEQ(x,inStatusMotor)} @ 
+nm_outAck_outNotificationFromMotor!outStatusMotor->
+NotifyAGVFromMotorAN(inStatusMotor)
+
+NotifySupervisoryFromMotorAN(inStatusMotor) = 
+ |~| ack: {x | x <- NotificationToSupervisory,NotifySupervisoryFromMotorEQ(x,statusMotor)} @ 
+nm_ack_outNotificationToSupervisory!ack->
+NotifySupervisoryFromMotorAN(inStatusMotor)
+
+CompareStationsAN(statusMotor,destination,inLocation) = 
+ |~| : {x | x <- ,CompareStationsEQ(x,dest,loc),NotificationMotorIsStartedEQ(x,statusMotor)} @ 
+->
+CompareStationsAN(statusMotor,destination,inLocation)
+
+SendCurrentLocationAN(inLocation) = 
+ |~| outLocation: {x | x <- Location,SendCurrentLocationEQ(x,inLocation)} @ 
+cs_location_cs_outLocation!outLocation->
+SendCurrentLocationAN(inLocation)
+
+StopMotorAN(comparisonResultSM) = 
+ |~| stopMotor: {x | x <- CommandToMotor,StopMotorEQ(x,result)} @ 
+cs_stop_outCommandToMotor!stopMotor->
+StopMotorAN(comparisonResultSM)
+
+PassedMotorAN(comparisonResultPM) = 
+ |~| passed: {x | x <- NotificationToSupervisory,PassedMotorEQ(x,result)} @ 
+cs_passed_outNotificationToSupervisory!passed->
+PassedMotorAN(comparisonResultPM)
+
+ControlArmAN(cmd,statusMotor) = 
+ |~| startArm: {x | x <- CommandToArm,ControlArmEQ(x,cmd,statusMotor)} @ 
+ca_startArm_outCommandToArm!startArm->
+ControlArmAN(cmd,statusMotor)
+
+NotifierArmAN(statusArm) = 
+ |~| ack: {x | x <- NotificationToSupervisory,NotifierArmEQ(x)} @ 
+na_arrivedStatus_outNotificationToSupervisory!ack->
+NotifierArmAN(statusArm)
+
+VehicleTimerAN(cmd,destination,location) = 
+ |~| status: {x | x <- Status,VehicleTimerEQ(x,dest,loc,cmd)} @ 
+vt_AGVStatus_outStatus!status->
+VehicleTimerAN(cmd,destination,location)
+
+
+StartMovingAC(move) = 
+sc_SendCommandAN(move) ||| sd_SendDestinationAN(move) ||| ssm_SendStartMotorAN(move)
+
+NotifierMotorAC(inStatusMotor) = 
+nagvm_NotifyAGVFromMotorAN(inStatusMotor) ||| nsm_NotifySupervisoryFromMotorAN(inStatusMotor)
+
+CheckStationAC(statusMotor, destination, inLocation) = 
+cs_CompareStationsAN(statusMotor,destination,inLocation) ||| scl_SendCurrentLocationAN(inLocation) ||| sm_StopMotorAN(comparisonResultSM) ||| pm_PassedMotorAN(comparisonResultPM)
+
+ControlArmAC(cmd, statusMotor) = 
+ca_ControlArmAN(cmd,statusMotor)
+
+NotifierArmAC(statusArm) = 
+na_NotifierArmAN(statusArm)
+
+VehicleTimerAC(destination, location, cmd) = 
+vt_VehicleTimerAN(cmd,destination,location)
+
+
 Delegation_sendStatus_To_sendStatus= vc_sendStatus_outStatus?status ->
 agvs_sendStatus_outStatus!status ->
 Delegation_sendStatus_To_sendStatus
 
-Delegation_in_outData_To_in_outData= vc_in_outData_inMoveToStation_IAGVSystem!vehicledata->
+Delegation_in_outData_To_in_outData= agvs_in_outData_inMoveToStation_IAGVSystem?vehicledata->
+agvs_in_outData_outNotifications_IAGVSystem?notificationtosupervisory->
+vc_in_outData_inMoveToStation_IAGVSystem!vehicledata->
 vc_in_outData_outNotifications_IAGVSystem!notificationtosupervisory->
 Delegation_in_outData_To_in_outData
 
@@ -249,15 +428,20 @@ Delegation_arrivedStatus_To_outNotifications= na_arrivedStatus_outNotificationTo
 vc_in_outData_outNotifications_IAGVSystem!notificationtosupervisory ->
 Delegation_arrivedStatus_To_outNotifications
 
-Delegation_move_To_inMoveToStation= Delegation_move_To_inMoveToStation
+Delegation_move_To_inMoveToStation= vc_in_outData_inMoveToStation_IAGVSystem?vehicledata ->
+sm_move_inVehicleData!vehicledata ->
+Delegation_move_To_inMoveToStation
 
 Delegation_passed_To_outNotifications= cs_passed_outNotificationToSupervisory?notificationtosupervisory ->
 vc_in_outData_outNotifications_IAGVSystem!notificationtosupervisory ->
 Delegation_passed_To_outNotifications
 
-Delegation_loaded_unloaded_To_startedArm= Delegation_loaded_unloaded_To_startedArm
+Delegation_loaded_unloaded_To_startedArm= vc_startedArm_inNotificationFromArm?notificationfromarm ->
+na_loaded_unloaded_inNotificationFromArm!notificationfromarm ->
+Delegation_loaded_unloaded_To_startedArm
 
-Delegation_inAck_To_started_stopped= Delegation_inAck_To_started_stopped
+Delegation_inAck_To_started_stopped= nm_inAck_inNotificationFromMotor!notificationfrommotor ->
+Delegation_inAck_To_started_stopped
 
 Delegation_startArm_To_startArm= ca_startArm_outCommandToArm?commandtoarm ->
 vc_startArm_outCommandToArm!commandtoarm ->
@@ -289,4 +473,5 @@ Delegation_AGVStatus_To_sendStatus |||
 Delegation_start_To_start_stop ||| 
 Delegation_stop_To_start_stop ||| 
 Delegation_arrivalDetected_To_arrivalDetected
-	
+
+

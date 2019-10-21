@@ -3,20 +3,34 @@ package org.csp.translater.query;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.sysadl.ActionDef;
 import org.sysadl.ActionUse;
 import org.sysadl.ActivityDef;
+import org.sysadl.ActivityFlow;
 import org.sysadl.ActivityRelation;
 import org.sysadl.ComponentDef;
 import org.sysadl.ComponentUse;
 import org.sysadl.CompositePortDef;
+import org.sysadl.ConditionalTestExpression;
+import org.sysadl.ConstraintDef;
+import org.sysadl.ConstraintUse;
 import org.sysadl.DataStore;
 import org.sysadl.Delegation;
 import org.sysadl.ElementDef;
+import org.sysadl.Expression;
 import org.sysadl.Model;
 import org.sysadl.Pin;
 import org.sysadl.PortUse;
 import org.sysadl.SimplePortDef;
+import org.sysadl.impl.ActionUseImpl;
+import org.sysadl.impl.ActivityDelegationImpl;
+import org.sysadl.impl.ActivityFlowImpl;
+import org.sysadl.impl.ConditionalLogicalExpressionImpl;
+import org.sysadl.impl.ConditionalTestExpressionImpl;
+import org.sysadl.impl.ExpressionImpl;
 import org.sysadl.impl.PinImpl;
+import org.sysadl.impl.SimplePortDefImpl;
+import org.sysadl.grammar.util.*;
 
 public class AuxiliarsQuery {
 	
@@ -186,25 +200,15 @@ public class AuxiliarsQuery {
 	
 	private String getParamAction(List<Pin> paramAction, List<ActivityRelation> flow) {
 		String param = "";
-		String sourceDataStore = "";
-		String aux = "";
+		String sourceDataStore = "";		
 		for (Pin pin : paramAction) {
 			for (ActivityRelation activityRelation : flow) {
 				if(activityRelation.getTarget() instanceof  DataStore) {
 					sourceDataStore += ((PinImpl)activityRelation.getSource()).getName()+",";
-				}
-				if(activityRelation.getSource() instanceof ActionUse){ 					
-					aux += ((PinImpl)activityRelation.getTarget()).getName();
-					System.out.println(aux);
-				}
-				if (activityRelation.getTarget() instanceof PinImpl) {
-					System.out.println(paramAction);
-					System.out.println(((PinImpl)activityRelation.getTarget()).getName());
-					if (activityRelation.getSource() instanceof PinImpl) {
-						System.out.println(((PinImpl)activityRelation.getSource()).getName());
-					}					
+				}				
+				if (activityRelation.getTarget() instanceof PinImpl) {														
 					if (pin.getName().equals(((PinImpl)activityRelation.getTarget()).getName())) {
-						if (activityRelation.getSource() instanceof PinImpl) {
+						if (activityRelation.getSource() instanceof PinImpl) {							
 							if (pin.equals(paramAction.get(paramAction.size()-1))) {
 								param += ((PinImpl)activityRelation.getSource()).getName();
 								break;
@@ -226,5 +230,220 @@ public class AuxiliarsQuery {
 			}
 		}
 		return param;
+	}
+	
+	public String getAction(Model model) {
+		String result = "";
+		for (org.sysadl.Package pkg : model.getPackages()) {
+			for (ElementDef elem : pkg.getDefinitions()) {
+				if (elem instanceof ActivityDef) {
+					for (ActionUse action : ((ActivityDef)elem).getBody().getActions()) {
+						result += action.getDefinition().getName() + 
+								"(" + getParamAction(action.getPinIn() , ((ActivityDef)elem).getBody().getFlows() )+ ") = ";
+						result += "\n |~| ";
+						result += getOutParamActions(action, ((ActivityDef)elem).getBody().getFlows());
+						result += ": {x | x <- " + getDefParamOutAction(action, ((ActivityDef)elem).getBody().getFlows()) + ",";
+						result += getConstraintsAction(action);
+						result += "} @ \n";
+						result += getChannelToAction(((ActivityDef)elem).getName(),getDefParamOutAction(action, ((ActivityDef)elem).getBody().getFlows()), model);
+						result += getOutParamActions(action, ((ActivityDef)elem).getBody().getFlows())+"->\n";
+						result += action.getDefinition().getName() + 
+								"(" + getParamAction(action.getPinIn() , ((ActivityDef)elem).getBody().getFlows() )+ ")";
+						result += "\n\n";
+					}
+				}
+				
+			}
+		}
+		return  result;
+	}
+	
+	private String getChannelToAction(String activity, String type, Model model) {
+		String result = "";
+		activity = activity.substring(0, activity.length()-2);
+		for (org.sysadl.Package pkg : model.getPackages()) {
+			for (ElementDef elem : pkg.getDefinitions()) {
+				if (elem instanceof ComponentDef && ((ComponentDef)elem).getComposite() != null) {					
+					for (ComponentUse comp : ((ComponentDef)elem).getComposite().getComponents()) {
+						if (activity.equals(comp.getDefinition().getName())) {
+							for (PortUse port : comp.getPorts()) {
+								if (port.getDefinition() instanceof SimplePortDef) {
+									if (((SimplePortDefImpl) port.getDefinition()).getFlowProperties().getLiteral().equals("out")) {
+										if (((SimplePortDefImpl) port.getDefinition()).getFlowType().getName().equals(type)) {
+											result += comp.getName() +"_"+port.getName() + "_" +((SimplePortDefImpl) port.getDefinition()).getName()+"!";
+											break;
+										}
+									}
+								}
+//								else {
+//									for (PortUse compPort : ((CompositePortDef)port.getDefinition()).getPorts()) {
+//										if (((SimplePortDefImpl) compPort.getDefinition()).getFlowProperties().getLiteral().equals("out")) {
+//											if (((SimplePortDefImpl) compPort.getDefinition()).getFlowType().getName().equals(type)) {
+//												result += comp.getName() +"_"+port.getName()+"_"+compPort.getName() + "_" +((SimplePortDefImpl) port.getDefinition()).getName()+"!";
+//											}
+//										}
+//									}
+//								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		
+		return result;
+	}
+	
+	private String getOutParamActions(ActionUse action, List<ActivityRelation> flow) {
+		String paramOut = "";
+		for (ActivityRelation activityRelation : flow) {
+			if (activityRelation instanceof ActivityDelegationImpl) {
+				if ((((ActivityDelegationImpl)activityRelation).getSource()) instanceof PinImpl) {
+					if ((((ActivityDelegationImpl)activityRelation).getTarget()) instanceof ActionUseImpl) {						
+						if (action.getName().equals(((ActionUseImpl)((ActivityDelegationImpl)activityRelation).getTarget()).getName())) {
+							paramOut += ((PinImpl)((ActivityDelegationImpl)activityRelation).getSource()).getName();
+						}
+					}					
+				}				
+			}
+			else if (activityRelation instanceof ActivityFlow) {
+				//TODO
+			}
+		}
+		return paramOut;
+	}
+	
+	private String getDefParamOutAction(ActionUse action, List<ActivityRelation> flow) {
+		String def = "";
+		for (ActivityRelation activityRelation : flow) {
+			if (activityRelation instanceof ActivityDelegationImpl) {
+				if ((((ActivityDelegationImpl)activityRelation).getSource()) instanceof PinImpl) {
+					if ((((ActivityDelegationImpl)activityRelation).getTarget()) instanceof ActionUseImpl) {						
+						if (action.getName().equals(((ActionUseImpl)((ActivityDelegationImpl)activityRelation).getTarget()).getName())) {
+							def += ((PinImpl)((ActivityDelegationImpl)activityRelation).getSource()).getDefinition().getName();
+						}
+					}
+				}
+				
+			}
+		}
+		return def;
+	}
+	
+	private String getConstraintsAction(ActionUse action) {
+		String constraints = "";
+		for (ConstraintUse restricoes : action.getDefinition().getConstraints()) {
+			if (restricoes.equals(action.getDefinition().getConstraints().get(action.getDefinition().getConstraints().size()-1))) {
+				constraints += restricoes.getDefinition().getName();
+				constraints += "(x" + getParametersConstraints(restricoes.getDefinition().getInParameters()) + ")";
+			}
+			else {
+				constraints += restricoes.getDefinition().getName() ;
+				constraints += "(x" + getParametersConstraints(restricoes.getDefinition().getInParameters()) + ")" + ",";
+			}
+				
+			
+		}
+		return constraints;
+	}
+	
+	private String getParametersConstraints(List<Pin> param) {
+		String result = "";
+		if (param.size() > 0) {
+			result += ",";
+		}
+		for (Pin pin : param) {			
+			if (pin.equals(param.get(param.size()-1))) {
+				result += pin.getName();
+			}
+			else
+				result += pin.getName() + ",";
+		}
+		return result;
+	}
+	
+	public String getActivityToComponents(ComponentUse compUse, Model model) {
+		String result = "";
+		List<String> param = new ArrayList<String>();
+		for (PortUse port : compUse.getPorts()) {
+			if (port.getDefinition() instanceof SimplePortDef) {
+				if (((SimplePortDefImpl) port.getDefinition()).getFlowProperties().getLiteral().equals("in")) {
+					param.add(port.getName().toLowerCase());
+				}
+			}
+			else {
+				for (PortUse compPort : ((CompositePortDef)port.getDefinition()).getPorts()) {
+					if (((SimplePortDefImpl) compPort.getDefinition()).getFlowProperties().getLiteral().equals("in")) {
+						param.add(compPort.getName().toLowerCase());
+					}
+				}
+			}
+		}
+		for (org.sysadl.Package pkg : model.getPackages()) {
+			for (ElementDef elem: pkg.getDefinitions()) {
+				if (elem instanceof ActivityDef) {					
+					if (((ActivityDef)elem).getName().contains(compUse.getDefinition().getName())) {						
+						result += ((ActivityDef)elem).getName() + "(";
+						for (int i = 0; i < param.size(); i++) {
+							if (param.get(i).equals(param.get(param.size()-1))) {
+								result += param.get(i);
+							}
+							else
+								result += param.get(i) + ", ";
+						}
+						result += ");";
+					}
+				}
+			}
+		}
+		return result;
+	}
+	
+	public String getContraints(ConstraintDef constraint) {
+		String result = " ";
+		String expres = org.sysadl.grammar.util.SysADLGrammarUtil.nodeText(constraint.getEquation());		
+		String[] aux = expres.split(" ");
+		for (int i = 0; i < aux.length; i++) {
+			for (int j = 0; j < constraint.getOutParameters().size(); j++) {
+				if (constraint.getOutParameters().get(j).getName().equals(aux[i])) {
+					aux[i] = "x";
+				}
+			}
+			if (aux[i].equals("&&")) {
+				aux[i] = " and ";
+			}
+			if (aux[i].contains("::")) {
+				aux[i] = aux[i].substring(aux[i].lastIndexOf("::")+2);							
+			}
+			if (aux[i].contains("->")) {
+				String[] aux2 = aux[i].split("->");
+				for (int j = 0; j < constraint.getInParameters().size(); j++) {
+					if (constraint.getInParameters().get(j).getName().equals(aux2[0])) {
+						aux2[1] = "get"+aux2[1]+constraint.getInParameters().get(j).getDefinition().getName()+"("+aux2[0]+")";
+					}
+				}
+				for (int j = 0; j < constraint.getOutParameters().size(); j++) {
+					if (constraint.getOutParameters().get(j).getName().equals(aux2[0])) {
+						aux2[1] = "get"+aux2[1]+constraint.getOutParameters().get(j).getDefinition().getName()+"(x)";
+					}
+				}
+				aux[i] = "";
+				result += aux2[1];
+			}
+			
+			result += aux[i];
+		}
+		for (int i = 0; i < aux.length; i++) {
+			if (aux[i].equals("?")) {
+				result = "";
+				result += "if( " + aux[i-3] + aux[i-2] + aux[i-1] + " ) then " + aux[i+1] + aux[i+2] + aux[i+3] + " else " 
+						+ aux[i+5] + aux[i+6] + aux[i+7];
+				break;
+				
+			}
+		}
+		
+		return result;
 	}
 }

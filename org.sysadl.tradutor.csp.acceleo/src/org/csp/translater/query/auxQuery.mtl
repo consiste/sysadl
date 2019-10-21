@@ -6,4 +6,11 @@
 [query public getActivity(model : Model) : String = 
 		invoke('org.csp.translater.query.AuxiliarsQuery', 'getActivity(org.sysadl.Model)', Sequence{model}) /]
 
+[query public getAction(model : Model) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getAction(org.sysadl.Model)', Sequence{model}) /]
 
+[query public getContraints(constraint : ConstraintDef) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getContraints(org.sysadl.ConstraintDef)', Sequence{constraint}) /]
+
+[query public getActivityToComponents(compUse : ComponentUse, model : Model) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getActivityToComponents(org.sysadl.ComponentUse, org.sysadl.Model)', Sequence{compUse, model}) /]

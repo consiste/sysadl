@@ -64,12 +64,12 @@ channel [compUse.name/]_[portUse.name/]_[compPort.name/]_[portUse.definition.nam
 								[for (port : PortUse | compUse.ports)]								
 									[if (port.definition.oclIsKindOf(sysadl::SimplePortDef))]
 										[if (port.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('in'))]
-[compUse.name/]_[port.name/]_[port.definition.name/]?[port.definition.oclAsType(sysadl::SimplePortDef).flowType.name.toLowerCase()/] ->
+[compUse.name/]_[port.name/]_[port.definition.name/]?[port.name.toLowerCase()/] ->
 										[/if]
 									[else]
 										[for (compPort : PortUse | port.definition.oclAsType(sysadl::CompositePortDef).ports)]
 											[if (compPort.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('in'))]
-[compUse.name/]_[port.name/]_[compPort.name/]_[port.definition.name/]?[compPort.definition.oclAsType(sysadl::SimplePortDef).flowType.name.toLowerCase()/] ->										 												
+[compUse.name/]_[port.name/]_[compPort.name/]_[port.definition.name/]?[compPort.name.toLowerCase()/] ->
 											[/if]
 										[/for]
 									[/if]
@@ -77,15 +77,45 @@ channel [compUse.name/]_[portUse.name/]_[compPort.name/]_[portUse.definition.nam
 								[for (port : PortUse | compUse.ports)]								
 									[if (port.definition.oclIsKindOf(sysadl::SimplePortDef))]
 										[if (port.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('out'))]
-|~| [port.definition.oclAsType(sysadl::SimplePortDef).flowType.name.toLowerCase()/]:[port.definition.oclAsType(sysadl::SimplePortDef).flowType.name/] @ [compUse.name/]_[port.name/]_[port.definition.name/]![port.definition.oclAsType(sysadl::SimplePortDef).flowType.name.toLowerCase()/] ->
+|~| [port.name.toLowerCase()/]:[port.definition.oclAsType(sysadl::SimplePortDef).flowType.name/] @ [compUse.name/]_[port.name/]_[port.definition.name/]![port.name.toLowerCase()/] ->
 										[/if]
 									[else]
 										[for (compPort : PortUse | port.definition.oclAsType(sysadl::CompositePortDef).ports)]
 											[if (compPort.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('out'))]
-|~|[compPort.definition.oclAsType(sysadl::SimplePortDef).flowType.name.toLowerCase()/]:[compPort.definition.oclAsType(sysadl::SimplePortDef).flowType.name/] @ [compUse.name/]_[port.name/]_[compPort.name/]_[port.definition.name/]![compPort.definition.oclAsType(sysadl::SimplePortDef).flowType.name.toLowerCase()/] ->										 												
+|~|[compPort.name.toLowerCase()/]:[compPort.definition.oclAsType(sysadl::SimplePortDef).flowType.name/] @ [compUse.name/]_[port.name/]_[compPort.name/]_[port.definition.name/]![compPort.name.toLowerCase()/] ->
 											[/if]
 										[/for]
 									[/if]
+								[/for]
+[compUse.name/]_[compUse.definition.name/]
+
+							[elseif (compUse.definition.composite <> null and (not compUse.definition.isBoundary))]								
+[compUse.name/]_[compUse.definition.name/] = 								
+								[for (port : PortUse | compUse.ports)]																
+									[if (port.definition.oclIsKindOf(sysadl::SimplePortDef))]
+										[if (port.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('in'))]
+[compUse.name/]_[port.name/]_[port.definition.name/]?[port.name.toLowerCase()/] ->																				
+										[/if]
+									[else]
+										[for (compPort : PortUse | port.definition.oclAsType(sysadl::CompositePortDef).ports)]
+											[if (compPort.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('in'))]
+[compUse.name/]_[port.name/]_[compPort.name/]_[port.definition.name/]?[compPort.name.toLowerCase()/] ->
+											[/if]
+										[/for]
+									[/if]																																																													
+								[/for]
+								[for (port : PortUse | compUse.ports)]																
+									[if (port.definition.oclIsKindOf(sysadl::SimplePortDef))]
+										[if (port.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('out'))]
+[compUse.name/]_[port.name/]_[port.definition.name/]![port.name.toLowerCase()/] ->																			
+										[/if]
+									[else]
+										[for (compPort : PortUse | port.definition.oclAsType(sysadl::CompositePortDef).ports)]
+											[if (compPort.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('out'))]
+[compUse.name/]_[port.name/]_[compPort.name/]_[port.definition.name/]![compPort.name.toLowerCase()/] ->
+											[/if]
+										[/for]
+									[/if]																																																													
 								[/for]
 [compUse.name/]_[compUse.definition.name/]
 
@@ -94,31 +124,19 @@ channel [compUse.name/]_[portUse.name/]_[compPort.name/]_[portUse.definition.nam
 								[for (port : PortUse | compUse.ports)]																
 									[if (port.definition.oclIsKindOf(sysadl::SimplePortDef))]
 										[if (port.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('in'))]
-[compUse.name/]_[port.name/]_[port.definition.name/]?[port.definition.oclAsType(sysadl::SimplePortDef).flowType.name.toLowerCase()/] ->																				
+[compUse.name/]_[port.name/]_[port.definition.name/]?[port.name.toLowerCase()/] ->																				
 										[/if]
 									[else]
 										[for (compPort : PortUse | port.definition.oclAsType(sysadl::CompositePortDef).ports)]
 											[if (compPort.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('in'))]
-[compUse.name/]_[port.name/]_[compPort.name/]_[port.definition.name/]?[compPort.definition.oclAsType(sysadl::SimplePortDef).flowType.name.toLowerCase()/] ->											 												
+[compUse.name/]_[port.name/]_[compPort.name/]_[port.definition.name/]?[compPort.name.toLowerCase()/] ->
 											[/if]
 										[/for]
 									[/if]																																																													
 								[/for]
-								[for (port : PortUse | compUse.ports)]																
-									[if (port.definition.oclIsKindOf(sysadl::SimplePortDef))]
-										[if (port.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('out'))]
-[compUse.name/]_[port.name/]_[port.definition.name/]![port.definition.oclAsType(sysadl::SimplePortDef).flowType.name.toLowerCase()/] ->																			
-										[/if]
-									[else]
-										[for (compPort : PortUse | port.definition.oclAsType(sysadl::CompositePortDef).ports)]
-											[if (compPort.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('out'))]
-[compUse.name/]_[port.name/]_[compPort.name/]_[port.definition.name/]![compPort.definition.oclAsType(sysadl::SimplePortDef).flowType.name.toLowerCase()/] ->												 												
-											[/if]
-										[/for]
-									[/if]																																																													
-								[/for]
+[aModel.getActivityToComponents(compUse, aModel)/]
 [compUse.name/]_[compUse.definition.name/]
-			
+
 							[/if]							
 						[/for]
 					[comment  traduzindo conectores/]							
@@ -162,13 +180,16 @@ channel [compUse.name/]_[portUse.name/]_[compPort.name/]_[portUse.definition.nam
 									[/for]
 								[/for]
 [connector.name/]_[connector.definition.name/]_[bind.source.name/]_To_[bind.destination.name/]
-							[/for]					
-														
+							[/for]																		
 						[/for]									
 					[/if]
-				[/let]								
+				[/let]
+				[let constraint : ConstraintDef = self]
+[constraint.name/]([if (constraint.inParameters <> null)]x[/if][for (param : Pin | constraint.inParameters)before (',')separator (',')][param.name/][/for]) = [constraint.getContraints(constraint)/] 
+				[/let]															
 		[/for]						
 	[/for]
+[aModel.getAction(aModel)/]
 [aModel.getActivity(aModel)/]
 [aModel.getDelegations(aModel)/]
 

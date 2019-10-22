@@ -603,11 +603,11 @@ action def SendStartMotorAN ( move : VehicleData ) : CommandToMotor {
 		}
 	constraint StopMotorEQ ( result : Boolean ) :
 		(cmd : CommandToMotor) {
-			equation = result == true ? cmd == CommandToMotor::stop : cmd == SysADL.types.Void
+			equation = cmd == CommandToMotor::stop ? result == true : result == false
 		}
 	constraint PassedMotorEQ ( result : Boolean ) :
 		(ack : NotificationToSupervisory) {
-			equation = result == false ? ack == NotificationToSupervisory::passed : ack == SysADL.types.Void
+			equation = ack == NotificationToSupervisory::passed ? result == false : result == true
 		}
 	constraint SendCurrentLocationEQ ( inLocation : Location ) :
 		(outLocation : Location) {

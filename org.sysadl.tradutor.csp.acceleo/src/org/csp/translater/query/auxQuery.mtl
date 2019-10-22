@@ -12,5 +12,8 @@
 [query public getContraints(constraint : ConstraintDef) : String = 
 		invoke('org.csp.translater.query.AuxiliarsQuery', 'getContraints(org.sysadl.ConstraintDef)', Sequence{constraint}) /]
 
+[query public getExecution(executable : Executable) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getExecution(org.sysadl.Executable)', Sequence{executable}) /]
+
 [query public getActivityToComponents(compUse : ComponentUse, model : Model) : String = 
 		invoke('org.csp.translater.query.AuxiliarsQuery', 'getActivityToComponents(org.sysadl.ComponentUse, org.sysadl.Model)', Sequence{compUse, model}) /]

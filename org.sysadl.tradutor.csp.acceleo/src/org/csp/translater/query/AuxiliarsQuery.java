@@ -15,18 +15,23 @@ import org.sysadl.ConditionalTestExpression;
 import org.sysadl.ConstraintDef;
 import org.sysadl.ConstraintUse;
 import org.sysadl.DataStore;
+import org.sysadl.DataTypeDef;
 import org.sysadl.Delegation;
 import org.sysadl.ElementDef;
+import org.sysadl.Executable;
 import org.sysadl.Expression;
 import org.sysadl.Model;
 import org.sysadl.Pin;
 import org.sysadl.PortUse;
 import org.sysadl.SimplePortDef;
+import org.sysadl.Statement;
+import org.sysadl.TypeDef;
 import org.sysadl.impl.ActionUseImpl;
 import org.sysadl.impl.ActivityDelegationImpl;
 import org.sysadl.impl.ActivityFlowImpl;
 import org.sysadl.impl.ConditionalLogicalExpressionImpl;
 import org.sysadl.impl.ConditionalTestExpressionImpl;
+import org.sysadl.impl.DataTypeDefImpl;
 import org.sysadl.impl.ExpressionImpl;
 import org.sysadl.impl.PinImpl;
 import org.sysadl.impl.SimplePortDefImpl;
@@ -444,6 +449,76 @@ public class AuxiliarsQuery {
 			}
 		}
 		
+		return result;
+	}
+	
+	public String getExecution(Executable executable) {
+		String result = "";
+		String expres = "";
+		for (int i = 0; i < executable.getBody().size(); i++) {			
+			expres = org.sysadl.grammar.util.SysADLGrammarUtil.nodeText(((Statement)executable.getBody().get(i)));
+			expres = expres.replaceAll(";", "");
+			String[] aux = expres.split(" ");
+			for (int j = 0; j < aux.length; j++) {
+				if (aux[j].equals("return")) {
+					aux[j] = "";
+				}
+				if (aux[j].contains("::")) {
+					aux[j] = aux[j].substring(aux[j].lastIndexOf("::")+2);
+				}
+				if (aux[j].contains("->")) {					
+					String[] aux2 = aux[j].split("->");
+					for (int k = 0; k < executable.getParams().size(); k++) {
+						if (aux2[0].equals(executable.getParams().get(k).getName())) {
+							aux2[1] = "get"+aux2[1]+executable.getParams().get(k).getDefinition().getName()+"("+aux2[0]+")";
+						}
+					}
+					aux[j] = "";
+					result += aux2[1];
+				}
+				if (aux[j].contains("if")) {
+					for (int k = j+1; k < aux.length; k++) {
+						if (aux[k].contains(")")) {
+							aux[k] += " then ";
+						}
+					}
+				}
+				if (aux[j].equals("else")) {
+					aux[j-1] +=" ";
+					aux[j] = " else ";
+				}
+				if (aux[j].contains("&&")) {
+					aux[j] = aux[j].replaceAll("&&", " and ");
+				}
+				if (aux[j].contains("let")) {					
+					String out = "";
+					String[] teste;
+					((DataTypeDef)executable.getReturnType()).getAttributes();
+					for (int k = 0; k < ((DataTypeDef)executable.getReturnType()).getAttributes().size(); k++) {
+						for (int h = i; h < executable.getBody().size(); h++) {
+							teste = org.sysadl.grammar.util.SysADLGrammarUtil.nodeText(executable.getBody().get(h)).split(" ");
+							for (int l = 0; l < teste.length; l++) {
+								if (teste[l].contains("->")) {
+									String[] param = teste[l].split("->");
+									if (((DataTypeDef)executable.getReturnType()).getAttributes().get(k).getName().equals(param[1])) {
+										if (k == ((DataTypeDef)executable.getReturnType()).getAttributes().size()-1) {
+											out += teste[l+2];											
+										}
+										else {
+											out += teste[l+2]+".";										
+										}
+										
+									}
+								}
+							}
+						}
+					}
+					return out;					
+				}
+				result += aux[j];
+			}			
+			
+		}
 		return result;
 	}
 }

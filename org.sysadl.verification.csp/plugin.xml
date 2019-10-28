@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.sysadl.verification.csp.SysADLCSPVerification"
+            id="org.sysadl.verification.csp.run"
+            name="Run Verification">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <menu
+               id="org.sysadl.verification.csp.menu"
+               label="SysADL Verification"
+               tooltip="Call CSP Verification">
+            <command
+                  commandId="org.sysadl.verification.csp.run"
+                  label="Call CSP"
+                  style="radio">
+              	<visibleWhen
+               		checkEnabled="false">
+				    <iterate
+				         ifEmpty="false"
+				         operator="or">
+				        <test
+				            property="org.eclipse.core.resources.name"
+				            value="*.sysadl">
+				        </test>
+				    </iterate>
+				</visibleWhen>
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+
+</plugin>

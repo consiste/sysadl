@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SysADL Verification Through CSP
+Bundle-SymbolicName: org.sysadl.verification.csp;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: org.sysadl.verification.csp
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.resources,
+ org.sysadl.grammar,
+ org.eclipse.emf.common
+Import-Package: org.sysadl,
+ org.sysadl.grammar.util
+

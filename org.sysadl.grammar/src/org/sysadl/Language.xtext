@@ -32,7 +32,7 @@ Style returns Style:
  	;
 
 Invariant returns Invariant:
-   'invariant' name=ID ('=' expr=Expression)?;
+   'invariant' name=ID ('=' expr=EString)?;
    
  AbstractDef returns AbstractDef:
     AbstractComponentDef | AbstractConnectorDef | AbstractActivityDef;

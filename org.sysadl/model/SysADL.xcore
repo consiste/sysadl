@@ -27,7 +27,8 @@ class ExampleArchitecture extends NamedElement {
 }
 
 class Invariant extends NamedElement {
-	contains Expression[0..1] expr
+	//contains Expression[0..1] expr
+	String[0..1] expr
 }
 
 interface AbstractDef extends NamedElement {

@@ -3,7 +3,7 @@ Automatic-Module-Name: org.sysadl.grammar
 Bundle-ManifestVersion: 2
 Bundle-Name: SysADL Textual Modeling
 Bundle-Vendor: ConSiste UFRN
-Bundle-Version: 2.0.0
+Bundle-Version: 2.1.0
 Bundle-SymbolicName: org.sysadl.grammar; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.sysadl,
@@ -14,10 +14,8 @@ Require-Bundle: org.sysadl,
  org.eclipse.xtext.util,
  org.eclipse.xtend.lib;bundle-version="2.14.0",
  org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",
- org.eclipse.ocl,
- org.eclipse.ocl.ecore
+ org.eclipse.emf.ecore
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Import-Package: org.apache.log4j
 Export-Package: org.sysadl,
  org.sysadl.validation,
  org.sysadl.scoping,
@@ -28,3 +26,4 @@ Export-Package: org.sysadl,
  org.sysadl.services,
  org.sysadl.parser.antlr.internal,
  org.sysadl.grammar.util
+Import-Package: org.eclipse.core.resources

@@ -38,7 +38,7 @@ public class SysADLServices {
 	}
 
 	public String nodeText(EObject exp) {
-		return SysADLGrammarUtil.nodeText(exp);
+		return SysADLGrammarUtil.getInstance().nodeText(exp);
 	}
 
 	public String switchCondition(ActivitySwitchCase s) {
@@ -144,5 +144,14 @@ public class SysADLServices {
 				&& (second.getDefinition() instanceof CompositePortDef);
 		return b;
 	}
+	
 
+	public Boolean canDelegate(ActivityFlowable source, ActivityFlowable target) {
+		ActivityDef d = (ActivityDef) source.eContainer();
+		if (target instanceof ActionUse) {
+			return d.getOutParameters().contains(source);
+		} else {
+			return d.getInParameters().contains(source);
+		}
+	}
 }

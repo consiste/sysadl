@@ -3,7 +3,10 @@ package org.sysadl.util;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
-
+import org.sysadl.AbstractActivityDef;
+import org.sysadl.AbstractComponentDef;
+import org.sysadl.AbstractConnectorDef;
+import org.sysadl.AbstractPortUse;
 import org.sysadl.AdditiveExpression;
 import org.sysadl.BooleanLiteralExpression;
 import org.sysadl.ClassificationExpression;
@@ -14,6 +17,8 @@ import org.sysadl.ConditionalTestExpression;
 import org.sysadl.ConnectorUse;
 import org.sysadl.EqualityExpression;
 import org.sysadl.Expression;
+import org.sysadl.AbstractFlow;
+import org.sysadl.Invariant;
 import org.sysadl.LiteralExpression;
 import org.sysadl.LogicalExpression;
 import org.sysadl.Model;
@@ -22,41 +27,11 @@ import org.sysadl.NullLiteralExpression;
 import org.sysadl.PortUse;
 import org.sysadl.RelationalExpression;
 import org.sysadl.ShiftExpression;
+import org.sysadl.Style;
 import org.sysadl.SysADLFactory;
 import org.sysadl.impl.SysADLFactoryImpl;
 
 public class SysADLCreationTools {
-	public static Model getInitialModelObject() {
-		SysADLFactory factory = SysADLFactoryImpl.eINSTANCE; 
-		// Model
-		org.sysadl.Model m = factory.createModel();
-		m.setName("SysADLArchitecture");
-		
-		// Initial Package
-		org.sysadl.Package p = factory.createPackage();
-		p.setName("SysADL.types");
-		m.getPackages().add(p);
-		
-		// Basic types
-		org.sysadl.ValueTypeDef typeInt = factory.createValueTypeDef();
-		typeInt.setName("Int");
-		p.getDefinitions().add(typeInt);
-		org.sysadl.ValueTypeDef typeBool = factory.createValueTypeDef();
-		typeBool.setName("Boolean");
-		p.getDefinitions().add(typeBool);
-		org.sysadl.ValueTypeDef typeString = factory.createValueTypeDef();
-		typeString.setName("String");
-		p.getDefinitions().add(typeString);
-		org.sysadl.ValueTypeDef typeVoid = factory.createValueTypeDef();
-		typeVoid.setName("Void");
-		p.getDefinitions().add(typeVoid);
-		org.sysadl.ValueTypeDef typeReal = factory.createValueTypeDef();
-		typeReal.setName("Real");
-		p.getDefinitions().add(typeReal);
-		
-		return m;
-	}
-	
 	public static EList clonePorts(PortUse p) {
 		EList l = new BasicEList();
 		if (p.getDefinition() instanceof CompositePortDef) {

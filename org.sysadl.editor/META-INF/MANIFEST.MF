@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.sysadl.editor;singleton:=true
+Automatic-Module-Name: org.sysadl.editor
+Bundle-Version: 2.6.0
+Bundle-ClassPath: org.sysadl.editor.jar
+Bundle-Activator: org.sysadl.presentation.SysADLEditorPlugin$Implementation
+Bundle-Vendor: ConSiste UFRN
+Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.sysadl.presentation
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.resources;visibility:=reexport,
+ org.sysadl.edit;visibility:=reexport,
+ org.eclipse.emf.ecore.xmi;visibility:=reexport,
+ org.eclipse.emf.edit.ui;visibility:=reexport,
+ org.eclipse.jface.text,
+ org.eclipse.ui.ide;visibility:=reexport,
+ org.eclipse.emf.ecore.edit;visibility:=reexport
+Bundle-ActivationPolicy: lazy

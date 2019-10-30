@@ -20,6 +20,7 @@ import org.sysadl.ArchitectureDef;
 import org.sysadl.ComponentDef;
 import org.sysadl.ElementDef;
 import org.sysadl.Model;
+import org.sysadl.verification.transformation.PerformTransformation;
 
 public class SysADLVerificationWizard extends Wizard {
 	private Model model;
@@ -29,7 +30,8 @@ public class SysADLVerificationWizard extends Wizard {
 	
 	@Override
 	public boolean performFinish() {
-		
+		Object e = map.get(selection);
+		PerformTransformation.run(model, e);
 		return true;
 	}
 

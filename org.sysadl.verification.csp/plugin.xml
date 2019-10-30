@@ -19,8 +19,8 @@
                tooltip="Call CSP Verification">
             <command
                   commandId="org.sysadl.verification.csp.run"
-                  label="Call CSP"
-                  style="radio">
+                  label="Perform Verification"
+                  style="push">
               	<visibleWhen
                		checkEnabled="false">
 				    <iterate

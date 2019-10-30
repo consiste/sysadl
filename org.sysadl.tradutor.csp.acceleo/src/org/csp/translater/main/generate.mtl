@@ -24,6 +24,8 @@ CONNECTORS =[for (pck : Package | aModel.packages)]
 
 assert DIAGRAM:['['/]deadlock free]
 assert DIAGRAM:['['/]livelock free]
+subset(s1, s2) = (inter(s1,s2)==s1)
+IS_TRUE(h) = if (h) then SKIP else DIV
 
 	[for (pck : sysadl::Package | aModel.packages)]		
 	[comment Traduzindo Tipos /]		

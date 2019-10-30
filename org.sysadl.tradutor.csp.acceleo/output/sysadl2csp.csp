@@ -22,6 +22,8 @@ CONNECTORS =dataExchange_interactionAGVAndSupervisory_in_outDataS_To_in_outData
 
 assert DIAGRAM:[deadlock free]
 assert DIAGRAM:[livelock free]
+subset(s1, s2) = (inter(s1,s2)==s1)
+IS_TRUE(h) = if (h) then SKIP else DIV
 
 			
 																		

@@ -30,10 +30,7 @@ import org.sysadl.SysADLStandaloneSetup;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-import uk.ac.ox.cs.fdr.FileLoadError;
-import uk.ac.ox.cs.fdr.InputFileError;
-import uk.ac.ox.cs.fdr.Session;
-import uk.ac.ox.cs.fdr.fdr;
+
 
 
 /**
@@ -176,12 +173,6 @@ public class Generate extends AbstractAcceleoGenerator {
             
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        catch (InputFileError error) {
-            System.out.println(error);
-        }
-        catch (FileLoadError error) {
-            System.out.println(error);
         }
         
 //        fdr.libraryExit();

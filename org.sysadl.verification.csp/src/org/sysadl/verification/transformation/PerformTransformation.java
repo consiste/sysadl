@@ -12,6 +12,8 @@ import org.eclipse.emf.common.util.URI;
 import org.sysadl.ComponentDef;
 import org.sysadl.Model;
 
+import uk.ac.ox.cs.fdr.Session;
+
 
 
 
@@ -34,6 +36,8 @@ public class PerformTransformation {
             //}
             generator.doGenerate(new BasicMonitor()); 
             
+            Session session = new Session();
+            session.loadFile(folder.getAbsolutePath() + "\\sysadl2csp.csp");
             
             
 		} catch (IOException e) {

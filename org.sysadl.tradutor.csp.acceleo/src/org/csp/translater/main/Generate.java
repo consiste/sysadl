@@ -171,8 +171,8 @@ public class Generate extends AbstractAcceleoGenerator {
                 generator.doGenerate(new BasicMonitor());                
             }
             
-            Session session = new Session();
-            session.loadFile("output/sysadl2csp.csp");
+//            Session session = new Session();
+//            session.loadFile("output/sysadl2csp.csp");
             
         } catch (IOException e) {
             e.printStackTrace();

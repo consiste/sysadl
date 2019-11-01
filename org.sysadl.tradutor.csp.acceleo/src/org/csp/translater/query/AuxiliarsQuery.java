@@ -3,7 +3,6 @@ package org.csp.translater.query;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.sysadl.ActionDef;
 import org.sysadl.ActionUse;
 import org.sysadl.ActivityDef;
 import org.sysadl.ActivityFlow;
@@ -11,7 +10,6 @@ import org.sysadl.ActivityRelation;
 import org.sysadl.ComponentDef;
 import org.sysadl.ComponentUse;
 import org.sysadl.CompositePortDef;
-import org.sysadl.ConditionalTestExpression;
 import org.sysadl.ConstraintDef;
 import org.sysadl.ConstraintUse;
 import org.sysadl.DataStore;
@@ -19,23 +17,16 @@ import org.sysadl.DataTypeDef;
 import org.sysadl.Delegation;
 import org.sysadl.ElementDef;
 import org.sysadl.Executable;
-import org.sysadl.Expression;
 import org.sysadl.Model;
 import org.sysadl.Pin;
 import org.sysadl.PortUse;
 import org.sysadl.SimplePortDef;
 import org.sysadl.Statement;
-import org.sysadl.TypeDef;
+import org.sysadl.grammar.util.SysADLGrammarUtil;
 import org.sysadl.impl.ActionUseImpl;
 import org.sysadl.impl.ActivityDelegationImpl;
-import org.sysadl.impl.ActivityFlowImpl;
-import org.sysadl.impl.ConditionalLogicalExpressionImpl;
-import org.sysadl.impl.ConditionalTestExpressionImpl;
-import org.sysadl.impl.DataTypeDefImpl;
-import org.sysadl.impl.ExpressionImpl;
 import org.sysadl.impl.PinImpl;
 import org.sysadl.impl.SimplePortDefImpl;
-import org.sysadl.grammar.util.*;
 
 public class AuxiliarsQuery {
 	
@@ -407,7 +398,7 @@ public class AuxiliarsQuery {
 	
 	public String getContraints(ConstraintDef constraint) {
 		String result = " ";
-		String expres = org.sysadl.grammar.util.SysADLGrammarUtil.nodeText(constraint.getEquation());		
+		String expres = SysADLGrammarUtil.getInstance().nodeText(constraint.getEquation());		
 		String[] aux = expres.split(" ");
 		for (int i = 0; i < aux.length; i++) {
 			for (int j = 0; j < constraint.getOutParameters().size(); j++) {
@@ -456,7 +447,7 @@ public class AuxiliarsQuery {
 		String result = "";
 		String expres = "";
 		for (int i = 0; i < executable.getBody().size(); i++) {			
-			expres = org.sysadl.grammar.util.SysADLGrammarUtil.nodeText(((Statement)executable.getBody().get(i)));
+			expres = SysADLGrammarUtil.getInstance().nodeText(((Statement)executable.getBody().get(i)));
 			expres = expres.replaceAll(";", "");
 			String[] aux = expres.split(" ");
 			for (int j = 0; j < aux.length; j++) {
@@ -496,7 +487,7 @@ public class AuxiliarsQuery {
 					((DataTypeDef)executable.getReturnType()).getAttributes();
 					for (int k = 0; k < ((DataTypeDef)executable.getReturnType()).getAttributes().size(); k++) {
 						for (int h = i; h < executable.getBody().size(); h++) {
-							teste = org.sysadl.grammar.util.SysADLGrammarUtil.nodeText(executable.getBody().get(h)).split(" ");
+							teste = SysADLGrammarUtil.getInstance().nodeText(executable.getBody().get(h)).split(" ");
 							for (int l = 0; l < teste.length; l++) {
 								if (teste[l].contains("->")) {
 									String[] param = teste[l].split("->");

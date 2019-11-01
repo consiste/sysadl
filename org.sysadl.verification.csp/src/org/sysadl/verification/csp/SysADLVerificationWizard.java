@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -27,11 +28,12 @@ public class SysADLVerificationWizard extends Wizard {
 	private VerificationWizardPage firstPage;
 	private Map<String, Object> map; 
 	private String selection;
+	private IFile file;
 	
 	@Override
 	public boolean performFinish() {
 		Object e = map.get(selection);
-		PerformTransformation.run(model, e);
+		PerformTransformation.run(file, model, e);
 		return true;
 	}
 
@@ -142,5 +144,9 @@ public class SysADLVerificationWizard extends Wizard {
 			}
 		}
 		return names;
+	}
+
+	public void setFile(IFile file) {
+		this.file= file;
 	}
 }

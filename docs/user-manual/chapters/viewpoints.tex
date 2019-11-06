@@ -2,7 +2,7 @@
 This Chapter describes the SysADL Viewpoints, that are provided by the plugin \textit{SysADL Diagrams}. 
 
 \section{SysADL Viewpoints}
-SysADL encompasses a set of X views, SysADL Studio provides a viewpoint for each of these views and an additional viewpoint to support verification of properties at design time. These viewpoints are described in this Section.
+SysADL encompasses a set of 4 views, SysADL Studio provides a viewpoint for each of these views and an additional viewpoint to support verification of properties at design time. These viewpoints are described in this Section.
 
 \begin{table}
 	\centering
@@ -22,19 +22,26 @@ SysADL encompasses a set of X views, SysADL Studio provides a viewpoint for each
 Each viewpoint introduces a set of diagrams that supports the visualization, creation and manipulation of the architectural model through the viewpoint's perspective.
 
 \begin{table}
+	\centering
 	\begin{tabular}{l | l}
+		\hline
 		\textbf{Viewpoint} & \textbf{Diagrams} \\ \hline
-		Structural & Package Diagram \\\hline
-		& Block Definition Diagram\\\hline
+		Structural & Package Diagram \\
+		& Block Definition Diagram (Structural)\\
 		& Internal Block Diagram \\\hline
-		& \\\hline
-		Behavioral & \\\hline
-		Execution & \\\hline
-		Requirements & \\\hline
-		Allocation & \\\hline
+		Behavioral & Block Definition Diagram (Behavioral)\\
+		& Activity Diagram\\
+		& Parametric Diagram \\\hline
+		Execution & Block Definition Diagram (Execution)\\
+		Requirements & Requirements Diagram\\\hline
+		Allocation & Allocation Table\\\hline
+		Styles & Block Definitino Diagram (Styles) \\ \hline
+		Verification & - \\\hline
 	\end{tabular}
 	\caption{SysADL Diagrams}
 \end{table}
+
+Styles and Verification Viewpoints add features to existing diagrams, as Block Definition Diagrams (Structural and Behavioral).
 
 \section{Model Navigation}
 \section{Diagram Tools}

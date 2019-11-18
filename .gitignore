@@ -167,3 +167,4 @@ org.sysadl.editor/src/org/presentation/SysADLActionBarContributor.java
 /update_site/org.sysadl.update/*.jar
 /update_site/org.sysadl.update/features/*.jar
 /update_site/org.sysadl.update/plugins/*.jar
+/update_site/dir

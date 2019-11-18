@@ -12,7 +12,11 @@ import org.eclipse.emf.common.util.URI;
 import org.sysadl.ComponentDef;
 import org.sysadl.Model;
 
+import uk.ac.ox.cs.fdr.Assertion;
+import uk.ac.ox.cs.fdr.FileLoadError;
+import uk.ac.ox.cs.fdr.InputFileError;
 import uk.ac.ox.cs.fdr.Session;
+import uk.ac.ox.cs.fdr.fdr;
 
 
 
@@ -36,9 +40,25 @@ public class PerformTransformation {
             //}
             generator.doGenerate(new BasicMonitor()); 
             
-            Session session = new Session();
-            session.loadFile(folder.getAbsolutePath() + "\\sysadl2csp.csp");
-            
+            try {
+            	Session session = new Session();
+//              session.loadFile(folder.getAbsolutePath() + "\\sysadl2csp.csp");
+                session.loadFile("C:\\Users\\Fagne\\OneDrive\\Documentos\\SysADL_CSP\\Samples\\AGV\\AGV.csp");
+//            	session.loadFile("C:\\Users\\Fagne\\OneDrive\\Documentos\\SysADL_CSP\\Samples\\RTC\\RTC_Ex.csp");
+                
+                for (Assertion assertion : session.assertions()) {
+                    assertion.execute(null);
+                    System.out.println(assertion.toString()+" "+
+                        (assertion.passed() ? "Passed" : "Failed"));
+                }
+			} catch (InputFileError error) {
+		        System.out.println(error);
+		    }
+		    catch (FileLoadError error) {
+		        System.out.println(error);
+		    }
+
+		    fdr.libraryExit();
             
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

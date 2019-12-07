@@ -21,5 +21,7 @@ public interface PackageValidator {
 	boolean validateImports(EList<org.sysadl.Package> value);
 	boolean validateImportedDefinitions(EList<ElementDef> value);
 	boolean validateDefinitions(EList<ElementDef> value);
+	boolean validateAppliedStyle(EList<Style> value);
+
 	boolean validateAppliedStyle(Style value);
 }

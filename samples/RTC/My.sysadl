@@ -1,0 +1,71 @@
+Model SysADLModel ; 
+package types {
+  value type Int {}
+  value type Boolean {}
+  value type String {}
+  value type Void {}
+  value type Real {}
+  enum Command {On , Off }
+  datatype Commands {attributes : heater : Command ; cooler : Command ; }
+  dimension Temperature unit Celsius {dimension = Temperature }
+  unit Fahrenheit {dimension = Temperature }
+  value type temperature {dimension = Temperature }
+  value type FahrenheitTemperature extends temperature { unit = Fahrenheit dimension = Temperature }
+  value type CelsiusTemperature extends temperature { unit = Celsius dimension = Temperature }
+  }
+  package Ports { import types ; port def FTemperatureOPT { flow out FahrenheitTemperature }
+  port def PresenceIPT { flow in Boolean }
+  port def PresenceOPT { flow out Boolean }
+  port def CTemperatureIPT { flow in CelsiusTemperature }
+  port def CommandIPT { flow in Command }
+  port def CommandOPT { flow out Command }
+  port def CTemperatureOPT { flow out CelsiusTemperature }
+  }
+  package Connectors { import types ; import Ports ; connector def FahrenheitToCelsiusCN { participants : ~ Ft : FTemperatureOPT ; ~ Ct : CTemperatureIPT ; flows : FahrenheitTemperature from Ft to Ct }
+  connector def PresenceCN { participants : ~ pOut : PresenceOPT ; ~ pIn : PresenceIPT ; flows : Boolean from pOut to pIn }
+  connector def CommandCN { participants : ~ commandOut : CommandOPT ; ~ commandIn : CommandIPT ; flows : Command from commandOut to commandIn }
+  connector def CTemperatureCN { participants : ~ CtOut : CTemperatureOPT ; ~ ctIn : CTemperatureIPT ; flows : CelsiusTemperature from CtOut to ctIn }
+  }
+  package Components { import Connectors ; import types ; import Ports ;
+	component def RTCSystemCFD {	 configuration {	 components : s1 : TemperatureSensorCP {	 using ports : current1 : FTemperatureOPT ; }
+	  s2 : TemperatureSensorCP {	 using ports : current2 : FTemperatureOPT ; }
+	  s3 : PresenceSensorCP {	 using ports : detectedS : PresenceOPT ; }
+	  ui : UserInterfaceCP {	 using ports : desired : CTemperatureOPT ; }
+	  a2 : CoolerCP {	 using ports : controllerC : CommandIPT ; }
+	  a1 : HeaterCP {	 using ports : controllerH : CommandIPT ; }
+	  rtc : RoomTemperatureControllerCP {	 using ports : detected : PresenceIPT ; localtemp1 : CTemperatureIPT ; localTemp2 : CTemperatureIPT ; userTemp : CTemperatureIPT ; heating : CommandOPT ; cooling : CommandOPT ; }
+	  connectors : c1 : FahrenheitToCelsiusCN bindings current1 = localtemp1 ; uc : CTemperatureCN bindings desired = userTemp ; cc2 : CommandCN bindings cooling = controllerC ; pc : PresenceCN bindings detectedS = detected ; c2 : FahrenheitToCelsiusCN bindings current2 = localTemp2 ; cc1 : CommandCN bindings heating = controllerH ; }
+	  }
+
+	component def RoomTemperatureControllerCP {	 ports : detected : PresenceIPT ; localtemp1 : CTemperatureIPT ; localTemp2 : CTemperatureIPT ; userTemp : CTemperatureIPT ; heating : CommandOPT ; cooling : CommandOPT ; configuration {	 components : sm : SensorsMonitorCP {	 using ports : s1 : CTemperatureIPT ; s2 : CTemperatureIPT ; average : CTemperatureOPT ; }
+	  cm : CommanderCP {	 using ports : target2 : CTemperatureIPT ; average2 : CTemperatureIPT ; heating : CommandOPT ; cooling : CommandOPT ; }
+	  pc : PresenceCheckerCP {	 using ports : detected : PresenceIPT ; userTemp : CTemperatureIPT ; target : CTemperatureOPT ; }
+	  connectors : target : CTemperatureCN bindings target = target2 ; average : CTemperatureCN bindings average = average2 ; delegations : userTemp to userTemp detected to detected s1 to localtemp1 s2 to localTemp2 heating to heating cooling to cooling }
+	  } boundary
+	component def TemperatureSensorCP {	 ports : current : FTemperatureOPT ; } boundary
+	component def PresenceSensorCP {	 ports : detected : PresenceOPT ; } boundary
+	component def UserInterfaceCP {	 ports : desired : CTemperatureOPT ; } boundary
+	component def HeaterCP {	 ports : controller : CommandIPT ; } boundary
+	component def CoolerCP {	 ports : controller : CommandIPT ; }
+
+	component def PresenceCheckerCP {	 ports : detected : PresenceIPT ; userTemp : CTemperatureIPT ; target : CTemperatureOPT ; }
+
+	component def CommanderCP {	 ports : target : CTemperatureIPT ; average : CTemperatureIPT ; heating : CommandOPT ; cooling : CommandOPT ; }
+
+	component def SensorsMonitorCP { ports : s1 : CTemperatureIPT ; s2 : CTemperatureIPT ; average : CTemperatureOPT ; }
+	constraint CalculateAverageTemperatureEQ ( t1 : CelsiusTemperature , t2 : CelsiusTemperature ) : ( av : CelsiusTemperature ) {
+		equation = av == (t1 + t2)/2
+	} 
+	activity def CalculateAverageTemperatureAC ( t1 : CelsiusTemperature ) ( t2 : CelsiusTemperature ) : ( av : CelsiusTemperature ) { body { actions : CalcAvTemp : CalculateAverageTemperatureAN { using pins : t1 : CelsiusTemperature ; t2 : CelsiusTemperature ; } delegate t1 to t1 delegate t2 to t2 delegate av to CalcAvTemp } } action def CalculateAverageTemperatureAN ( t1 : CelsiusTemperature , t2 : CelsiusTemperature ) : CelsiusTemperature { constraint : post-condition CalculateAverageTemperatureEQ } 
+	activity def CheckPresenceToSetTemperatureAC { body { } } 
+	activity def DecideCommandAC ( averageTemp : CelsiusTemperature ) ( targetTemp : CelsiusTemperature ) : ( cool : Command , heat : Command ) { body { actions : ct : CompareTemperatureAN { using pins : averageTemp : CelsiusTemperature ; targetTemp : CelsiusTemperature ; } cmdH : CommandHeaterAN { using pins : cmdsH : Commands ; } cmdC : CommandCoolerAN { using pins : cmdsC : Commands ; } delegate averageTemp to averageTemp delegate targetTemp to targetTemp delegate heat to cmdH delegate cool to cmdC flow from ct to cmdsH flow from ct to cmdsC } } 
+	activity def FahrenheitToCelsiusAC ( f : FahrenheitTemperature ) : ( c : CelsiusTemperature ) { body { actions : FtC : FahrenheitToCelsiusAN { using pins : f : FahrenheitTemperature ; } delegate c to FtC delegate f to f } } 
+	action def CompareTemperatureAN ( averageTemp : CelsiusTemperature , targetTemp : CelsiusTemperature ) : Commands { constraint : post-condition CompareTemperatureEQ } 
+	action def CommandHeaterAN ( cmds : Commands ) : Command { constraint : post-condition CommandHeaterEQ } 
+	action def CommandCoolerAN ( cmds : Commands ) : Command { constraint : post-condition CommandCoolerEQ } 
+	constraint CompareTemperatureEQ ( target : CelsiusTemperature , average : CelsiusTemperature ) : ( cmds : Commands ) { equation = average > target ? cmds == types.Commands.cooler->On && types.Commands.heater->Off : cmds == types.Commands.cooler->Off && types.Commands.heater->On } 
+	constraint FahrenheitToCelsiusEQ ( f : FahrenheitTemperature ) : ( c : CelsiusTemperature ) { equation = c == (5*(f - 32)/9)} 
+	constraint CommandHeaterEQ ( cmds : Commands ) : ( c : Command ) { equation = c == cmds->heater } 
+	constraint CommandCoolerEQ ( cmds : Commands ) : ( c : Command ) {equation = c == cmds->cooler } 
+	action def FahrenheitToCelsiusAN ( f : FahrenheitTemperature ) : CelsiusTemperature { constraint : post-condition FahrenheitToCelsiusEQ } 	
+	} allocations { activity CalculateAverageTemperatureAC to SensorsMonitorCP activity CheckPresenceToSetTemperatureAC to PresenceCheckerCP activity DecideCommandAC to CommanderCP activity FahrenheitToCelsiusAC to FahrenheitToCelsiusCN }

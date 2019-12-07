@@ -5,51 +5,35 @@
 [template public generateModel(aModel : sysadl::Model)]
 [comment @main/]
 [file ('sysadl2csp.csp', false, 'UTF-8')]
-DIAGRAM =  (COMPONENTS ['['/]| Events |] CONNECTORS)
-
-COMPONENTS =[for (pck : Package | aModel.packages)]
- 			[for (elem : ElementDef | pck.definitions)separator ('|||') ? (elem.oclIsTypeOf(ComponentDef) and elem.oclAsType(ComponentDef).composite <> null)]	
-[elem.name/]									
-		[/for]
-	[/for]
-
-CONNECTORS =[for (pck : Package | aModel.packages)]
- 				[for (elem : ElementDef | pck.definitions)separator ('|||')? (elem.oclIsTypeOf(ComponentDef) and elem.oclAsType(ComponentDef).composite <> null)]	
-					[for (conn : ConnectorUse | elem.oclAsType(ComponentDef).composite.connectors)separator ('|||')]
-[conn.name/]_[conn.definition.name/]_[conn.bindings.source.name/]_To_[conn.bindings.destination.name/]
-					[/for]										
-				[/for]
-			[/for]
-|||DELEGATIONS
-
-assert DIAGRAM:['['/]deadlock free]
-assert DIAGRAM:['['/]livelock free]
 subset(s1, s2) = (inter(s1,s2)==s1)
 IS_TRUE(h) = if (h) then SKIP else DIV
 
 	[for (pck : sysadl::Package | aModel.packages)]		
 	[comment Traduzindo Tipos /]		
-		[for (elem : ElementDef | pck.definitions)]											
+		[for (elem : ElementDef | pck.definitions)]
+			[let unity : UnitDef = self]
+[unity.name/][unity.dimension.name/]
+			[/let]			
 			[let aux : Enumeration = self]
 datatype [aux.name/] = [for (literal : EnumLiteralValue | aux.literals)separator ('|')][literal.name/][/for] 					
 			[/let]		
 			[let datatype : DataTypeDef = self]
-[datatype.name/] = { [for (attribute : TypeUse | datatype.attributes)separator('.')][attribute.name/][/for] | [for (attributeDef : TypeUse | datatype.attributes) separator (',')][attributeDef.name/]<- [if (attributeDef.definition.name.equalsIgnoreCase('String'))]Char[else][attributeDef.definition.name/][/if] [/for] }
-[for (attribute : TypeUse | datatype.attributes)separator ('\n')]get[attribute.name/][datatype.name/]([for (attribute : TypeUse | datatype.attributes)separator('.')][attribute.name/][/for]) = [attribute.name/][/for]
+[datatype.name/] = { [for (attribute : TypeUse | datatype.attributes)before ('(')separator(',')after (')')][attribute.name/][/for] | [for (attributeDef : TypeUse | datatype.attributes) separator (',')][attributeDef.name/]<- [if (attributeDef.definition.name.equalsIgnoreCase('String'))]Char [elseif(attributeDef.definition.name.equalsIgnoreCase('Boolean'))]Bool[elseif(attributeDef.definition.name.equalsIgnoreCase('Int'))]Nat[elseif(attributeDef.definition.name.equalsIgnoreCase('Real'))]Nat.Nat[else][attributeDef.definition.name/][/if] [/for] }
+[for (attribute : TypeUse | datatype.attributes)separator ('\n')][datatype.name/]_[attribute.name/]([for (attribute : TypeUse | datatype.attributes)before ('(')separator(',')after (')')][attribute.name/][/for]) = [attribute.name/][/for]
 			[/let]
 			
 	[comment Traduzindo Canais /]
-			[let compDef : ComponentDef = self]
+			[let compDef : ComponentDef = self]					
 					[if (not compDef.isBoundary and compDef.composite <> null)]		
 						[for (compUse : ComponentUse| compDef.composite.components)]
 							[for (portUse : PortUse | compUse.ports)]
 								[if (portUse.definition.oclIsKindOf(sysadl::SimplePortDef))]
-channel [compUse.name/]_[portUse.name/]_[portUse.definition.name/] : [portUse.definition.oclAsType(sysadl::SimplePortDef).flowType.name/]
+channel [compUse.name/]_[portUse.name/]_[portUse.definition.name/] : [getTypePort(portUse)/]
 								[/if]
 								[if (portUse.definition.oclIsKindOf(sysadl::CompositePortDef))]
 								[for (compPort : PortUse | portUse.definition.oclAsType(sysadl::CompositePortDef).ports )]
 									[if (compPort.definition.oclIsKindOf(sysadl::SimplePortDef))]
-channel [compUse.name/]_[portUse.name/]_[compPort.name/]_[portUse.definition.name/] : [compPort.definition.oclAsType(sysadl::SimplePortDef).flowType.name/]
+channel [compUse.name/]_[portUse.name/]_[compPort.name/]_[portUse.definition.name/] : [getTypePort(portUse)/]
 									[/if]
 								[/for]
 								[/if]
@@ -57,7 +41,23 @@ channel [compUse.name/]_[portUse.name/]_[compPort.name/]_[portUse.definition.nam
 						[/for] 
 
 			[comment traduzindo configuração /]
-[compDef.name/] = [for (compUse : ComponentUse | compDef.composite.components)separator ('|||')][compUse.name/]_[compUse.definition.name/][/for]
+						[if ( isEmpty_Delegations(compDef.composite))]									
+[compDef.name/] =  ([compDef.name/]_COMPONENTS ['['/]| [compDef.name/]_internal |] [compDef.name/]_CONNECTORS) \[compDef.name/]_internal
+
+[compDef.name/]_internal = {|[getInternalChannelsCompDef(compDef)/] |}
+
+assert [compDef.name/]:['['/]deadlock free]
+assert [compDef.name/]:['['/]livelock free]
+
+[compDef.name/]_COMPONENTS = ['\n\t'/][for (compUse : ComponentUse | compDef.composite.components)separator ('\t|||')]
+[compUse.name/]_[compUse.definition.name/]
+ [/for]
+
+[compDef.name/]_CONNECTORS = ['\n\t'/][for (connectorUse : ConnectorUse | compDef.composite.connectors)separator ('\t|||')]
+[connectorUse.name/]_[connectorUse.definition.name/]
+ [/for]
+													
+						[/if]
 						
 			[comment traduzindo componentes /]						
 						[for (compUse : ComponentUse | compDef.composite.components)]
@@ -66,12 +66,12 @@ channel [compUse.name/]_[portUse.name/]_[compPort.name/]_[portUse.definition.nam
 								[for (port : PortUse | compUse.ports)]								
 									[if (port.definition.oclIsKindOf(sysadl::SimplePortDef))]
 										[if (port.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('in'))]
-[compUse.name/]_[port.name/]_[port.definition.name/]?[port.name.toLowerCase()/] ->
+['\t'/][compUse.name/]_[port.name/]_[port.definition.name/]?[port.name.toLowerCase()/] ->
 										[/if]
 									[else]
 										[for (compPort : PortUse | port.definition.oclAsType(sysadl::CompositePortDef).ports)]
 											[if (compPort.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('in'))]
-[compUse.name/]_[port.name/]_[compPort.name/]_[port.definition.name/]?[compPort.name.toLowerCase()/] ->
+['\t'/][compUse.name/]_[port.name/]_[compPort.name/]_[port.definition.name/]?[compPort.name.toLowerCase()/] ->
 											[/if]
 										[/for]
 									[/if]
@@ -79,12 +79,12 @@ channel [compUse.name/]_[portUse.name/]_[compPort.name/]_[portUse.definition.nam
 								[for (port : PortUse | compUse.ports)]								
 									[if (port.definition.oclIsKindOf(sysadl::SimplePortDef))]
 										[if (port.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('out'))]
-|~| [port.name.toLowerCase()/]:[port.definition.oclAsType(sysadl::SimplePortDef).flowType.name/] @ [compUse.name/]_[port.name/]_[port.definition.name/]![port.name.toLowerCase()/] ->
+['\t'/]|~| [port.name.toLowerCase()/]:[getTypePort(port)/] @ [compUse.name/]_[port.name/]_[port.definition.name/]![port.name.toLowerCase()/] ->
 										[/if]
 									[else]
 										[for (compPort : PortUse | port.definition.oclAsType(sysadl::CompositePortDef).ports)]
 											[if (compPort.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('out'))]
-|~|[compPort.name.toLowerCase()/]:[compPort.definition.oclAsType(sysadl::SimplePortDef).flowType.name/] @ [compUse.name/]_[port.name/]_[compPort.name/]_[port.definition.name/]![compPort.name.toLowerCase()/] ->
+['\t'/]|~|[compPort.name.toLowerCase()/]:[getTypePort(port)/] @ [compUse.name/]_[port.name/]_[compPort.name/]_[port.definition.name/]![compPort.name.toLowerCase()/] ->
 											[/if]
 										[/for]
 									[/if]
@@ -93,72 +93,101 @@ channel [compUse.name/]_[portUse.name/]_[compPort.name/]_[portUse.definition.nam
 
 							[elseif (compUse.definition.composite <> null and (not compUse.definition.isBoundary))]								
 [compUse.name/]_[compUse.definition.name/] = 								
-								[for (port : PortUse | compUse.ports)]																
-									[if (port.definition.oclIsKindOf(sysadl::SimplePortDef))]
-										[if (port.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('in'))]
-[compUse.name/]_[port.name/]_[port.definition.name/]?[port.name.toLowerCase()/] ->																				
-										[/if]
-									[else]
-										[for (compPort : PortUse | port.definition.oclAsType(sysadl::CompositePortDef).ports)]
-											[if (compPort.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('in'))]
-[compUse.name/]_[port.name/]_[compPort.name/]_[port.definition.name/]?[compPort.name.toLowerCase()/] ->
-											[/if]
-										[/for]
-									[/if]																																																													
-								[/for]
-								[for (port : PortUse | compUse.ports)]																
-									[if (port.definition.oclIsKindOf(sysadl::SimplePortDef))]
-										[if (port.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('out'))]
-[compUse.name/]_[port.name/]_[port.definition.name/]![port.name.toLowerCase()/] ->																			
-										[/if]
-									[else]
-										[for (compPort : PortUse | port.definition.oclAsType(sysadl::CompositePortDef).ports)]
-											[if (compPort.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('out'))]
-[compUse.name/]_[port.name/]_[compPort.name/]_[port.definition.name/]![compPort.name.toLowerCase()/] ->
-											[/if]
-										[/for]
-									[/if]																																																													
-								[/for]
-[compUse.name/]_[compUse.definition.name/]
+	[compUse.name/]_[compUse.definition.name/]_Config
+
+[compUse.name/]_[compUse.definition.name/]_Config = ([compUse.name/]_COMPONENTS ['['/]| [compUse.name/]_internal |] [compUse.name/]_CONNECTORS) \[compUse.name/]_internal
+
+[compUse.name/]_internal = {| [getInternalChannelsCompDef(compUse.definition)/] |}
+
+
+[compUse.name/]_COMPONENTS = ['\n\t'/][for (compUseInt : ComponentUse | compUse.definition.composite.components)separator ('\t|||')]
+[compUseInt.name/]_[compUseInt.definition.name/]
+ [/for]
+
+[compUse.name/]_CONNECTORS = ['\n\t'/][for (connectorUse : ConnectorUse | compUse.definition.composite.connectors)separator ('\t|||')]
+[connectorUse.name/]_[connectorUse.definition.name/]
+ [/for]
+								[if (compUse.definition.composite.delegations <> null)]
+[compUse.name/]_DELEGATIONS = ['\n\t'/][for (delegation : Delegation | compUse.definition.composite.delegations)separator ('\t|||')]
+[delegation.source.name/]_To_[delegation.destination.name/]	
+[/for]
+									
+								[/if]								
 
 							[else]
-[compUse.name/]_[compUse.definition.name/] = 								
-								[for (port : PortUse | compUse.ports)]																
-									[if (port.definition.oclIsKindOf(sysadl::SimplePortDef))]
-										[if (port.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('in'))]
-[compUse.name/]_[port.name/]_[port.definition.name/]?[port.name.toLowerCase()/] ->																				
-										[/if]
-									[else]
-										[for (compPort : PortUse | port.definition.oclAsType(sysadl::CompositePortDef).ports)]
-											[if (compPort.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('in'))]
-[compUse.name/]_[port.name/]_[compPort.name/]_[port.definition.name/]?[compPort.name.toLowerCase()/] ->
-											[/if]
-										[/for]
-									[/if]																																																													
-								[/for]
-[aModel.getActivityToComponents(compUse, aModel)/]
-[compUse.name/]_[compUse.definition.name/]
+[compUse.name/]_[compUse.definition.name/] =								
+['\t'/][compUse.name/]_[getActivityToStructure(compUse.definition, aModel.allocation)/]
 
-							[/if]							
+[compUse.name/]_[getActivityToStructure(compUse.definition, aModel.allocation)/] = 
+['\t'/]([compUse.name/]_PINS_[getActivityToStructure(compUse.definition, aModel.allocation)/] 
+['\t\t'/]['['/]| [compUse.name/]_[getActivityToStructure(compUse.definition, aModel.allocation)/]_internal |]
+['\t'/][compUse.name/]_ACTIONS_[getActivityToStructure(compUse.definition, aModel.allocation)/]) \[compUse.name/]_[getActivityToStructure(compUse.definition, aModel.allocation)/]_internal 
+
+[compUse.name/]_[getActivityToStructure(compUse.definition, aModel.allocation)/]_internal = {| |}
+
+[for (flow : ActivityRelation | getActivityFromAllocTable(compUse.definition, aModel.allocation)._body.flows )]
+	[if (flow.target.oclIsKindOf(Pin) and flow.oclIsKindOf(ActivityFlow))]
+channel [compUse.name/]_[flow.target.oclAsType(Pin).name/]_[flow.target.oclAsType(Pin).definition.name/] : [getTypePin(flow.target.oclAsType(Pin))/]		
+	[else]
+channel [compUse.name/]_[flow.source.oclAsType(Pin).name/]_[flow.source.oclAsType(Pin).definition.name/] : [getTypePin(flow.source.oclAsType(Pin))/]
+	[/if]
+[/for]
+
+
+[if (getActivityFromAllocTable(compUse.definition, aModel.allocation) <> null)]
+[compUse.name/]_ACTIONS_[getActivityToStructure(compUse.definition, aModel.allocation)/] =
+['['/]| [compUse.name/]_[getActivityToStructure(compUse.definition, aModel.allocation)/]_internal |] i : {1 .. [getActionListSize(getActivityFromAllocTable(compUse.definition, aModel.allocation))/]} @ [compUse.name/]_[getActivityFromAllocTable(compUse.definition, aModel.allocation).name/]_ACTIONS(i)
+
+[getActionFunction(getActivityFromAllocTable(compUse.definition, aModel.allocation), compUse.name)/]
+
+[for (action : ActionUse | getActivityFromAllocTable(compUse.definition, aModel.allocation)._body.actions)]
+[compUse.name/]_[action.name/]_[action.definition.name/] = 
+['\t'/][getActionBody(getActivityFromAllocTable(compUse.definition, aModel.allocation),action, compUse.name)/]
+['\t'/][compUse.name/]_[action.name/]_[action.definition.name/]
+
+		[/for]
+[compUse.name/]_PINS_[getActivityToStructure(compUse.definition, aModel.allocation)/] = 
+['\t'/]['['/]| [compUse.name/]_[getActivityToStructure(compUse.definition, aModel.allocation)/]_internal |] i : {1 .. [getPinListSize(getActivityFromAllocTable(compUse.definition, aModel.allocation))/]} @ [compUse.name/]_[getActivityFromAllocTable(compUse.definition, aModel.allocation).name/]_PIN(i)
+
+[getPinFunction(getActivityFromAllocTable(compUse.definition, aModel.allocation), compUse.name)/]
+
+[for (pin : Pin | getActivityFromAllocTable(compUse.definition, aModel.allocation).inParameters)]
+[compUse.name/]_[pin.name/]_[getActivityToStructure(compUse.definition, aModel.allocation)/] =
+['\t'/][getPortAndPin(compUse, pin)/]
+['\t'/][compUse.name/]_[pin.name/]_[pin.definition.name/]![pin.name/] ->
+['\t'/][compUse.name/]_[pin.name/]_[getActivityToStructure(compUse.definition, aModel.allocation)/]
+
+		[/for]
+[for (pin : Pin | getActivityFromAllocTable(compUse.definition, aModel.allocation).outParameters)]
+[compUse.name/]_[pin.name/]_[getActivityToStructure(compUse.definition, aModel.allocation)/] = 
+['\t'/][compUse.name/]_[pin.name/]_[pin.definition.name/]?[pin.name/] ->
+['\t'/][getPortAndPin(compUse, pin)/]
+['\t'/][compUse.name/]_[pin.name/]_[getActivityToStructure(compUse.definition, aModel.allocation)/]
+		[/for]
+
+[/if]	 
+			
+					[/if]							
 						[/for]
 					[comment  traduzindo conectores/]							
 						[for (connector : ConnectorUse | compDef.composite.connectors)]							
 							[for (bind : ConnectorBinding | connector.bindings)]
-[connector.name/]_[connector.definition.name/]_[bind.source.name/]_To_[bind.destination.name/] =
+[connector.name/]_[connector.definition.name/] =
+								[if (not existAlloc(connector.definition, aModel.allocation))]									
 								[for (compUse : ComponentUse | compDef.composite.components)]
 									[for (portComp : PortUse | compUse.ports)]						
 										[if (bind.source.definition.oclIsKindOf(sysadl::SimplePortDef) and bind.source.name.equalsIgnoreCase(portComp.name))]									
-[compUse.name/]_[bind.source.name/]_[bind.source.definition.name/]?[bind.source.definition.oclAsType(sysadl::SimplePortDef).flowType.name.toLowerCase()/]->								
+['\t'/][compUse.name/]_[bind.source.name/]_[bind.source.definition.name/]?[bind.source.definition.oclAsType(sysadl::SimplePortDef).flowType.name.toLowerCase()/]->								
 										[elseif(bind.source.definition.oclIsKindOf(sysadl::CompositePortDef) and bind.source.name.equalsIgnoreCase(portComp.name))]
 											[for (compPort : PortUse | bind.source.definition.oclAsType(sysadl::CompositePortDef).ports)]
 												[if (compPort.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('in'))]
-[compUse.name/]_[bind.source.name/]_[compPort.name/]_[bind.source.definition.name/]?[compPort.definition.oclAsType(sysadl::SimplePortDef).flowType.name.toLowerCase()/]	->																																
+['\t'/][compUse.name/]_[bind.source.name/]_[compPort.name/]_[bind.source.definition.name/]?[compPort.definition.oclAsType(sysadl::SimplePortDef).flowType.name.toLowerCase()/]	->																																
 												[/if]										
 											[/for]																						
 										[elseif(bind.destination.definition.oclIsKindOf(sysadl::CompositePortDef) and bind.destination.name.equalsIgnoreCase(portComp.name))]
 											[for (compPort : PortUse | bind.destination.definition.oclAsType(sysadl::CompositePortDef).ports)]
 												[if (compPort.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('in'))]
-[compUse.name/]_[bind.destination.name/]_[compPort.name/]_[bind.destination.definition.name/]?[compPort.definition.oclAsType(sysadl::SimplePortDef).flowType.name.toLowerCase()/] ->																																
+['\t'/][compUse.name/]_[bind.destination.name/]_[compPort.name/]_[bind.destination.definition.name/]?[compPort.definition.oclAsType(sysadl::SimplePortDef).flowType.name.toLowerCase()/] ->																																
 												[/if]
 											[/for]									
 										[/if]
@@ -167,24 +196,76 @@ channel [compUse.name/]_[portUse.name/]_[compPort.name/]_[portUse.definition.nam
 								[for (compUse : ComponentUse | compDef.composite.components)]
 									[for (portComp : PortUse | compUse.ports)]						
 										[if (bind.destination.definition.oclIsKindOf(sysadl::SimplePortDef) and bind.destination.name.equalsIgnoreCase(portComp.name))]									
-[compUse.name/]_[bind.destination.name/]_[bind.destination.definition.name/]![bind.destination.definition.oclAsType(sysadl::SimplePortDef).flowType.name.toLowerCase()/]->								
+['\t'/][compUse.name/]_[bind.destination.name/]_[bind.destination.definition.name/]![bind.destination.definition.oclAsType(sysadl::SimplePortDef).flowType.name.toLowerCase()/]->								
 										[elseif(bind.source.definition.oclIsKindOf(sysadl::CompositePortDef) and bind.source.name.equalsIgnoreCase(portComp.name))]
 											[for (compPort : PortUse | bind.source.definition.oclAsType(sysadl::CompositePortDef).ports)]
 												[if (compPort.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('out'))]
-[compUse.name/]_[bind.source.name/]_[compPort.name/]_[bind.source.definition.name/]![compPort.definition.oclAsType(sysadl::SimplePortDef).flowType.name.toLowerCase()/]	->																																
+['\t'/][compUse.name/]_[bind.source.name/]_[compPort.name/]_[bind.source.definition.name/]![compPort.definition.oclAsType(sysadl::SimplePortDef).flowType.name.toLowerCase()/]	->																																
 												[/if]										
 											[/for]																						
 										[elseif(bind.destination.definition.oclIsKindOf(sysadl::CompositePortDef) and bind.destination.name.equalsIgnoreCase(portComp.name))]
 											[for (compPort : PortUse | bind.destination.definition.oclAsType(sysadl::CompositePortDef).ports)]
 												[if (compPort.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('out'))]
-[compUse.name/]_[bind.destination.name/]_[compPort.name/]_[bind.destination.definition.name/]![compPort.definition.oclAsType(sysadl::SimplePortDef).flowType.name.toLowerCase()/] ->																																	
+['\t'/][compUse.name/]_[bind.destination.name/]_[compPort.name/]_[bind.destination.definition.name/]![compPort.definition.oclAsType(sysadl::SimplePortDef).flowType.name.toLowerCase()/] ->																																	
 												[/if]
 											[/for]									
 										[/if]
 									[/for]
 								[/for]
-[connector.name/]_[connector.definition.name/]_[bind.source.name/]_To_[bind.destination.name/]
+[connector.name/]_[connector.definition.name/]
 
+								[else]
+['\t'/][connector.name/]_[getActivityToStructure(connector.definition, aModel.allocation)/]
+
+[connector.name/]_[getActivityToStructure(connector.definition, aModel.allocation)/] = 
+['\t'/]([connector.name/]_PINS_[getActivityToStructure(connector.definition, aModel.allocation)/] 
+['\t\t'/]['['/]| [connector.name/]_[getActivityToStructure(connector.definition, aModel.allocation)/]_internal |]
+['\t'/][connector.name/]_ACTIONS_[getActivityToStructure(connector.definition, aModel.allocation)/]) \[connector.name/]_[getActivityToStructure(connector.definition, aModel.allocation)/]_internal 
+
+[connector.name/]_[getActivityToStructure(connector.definition, aModel.allocation)/]_internal = {| |}
+
+[for (flow : ActivityRelation | getActivityFromAllocTable(connector.definition, aModel.allocation)._body.flows )]
+	[if (flow.target.oclIsKindOf(Pin) and flow.oclIsKindOf(ActivityFlow))]
+channel [connector.name/]_[flow.target.oclAsType(Pin).name/]_[flow.target.oclAsType(Pin).definition.name/] : [getTypePin(flow.target.oclAsType(Pin))/]		
+	[else]
+channel [connector.name/]_[flow.source.oclAsType(Pin).name/]_[flow.source.oclAsType(Pin).definition.name/] : [getTypePin(flow.source.oclAsType(Pin))/]
+	[/if]
+[/for]
+
+[if (getActivityFromAllocTable(connector.definition, aModel.allocation) <> null)]
+[connector.name/]_ACTIONS_[getActivityToStructure(connector.definition, aModel.allocation)/] =
+['['/]| [connector.name/]_[getActivityToStructure(connector.definition, aModel.allocation)/]_internal |] i : {1 .. [getActionListSize(getActivityFromAllocTable(connector.definition, aModel.allocation))/]} @ [connector.name/]_[getActivityFromAllocTable(connector.definition, aModel.allocation).name/]_ACTIONS(i)
+
+[getActionFunction(getActivityFromAllocTable(connector.definition, aModel.allocation), connector.name)/]
+
+[for (action : ActionUse | getActivityFromAllocTable(connector.definition, aModel.allocation)._body.actions)]
+[connector.name/]_[action.name/]_[action.definition.name/] = 
+['\t'/][getActionBody(getActivityFromAllocTable(connector.definition, aModel.allocation),action, connector.name)/]
+['\t'/][connector.name/]_[action.name/]_[action.definition.name/]
+
+		[/for]
+[connector.name/]_PINS_[getActivityToStructure(connector.definition, aModel.allocation)/] = 
+['\t'/]['['/]| [connector.name/]_[getActivityToStructure(connector.definition, aModel.allocation)/]_internal |] i : {1 .. [getPinListSize(getActivityFromAllocTable(connector.definition, aModel.allocation))/]} @ [connector.name/]_[getActivityFromAllocTable(connector.definition, aModel.allocation).name/]_PIN(i)
+
+[getPinFunction(getActivityFromAllocTable(connector.definition, aModel.allocation), connector.name)/]
+
+[for (pin : Pin | getActivityFromAllocTable(connector.definition, aModel.allocation).inParameters)]
+[connector.name/]_[pin.name/]_[getActivityToStructure(connector.definition, aModel.allocation)/] =
+['\t'/][getPortAndPinConn(connector, pin)/]
+['\t'/][connector.name/]_[pin.name/]_[pin.definition.name/]![pin.definition.name.toLowerCase()/] ->
+['\t'/][connector.name/]_[pin.name/]_[getActivityToStructure(connector.definition, aModel.allocation)/]
+
+		[/for]
+[for (pin : Pin | getActivityFromAllocTable(connector.definition, aModel.allocation).outParameters)]
+[connector.name/]_[pin.name/]_[getActivityToStructure(connector.definition, aModel.allocation)/] = 
+['\t'/][connector.name/]_[pin.name/]_[pin.definition.name/]?[pin.definition.name.toLowerCase()/] ->
+['\t'/][getPortAndPinConn(connector, pin)/]
+['\t'/][connector.name/]_[pin.name/]_[getActivityToStructure(connector.definition, aModel.allocation)/]
+		[/for]
+
+[/if]	 
+	
+								[/if]
 							[/for]																		
 						[/for]									
 					[/if]
@@ -194,13 +275,11 @@ channel [compUse.name/]_[portUse.name/]_[compPort.name/]_[portUse.definition.nam
 				[/let]
 				[let exe: Executable = self]
 [exe.name/]([for (param : TypeUse | exe.params)separator (',')][param.name/][/for])= [exe.getExecution(exe)/]
-				[/let]
-																		
+				[/let]			
+																
 		[/for]						
 	[/for]
-[aModel.getAction(aModel)/]
-[aModel.getActivity(aModel)/]
-[aModel.getDelegations(aModel)/]
+[aModel.getDelegations()/]		
 
 [/file]
 [/template]

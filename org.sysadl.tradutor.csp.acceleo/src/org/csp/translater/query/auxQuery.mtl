@@ -3,11 +3,6 @@
 
 [query public getDelegations(model : Model) : String = 
 		invoke('org.csp.translater.query.AuxiliarsQuery', 'getDelegations(org.sysadl.Model)', Sequence{model}) /]
-[query public getActivity(model : Model) : String = 
-		invoke('org.csp.translater.query.AuxiliarsQuery', 'getActivity(org.sysadl.Model)', Sequence{model}) /]
-
-[query public getAction(model : Model) : String = 
-		invoke('org.csp.translater.query.AuxiliarsQuery', 'getAction(org.sysadl.Model)', Sequence{model}) /]
 
 [query public getContraints(constraint : ConstraintDef) : String = 
 		invoke('org.csp.translater.query.AuxiliarsQuery', 'getContraints(org.sysadl.ConstraintDef)', Sequence{constraint}) /]
@@ -15,5 +10,47 @@
 [query public getExecution(executable : Executable) : String = 
 		invoke('org.csp.translater.query.AuxiliarsQuery', 'getExecution(org.sysadl.Executable)', Sequence{executable}) /]
 
-[query public getActivityToComponents(compUse : ComponentUse, model : Model) : String = 
-		invoke('org.csp.translater.query.AuxiliarsQuery', 'getActivityToComponents(org.sysadl.ComponentUse, org.sysadl.Model)', Sequence{compUse, model}) /]
+[query public getActivityToStructure(structural : StructuralDef, allocTable : AllocationTable) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getActivityToStructure(org.sysadl.StructuralDef, org.sysadl.AllocationTable)', Sequence{structural , allocTable}) /]
+
+[query public isEmpty_Delegations(del : Configuration) : Boolean = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'isEmpty_Delegations(org.sysadl.Configuration)', Sequence{del}) /]
+
+[query public existAlloc(structural : StructuralDef, allocTable : AllocationTable) : Boolean = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'existAlloc(org.sysadl.StructuralDef, org.sysadl.AllocationTable)', Sequence{structural , allocTable}) /]
+
+[query public getActivityFromAllocTable(structural : StructuralDef, allocTable : AllocationTable) : ActivityDef = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getActivityFromAllocTable(org.sysadl.StructuralDef, org.sysadl.AllocationTable)', Sequence{structural , allocTable}) /]
+
+[query public getActionBody(activity : ActivityDef , action : ActionUse, compUse : String) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getActionBody(org.sysadl.ActivityDef, org.sysadl.ActionUse, java.lang.String)', Sequence{activity, action, compUse}) /]
+
+[query public getActionListSize(activity : ActivityDef) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getActionListSize(org.sysadl.ActivityDef)', Sequence{activity}) /]
+
+[query public getActionFunction(activity : ActivityDef, compUse :  String) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getActionFunction(org.sysadl.ActivityDef, java.lang.String)', Sequence{activity, compUse}) /]
+
+[query public getPinListSize(activity : ActivityDef) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getPinListSize(org.sysadl.ActivityDef)', Sequence{activity}) /]
+
+[query public getPinFunction(activity : ActivityDef, compUse :  String) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getPinFunction(org.sysadl.ActivityDef, java.lang.String)', Sequence{activity, compUse}) /]
+
+[query public getPortAndPin(compUse :  ComponentUse, pin : Pin) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getPortAndPin(org.sysadl.ComponentUse, org.sysadl.Pin)', Sequence{compUse, pin}) /]
+
+[query public getPortAndPinConn(connector :  ConnectorUse, pin : Pin) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getPortAndPinConn(org.sysadl.ConnectorUse, org.sysadl.Pin)', Sequence{connector, pin}) /]
+
+[query public getActivityChannels(activity : ActivityDef, compUse : ComponentUse) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getActivityChannels(org.sysadl.ActivityDef, org.sysadl.ComponentUse)', Sequence{activity, compUse}) /]
+
+[query public getTypePort(port :  PortUse) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getTypePort(org.sysadl.PortUse)', Sequence{port}) /]
+
+[query public getTypePin(pin : Pin) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getTypePin(org.sysadl.Pin)', Sequence{pin}) /]
+
+[query public getInternalChannelsCompDef(compDef : ComponentDef) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getInternalChannelsCompDef(org.sysadl.ComponentDef)', Sequence{compDef}) /]

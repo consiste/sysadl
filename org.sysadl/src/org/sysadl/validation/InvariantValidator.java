@@ -15,5 +15,7 @@ import org.sysadl.Expression;
 public interface InvariantValidator {
 	boolean validate();
 
+	boolean validateExpr(String value);
+
 	boolean validateExpr(Expression value);
 }

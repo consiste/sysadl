@@ -9,6 +9,7 @@ import org.eclipse.emf.common.util.EList;
 import org.sysadl.AbstractComponentDef;
 import org.sysadl.Configuration;
 import org.sysadl.PortUse;
+import org.sysadl.Style;
 
 /**
  * A sample validator interface for {@link org.sysadl.ComponentDef}.
@@ -23,4 +24,6 @@ public interface ComponentDefValidator {
 	boolean validateComposite(Configuration value);
 	boolean validateIsBoundary(boolean value);
 	boolean validateAbstractComponent(AbstractComponentDef value);
+
+	boolean validateAppliedStyle(EList<Style> value);
 }

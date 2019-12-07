@@ -26,8 +26,10 @@ public class PerformTransformation {
 	public static void run(IFile file,Model model, Object architecture) {
 		ComponentDef component = (ComponentDef) architecture;
 	
-		URI modelURI = URI.createFileURI(file.getLocation().toString());//modelo sysadl
-        File folder = new File("C:\\Users\\Fagne\\OneDrive\\Documentos\\output");//folder de saída
+		URI modelURI = URI.createFileURI(file.getLocation().toString());//sysadl model
+		String path = file.getLocation().toString();
+		path = path.replace(file.getLocation().lastSegment(), "");
+        File folder = new File(path+ "output");
         
         List<String> arguments = new ArrayList<String>();
         
@@ -42,8 +44,8 @@ public class PerformTransformation {
             
             try {
             	Session session = new Session();
-//              session.loadFile(folder.getAbsolutePath() + "\\sysadl2csp.csp");
-                session.loadFile("C:\\Users\\Fagne\\OneDrive\\Documentos\\SysADL_CSP\\Samples\\AGV\\AGV.csp");
+              session.loadFile(folder.getAbsolutePath() + "\\sysadl2csp.csp");
+//                session.loadFile("C:\\Users\\Fagne\\OneDrive\\Documentos\\SysADL_CSP\\Samples\\AGV\\AGV.csp");
 //            	session.loadFile("C:\\Users\\Fagne\\OneDrive\\Documentos\\SysADL_CSP\\Samples\\RTC\\RTC_Ex.csp");
                 
                 for (Assertion assertion : session.assertions()) {

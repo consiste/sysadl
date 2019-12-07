@@ -3,13 +3,20 @@ package org.csp.translater.query;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.common.util.EList;
+import org.sysadl.ActionDef;
 import org.sysadl.ActionUse;
+import org.sysadl.ActivityAllocation;
 import org.sysadl.ActivityDef;
 import org.sysadl.ActivityFlow;
 import org.sysadl.ActivityRelation;
+import org.sysadl.Allocation;
+import org.sysadl.AllocationTable;
 import org.sysadl.ComponentDef;
 import org.sysadl.ComponentUse;
 import org.sysadl.CompositePortDef;
+import org.sysadl.Configuration;
+import org.sysadl.ConnectorUse;
 import org.sysadl.ConstraintDef;
 import org.sysadl.ConstraintUse;
 import org.sysadl.DataStore;
@@ -22,7 +29,9 @@ import org.sysadl.Pin;
 import org.sysadl.PortUse;
 import org.sysadl.SimplePortDef;
 import org.sysadl.Statement;
+import org.sysadl.StructuralDef;
 import org.sysadl.grammar.util.SysADLGrammarUtil;
+import org.sysadl.impl.ActionDefImpl;
 import org.sysadl.impl.ActionUseImpl;
 import org.sysadl.impl.ActivityDelegationImpl;
 import org.sysadl.impl.PinImpl;
@@ -40,8 +49,8 @@ public class AuxiliarsQuery {
 					if (((ComponentDef)elemDef).getComposite() != null) {
 						compDef.add(((ComponentDef)elemDef));											
 						for (Delegation delegation : ((ComponentDef)elemDef).getComposite().getDelegations()) {
-							delegations += "Delegation_" + delegation.getSource().getName() + "_To_" + delegation.getDestination().getName() + "= ";
-							del.add("Delegation_" + delegation.getSource().getName() + "_To_" + delegation.getDestination().getName());
+							delegations += delegation.getSource().getName() + "_To_" + delegation.getDestination().getName() + "= ";
+							del.add( delegation.getSource().getName() + "_To_" + delegation.getDestination().getName());
 							if (delegation.getSource().getDefinition() instanceof SimplePortDef) {
 								if (((SimplePortDef)delegation.getSource().getDefinition()).getFlowProperties().getLiteral().equalsIgnoreCase("in")) {
 									for (ComponentUse compUse : compDef.get(compDef.size()-2).getComposite().getComponents()) {
@@ -148,51 +157,16 @@ public class AuxiliarsQuery {
 									}
 								}
 							}
-							delegations += "Delegation_" + delegation.getSource().getName() + "_To_" + delegation.getDestination().getName() + "\n\n";
+							delegations += delegation.getSource().getName() + "_To_" + delegation.getDestination().getName() + "\n\n";
 						}
 					}
 				}				
 			}
 		}
-		delegations += "DELEGATIONS = ";
-		for (String obj : del) {			
-			if (obj.equals(del.get(del.size()-1))) {
-				delegations += obj + "\n";
-			}else {
-				delegations += obj + " ||| \n";
-			}
-		}
+		
 		return delegations;
 	}
-	
-	public String getActivity(Model model) {		
-		String result = "";		
-		for (org.sysadl.Package pck : model.getPackages()) {
-			for (ElementDef elem : pck.getDefinitions()) {
-				if (elem instanceof ActivityDef) {
-					result += ((ActivityDef)elem).getName() + "(";
-					for (Pin pin : ((ActivityDef)elem).getInParameters()) {
-						if (pin.equals(((ActivityDef)elem).getInParameters().get(((ActivityDef)elem).getInParameters().size()-1))) {
-							result += pin.getName();
-						}
-						else
-							result += pin.getName() + ", ";
-					}
-					result += ") = \n";
-					for (ActionUse action : ((ActivityDef)elem).getBody().getActions()) {
-						if (action.equals(((ActivityDef)elem).getBody().getActions().get(((ActivityDef)elem).getBody().getActions().size()-1))) {
-							result += action.getName()+"_"+ action.getDefinition().getName()+
-									"(" + getParamAction(action.getPinIn() , ((ActivityDef)elem).getBody().getFlows() )+ ")\n\n";
-						}
-						else
-							result += action.getName()+"_"+ action.getDefinition().getName() +
-							"(" + getParamAction(action.getPinIn() , ((ActivityDef)elem).getBody().getFlows() )+ ") ||| ";
-					}
-				}
-			}
-		}
-		return result;
-	}
+
 	
 	private String getParamAction(List<Pin> paramAction, List<ActivityRelation> flow) {
 		String param = "";
@@ -228,70 +202,8 @@ public class AuxiliarsQuery {
 		return param;
 	}
 	
-	public String getAction(Model model) {
-		String result = "";
-		for (org.sysadl.Package pkg : model.getPackages()) {
-			for (ElementDef elem : pkg.getDefinitions()) {
-				if (elem instanceof ActivityDef) {
-					for (ActionUse action : ((ActivityDef)elem).getBody().getActions()) {
-						result += action.getDefinition().getName() + 
-								"(" + getParamAction(action.getPinIn() , ((ActivityDef)elem).getBody().getFlows() )+ ") = ";
-						result += "\n |~| ";
-						result += getOutParamActions(action, ((ActivityDef)elem).getBody().getFlows());
-						result += ": {x | x <- " + getDefParamOutAction(action, ((ActivityDef)elem).getBody().getFlows()) + ",";
-						result += getConstraintsAction(action);
-						result += "} @ \n";
-						result += getChannelToAction(((ActivityDef)elem).getName(),getDefParamOutAction(action, ((ActivityDef)elem).getBody().getFlows()), model);
-						result += getOutParamActions(action, ((ActivityDef)elem).getBody().getFlows())+"->\n";
-						result += action.getDefinition().getName() + 
-								"(" + getParamAction(action.getPinIn() , ((ActivityDef)elem).getBody().getFlows() )+ ")";
-						result += "\n\n";
-					}
-				}
-				
-			}
-		}
-		return  result;
-	}
 	
-	private String getChannelToAction(String activity, String type, Model model) {
-		String result = "";
-		activity = activity.substring(0, activity.length()-2);
-		for (org.sysadl.Package pkg : model.getPackages()) {
-			for (ElementDef elem : pkg.getDefinitions()) {
-				if (elem instanceof ComponentDef && ((ComponentDef)elem).getComposite() != null) {					
-					for (ComponentUse comp : ((ComponentDef)elem).getComposite().getComponents()) {
-						if (activity.equals(comp.getDefinition().getName())) {
-							for (PortUse port : comp.getPorts()) {
-								if (port.getDefinition() instanceof SimplePortDef) {
-									if (((SimplePortDefImpl) port.getDefinition()).getFlowProperties().getLiteral().equals("out")) {
-										if (((SimplePortDefImpl) port.getDefinition()).getFlowType().getName().equals(type)) {
-											result += comp.getName() +"_"+port.getName() + "_" +((SimplePortDefImpl) port.getDefinition()).getName()+"!";
-											break;
-										}
-									}
-								}
-//								else {
-//									for (PortUse compPort : ((CompositePortDef)port.getDefinition()).getPorts()) {
-//										if (((SimplePortDefImpl) compPort.getDefinition()).getFlowProperties().getLiteral().equals("out")) {
-//											if (((SimplePortDefImpl) compPort.getDefinition()).getFlowType().getName().equals(type)) {
-//												result += comp.getName() +"_"+port.getName()+"_"+compPort.getName() + "_" +((SimplePortDefImpl) port.getDefinition()).getName()+"!";
-//											}
-//										}
-//									}
-//								}
-							}
-						}
-					}
-				}
-			}
-		}
-		
-		
-		return result;
-	}
-	
-	private String getOutParamActions(ActionUse action, List<ActivityRelation> flow) {
+	public String getParamActionOut(ActionUse action, List<ActivityRelation> flow) {
 		String paramOut = "";
 		for (ActivityRelation activityRelation : flow) {
 			if (activityRelation instanceof ActivityDelegationImpl) {
@@ -318,126 +230,111 @@ public class AuxiliarsQuery {
 					if ((((ActivityDelegationImpl)activityRelation).getTarget()) instanceof ActionUseImpl) {						
 						if (action.getName().equals(((ActionUseImpl)((ActivityDelegationImpl)activityRelation).getTarget()).getName())) {
 							def += ((PinImpl)((ActivityDelegationImpl)activityRelation).getSource()).getDefinition().getName();
+							break;
 						}
 					}
 				}
 				
+			}
+			else {				
+				def += ((Pin)((ActivityFlow)activityRelation).getTarget()).getDefinition().getName(); 
+				break;				
 			}
 		}
 		return def;
 	}
-	
-	private String getConstraintsAction(ActionUse action) {
-		String constraints = "";
-		for (ConstraintUse restricoes : action.getDefinition().getConstraints()) {
-			if (restricoes.equals(action.getDefinition().getConstraints().get(action.getDefinition().getConstraints().size()-1))) {
-				constraints += restricoes.getDefinition().getName();
-				constraints += "(x" + getParametersConstraints(restricoes.getDefinition().getInParameters()) + ")";
-			}
-			else {
-				constraints += restricoes.getDefinition().getName() ;
-				constraints += "(x" + getParametersConstraints(restricoes.getDefinition().getInParameters()) + ")" + ",";
-			}
-				
-			
-		}
-		return constraints;
-	}
-	
-	private String getParametersConstraints(List<Pin> param) {
+		
+		
+	public String getActivityToStructure(StructuralDef structural, AllocationTable allocTable) {
 		String result = "";
-		if (param.size() > 0) {
-			result += ",";
-		}
-		for (Pin pin : param) {			
-			if (pin.equals(param.get(param.size()-1))) {
-				result += pin.getName();
-			}
-			else
-				result += pin.getName() + ",";
-		}
-		return result;
-	}
-	
-	public String getActivityToComponents(ComponentUse compUse, Model model) {
-		String result = "";
-		List<String> param = new ArrayList<String>();
-		for (PortUse port : compUse.getPorts()) {
-			if (port.getDefinition() instanceof SimplePortDef) {
-				if (((SimplePortDefImpl) port.getDefinition()).getFlowProperties().getLiteral().equals("in")) {
-					param.add(port.getName().toLowerCase());
-				}
-			}
-			else {
-				for (PortUse compPort : ((CompositePortDef)port.getDefinition()).getPorts()) {
-					if (((SimplePortDefImpl) compPort.getDefinition()).getFlowProperties().getLiteral().equals("in")) {
-						param.add(compPort.getName().toLowerCase());
-					}
-				}
-			}
-		}
-		for (org.sysadl.Package pkg : model.getPackages()) {
-			for (ElementDef elem: pkg.getDefinitions()) {
-				if (elem instanceof ActivityDef) {					
-					if (((ActivityDef)elem).getName().contains(compUse.getDefinition().getName())) {						
-						result += ((ActivityDef)elem).getName() + "(";
-						for (int i = 0; i < param.size(); i++) {
-							if (param.get(i).equals(param.get(param.size()-1))) {
-								result += param.get(i);
-							}
-							else
-								result += param.get(i) + ", ";
-						}
-						result += ");";
-					}
+		for (Allocation alloc : allocTable.getAllocs()) {
+			if (alloc instanceof ActivityAllocation) {
+				if (((ActivityAllocation)alloc).getTarget().getName().equals(structural.getName())) {
+					result = ((ActivityAllocation)alloc).getSource().getName();
 				}
 			}
 		}
 		return result;
 	}
+	
+	public boolean existAlloc(StructuralDef structural, AllocationTable allocTable) {
+		for (Allocation alloc : allocTable.getAllocs()) {
+			if (alloc instanceof ActivityAllocation) {
+				if (((ActivityAllocation)alloc).getTarget().getName().equals(structural.getName())) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public ActivityDef getActivityFromAllocTable(StructuralDef structural, AllocationTable allocTable) {
+		for (Allocation alloc : allocTable.getAllocs()) {
+			if (alloc instanceof ActivityAllocation) {
+				if (((ActivityAllocation)alloc).getTarget().getName().equals(structural.getName())) {
+					return ((ActivityAllocation)alloc).getSource();
+				}
+			}
+		}
+		return null;
+	}	
 	
 	public String getContraints(ConstraintDef constraint) {
-		String result = " ";
-		String expres = SysADLGrammarUtil.getInstance().nodeText(constraint.getEquation());		
-		String[] aux = expres.split(" ");
-		for (int i = 0; i < aux.length; i++) {
-			for (int j = 0; j < constraint.getOutParameters().size(); j++) {
-				if (constraint.getOutParameters().get(j).getName().equals(aux[i])) {
-					aux[i] = "x";
-				}
+		String result = "";
+		String expres = SysADLGrammarUtil.getInstance().nodeText(constraint.getEquation());	
+		if (expres != "") {			
+			String[] aux = expres.split(" ");
+			String operation = "";
+			if (!(expres.contains("->") || expres.contains("?")|| expres.contains("&&") || expres.contains(":"))) {
+				String[] aux2 = expres.split("==");
+				operation += aux2[1];
 			}
-			if (aux[i].equals("&&")) {
-				aux[i] = " and ";
-			}
-			if (aux[i].contains("::")) {
-				aux[i] = aux[i].substring(aux[i].lastIndexOf("::")+2);							
-			}
-			if (aux[i].contains("->")) {
-				String[] aux2 = aux[i].split("->");
-				for (int j = 0; j < constraint.getInParameters().size(); j++) {
-					if (constraint.getInParameters().get(j).getName().equals(aux2[0])) {
-						aux2[1] = "get"+aux2[1]+constraint.getInParameters().get(j).getDefinition().getName()+"("+aux2[0]+")";
-					}
-				}
+			for (int i = 0; i < aux.length; i++) {
 				for (int j = 0; j < constraint.getOutParameters().size(); j++) {
-					if (constraint.getOutParameters().get(j).getName().equals(aux2[0])) {
-						aux2[1] = "get"+aux2[1]+constraint.getOutParameters().get(j).getDefinition().getName()+"(x)";
+					if (constraint.getOutParameters().get(j).getName().equals(aux[i])) {
+						aux[i] = "";
+						result += "x";
 					}
 				}
-				aux[i] = "";
-				result += aux2[1];
+				if (aux[i].equals("==")) {
+					result += aux[i];
+				}
+				else if (aux[i].equals("&&")) {
+					result += " and ";
+				}
+				else if (aux[i].equals("?")) {
+					String condition = "";
+					for (int j = 0; j < i; j++) {					
+						condition += aux[j];
+					}
+					result += "if ("+condition+ ") then ";
+				}
+				else if (aux[i].equals(":")) {
+					result += " else ";				
+				}
+				else if (aux[i].contains("->") && aux[i].contains(".")) {
+					String[] type = aux[i].split("->");
+					result += type[1];
+				}
+				else if (aux[i].contains("->") && !aux[i].contains(".")) {
+					String[] aux2 = aux[i].split("->");
+					for (int j = 0; j < constraint.getInParameters().size(); j++) {
+						if (constraint.getInParameters().get(j).getName().equals(aux2[0])) {
+							aux2[1] = constraint.getInParameters().get(j).getDefinition().getName()+"_"+aux2[1]+"("+aux2[0]+")";
+						}
+					}
+					for (int j = 0; j < constraint.getOutParameters().size(); j++) {
+						if (constraint.getOutParameters().get(j).getName().equals(aux2[0])) {
+							aux2[1] = constraint.getOutParameters().get(j).getDefinition().getName()+"_"+aux2[1]+"(x)";
+						}
+					}
+					result += aux2[1];
+				}
+				else {
+					
+				}				
 			}
-			
-			result += aux[i];
-		}
-		for (int i = 0; i < aux.length; i++) {
-			if (aux[i].equals("?")) {
-				result = "";
-				result += "if( " + aux[i-3] + aux[i-2] + aux[i-1] + " ) then " + aux[i+1] + aux[i+2] + aux[i+3] + " else " 
-						+ aux[i+5] + aux[i+6] + aux[i+7];
-				break;
-				
-			}
+			result += operation;			
 		}
 		
 		return result;
@@ -484,26 +381,26 @@ public class AuxiliarsQuery {
 				if (aux[j].contains("let")) {					
 					String out = "";
 					String[] teste;
-					((DataTypeDef)executable.getReturnType()).getAttributes();
-					for (int k = 0; k < ((DataTypeDef)executable.getReturnType()).getAttributes().size(); k++) {
-						for (int h = i; h < executable.getBody().size(); h++) {
-							teste = SysADLGrammarUtil.getInstance().nodeText(executable.getBody().get(h)).split(" ");
-							for (int l = 0; l < teste.length; l++) {
-								if (teste[l].contains("->")) {
-									String[] param = teste[l].split("->");
-									if (((DataTypeDef)executable.getReturnType()).getAttributes().get(k).getName().equals(param[1])) {
-										if (k == ((DataTypeDef)executable.getReturnType()).getAttributes().size()-1) {
-											out += teste[l+2];											
-										}
-										else {
-											out += teste[l+2]+".";										
-										}
-										
-									}
-								}
-							}
-						}
-					}
+//					((DataTypeDef)executable.getReturnType()).getAttributes();
+//					for (int k = 0; k < ((DataTypeDef)executable.getReturnType()).getAttributes().size(); k++) {
+//						for (int h = i; h < executable.getBody().size(); h++) {
+//							teste = SysADLGrammarUtil.getInstance().nodeText(executable.getBody().get(h)).split(" ");
+//							for (int l = 0; l < teste.length; l++) {
+//								if (teste[l].contains("->")) {
+//									String[] param = teste[l].split("->");
+//									if (((DataTypeDef)executable.getReturnType()).getAttributes().get(k).getName().equals(param[1])) {
+//										if (k == ((DataTypeDef)executable.getReturnType()).getAttributes().size()-1) {
+//											out += teste[l+2];											
+//										}
+//										else {
+//											out += teste[l+2]+".";										
+//										}
+//										
+//									}
+//								}
+//							}
+//						}
+//					}
 					return out;					
 				}
 				result += aux[j];
@@ -512,4 +409,253 @@ public class AuxiliarsQuery {
 		}
 		return result;
 	}
+	
+	public boolean isEmpty_Delegations(Configuration delegations) {
+		if (delegations.getDelegations().isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+	
+	public String getActionBody(ActivityDef activity, ActionUse action, String compUse) {
+		String result = "";
+		result += getParamIn(action, compUse);
+		result += getParamOut(activity, action);
+		result += ": {x | x <- " + getDefParamOutAction(action, activity.getBody().getFlows()) + ",";
+		result += getConstraintFromAction(action);
+		result +=  " } @ \n\t\t";
+		result += getActionExit(action, activity.getBody().getFlows(), compUse);
+		return result;
+	}
+
+	
+
+	private String getActionExit(ActionUse action, EList<ActivityRelation> flows, String name) {
+		String out = "";
+		for (ActivityRelation activityRelation :flows) {			
+			if (activityRelation.getSource() instanceof ActionUse) {
+				if (activityRelation.getTarget() instanceof Pin) {
+					if (action.getName().equals(((ActionUse)activityRelation.getSource()).getName())) {
+						out += name + "_" + ((Pin)activityRelation.getTarget()).getName() + "_" + ((Pin)activityRelation.getTarget()).getDefinition().getName() +"!out ->\n\t\t";
+						
+					}
+				
+				}
+			}
+			if (activityRelation.getSource() instanceof Pin) {
+				if (activityRelation.getTarget() instanceof ActionUse) {
+					if (action.getName().equals(((ActionUse)activityRelation.getTarget()).getName())) {
+						out += name + "_" + ((Pin)activityRelation.getSource()).getName() + "_" + 
+								((Pin)activityRelation.getSource()).getDefinition().getName() +"!"+ 
+								((Pin)activityRelation.getSource()).getName() +" ->";
+						
+					}
+				
+				}
+			}
+		}
+		return out;
+	}
+	
+	private String getActionFromPin(Pin pin,EList<ActivityRelation> flows ) {
+		for (ActivityRelation activityRelation : flows) {
+			if (activityRelation.getSource() instanceof Pin) {
+				if (activityRelation.getTarget() instanceof ActionUse) {
+					if (((ActionUse)activityRelation.getTarget()).getPinIn().contains(pin)) {
+						return ((ActionUse)activityRelation.getTarget()).getDefinition().getName();
+					}
+				}				
+			}
+		}
+		
+		return null;
+	}
+
+	private String getParamIn(ActionUse action) {
+		String params = "x, ";
+		for (Pin pin : action.getPinIn()) {
+			if (pin.equals(action.getPinIn().get(action.getPinIn().size()-1))) {
+				params += pin.getName(); 
+			}
+			else
+				params += pin.getName()+",";
+		}
+		
+		return params;
+	}
+
+	private String getConstraintFromAction(ActionUse action) {
+		String constraints ="";
+		for (ConstraintUse constraint : action.getDefinition().getConstraints()) {
+			constraints += constraint.getDefinition().getName() + "(" + getParamIn(action) + ")";
+		}
+		return constraints;
+	}
+
+	private String getParamOut(ActivityDef activity, ActionUse action) {
+		String paramOut = "";
+		for (ActivityRelation activityRelation : activity.getBody().getFlows()) {
+			if (activityRelation instanceof ActivityDelegationImpl) {
+				if ((((ActivityDelegationImpl)activityRelation).getSource()) instanceof PinImpl) {
+					if ((((ActivityDelegationImpl)activityRelation).getTarget()) instanceof ActionUseImpl) {						
+						if (action.getName().equals(((ActionUseImpl)((ActivityDelegationImpl)activityRelation).getTarget()).getName())) {
+							paramOut += ((PinImpl)((ActivityDelegationImpl)activityRelation).getSource()).getName();
+						}
+					}					
+				}				
+			}
+			else if (activityRelation instanceof ActivityFlow) {
+				// he will be a channel to others actions
+				if (((ActivityFlow)activityRelation).getSource() instanceof ActionUse) {
+					if (((ActivityFlow)activityRelation).getTarget() instanceof Pin) {
+						if (action.getName().equals(((ActionUse)((ActivityFlow)activityRelation).getSource()).getName())) {
+							//paramOut += ((Pin)((ActivityFlow)activityRelation).getTarget()).getName();
+							paramOut = "out";
+						}
+					
+					}
+				}
+			}
+		}
+		return "|~|"+paramOut;
+	}
+
+	private String getParamIn(ActionUse action, String compUse) {
+		String params = "";
+		for (Pin pin : action.getPinIn()) {
+			params += compUse+"_"+pin.getName()+"_"+pin.getDefinition().getName()+ "?" + pin.getName() + "-> \n\t";
+		}
+		return params;
+	}
+	
+	public int getActionListSize(ActivityDef activity) {
+		return activity.getBody().getActions().size();
+	}
+	
+	public String getActionFunction(ActivityDef activity, String compUse) {
+		String result = "";
+		int cont =1;
+		for (ActionUse action : activity.getBody().getActions()) {
+			result += compUse+"_"+activity.getName()+"_ACTIONS("+ Integer.toString(cont)+ ")= ";
+			result += compUse+ "_" + action.getName()+ "_" + action.getDefinition().getName()+ "\n";
+			cont++;
+		}
+		
+		return result;
+	}
+	
+	public int getPinListSize(ActivityDef activity) {
+		int cont = 0;
+		for (ActivityRelation flow : activity.getBody().getFlows()) {
+			if (! (flow instanceof ActivityFlow)) {
+				cont++;
+			}
+		}
+		return cont;
+	}
+	
+	public String getPinFunction(ActivityDef activity, String compUse) {
+		String result = "";
+		int cont = 1;
+		for (ActivityRelation flow : activity.getBody().getFlows()) {
+			if (!(flow instanceof ActivityFlow)) {
+				result += compUse+"_"+activity.getName()+"_PIN("+ Integer.toString(cont)+ ") = ";
+				result +=  compUse+"_"+((Pin)flow.getSource()).getName()+ "_" + activity.getName()+ "\n";
+				cont++;
+			}
+		}
+		return result;
+	}
+	
+	public String getPortAndPin(ComponentUse compUse, Pin pin) {
+		String result = "";
+		for (PortUse portUse : compUse.getPorts()) {
+			if (portUse.getName().equals(pin.getName()) && ((SimplePortDef)portUse.getDefinition()).getFlowProperties().getLiteral().equalsIgnoreCase("in")) {
+				result += compUse.getName()+"_"+ portUse.getName() + "_"+ portUse.getDefinition().getName()+ "?" + portUse.getName() + "-> \n";
+			}
+			if (portUse.getName().equals(pin.getName()) && ((SimplePortDef)portUse.getDefinition()).getFlowProperties().getLiteral().equalsIgnoreCase("out")) {
+				result += compUse.getName()+"_"+ portUse.getName() + "_"+ portUse.getDefinition().getName()+ "!" + portUse.getName() + "-> \n";
+			}
+		}
+		
+		return result;
+	}
+	
+	public String getPortAndPinConn(ConnectorUse conn, Pin pin) {
+		String result = "";
+		for (PortUse portUse : conn.getPorts()) {
+			if (portUse.getName().equals(pin.getName()) && ((SimplePortDef)portUse.getDefinition()).getFlowProperties().getLiteral().equalsIgnoreCase("in")) {
+				result += conn.getName()+"_"+ portUse.getName() + "_"+ portUse.getDefinition().getName()+ "?" + portUse.getName() + "-> \n";
+			}
+			if (portUse.getName().equals(pin.getName()) && ((SimplePortDef)portUse.getDefinition()).getFlowProperties().getLiteral().equalsIgnoreCase("out")) {
+				result += conn.getName()+"_"+ portUse.getName() + "_"+ portUse.getDefinition().getName()+ "!" + portUse.getName() + "-> \n";
+			}
+		}
+		
+		return result;
+	}
+	
+	public String getTypePort(PortUse port) {
+		
+		switch (((SimplePortDef)port.getDefinition()).getFlowType().getName()) {
+		case "Int":			
+			return "Nat";
+		case "Boolean":
+			return "Bool";
+		case "String":
+			return "Char";
+		case "Real":
+			return "Nat.Nat";
+		default:
+			return ((SimplePortDef)port.getDefinition()).getFlowType().getName();
+		}
+	}
+	
+	public String getTypePin(Pin pin) {
+		switch (pin.getDefinition().getName()) {
+		case "Int":			
+			return "Nat";
+		case "Boolean":
+			return "Bool";
+		case "String":
+			return "Char";
+		case "Real":
+			return "Nat.Nat";
+		default:
+			return pin.getDefinition().getName();
+		}
+	}
+	
+	private int getQntCompNotBoundary(ComponentDef compDef) {
+		int cont = 0;
+		for (ComponentUse compUse : compDef.getComposite().getComponents()) {
+			if (! compUse.getDefinition().isIsBoundary()) {
+				cont++;
+			}
+		}
+		return cont;
+	}
+	
+	public String getInternalChannelsCompDef( ComponentDef compDef) {
+		String result = "";
+		int cont =0;
+		for (ComponentUse compUse : compDef.getComposite().getComponents()) {
+			if (!(compUse.getDefinition().isIsBoundary())) {
+				for (PortUse portUse : compUse.getPorts()) {
+					if (portUse.equals(compUse.getPorts().get(compUse.getPorts().size()-1))) {
+						result += compUse.getName()+"_"+portUse.getName()+"_"+portUse.getDefinition().getName();
+					}
+					else
+						result += compUse.getName()+"_"+portUse.getName()+"_"+portUse.getDefinition().getName()+",\n\t\t\t\t\t\t";
+				}
+				if (cont < getQntCompNotBoundary(compDef)-1) {
+					result += ",\n\t\t\t\t\t\t";
+				}
+				cont++;
+			}			
+			
+		}
+		return result;
+	}
+	
 }

@@ -1,602 +1,560 @@
-DIAGRAM =  (COMPONENTS [| Events |] CONNECTORS)
-
-COMPONENTS =FactoryAutomationSystem									
-|||AGVSystem									
-|||VehicleControl									
-
-CONNECTORS =dataExchange_interactionAGVAndSupervisory_in_outDataS_To_in_outData
-|||updateStatus_status_sendStatus_To_receiveStatus
-|||arrived_locationVehicle_arrivalDetected_out_To_arrivalDetected_in
-|||ackArm_notificationArm_started_To_startedArm
-|||cmdArm_commandArm_startArm_To_start
-|||ackMotor_notificationMotor_started_stopped_out_To_started_stopped_in
-|||cmdMotor_commandMotor_start_stop_out_To_start_stop_in
-|||destinationStation_locationVehicle_destination_To_destination_vt
-|||destinationStation_locationVehicle_destination_To_destination_cs
-|||command_commandArm_cmd_sm_To_cmd
-|||command_commandArm_cmd_sm_To_cmd_ca
-|||currentLocation_locationVehicle_location_cs_To_location_vt
-|||sendNotificationMotor_notificationMotor_outAck_To_ack_ca
-|||sendNotificationMotor_notificationMotor_outAck_To_ack_cs
-|||DELEGATIONS
-
-assert DIAGRAM:[deadlock free]
-assert DIAGRAM:[livelock free]
 subset(s1, s2) = (inter(s1,s2)==s1)
 IS_TRUE(h) = if (h) then SKIP else DIV
 
 			
-																		
+																
 			
-																		
+																
 			
-																		
+																
 			
-																		
+																
 			
-																		
-datatype NotificationToSupervisory = departed|arrived|passed|traveling 					
+																
+datatype Command = On|Off 					
 			
-																		
-datatype NotificationFromArm = loaded|unloaded 					
+																
+Commands = { (heater,cooler) | heater<- Command ,cooler<- Command  }
+Commands_heater((heater,cooler)) = heater
+Commands_cooler((heater,cooler)) = cooler
 			
-																		
-datatype CommandToArm = load|unload|idle 					
+																
 			
-																		
-datatype NotificationFromMotor = started|stopped 					
+																
+CelsiusTemperature
 			
-																		
-datatype CommandToMotor = start|stop 					
+																
+FahrenheitTemperature
 			
-																		
-Status = { location.destination.command | location<- Location ,destination<- Location ,command<- CommandToArm  }
-getlocationStatus(location.destination.command) = location
-getdestinationStatus(location.destination.command) = destination
-getcommandStatus(location.destination.command) = command
+																
 			
-																		
-Location = { location | location<- Char  }
-getlocationLocation(location) = location
+																
 			
-																		
-VehicleData = { destination.command | destination<- Location ,command<- CommandToArm  }
-getdestinationVehicleData(destination.command) = destination
-getcommandVehicleData(destination.command) = command
+																
 			
-																		
+																
 			
-																		
+																
 			
-																		
+																
 			
-																		
+																
 			
-																		
+																
 			
-																		
+																
 			
-																		
+																
 			
-																		
+																
 			
-																		
+																
 			
-																		
+																
 			
-																		
+																
 			
-																		
+																
 			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-channel ss_in_outDataS_outMoveToStation_ISupervisorySystem : VehicleData
-channel ss_in_outDataS_inNotifications_ISupervisorySystem : NotificationToSupervisory
-channel agvs_sendStatus_outStatus : Status
-channel agvs_in_outData_inMoveToStation_IAGVSystem : VehicleData
-channel agvs_in_outData_outNotifications_IAGVSystem : NotificationToSupervisory
-channel ds_receiveStatus_inStatus : Status
+channel s1_current1_FTemperatureOPT : FahrenheitTemperature
+channel s2_current2_FTemperatureOPT : FahrenheitTemperature
+channel s3_detectedS_PresenceOPT : Bool
+channel ui_desired_CTemperatureOPT : CelsiusTemperature
+channel a2_controllerC_CommandIPT : Command
+channel a1_controllerH_CommandIPT : Command
+channel rtc_detected_PresenceIPT : Bool
+channel rtc_localtemp1_CTemperatureIPT : CelsiusTemperature
+channel rtc_localTemp2_CTemperatureIPT : CelsiusTemperature
+channel rtc_userTemp_CTemperatureIPT : CelsiusTemperature
+channel rtc_heating_CommandOPT : Command
+channel rtc_cooling_CommandOPT : Command
 
-FactoryAutomationSystem = ss_SupervisorySystem|||agvs_AGVSystem|||ds_DisplaySystem
+RTCSystemCFD =  (RTCSystemCFD_COMPONENTS [| RTCSystemCFD_internal |] RTCSystemCFD_CONNECTORS) \RTCSystemCFD_internal
+
+RTCSystemCFD_internal = {|rtc_detected_PresenceIPT,
+						rtc_localtemp1_CTemperatureIPT,
+						rtc_localTemp2_CTemperatureIPT,
+						rtc_userTemp_CTemperatureIPT,
+						rtc_heating_CommandOPT,
+						rtc_cooling_CommandOPT |}
+
+assert RTCSystemCFD:[deadlock free]
+assert RTCSystemCFD:[livelock free]
+
+RTCSystemCFD_COMPONENTS = 
+	s1_TemperatureSensorCP
+	|||s2_TemperatureSensorCP
+	|||s3_PresenceSensorCP
+	|||ui_UserInterfaceCP
+	|||a2_CoolerCP
+	|||a1_HeaterCP
+	|||rtc_RoomTemperatureControllerCP
+
+RTCSystemCFD_CONNECTORS = 
+	c1_FahrenheitToCelsiusCN
+	|||uc_CTemperatureCN
+	|||cc2_CommandCN
+	|||pc_PresenceCN
+	|||c2_FahrenheitToCelsiusCN
+	|||cc1_CommandCN
+													
 						
-ss_SupervisorySystem = 
-ss_in_outDataS_inNotifications_ISupervisorySystem?innotifications ->
-|~|outmovetostation:VehicleData @ ss_in_outDataS_outMoveToStation_ISupervisorySystem!outmovetostation ->
-ss_SupervisorySystem
+s1_TemperatureSensorCP = 
+	|~| current1:FahrenheitTemperature @ s1_current1_FTemperatureOPT!current1 ->
+s1_TemperatureSensorCP
 
-agvs_AGVSystem = 								
-agvs_in_outData_inMoveToStation_IAGVSystem?inmovetostation ->
-agvs_sendStatus_outStatus!sendstatus ->																			
-agvs_in_outData_outNotifications_IAGVSystem!outnotifications ->
-agvs_AGVSystem
+s2_TemperatureSensorCP = 
+	|~| current2:FahrenheitTemperature @ s2_current2_FTemperatureOPT!current2 ->
+s2_TemperatureSensorCP
 
-ds_DisplaySystem = 
-ds_receiveStatus_inStatus?receivestatus ->
-ds_DisplaySystem
+s3_PresenceSensorCP = 
+	|~| detecteds:Bool @ s3_detectedS_PresenceOPT!detecteds ->
+s3_PresenceSensorCP
 
-dataExchange_interactionAGVAndSupervisory_in_outDataS_To_in_outData =
-ss_in_outDataS_inNotifications_ISupervisorySystem?notificationtosupervisory	->																																
-agvs_in_outData_inMoveToStation_IAGVSystem?vehicledata ->																																
-ss_in_outDataS_outMoveToStation_ISupervisorySystem!vehicledata	->																																
-agvs_in_outData_outNotifications_IAGVSystem!notificationtosupervisory ->																																	
-dataExchange_interactionAGVAndSupervisory_in_outDataS_To_in_outData
+ui_UserInterfaceCP = 
+	|~| desired:CelsiusTemperature @ ui_desired_CTemperatureOPT!desired ->
+ui_UserInterfaceCP
 
-updateStatus_status_sendStatus_To_receiveStatus =
-agvs_sendStatus_outStatus?status->								
-ds_receiveStatus_inStatus!status->								
-updateStatus_status_sendStatus_To_receiveStatus
+a2_CoolerCP = 
+	a2_controllerC_CommandIPT?controllerc ->
+a2_CoolerCP
 
-																		
+a1_HeaterCP = 
+	a1_controllerH_CommandIPT?controllerh ->
+a1_HeaterCP
+
+rtc_RoomTemperatureControllerCP = 								
+	rtc_RoomTemperatureControllerCP_Config
+
+rtc_RoomTemperatureControllerCP_Config = (rtc_COMPONENTS [| rtc_internal |] rtc_CONNECTORS) \rtc_internal
+
+rtc_internal = {| sm_s1_CTemperatureIPT,
+						sm_s2_CTemperatureIPT,
+						sm_average_CTemperatureOPT,
+						cm_target2_CTemperatureIPT,
+						cm_average2_CTemperatureIPT,
+						cm_heating_CommandOPT,
+						cm_cooling_CommandOPT,
+						pc_detected_PresenceIPT,
+						pc_userTemp_CTemperatureIPT,
+						pc_target_CTemperatureOPT |}
+
+
+rtc_COMPONENTS = 
+	sm_SensorsMonitorCP
+	|||cm_CommanderCP
+	|||pc_PresenceCheckerCP
+
+rtc_CONNECTORS = 
+	target_CTemperatureCN
+	|||average_CTemperatureCN
+rtc_DELEGATIONS = 
+	userTemp_To_userTemp	
+	|||detected_To_detected	
+	|||s1_To_localtemp1	
+	|||s2_To_localTemp2	
+	|||heating_To_heating	
+	|||cooling_To_cooling	
+									
+
+c1_FahrenheitToCelsiusCN =
+	c1_FahrenheitToCelsiusAC
+
+c1_FahrenheitToCelsiusAC = 
+	(c1_PINS_FahrenheitToCelsiusAC 
+		[| c1_FahrenheitToCelsiusAC_internal |]
+	c1_ACTIONS_FahrenheitToCelsiusAC) \c1_FahrenheitToCelsiusAC_internal 
+
+c1_FahrenheitToCelsiusAC_internal = {| |}
+
+channel c1_loalTemp1_CelsiusTemperature : CelsiusTemperature
+channel c1_current1_FahrenheitTemperature : FahrenheitTemperature
+
+c1_ACTIONS_FahrenheitToCelsiusAC =
+[| c1_FahrenheitToCelsiusAC_internal |] i : {1 .. 1} @ c1_FahrenheitToCelsiusAC_ACTIONS(i)
+
+c1_FahrenheitToCelsiusAC_ACTIONS(1)= c1_FtC_FahrenheitToCelsiusAN
+
+
+c1_FtC_FahrenheitToCelsiusAN = 
+	c1_current1_FahrenheitTemperature?current1-> 
+	|~|loalTemp1: {x | x <- CelsiusTemperature,FahrenheitToCelsiusEQ(x, current1) } @ 
+		c1_loalTemp1_CelsiusTemperature!loalTemp1 ->
+	c1_FtC_FahrenheitToCelsiusAN
+
+c1_PINS_FahrenheitToCelsiusAC = 
+	[| c1_FahrenheitToCelsiusAC_internal |] i : {1 .. 2} @ c1_FahrenheitToCelsiusAC_PIN(i)
+
+c1_FahrenheitToCelsiusAC_PIN(1) = c1_loalTemp1_FahrenheitToCelsiusAC
+c1_FahrenheitToCelsiusAC_PIN(2) = c1_current1_FahrenheitToCelsiusAC
+
+
+c1_current1_FahrenheitToCelsiusAC =
+	
+	c1_current1_FahrenheitTemperature!fahrenheittemperature ->
+	c1_current1_FahrenheitToCelsiusAC
+
+c1_loalTemp1_FahrenheitToCelsiusAC = 
+	c1_loalTemp1_CelsiusTemperature?celsiustemperature ->
+	
+	c1_loalTemp1_FahrenheitToCelsiusAC
+
+	
+uc_CTemperatureCN =
+	ui_desired_CTemperatureOPT?celsiustemperature->								
+	rtc_userTemp_CTemperatureIPT!celsiustemperature->								
+uc_CTemperatureCN
+
+cc2_CommandCN =
+	rtc_cooling_CommandOPT?command->								
+	a2_controllerC_CommandIPT!command->								
+cc2_CommandCN
+
+pc_PresenceCN =
+	s3_detectedS_PresenceOPT?boolean->								
+	rtc_detected_PresenceIPT!boolean->								
+pc_PresenceCN
+
+c2_FahrenheitToCelsiusCN =
+	c2_FahrenheitToCelsiusAC
+
+c2_FahrenheitToCelsiusAC = 
+	(c2_PINS_FahrenheitToCelsiusAC 
+		[| c2_FahrenheitToCelsiusAC_internal |]
+	c2_ACTIONS_FahrenheitToCelsiusAC) \c2_FahrenheitToCelsiusAC_internal 
+
+c2_FahrenheitToCelsiusAC_internal = {| |}
+
+channel c2_loalTemp1_CelsiusTemperature : CelsiusTemperature
+channel c2_current1_FahrenheitTemperature : FahrenheitTemperature
+
+c2_ACTIONS_FahrenheitToCelsiusAC =
+[| c2_FahrenheitToCelsiusAC_internal |] i : {1 .. 1} @ c2_FahrenheitToCelsiusAC_ACTIONS(i)
+
+c2_FahrenheitToCelsiusAC_ACTIONS(1)= c2_FtC_FahrenheitToCelsiusAN
+
+
+c2_FtC_FahrenheitToCelsiusAN = 
+	c2_current1_FahrenheitTemperature?current1-> 
+	|~|loalTemp1: {x | x <- CelsiusTemperature,FahrenheitToCelsiusEQ(x, current1) } @ 
+		c2_loalTemp1_CelsiusTemperature!loalTemp1 ->
+	c2_FtC_FahrenheitToCelsiusAN
+
+c2_PINS_FahrenheitToCelsiusAC = 
+	[| c2_FahrenheitToCelsiusAC_internal |] i : {1 .. 2} @ c2_FahrenheitToCelsiusAC_PIN(i)
+
+c2_FahrenheitToCelsiusAC_PIN(1) = c2_loalTemp1_FahrenheitToCelsiusAC
+c2_FahrenheitToCelsiusAC_PIN(2) = c2_current1_FahrenheitToCelsiusAC
+
+
+c2_current1_FahrenheitToCelsiusAC =
+	
+	c2_current1_FahrenheitTemperature!fahrenheittemperature ->
+	c2_current1_FahrenheitToCelsiusAC
+
+c2_loalTemp1_FahrenheitToCelsiusAC = 
+	c2_loalTemp1_CelsiusTemperature?celsiustemperature ->
+	
+	c2_loalTemp1_FahrenheitToCelsiusAC
+
+	
+cc1_CommandCN =
+	rtc_heating_CommandOPT?command->								
+	a1_controllerH_CommandIPT!command->								
+cc1_CommandCN
+
+																
 			
-																		
-			
-																		
-			
-channel m_start_stop_in_inCommandToMotor : CommandToMotor
-channel m_started_stopped_out_outNotificationFromMotor : NotificationFromMotor
-channel as_arrivalDetected_out_outLocation : Location
-channel ra_start_inCommandToArm : CommandToArm
-channel ra_started_outNotificationFromArm : NotificationFromArm
-channel vc_sendStatus_outStatus : Status
-channel vc_arrivalDetected_in_inLocation : Location
-channel vc_startArm_outCommandToArm : CommandToArm
-channel vc_startedArm_inNotificationFromArm : NotificationFromArm
-channel vc_started_stopped_in_inNotificationFromMotor : NotificationFromMotor
-channel vc_start_stop_out_outCommandToMotor : CommandToMotor
-channel vc_in_outData_inMoveToStation_IAGVSystem : VehicleData
-channel vc_in_outData_outNotifications_IAGVSystem : NotificationToSupervisory
+channel sm_s1_CTemperatureIPT : CelsiusTemperature
+channel sm_s2_CTemperatureIPT : CelsiusTemperature
+channel sm_average_CTemperatureOPT : CelsiusTemperature
+channel cm_target2_CTemperatureIPT : CelsiusTemperature
+channel cm_average2_CTemperatureIPT : CelsiusTemperature
+channel cm_heating_CommandOPT : Command
+channel cm_cooling_CommandOPT : Command
+channel pc_detected_PresenceIPT : Bool
+channel pc_userTemp_CTemperatureIPT : CelsiusTemperature
+channel pc_target_CTemperatureOPT : CelsiusTemperature
 
-AGVSystem = m_Motor|||as_ArrivalSensor|||ra_RobotArm|||vc_VehicleControl
 						
-m_Motor = 
-m_start_stop_in_inCommandToMotor?start_stop_in ->
-|~| started_stopped_out:NotificationFromMotor @ m_started_stopped_out_outNotificationFromMotor!started_stopped_out ->
-m_Motor
+sm_SensorsMonitorCP =								
+	sm_CalculateAverageTemperatureAC
 
-as_ArrivalSensor = 
-|~| arrivaldetected_out:Location @ as_arrivalDetected_out_outLocation!arrivaldetected_out ->
-as_ArrivalSensor
+sm_CalculateAverageTemperatureAC = 
+	(sm_PINS_CalculateAverageTemperatureAC 
+		[| sm_CalculateAverageTemperatureAC_internal |]
+	sm_ACTIONS_CalculateAverageTemperatureAC) \sm_CalculateAverageTemperatureAC_internal 
 
-ra_RobotArm = 
-ra_start_inCommandToArm?start ->
-|~| started:NotificationFromArm @ ra_started_outNotificationFromArm!started ->
-ra_RobotArm
+sm_CalculateAverageTemperatureAC_internal = {| |}
 
-vc_VehicleControl = 								
-vc_arrivalDetected_in_inLocation?arrivaldetected_in ->																				
-vc_startedArm_inNotificationFromArm?startedarm ->																				
-vc_started_stopped_in_inNotificationFromMotor?started_stopped_in ->																				
-vc_in_outData_inMoveToStation_IAGVSystem?inmovetostation ->
-vc_sendStatus_outStatus!sendstatus ->																			
-vc_startArm_outCommandToArm!startarm ->																			
-vc_start_stop_out_outCommandToMotor!start_stop_out ->																			
-vc_in_outData_outNotifications_IAGVSystem!outnotifications ->
-vc_VehicleControl
+channel sm_s1_CelsiusTemperature : CelsiusTemperature
+channel sm_s2_CelsiusTemperature : CelsiusTemperature
+channel sm_average_CelsiusTemperature : CelsiusTemperature
 
-arrived_locationVehicle_arrivalDetected_out_To_arrivalDetected_in =
-as_arrivalDetected_out_outLocation?location->								
-vc_arrivalDetected_in_inLocation!location->								
-arrived_locationVehicle_arrivalDetected_out_To_arrivalDetected_in
 
-ackArm_notificationArm_started_To_startedArm =
-ra_started_outNotificationFromArm?notificationfromarm->								
-vc_startedArm_inNotificationFromArm!notificationfromarm->								
-ackArm_notificationArm_started_To_startedArm
+sm_ACTIONS_CalculateAverageTemperatureAC =
+[| sm_CalculateAverageTemperatureAC_internal |] i : {1 .. 1} @ sm_CalculateAverageTemperatureAC_ACTIONS(i)
 
-cmdArm_commandArm_startArm_To_start =
-vc_startArm_outCommandToArm?commandtoarm->								
-ra_start_inCommandToArm!commandtoarm->								
-cmdArm_commandArm_startArm_To_start
+sm_CalculateAverageTemperatureAC_ACTIONS(1)= sm_CalcAvTemp_CalculateAverageTemperatureAN
 
-ackMotor_notificationMotor_started_stopped_out_To_started_stopped_in =
-m_started_stopped_out_outNotificationFromMotor?notificationfrommotor->								
-vc_started_stopped_in_inNotificationFromMotor!notificationfrommotor->								
-ackMotor_notificationMotor_started_stopped_out_To_started_stopped_in
 
-cmdMotor_commandMotor_start_stop_out_To_start_stop_in =
-vc_start_stop_out_outCommandToMotor?commandtomotor->								
-m_start_stop_in_inCommandToMotor!commandtomotor->								
-cmdMotor_commandMotor_start_stop_out_To_start_stop_in
+sm_CalcAvTemp_CalculateAverageTemperatureAN = 
+	sm_s1_CelsiusTemperature?s1-> 
+	sm_s2_CelsiusTemperature?s2-> 
+	|~|average: {x | x <- CelsiusTemperature,CalculateAverageTemperatureEQ(x, s1,s2) } @ 
+		sm_average_CelsiusTemperature!average ->
+	sm_CalcAvTemp_CalculateAverageTemperatureAN
 
-																		
+sm_PINS_CalculateAverageTemperatureAC = 
+	[| sm_CalculateAverageTemperatureAC_internal |] i : {1 .. 3} @ sm_CalculateAverageTemperatureAC_PIN(i)
+
+sm_CalculateAverageTemperatureAC_PIN(1) = sm_s1_CalculateAverageTemperatureAC
+sm_CalculateAverageTemperatureAC_PIN(2) = sm_s2_CalculateAverageTemperatureAC
+sm_CalculateAverageTemperatureAC_PIN(3) = sm_average_CalculateAverageTemperatureAC
+
+
+sm_s1_CalculateAverageTemperatureAC =
+	sm_s1_CTemperatureIPT?s1-> 
+
+	sm_s1_CelsiusTemperature!s1 ->
+	sm_s1_CalculateAverageTemperatureAC
+
+sm_s2_CalculateAverageTemperatureAC =
+	sm_s2_CTemperatureIPT?s2-> 
+
+	sm_s2_CelsiusTemperature!s2 ->
+	sm_s2_CalculateAverageTemperatureAC
+
+sm_average_CalculateAverageTemperatureAC = 
+	sm_average_CelsiusTemperature?average ->
+	sm_average_CTemperatureOPT!average-> 
+
+	sm_average_CalculateAverageTemperatureAC
+
 			
-																		
-			
-																		
-			
-																		
-			
-channel cs_ack_cs_inNotificationFromMotor : NotificationFromMotor
-channel cs_location_cs_outLocation : Location
-channel cs_destination_cs_inLocation : Location
-channel cs_stop_outCommandToMotor : CommandToMotor
-channel cs_arrivalDetected_inLocation : Location
-channel cs_passed_outNotificationToSupervisory : NotificationToSupervisory
-channel ca_cmd_ca_inCommandToArm : CommandToArm
-channel ca_ack_ca_inNotificationFromMotor : NotificationFromMotor
-channel ca_startArm_outCommandToArm : CommandToArm
-channel nm_inAck_inNotificationFromMotor : NotificationFromMotor
-channel nm_ack_outNotificationToSupervisory : NotificationToSupervisory
-channel nm_outAck_outNotificationFromMotor : NotificationFromMotor
-channel sm_move_inVehicleData : VehicleData
-channel sm_cmd_sm_outCommandToArm : CommandToArm
-channel sm_destination_outLocation : Location
-channel sm_start_outCommandToMotor : CommandToMotor
-channel na_arrivedStatus_outNotificationToSupervisory : NotificationToSupervisory
-channel na_loaded_unloaded_inNotificationFromArm : NotificationFromArm
-channel vt_AGVStatus_outStatus : Status
-channel vt_location_vt_inLocation : Location
-channel vt_destination_vt_inLocation : Location
-channel vt_cmd_inCommandToArm : CommandToArm
+cm_CommanderCP =								
+	cm_DecideCommandAC
 
-VehicleControl = cs_CheckStation|||ca_ControlArm|||nm_NotifierMotor|||sm_StartMoving|||na_NotifierArm|||vt_VehicleTimer
-						
-cs_CheckStation = 								
-cs_ack_cs_inNotificationFromMotor?ack_cs ->																				
-cs_destination_cs_inLocation?destination_cs ->																				
-cs_arrivalDetected_inLocation?arrivaldetected ->																				
-CheckStationAC(ack_cs, destination_cs, arrivaldetected);
-cs_CheckStation
+cm_DecideCommandAC = 
+	(cm_PINS_DecideCommandAC 
+		[| cm_DecideCommandAC_internal |]
+	cm_ACTIONS_DecideCommandAC) \cm_DecideCommandAC_internal 
 
-ca_ControlArm = 								
-ca_cmd_ca_inCommandToArm?cmd_ca ->																				
-ca_ack_ca_inNotificationFromMotor?ack_ca ->																				
-ControlArmAC(cmd_ca, ack_ca);
-ca_ControlArm
+cm_DecideCommandAC_internal = {| |}
 
-nm_NotifierMotor = 								
-nm_inAck_inNotificationFromMotor?inack ->																				
-NotifierMotorAC(inack);
-nm_NotifierMotor
-
-sm_StartMoving = 								
-sm_move_inVehicleData?move ->																				
-StartMovingAC(move);
-sm_StartMoving
-
-na_NotifierArm = 								
-na_loaded_unloaded_inNotificationFromArm?loaded_unloaded ->																				
-NotifierArmAC(loaded_unloaded);
-na_NotifierArm
-
-vt_VehicleTimer = 								
-vt_location_vt_inLocation?location_vt ->																				
-vt_destination_vt_inLocation?destination_vt ->																				
-vt_cmd_inCommandToArm?cmd ->																				
-VehicleTimerAC(location_vt, destination_vt, cmd);
-vt_VehicleTimer
-
-destinationStation_locationVehicle_destination_To_destination_vt =
-sm_destination_outLocation?location->								
-vt_destination_vt_inLocation!location->								
-destinationStation_locationVehicle_destination_To_destination_vt
-
-destinationStation_locationVehicle_destination_To_destination_cs =
-sm_destination_outLocation?location->								
-cs_destination_cs_inLocation!location->								
-destinationStation_locationVehicle_destination_To_destination_cs
-
-command_commandArm_cmd_sm_To_cmd =
-sm_cmd_sm_outCommandToArm?commandtoarm->								
-vt_cmd_inCommandToArm!commandtoarm->								
-command_commandArm_cmd_sm_To_cmd
-
-command_commandArm_cmd_sm_To_cmd_ca =
-sm_cmd_sm_outCommandToArm?commandtoarm->								
-ca_cmd_ca_inCommandToArm!commandtoarm->								
-command_commandArm_cmd_sm_To_cmd_ca
-
-currentLocation_locationVehicle_location_cs_To_location_vt =
-cs_location_cs_outLocation?location->								
-vt_location_vt_inLocation!location->								
-currentLocation_locationVehicle_location_cs_To_location_vt
-
-sendNotificationMotor_notificationMotor_outAck_To_ack_ca =
-nm_outAck_outNotificationFromMotor?notificationfrommotor->								
-ca_ack_ca_inNotificationFromMotor!notificationfrommotor->								
-sendNotificationMotor_notificationMotor_outAck_To_ack_ca
-
-sendNotificationMotor_notificationMotor_outAck_To_ack_cs =
-nm_outAck_outNotificationFromMotor?notificationfrommotor->								
-cs_ack_cs_inNotificationFromMotor!notificationfrommotor->								
-sendNotificationMotor_notificationMotor_outAck_To_ack_cs
-
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-																		
-			
-SendStartMotorEQ(x) =  x==start 
-																		
-			
-SendDestinationEQ(x,move) =  x==getdestinationVehicleData(move) 
-																		
-			
-NotifyAGVFromMotorEQ(x,inStatusMotor) =  x==inStatusMotor 
-																		
-			
-SendCommandEQ(x,move) =  x==getcommandVehicleData(move) 
-																		
-			
-NotifySupervisoryFromMotorEQ(x,statusMotor) = if( statusMotor==started ) then x==departed else x==traveling 
-																		
-			
-NotificationMotorIsStartedEQ(x,statusMotor) =  statusMotor==started 
-																		
-			
-CompareStationsEQ(x,dest,loc) = if( dest==loc ) then x==true else x==false 
-																		
-			
-StopMotorEQ(x,result) = if( x==stop ) then result==true else result==false 
-																		
-			
-PassedMotorEQ(x,result) = if( x==passed ) then result==false else result==true 
-																		
-			
-SendCurrentLocationEQ(x,inLocation) =  x==inLocation 
-																		
-			
-ControlArmEQ(x,cmd,statusMotor) = if( statusMotor==stopped ) then x==cmd else x==idle 
-																		
-			
-NotifierArmEQ(x) =  x==arrived 
-																		
-			
-VehicleTimerEQ(x,dest,loc,cmd) =  getdestinationStatus(x)==dest and getlocationStatus(x)==loc and getcommandStatus(x)==cmd 
-																		
-			
-SendStartMotorEX(move)= start
-																		
-			
-SendCommandEX(move)= getcommandVehicleData(move)
-																		
-			
-SendDestinationEX(move)= getdestinationVehicleData(move)
-																		
-			
-NotifyAGVFromMotorEX(statusMotor)= statusMotor
-																		
-			
-NotifySupervisoryFromMotorEX(statusMotor)= if(statusMotor==started) then departed else traveling
-																		
-			
-CompareStationsEX(destination,location,statusMotor)= if(statusMotor==started and destination==location) then true else false
-																		
-			
-StopMotorEX(comparisonResult)= if(comparisonResult==true) then stop else null
-																		
-			
-PassedMotorEX(comparisonResult)= if(comparisonResult==false) then passed else null
-																		
-			
-SendCurrentLocationEX(location)= location
-																		
-			
-ControlArmEX(statusMotor,cmd)= if(statusMotor==stopped) then cmd else idle
-																		
-			
-NotifierArmEX(statusArm)= arrived
-																		
-			
-VehicleTimerEX(location,cmd,destination)= location.destination.cmd
-																		
-SendCommandAN(move) = 
- |~| destination: {x | x <- Location,SendCommandEQ(x,move)} @ 
-sm_destination_outLocation!destination->
-SendCommandAN(move)
-
-SendDestinationAN(move) = 
- |~| cmd: {x | x <- CommandToArm,SendDestinationEQ(x,move)} @ 
-sm_cmd_sm_outCommandToArm!cmd->
-SendDestinationAN(move)
-
-SendStartMotorAN(move) = 
- |~| start: {x | x <- CommandToMotor,SendStartMotorEQ(x)} @ 
-sm_start_outCommandToMotor!start->
-SendStartMotorAN(move)
-
-NotifyAGVFromMotorAN(inStatusMotor) = 
- |~| outStatusMotor: {x | x <- NotificationFromMotor,NotifyAGVFromMotorEQ(x,inStatusMotor)} @ 
-nm_outAck_outNotificationFromMotor!outStatusMotor->
-NotifyAGVFromMotorAN(inStatusMotor)
-
-NotifySupervisoryFromMotorAN(inStatusMotor) = 
- |~| ack: {x | x <- NotificationToSupervisory,NotifySupervisoryFromMotorEQ(x,statusMotor)} @ 
-nm_ack_outNotificationToSupervisory!ack->
-NotifySupervisoryFromMotorAN(inStatusMotor)
-
-CompareStationsAN(statusMotor,destination,inLocation) = 
- |~| : {x | x <- ,CompareStationsEQ(x,dest,loc),NotificationMotorIsStartedEQ(x,statusMotor)} @ 
-->
-CompareStationsAN(statusMotor,destination,inLocation)
-
-SendCurrentLocationAN(inLocation) = 
- |~| outLocation: {x | x <- Location,SendCurrentLocationEQ(x,inLocation)} @ 
-cs_location_cs_outLocation!outLocation->
-SendCurrentLocationAN(inLocation)
-
-StopMotorAN(comparisonResultSM) = 
- |~| stopMotor: {x | x <- CommandToMotor,StopMotorEQ(x,result)} @ 
-cs_stop_outCommandToMotor!stopMotor->
-StopMotorAN(comparisonResultSM)
-
-PassedMotorAN(comparisonResultPM) = 
- |~| passed: {x | x <- NotificationToSupervisory,PassedMotorEQ(x,result)} @ 
-cs_passed_outNotificationToSupervisory!passed->
-PassedMotorAN(comparisonResultPM)
-
-ControlArmAN(cmd,statusMotor) = 
- |~| startArm: {x | x <- CommandToArm,ControlArmEQ(x,cmd,statusMotor)} @ 
-ca_startArm_outCommandToArm!startArm->
-ControlArmAN(cmd,statusMotor)
-
-NotifierArmAN(statusArm) = 
- |~| ack: {x | x <- NotificationToSupervisory,NotifierArmEQ(x)} @ 
-na_arrivedStatus_outNotificationToSupervisory!ack->
-NotifierArmAN(statusArm)
-
-VehicleTimerAN(cmd,destination,location) = 
- |~| status: {x | x <- Status,VehicleTimerEQ(x,dest,loc,cmd)} @ 
-vt_AGVStatus_outStatus!status->
-VehicleTimerAN(cmd,destination,location)
+channel cm_average2_CelsiusTemperature : CelsiusTemperature
+channel cm_target2_CelsiusTemperature : CelsiusTemperature
+channel cm_heating_Command : Command
+channel cm_cooling_Command : Command
+channel cm_cmdsH_Commands : Commands		
+channel cm_cmdsC_Commands : Commands		
 
 
-StartMovingAC(move) = 
-sc_SendCommandAN(move) ||| sd_SendDestinationAN(move) ||| ssm_SendStartMotorAN(move)
+cm_ACTIONS_DecideCommandAC =
+[| cm_DecideCommandAC_internal |] i : {1 .. 3} @ cm_DecideCommandAC_ACTIONS(i)
 
-NotifierMotorAC(inStatusMotor) = 
-nagvm_NotifyAGVFromMotorAN(inStatusMotor) ||| nsm_NotifySupervisoryFromMotorAN(inStatusMotor)
-
-CheckStationAC(statusMotor, destination, inLocation) = 
-cs_CompareStationsAN(statusMotor,destination,inLocation) ||| scl_SendCurrentLocationAN(inLocation) ||| sm_StopMotorAN(comparisonResultSM) ||| pm_PassedMotorAN(comparisonResultPM)
-
-ControlArmAC(cmd, statusMotor) = 
-ca_ControlArmAN(cmd,statusMotor)
-
-NotifierArmAC(statusArm) = 
-na_NotifierArmAN(statusArm)
-
-VehicleTimerAC(destination, location, cmd) = 
-vt_VehicleTimerAN(cmd,destination,location)
+cm_DecideCommandAC_ACTIONS(1)= cm_ct_CompareTemperatureAN
+cm_DecideCommandAC_ACTIONS(2)= cm_cmdH_CommandHeaterAN
+cm_DecideCommandAC_ACTIONS(3)= cm_cmdC_CommandCoolerAN
 
 
-Delegation_sendStatus_To_sendStatus= vc_sendStatus_outStatus?status ->
-agvs_sendStatus_outStatus!status ->
-Delegation_sendStatus_To_sendStatus
+cm_ct_CompareTemperatureAN = 
+	cm_average2_CelsiusTemperature?average2-> 
+	cm_target2_CelsiusTemperature?target2-> 
+	|~|out: {x | x <- Commands,CompareTemperatureEQ(x, average2,target2) } @ 
+		cm_cmdsH_Commands!out ->
+		cm_cmdsC_Commands!out ->
+		
+	cm_ct_CompareTemperatureAN
 
-Delegation_in_outData_To_in_outData= agvs_in_outData_inMoveToStation_IAGVSystem?vehicledata->
-agvs_in_outData_outNotifications_IAGVSystem?notificationtosupervisory->
-vc_in_outData_inMoveToStation_IAGVSystem!vehicledata->
-vc_in_outData_outNotifications_IAGVSystem!notificationtosupervisory->
-Delegation_in_outData_To_in_outData
+cm_cmdH_CommandHeaterAN = 
+	cm_cmdsH_Commands?cmdsH-> 
+	|~|heating: {x | x <- Command,CommandHeaterEQ(x, cmdsH) } @ 
+		cm_heating_Command!heating ->
+	cm_cmdH_CommandHeaterAN
 
-Delegation_ack_To_outNotifications= nm_ack_outNotificationToSupervisory?notificationtosupervisory ->
-vc_in_outData_outNotifications_IAGVSystem!notificationtosupervisory ->
-Delegation_ack_To_outNotifications
+cm_cmdC_CommandCoolerAN = 
+	cm_cmdsC_Commands?cmdsC-> 
+	|~|cooling: {x | x <- Command,CommandCoolerEQ(x, cmdsC) } @ 
+		cm_cooling_Command!cooling ->
+	cm_cmdC_CommandCoolerAN
 
-Delegation_arrivedStatus_To_outNotifications= na_arrivedStatus_outNotificationToSupervisory?notificationtosupervisory ->
-vc_in_outData_outNotifications_IAGVSystem!notificationtosupervisory ->
-Delegation_arrivedStatus_To_outNotifications
+cm_PINS_DecideCommandAC = 
+	[| cm_DecideCommandAC_internal |] i : {1 .. 4} @ cm_DecideCommandAC_PIN(i)
 
-Delegation_move_To_inMoveToStation= vc_in_outData_inMoveToStation_IAGVSystem?vehicledata ->
-sm_move_inVehicleData!vehicledata ->
-Delegation_move_To_inMoveToStation
+cm_DecideCommandAC_PIN(1) = cm_average2_DecideCommandAC
+cm_DecideCommandAC_PIN(2) = cm_target2_DecideCommandAC
+cm_DecideCommandAC_PIN(3) = cm_heating_DecideCommandAC
+cm_DecideCommandAC_PIN(4) = cm_cooling_DecideCommandAC
 
-Delegation_passed_To_outNotifications= cs_passed_outNotificationToSupervisory?notificationtosupervisory ->
-vc_in_outData_outNotifications_IAGVSystem!notificationtosupervisory ->
-Delegation_passed_To_outNotifications
 
-Delegation_loaded_unloaded_To_startedArm= vc_startedArm_inNotificationFromArm?notificationfromarm ->
-na_loaded_unloaded_inNotificationFromArm!notificationfromarm ->
-Delegation_loaded_unloaded_To_startedArm
+cm_average2_DecideCommandAC =
+	cm_average2_CTemperatureIPT?average2-> 
 
-Delegation_inAck_To_started_stopped= nm_inAck_inNotificationFromMotor!notificationfrommotor ->
-Delegation_inAck_To_started_stopped
+	cm_average2_CelsiusTemperature!average2 ->
+	cm_average2_DecideCommandAC
 
-Delegation_startArm_To_startArm= ca_startArm_outCommandToArm?commandtoarm ->
-vc_startArm_outCommandToArm!commandtoarm ->
-Delegation_startArm_To_startArm
+cm_target2_DecideCommandAC =
+	cm_target2_CTemperatureIPT?target2-> 
 
-Delegation_AGVStatus_To_sendStatus= vt_AGVStatus_outStatus?status ->
-vc_sendStatus_outStatus!status ->
-Delegation_AGVStatus_To_sendStatus
+	cm_target2_CelsiusTemperature!target2 ->
+	cm_target2_DecideCommandAC
 
-Delegation_start_To_start_stop= sm_start_outCommandToMotor?commandtomotor ->
-Delegation_start_To_start_stop
+cm_cooling_DecideCommandAC = 
+	cm_cooling_Command?cooling ->
+	cm_cooling_CommandOPT!cooling-> 
 
-Delegation_stop_To_start_stop= cs_stop_outCommandToMotor?commandtomotor ->
-Delegation_stop_To_start_stop
+	cm_cooling_DecideCommandAC
+cm_heating_DecideCommandAC = 
+	cm_heating_Command?heating ->
+	cm_heating_CommandOPT!heating-> 
 
-Delegation_arrivalDetected_To_arrivalDetected= cs_arrivalDetected_inLocation!location ->
-Delegation_arrivalDetected_To_arrivalDetected
+	cm_heating_DecideCommandAC
 
-DELEGATIONS = Delegation_sendStatus_To_sendStatus ||| 
-Delegation_in_outData_To_in_outData ||| 
-Delegation_ack_To_outNotifications ||| 
-Delegation_arrivedStatus_To_outNotifications ||| 
-Delegation_move_To_inMoveToStation ||| 
-Delegation_passed_To_outNotifications ||| 
-Delegation_loaded_unloaded_To_startedArm ||| 
-Delegation_inAck_To_started_stopped ||| 
-Delegation_startArm_To_startArm ||| 
-Delegation_AGVStatus_To_sendStatus ||| 
-Delegation_start_To_start_stop ||| 
-Delegation_stop_To_start_stop ||| 
-Delegation_arrivalDetected_To_arrivalDetected
+			
+pc_PresenceCheckerCP =								
+	pc_CheckPresenceToSetTemperatureAC
 
+pc_CheckPresenceToSetTemperatureAC = 
+	(pc_PINS_CheckPresenceToSetTemperatureAC 
+		[| pc_CheckPresenceToSetTemperatureAC_internal |]
+	pc_ACTIONS_CheckPresenceToSetTemperatureAC) \pc_CheckPresenceToSetTemperatureAC_internal 
+
+pc_CheckPresenceToSetTemperatureAC_internal = {| |}
+
+channel pc_detected_Boolean : Bool
+channel pc_userTemp_CelsiusTemperature : CelsiusTemperature
+channel pc_target_CelsiusTemperature : CelsiusTemperature
+
+
+pc_ACTIONS_CheckPresenceToSetTemperatureAC =
+[| pc_CheckPresenceToSetTemperatureAC_internal |] i : {1 .. 1} @ pc_CheckPresenceToSetTemperatureAC_ACTIONS(i)
+
+pc_CheckPresenceToSetTemperatureAC_ACTIONS(1)= pc_CheckPeresenceToSetTemperatureAN_CheckPeresenceToSetTemperatureAN
+
+
+pc_CheckPeresenceToSetTemperatureAN_CheckPeresenceToSetTemperatureAN = 
+	pc_detected_Boolean?detected-> 
+	pc_userTemp_CelsiusTemperature?userTemp-> 
+	|~|target: {x | x <- CelsiusTemperature,CheckPresenceToSetTemperatureEQ(x, detected,userTemp) } @ 
+		pc_target_CelsiusTemperature!target ->
+	pc_CheckPeresenceToSetTemperatureAN_CheckPeresenceToSetTemperatureAN
+
+pc_PINS_CheckPresenceToSetTemperatureAC = 
+	[| pc_CheckPresenceToSetTemperatureAC_internal |] i : {1 .. 3} @ pc_CheckPresenceToSetTemperatureAC_PIN(i)
+
+pc_CheckPresenceToSetTemperatureAC_PIN(1) = pc_detected_CheckPresenceToSetTemperatureAC
+pc_CheckPresenceToSetTemperatureAC_PIN(2) = pc_userTemp_CheckPresenceToSetTemperatureAC
+pc_CheckPresenceToSetTemperatureAC_PIN(3) = pc_target_CheckPresenceToSetTemperatureAC
+
+
+pc_detected_CheckPresenceToSetTemperatureAC =
+	pc_detected_PresenceIPT?detected-> 
+
+	pc_detected_Boolean!detected ->
+	pc_detected_CheckPresenceToSetTemperatureAC
+
+pc_userTemp_CheckPresenceToSetTemperatureAC =
+	pc_userTemp_CTemperatureIPT?userTemp-> 
+
+	pc_userTemp_CelsiusTemperature!userTemp ->
+	pc_userTemp_CheckPresenceToSetTemperatureAC
+
+pc_target_CheckPresenceToSetTemperatureAC = 
+	pc_target_CelsiusTemperature?target ->
+	pc_target_CTemperatureOPT!target-> 
+
+	pc_target_CheckPresenceToSetTemperatureAC
+
+			
+target_CTemperatureCN =
+	pc_target_CTemperatureOPT?celsiustemperature->								
+	cm_target2_CTemperatureIPT!celsiustemperature->								
+target_CTemperatureCN
+
+average_CTemperatureCN =
+	sm_average_CTemperatureOPT?celsiustemperature->								
+	cm_average2_CTemperatureIPT!celsiustemperature->								
+average_CTemperatureCN
+
+																
+			
+																
+			
+																
+			
+																
+			
+																
+			
+																
+			
+																
+			
+																
+			
+																
+			
+CalculateAverageTemperatureEQ(x,t1,t2) = x== (t1 + t2)/2 
+																
+			
+																
+			
+																
+			
+																
+			
+																
+			
+																
+			
+																
+			
+																
+			
+																
+			
+CompareTemperatureEQ(x,target,average) = if (average>target) then x==On and Off else x==Off and On 
+																
+			
+FahrenheitToCelsiusEQ(x,f) = x== (5*(f - 32)/9) 
+																
+			
+CommandHeaterEQ(x,cmds) = x==Commands_heater(cmds) 
+																
+			
+CommandCoolerEQ(x,cmds) = x==Commands_cooler(cmds) 
+																
+			
+																
+			
+																
+			
+CheckPresenceToSetTemperatureEQ(x,detected,userTemp) =  
+																
+userTemp_To_userTemp= rtc_userTemp_CTemperatureIPT?celsiustemperature ->
+pc_userTemp_CTemperatureIPT!celsiustemperature ->
+userTemp_To_userTemp
+
+detected_To_detected= rtc_detected_PresenceIPT?boolean ->
+pc_detected_PresenceIPT!boolean ->
+detected_To_detected
+
+s1_To_localtemp1= rtc_localtemp1_CTemperatureIPT?celsiustemperature ->
+sm_s1_CTemperatureIPT!celsiustemperature ->
+s1_To_localtemp1
+
+s2_To_localTemp2= rtc_localTemp2_CTemperatureIPT?celsiustemperature ->
+sm_s2_CTemperatureIPT!celsiustemperature ->
+s2_To_localTemp2
+
+heating_To_heating= cm_heating_CommandOPT?command ->
+rtc_heating_CommandOPT!command ->
+heating_To_heating
+
+cooling_To_cooling= cm_cooling_CommandOPT?command ->
+rtc_cooling_CommandOPT!command ->
+cooling_To_cooling
+
+		
 

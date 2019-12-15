@@ -9,7 +9,6 @@ import org.csp.translater.main.Generate;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
-import org.sysadl.ComponentDef;
 import org.sysadl.Model;
 
 import uk.ac.ox.cs.fdr.Assertion;
@@ -19,13 +18,9 @@ import uk.ac.ox.cs.fdr.Session;
 import uk.ac.ox.cs.fdr.fdr;
 
 
-
-
 public class PerformTransformation {
 
-	public static void run(IFile file,Model model, Object architecture) {
-		ComponentDef component = (ComponentDef) architecture;
-	
+	public static void run(IFile file,Model model, Object architecture) {	
 		URI modelURI = URI.createFileURI(file.getLocation().toString());//sysadl model
 		String path = file.getLocation().toString();
 		path = path.replace(file.getLocation().lastSegment(), "");

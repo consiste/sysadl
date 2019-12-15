@@ -1,12 +1,13 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Acceleo Translater Module Runtime Plug-in
+Bundle-Name: Acceleo
 Bundle-SymbolicName: org.sysadl.tradutor.csp.acceleo
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.csp.translater.Activator
-Bundle-Vendor: Eclipse Modeling Project
+Export-Package: org.csp.translater,
+ org.csp.translater.main,
+ org.csp.translater.query
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.emf.ecore,
  org.eclipse.emf.ecore,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.ocl,
@@ -16,27 +17,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.acceleo.profiler;bundle-version="3.3.0",
  org.eclipse.acceleo.engine;bundle-version="3.3.0",
  org.sysadl,
- org.eclipse.sirius,
- org.eclipse.emf.compare.diagram.sirius,
- org.eclipse.sirius.table,
- org.eclipse.sirius.diagram,
- org.eclipse.sirius.common,
- org.eclipse.gmf.runtime.notation,
  com.google.guava,
  org.sysadl.grammar,
- org.eclipse.xtext,
- org.apache.log4j
-Bundle-RequiredExecutionEnvironment: JavaSE-11
-Bundle-ActivationPolicy: lazy
+ org.apache.log4j,
+ com.google.inject
 Eclipse-LazyStart: true
-Export-Package: org.csp.translater;uses:="org.osgi.framework,org.eclipse.core.runtime",
- org.csp.translater.main;
-  uses:="org.eclipse.emf.ecore,
-   org.eclipse.emf.common.util,
-   org.eclipse.acceleo.engine.service,
-   org.eclipse.emf.ecore.resource,
-   org.eclipse.acceleo.engine.generation.strategy",
- uk.ac.ox.cs.fdr
-Bundle-ClassPath: FDR-lib/bin/fdr.jar,
- .
-
+Automatic-Module-Name: org.sysadl.tradutor.csp.acceleo
+Bundle-ActivationPolicy: lazy

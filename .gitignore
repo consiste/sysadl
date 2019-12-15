@@ -1,4 +1,5 @@
 /.metadata/
+*.class
 /*/bin/*
 /*/src-gen/*
 org.sysadl/src/org/sysadl/impl/*

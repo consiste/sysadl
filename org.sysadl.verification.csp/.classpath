@@ -7,6 +7,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="lib" path="C:/Program Files/FDR/bin/fdr.jar"/>
+	<classpathentry kind="lib" path="FDR-lib/bin/fdr.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -22,13 +22,8 @@ import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.xtext.resource.IResourceFactory;
 import org.sysadl.SysADLPackage;
-import org.sysadl.SysADLRuntimeModule;
 import org.sysadl.SysADLStandaloneSetup;
-
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 
 
 
@@ -354,30 +349,6 @@ public class Generate extends AbstractAcceleoGenerator {
     @Override
     public void registerPackages(ResourceSet resourceSet) {
         super.registerPackages(resourceSet);
-        if (!isInWorkspace(org.eclipse.sirius.diagram.DiagramPackage.class)) {
-            resourceSet.getPackageRegistry().put(org.eclipse.sirius.diagram.DiagramPackage.eINSTANCE.getNsURI(), org.eclipse.sirius.diagram.DiagramPackage.eINSTANCE);
-        }
-        if (!isInWorkspace(org.eclipse.sirius.diagram.description.DescriptionPackage.class)) {
-            resourceSet.getPackageRegistry().put(org.eclipse.sirius.diagram.description.DescriptionPackage.eINSTANCE.getNsURI(), org.eclipse.sirius.diagram.description.DescriptionPackage.eINSTANCE);
-        }
-        if (!isInWorkspace(org.eclipse.sirius.diagram.description.style.StylePackage.class)) {
-            resourceSet.getPackageRegistry().put(org.eclipse.sirius.diagram.description.style.StylePackage.eINSTANCE.getNsURI(), org.eclipse.sirius.diagram.description.style.StylePackage.eINSTANCE);
-        }
-        if (!isInWorkspace(org.eclipse.sirius.diagram.description.tool.ToolPackage.class)) {
-            resourceSet.getPackageRegistry().put(org.eclipse.sirius.diagram.description.tool.ToolPackage.eINSTANCE.getNsURI(), org.eclipse.sirius.diagram.description.tool.ToolPackage.eINSTANCE);
-        }
-        if (!isInWorkspace(org.eclipse.sirius.diagram.description.filter.FilterPackage.class)) {
-            resourceSet.getPackageRegistry().put(org.eclipse.sirius.diagram.description.filter.FilterPackage.eINSTANCE.getNsURI(), org.eclipse.sirius.diagram.description.filter.FilterPackage.eINSTANCE);
-        }
-        if (!isInWorkspace(org.eclipse.sirius.diagram.description.concern.ConcernPackage.class)) {
-            resourceSet.getPackageRegistry().put(org.eclipse.sirius.diagram.description.concern.ConcernPackage.eINSTANCE.getNsURI(), org.eclipse.sirius.diagram.description.concern.ConcernPackage.eINSTANCE);
-        }
-        if (!isInWorkspace(org.eclipse.sirius.table.metamodel.table.description.DescriptionPackage.class)) {
-            resourceSet.getPackageRegistry().put(org.eclipse.sirius.table.metamodel.table.description.DescriptionPackage.eINSTANCE.getNsURI(), org.eclipse.sirius.table.metamodel.table.description.DescriptionPackage.eINSTANCE);
-        }
-        if (!isInWorkspace(org.eclipse.gmf.runtime.notation.NotationPackage.class)) {
-            resourceSet.getPackageRegistry().put(org.eclipse.gmf.runtime.notation.NotationPackage.eINSTANCE.getNsURI(), org.eclipse.gmf.runtime.notation.NotationPackage.eINSTANCE);
-        }
         
     	SysADLPackage.eINSTANCE.eClass(); // redudancy, add EMF package to registry as sideffect
     	//SysADLStandaloneSetup.doSetup(); // add xtext parser to registry 

@@ -43,6 +43,12 @@
 [query public getPortAndPinConn(connector :  ConnectorUse, pin : Pin) : String = 
 		invoke('org.csp.translater.query.AuxiliarsQuery', 'getPortAndPinConn(org.sysadl.ConnectorUse, org.sysadl.Pin)', Sequence{connector, pin}) /]
 
+[query public getPortAndPinConnIn(connector :  ConnectorUse, pin : Pin) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getPortAndPinConnIn(org.sysadl.ConnectorUse, org.sysadl.Pin)', Sequence{connector, pin}) /]
+
+[query public getPortAndPinConnOut(connector :  ConnectorUse, pin : Pin) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getPortAndPinConnOut(org.sysadl.ConnectorUse, org.sysadl.Pin)', Sequence{connector, pin}) /]
+
 [query public getActivityChannels(activity : ActivityDef, compUse : ComponentUse) : String = 
 		invoke('org.csp.translater.query.AuxiliarsQuery', 'getActivityChannels(org.sysadl.ActivityDef, org.sysadl.ComponentUse)', Sequence{activity, compUse}) /]
 
@@ -52,5 +58,11 @@
 [query public getTypePin(pin : Pin) : String = 
 		invoke('org.csp.translater.query.AuxiliarsQuery', 'getTypePin(org.sysadl.Pin)', Sequence{pin}) /]
 
+[query public getTypeCSP(typeDef : TypeDef) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getTypeCSP(org.sysadl.TypeDef)', Sequence{typeDef}) /]
+
 [query public getInternalChannelsCompDef(compDef : ComponentDef) : String = 
 		invoke('org.csp.translater.query.AuxiliarsQuery', 'getInternalChannelsCompDef(org.sysadl.ComponentDef)', Sequence{compDef}) /]
+
+[query public getTypeUnity(typeDef : TypeDef) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getTypeUnity(org.sysadl.TypeDef)', Sequence{typeDef}) /]

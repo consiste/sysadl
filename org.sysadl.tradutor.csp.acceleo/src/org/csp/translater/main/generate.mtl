@@ -11,8 +11,13 @@ IS_TRUE(h) = if (h) then SKIP else DIV
 	[for (pck : sysadl::Package | aModel.packages)]		
 	[comment Traduzindo Tipos /]		
 		[for (elem : ElementDef | pck.definitions)]
-			[let unity : UnitDef = self]
-[unity.name/][unity.dimension.name/]
+			[let unity : UnitDef = self]				
+				[for (type : ElementDef | pck.definitions)? (type.oclIsKindOf(TypeDef))]
+					[if (unity.name.concat(unity.dimension.name).equalsIgnoreCase(type.name))]
+[type.name/] = [getTypeUnity(type.oclAsType(TypeDef))/]						
+					[/if]
+				[/for]								
+				
 			[/let]			
 			[let aux : Enumeration = self]
 datatype [aux.name/] = [for (literal : EnumLiteralValue | aux.literals)separator ('|')][literal.name/][/for] 					
@@ -42,9 +47,13 @@ channel [compUse.name/]_[portUse.name/]_[compPort.name/]_[portUse.definition.nam
 
 			[comment traduzindo configuração /]
 						[if ( isEmpty_Delegations(compDef.composite))]									
-[compDef.name/] =  ([compDef.name/]_COMPONENTS ['['/]| [compDef.name/]_internal |] [compDef.name/]_CONNECTORS) \[compDef.name/]_internal
+[compDef.name/] =  ([compDef.name/]_COMPONENTS ['['/]| [compDef.name/]_Paralell |] [compDef.name/]_CONNECTORS) \[compDef.name/]_internal
 
-[compDef.name/]_internal = {|[getInternalChannelsCompDef(compDef)/] |}
+[compDef.name/]_Paralell = {| [for (compUse : ComponentUse | compDef.composite.components)separator (',')][for (portUse : PortUse | compUse.ports)separator (',')]
+ 								[compUse.name/]_[portUse.name/]_[portUse.definition.name/]
+ [/for]
+ [/for] 					|}
+[compDef.name/]_internal = {| [getInternalChannelsCompDef(compDef)/] |}
 
 assert [compDef.name/]:['['/]deadlock free]
 assert [compDef.name/]:['['/]livelock free]
@@ -97,8 +106,9 @@ assert [compDef.name/]:['['/]livelock free]
 
 [compUse.name/]_[compUse.definition.name/]_Config = ([compUse.name/]_COMPONENTS ['['/]| [compUse.name/]_internal |] [compUse.name/]_CONNECTORS) \[compUse.name/]_internal
 
-[compUse.name/]_internal = {| [getInternalChannelsCompDef(compUse.definition)/] |}
-
+[compUse.name/]_internal = {| [getInternalChannelsCompDef(compUse.definition)/],
+								[for (portUse : PortUse | compUse.ports)separator (',')] [compUse.name/]_[portUse.name/]_[portUse.definition.name/]
+								[/for]|}
 
 [compUse.name/]_COMPONENTS = ['\n\t'/][for (compUseInt : ComponentUse | compUse.definition.composite.components)separator ('\t|||')]
 [compUseInt.name/]_[compUseInt.definition.name/]
@@ -123,7 +133,18 @@ assert [compDef.name/]:['['/]livelock free]
 ['\t\t'/]['['/]| [compUse.name/]_[getActivityToStructure(compUse.definition, aModel.allocation)/]_internal |]
 ['\t'/][compUse.name/]_ACTIONS_[getActivityToStructure(compUse.definition, aModel.allocation)/]) \[compUse.name/]_[getActivityToStructure(compUse.definition, aModel.allocation)/]_internal 
 
-[compUse.name/]_[getActivityToStructure(compUse.definition, aModel.allocation)/]_internal = {| |}
+[compUse.name/]_[getActivityToStructure(compUse.definition, aModel.allocation)/]_internal = {|
+[for (flow : ActivityRelation | getActivityFromAllocTable(compUse.definition, aModel.allocation)._body.flows )separator (',')]
+	[if (flow.target.oclIsKindOf(Pin) and flow.oclIsKindOf(ActivityFlow))]
+[compUse.name/]_[flow.target.oclAsType(Pin).name/]_[flow.target.oclAsType(Pin).definition.name/]
+	[else]
+[compUse.name/]_[flow.source.oclAsType(Pin).name/]_[flow.source.oclAsType(Pin).definition.name/]
+	[/if]
+[/for],
+[for (portUse : PortUse | compUse.ports)separator (',')]
+[compUse.name/]_[portUse.name/]_[portUse.definition.name/]
+[/for]
+ |}
 
 [for (flow : ActivityRelation | getActivityFromAllocTable(compUse.definition, aModel.allocation)._body.flows )]
 	[if (flow.target.oclIsKindOf(Pin) and flow.oclIsKindOf(ActivityFlow))]
@@ -222,7 +243,19 @@ channel [compUse.name/]_[flow.source.oclAsType(Pin).name/]_[flow.source.oclAsTyp
 ['\t\t'/]['['/]| [connector.name/]_[getActivityToStructure(connector.definition, aModel.allocation)/]_internal |]
 ['\t'/][connector.name/]_ACTIONS_[getActivityToStructure(connector.definition, aModel.allocation)/]) \[connector.name/]_[getActivityToStructure(connector.definition, aModel.allocation)/]_internal 
 
-[connector.name/]_[getActivityToStructure(connector.definition, aModel.allocation)/]_internal = {| |}
+[connector.name/]_[getActivityToStructure(connector.definition, aModel.allocation)/]_internal = {| 
+[for (flow : ActivityRelation | getActivityFromAllocTable(connector.definition, aModel.allocation)._body.flows )separator (',')]
+	[if (flow.target.oclIsKindOf(Pin) and flow.oclIsKindOf(ActivityFlow))]
+[connector.name/]_[flow.target.oclAsType(Pin).name/]_[flow.target.oclAsType(Pin).definition.name/] 		
+	[else]
+[connector.name/]_[flow.source.oclAsType(Pin).name/]_[flow.source.oclAsType(Pin).definition.name/] 
+	[/if]
+[/for],
+[for (pin : Pin| getActivityFromAllocTable(connector.definition, aModel.allocation).inParameters)]
+	[getPortAndPinConnIn(connector, pin)/]
+,   [getPortAndPinConnOut(connector, pin)/]
+[/for]
+|}
 
 [for (flow : ActivityRelation | getActivityFromAllocTable(connector.definition, aModel.allocation)._body.flows )]
 	[if (flow.target.oclIsKindOf(Pin) and flow.oclIsKindOf(ActivityFlow))]
@@ -251,7 +284,7 @@ channel [connector.name/]_[flow.source.oclAsType(Pin).name/]_[flow.source.oclAsT
 
 [for (pin : Pin | getActivityFromAllocTable(connector.definition, aModel.allocation).inParameters)]
 [connector.name/]_[pin.name/]_[getActivityToStructure(connector.definition, aModel.allocation)/] =
-['\t'/][getPortAndPinConn(connector, pin)/]
+['\t'/][getPortAndPinConnIn(connector, pin)/]?[pin.definition.name.toLowerCase()/] ->
 ['\t'/][connector.name/]_[pin.name/]_[pin.definition.name/]![pin.definition.name.toLowerCase()/] ->
 ['\t'/][connector.name/]_[pin.name/]_[getActivityToStructure(connector.definition, aModel.allocation)/]
 
@@ -259,7 +292,7 @@ channel [connector.name/]_[flow.source.oclAsType(Pin).name/]_[flow.source.oclAsT
 [for (pin : Pin | getActivityFromAllocTable(connector.definition, aModel.allocation).outParameters)]
 [connector.name/]_[pin.name/]_[getActivityToStructure(connector.definition, aModel.allocation)/] = 
 ['\t'/][connector.name/]_[pin.name/]_[pin.definition.name/]?[pin.definition.name.toLowerCase()/] ->
-['\t'/][getPortAndPinConn(connector, pin)/]
+['\t'/][getPortAndPinConnOut(connector, pin)/]![pin.definition.name.toLowerCase()/] ->
 ['\t'/][connector.name/]_[pin.name/]_[getActivityToStructure(connector.definition, aModel.allocation)/]
 		[/for]
 
@@ -271,14 +304,43 @@ channel [connector.name/]_[flow.source.oclAsType(Pin).name/]_[flow.source.oclAsT
 					[/if]
 				[/let]
 				[let constraint : ConstraintDef = self]
-[constraint.name/]([if (constraint.inParameters <> null)]x[/if][for (param : Pin | constraint.inParameters)before (',')separator (',')][param.name/][/for]) = [constraint.getContraints(constraint)/] 
+[constraint.name/]([if (constraint.inParameters <> null)]x[/if][for (param : Pin | constraint.inParameters)before (',')separator (',')][param.name/][/for]) = [constraint.getContraints(constraint)/]
+
+			[for (paramIn : Pin | constraint.inParameters)]
+channel [constraint.name/]_[paramIn.name/]_[paramIn.definition.name/] : [getTypePin(paramIn)/]
+			[/for]
+[constraint.name/]_check = 
+			[for (paramIn : Pin | constraint.inParameters)]
+['\t'/][constraint.name/]_[paramIn.name/]_[paramIn.definition.name/]?[paramIn.name/] ->
+			[/for]
+['\t'/]true &
+['\t\t'/]let
+['\t\t'/] S = {[for (out : Pin | constraint.outParameters)separator (',')][out.name/][/for] | [for (out : Pin | constraint.outParameters)separator (',')][out.name/] <- [getTypePin(out)/][/for],
+				[constraint.name/]([for (out : Pin | constraint.outParameters)separator (',')][out.name/][/for],[for (paramIn : Pin | constraint.inParameters)separator (',')][paramIn.name/][/for])}
+['\t\t'/]within IS_TRUE(not (S == {}))
+
+assert [constraint.name/]_check:['['/]livelock free]
+
+[constraint.name/]_s = 
+			{([for (paramIn : Pin | constraint.inParameters)separator (',')][paramIn.name/][/for],[for (out : Pin | constraint.outParameters)separator (',')][out.name/][/for]) | [for (paramIn : Pin | constraint.inParameters)separator (',')][paramIn.name/] <- [getTypePin(paramIn)/][/for],
+['\t\t\t'/][for (out : Pin | constraint.outParameters)separator (',')][out.name/] <- [getTypePin(out)/][/for],
+['\t\t\t'/][constraint.name/]([for (out : Pin | constraint.outParameters)separator (',')][out.name/][/for],[for (paramIn : Pin | constraint.inParameters)separator (',')][paramIn.name/][/for])}  
 				[/let]
 				[let exe: Executable = self]
 [exe.name/]([for (param : TypeUse | exe.params)separator (',')][param.name/][/for])= [exe.getExecution(exe)/]
-				[/let]			
-																
+
+[exe.name/]_s = 
+			{([for (paramIn : TypeUse | exe.params)separator (',')][paramIn.name/][/for],[for (out : TypeDef | exe.returnType)separator (',')][out.name.toLowerCase()/][/for]) | [for (paramIn : TypeUse | exe.params)separator (',')][paramIn.name/] <- [getTypeCSP(paramIn.definition)/][/for],
+['\t\t\t'/][for (out : TypeDef | exe.returnType)separator (',')][out.name.toLowerCase()/] <- [getTypeCSP(out)/][/for],
+['\t\t\t'/][exe.returnType.name.toLowerCase()/] == [exe.name/]([for (paramIn : TypeUse | exe.params)separator (',')][paramIn.name/][/for])}
+				[/let]											
 		[/for]						
 	[/for]
+
+	[for (behaviorExe : Allocation | aModel.allocation.allocs)? (behaviorExe.oclIsKindOf(ExecutableAllocation))]
+assert IS_TRUE(subset([behaviorExe.oclAsType(ExecutableAllocation).source.name/]_s,[for (constraint : ConstraintUse | behaviorExe.oclAsType(ExecutableAllocation).target.constraints)][constraint.definition.name/]_s[/for])):['['/]divergence free]
+	[/for]
+	
 [aModel.getDelegations()/]		
 
 [/file]

@@ -2,6 +2,7 @@ package org.csp.translater.query;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import org.eclipse.emf.common.util.EList;
 import org.sysadl.ActionDef;
@@ -16,12 +17,14 @@ import org.sysadl.ComponentDef;
 import org.sysadl.ComponentUse;
 import org.sysadl.CompositePortDef;
 import org.sysadl.Configuration;
+import org.sysadl.ConnectorBinding;
 import org.sysadl.ConnectorUse;
 import org.sysadl.ConstraintDef;
 import org.sysadl.ConstraintUse;
 import org.sysadl.DataStore;
 import org.sysadl.DataTypeDef;
 import org.sysadl.Delegation;
+import org.sysadl.DimensionDef;
 import org.sysadl.ElementDef;
 import org.sysadl.Executable;
 import org.sysadl.Model;
@@ -30,6 +33,8 @@ import org.sysadl.PortUse;
 import org.sysadl.SimplePortDef;
 import org.sysadl.Statement;
 import org.sysadl.StructuralDef;
+import org.sysadl.TypeDef;
+import org.sysadl.ValueTypeDef;
 import org.sysadl.grammar.util.SysADLGrammarUtil;
 import org.sysadl.impl.ActionDefImpl;
 import org.sysadl.impl.ActionUseImpl;
@@ -301,17 +306,63 @@ public class AuxiliarsQuery {
 				}
 				else if (aux[i].equals("&&")) {
 					result += " and ";
-				}
-				else if (aux[i].equals("?")) {
+				}				
+				if (aux[i].equals("?")) {
 					String condition = "";
 					for (int j = 0; j < i; j++) {					
 						condition += aux[j];
 					}
-					result += "if ("+condition+ ") then ";
-				}
-				else if (aux[i].equals(":")) {
-					result += " else ";				
-				}
+					result = "if ("+condition+ ") then ";
+					String[] aux2 = aux;
+					for (int j = 0; j < aux2.length; j++) {
+						if (aux2[j].equals(":")) {
+							String stmtElse = "";
+							String stmtIF = "";
+							if (constraint.getOutParameters().get(0).getDefinition() instanceof DataTypeDef) {
+								ArrayList<String> outParam = new ArrayList<String>();
+								for (int k = j; k > i; k--) {																
+									if (aux2[k].contains("->") && aux2[k].contains(".")) {
+										String[] type = aux2[k].split("->");
+										outParam.add(type[1]);
+									}																	
+								}
+								String param = "";
+								for (int h = outParam.size(); h > 0 ; h--) {
+									if (h == 1) {
+										param += outParam.get(h-1);
+									}
+									else {
+										param += outParam.get(h-1)+",";
+									}
+								}
+								stmtIF = "x == ( "+param+" ) else";
+								outParam.clear();
+								for (int k = j; k < aux2.length; k++) {																	
+									if (aux2[k].contains("->") && aux2[k].contains(".")) {
+										String[] type = aux2[k].split("->");
+										outParam.add(type[1]);
+									}																		
+								}
+								param = "";
+								for (int h = 0; h < outParam.size() ; h++) {
+									if (h == outParam.size()-1) {
+										param += outParam.get(h);
+									}
+									else {
+										param += outParam.get(h)+",";
+									}
+								}
+								stmtElse = " x == ( "+param+" )";
+								result += stmtIF + stmtElse;
+							}
+							else {
+								result += "x == "+aux[j-1] + " else x == "+ aux[aux.length-1];
+								
+							}
+						}
+					}
+					break;
+				}				
 				else if (aux[i].contains("->") && aux[i].contains(".")) {
 					String[] type = aux[i].split("->");
 					result += type[1];
@@ -347,6 +398,7 @@ public class AuxiliarsQuery {
 			expres = SysADLGrammarUtil.getInstance().nodeText(((Statement)executable.getBody().get(i)));
 			expres = expres.replaceAll(";", "");
 			String[] aux = expres.split(" ");
+			
 			for (int j = 0; j < aux.length; j++) {
 				if (aux[j].equals("return")) {
 					aux[j] = "";
@@ -358,18 +410,86 @@ public class AuxiliarsQuery {
 					String[] aux2 = aux[j].split("->");
 					for (int k = 0; k < executable.getParams().size(); k++) {
 						if (aux2[0].equals(executable.getParams().get(k).getName())) {
-							aux2[1] = "get"+aux2[1]+executable.getParams().get(k).getDefinition().getName()+"("+aux2[0]+")";
+							aux2[1] = executable.getParams().get(k).getDefinition().getName()+"_"+aux2[1]+"("+aux2[0]+")";
 						}
 					}
 					aux[j] = "";
 					result += aux2[1];
 				}
 				if (aux[j].contains("if")) {
+					ArrayList<String> out = new ArrayList<String>();
+					ArrayList<String> outElse = new ArrayList<String>();
+					boolean afterElse = false;
+					String stmtOut = "";
+					String stmtOutElse = "";
 					for (int k = j+1; k < aux.length; k++) {
 						if (aux[k].contains(")")) {
 							aux[k] += " then ";
 						}
+						if (executable.getReturnType() instanceof DataTypeDef) {
+							for (int h = k; h < aux.length; h++) {
+								if (aux[k].equals("else")) {
+									afterElse = true;
+								}
+								if (afterElse) {
+									if (aux[k].contains("=")) {
+										aux[k-1] = " ";
+										aux[k] = " ";
+										if (aux[k+1].contains("::")) {
+											outElse.add( aux[k+1].substring(aux[k+1].lastIndexOf("::")+2));
+											aux[k+1] = "";
+										}									
+									}
+									if (aux[k].equals("}")) {
+										aux[k] = "";
+									}
+								}
+								else {
+									if (aux[k].contains("=")) {
+										aux[k-1] = " ";
+										aux[k] = " ";
+										if (aux[k+1].contains("::")) {
+											out.add( aux[k+1].substring(aux[k+1].lastIndexOf("::")+2));
+											aux[k+1] = "";
+										}									
+									}
+									if (aux[k].equals("}")) {
+										aux[k] = "";
+									}
+								}								
+							}
+							
+						}							
 					}
+					for (int w = 0; w < out.size() ; w++) {
+						if (w == out.size()-1) {
+							stmtOut += out.get(w);
+						}
+						else
+							stmtOut += out.get(w)+",";
+					}
+					if (stmtOut != "") {
+						stmtOut =  "(" + stmtOut + ")";
+					}
+					for (int w = 0; w < outElse.size() ; w++) {
+						if (w == outElse.size()-1) {
+							stmtOutElse += outElse.get(w);
+						}
+						else
+							stmtOutElse += outElse.get(w)+",";
+					}
+					if (stmtOutElse != "") {
+						stmtOutElse =  "(" + stmtOutElse + ")";
+					}
+					for (int k = 0; k < aux.length; k++) {
+						if (aux[k].contains("then")) {
+							aux[k] += stmtOut; 
+						}
+						if (aux[k].contains("else")) {
+							aux[k] += stmtOutElse; 
+						}
+					}
+					
 				}
 				if (aux[j].equals("else")) {
 					aux[j-1] +=" ";
@@ -378,30 +498,10 @@ public class AuxiliarsQuery {
 				if (aux[j].contains("&&")) {
 					aux[j] = aux[j].replaceAll("&&", " and ");
 				}
-				if (aux[j].contains("let")) {					
-					String out = "";
-					String[] teste;
-//					((DataTypeDef)executable.getReturnType()).getAttributes();
-//					for (int k = 0; k < ((DataTypeDef)executable.getReturnType()).getAttributes().size(); k++) {
-//						for (int h = i; h < executable.getBody().size(); h++) {
-//							teste = SysADLGrammarUtil.getInstance().nodeText(executable.getBody().get(h)).split(" ");
-//							for (int l = 0; l < teste.length; l++) {
-//								if (teste[l].contains("->")) {
-//									String[] param = teste[l].split("->");
-//									if (((DataTypeDef)executable.getReturnType()).getAttributes().get(k).getName().equals(param[1])) {
-//										if (k == ((DataTypeDef)executable.getReturnType()).getAttributes().size()-1) {
-//											out += teste[l+2];											
-//										}
-//										else {
-//											out += teste[l+2]+".";										
-//										}
-//										
-//									}
-//								}
-//							}
-//						}
-//					}
-					return out;					
+				if (aux[j].contains("let")) {
+					for (int k = 0; k < aux.length; k++) {
+						aux[k] = "";
+					}
 				}
 				result += aux[j];
 			}			
@@ -584,46 +684,70 @@ public class AuxiliarsQuery {
 	public String getPortAndPinConn(ConnectorUse conn, Pin pin) {
 		String result = "";
 		for (PortUse portUse : conn.getPorts()) {
-			if (portUse.getName().equals(pin.getName()) && ((SimplePortDef)portUse.getDefinition()).getFlowProperties().getLiteral().equalsIgnoreCase("in")) {
-				result += conn.getName()+"_"+ portUse.getName() + "_"+ portUse.getDefinition().getName()+ "?" + portUse.getName() + "-> \n";
+			if (((SimplePortDef)portUse.getDefinition()).getFlowProperties().getLiteral().equalsIgnoreCase("in")) {
+				result += conn.getName()+"teste_"+ portUse.getName() + "_"+ portUse.getDefinition().getName()+ "?" + portUse.getName() + "-> \n";
 			}
-			if (portUse.getName().equals(pin.getName()) && ((SimplePortDef)portUse.getDefinition()).getFlowProperties().getLiteral().equalsIgnoreCase("out")) {
-				result += conn.getName()+"_"+ portUse.getName() + "_"+ portUse.getDefinition().getName()+ "!" + portUse.getName() + "-> \n";
+			if (((SimplePortDef)portUse.getDefinition()).getFlowProperties().getLiteral().equalsIgnoreCase("out")) {
+				result += conn.getName()+"teste_"+ portUse.getName() + "_"+ portUse.getDefinition().getName()+ "!" + portUse.getName() + "-> \n";
 			}
 		}
 		
 		return result;
 	}
 	
-	public String getTypePort(PortUse port) {
+	public String getPortAndPinConnIn(ConnectorUse conn, Pin pin) {
+		String result = "";
+		for (ConnectorBinding bind : conn.getBindings()) {
+			if (conn.getName().equalsIgnoreCase("c1")) {
+				result += "s1_"+ getPortPinIN(bind);
+			}
+			else
+				result += "s2_"+ getPortPinIN(bind);
+			
+		}
 		
-		switch (((SimplePortDef)port.getDefinition()).getFlowType().getName()) {
+		return result;
+	}
+	
+	public String getPortAndPinConnOut(ConnectorUse conn, Pin pin) {
+		String result = "";
+		for (ConnectorBinding bind : conn.getBindings()) {
+			
+			result += "rtc_"+ getPortPinOUT(bind);
+		}
+		
+		return result;
+	}
+	
+	private String getPortPinIN(ConnectorBinding bind) {
+		return bind.getSource().getName() + "_"+ bind.getSource().getDefinition().getName();
+	}
+	
+	private String getPortPinOUT(ConnectorBinding bind) {
+		return bind.getDestination().getName() + "_"+ bind.getDestination().getDefinition().getName();
+	}
+	
+	public String getTypePort(PortUse port) {		
+		return getTypeCSP(((SimplePortDef)port.getDefinition()).getFlowType());
+	}
+	
+	public String getTypeCSP(TypeDef type) {
+		switch (type.getName()) {
 		case "Int":			
-			return "Nat";
+			return "{0..5}";
 		case "Boolean":
 			return "Bool";
 		case "String":
 			return "Char";
 		case "Real":
-			return "Nat.Nat";
+			return "{0..5}";
 		default:
-			return ((SimplePortDef)port.getDefinition()).getFlowType().getName();
+			return type.getName();
 		}
 	}
 	
-	public String getTypePin(Pin pin) {
-		switch (pin.getDefinition().getName()) {
-		case "Int":			
-			return "Nat";
-		case "Boolean":
-			return "Bool";
-		case "String":
-			return "Char";
-		case "Real":
-			return "Nat.Nat";
-		default:
-			return pin.getDefinition().getName();
-		}
+	public String getTypePin(Pin pin) {		
+		return getTypeCSP(pin.getDefinition());
 	}
 	
 	private int getQntCompNotBoundary(ComponentDef compDef) {
@@ -656,6 +780,16 @@ public class AuxiliarsQuery {
 			
 		}
 		return result;
+	}
+	
+	public String getTypeUnity(TypeDef typeDef) {		
+		TypeDef type = typeDef;
+		int cont =0;
+		while (! (((ValueTypeDef)type).getSuperType() == null) && cont < 100) {
+			type = ((ValueTypeDef)type).getSuperType();			
+		}
+		
+		return getTypeCSP(type);
 	}
 	
 }

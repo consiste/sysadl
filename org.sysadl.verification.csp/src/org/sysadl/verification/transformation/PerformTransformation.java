@@ -39,8 +39,8 @@ public class PerformTransformation {
             
             try {
             	Session session = new Session();
-              //session.loadFile(folder.getAbsolutePath() + "\\sysadl2csp.csp");
-              session.loadFile("C:\\Users\\Fagne\\OneDrive\\Documentos\\SysADL_CSP\\Samples\\RTC\\RTC_Asserts.csp");              
+              session.loadFile(folder.getAbsolutePath() + "\\sysadl2csp.csp");
+              //session.loadFile("C:\\Users\\Fagne\\OneDrive\\Documentos\\SysADL_CSP\\Samples\\RTC\\RTC_Asserts.csp");              
 //                session.loadFile("C:\\Users\\Fagne\\OneDrive\\Documentos\\SysADL_CSP\\Samples\\AGV\\AGV.csp");
 //            	session.loadFile("C:\\Users\\Fagne\\OneDrive\\Documentos\\SysADL_CSP\\Samples\\RTC\\RTC_Ex.csp");
                 

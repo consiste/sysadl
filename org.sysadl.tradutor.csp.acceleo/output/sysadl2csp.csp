@@ -17,8 +17,7 @@ MIN_F_TEMP = 35
 MAX_F_TEMP = 40
 DEFAULT_C_TEMP = 1
 FahrenheitTemperature = {MIN_F_TEMP..MAX_F_TEMP}
-CelsiusTemperature = {(5*(MIN_F_TEMP - 32)/9)..(5*(MAX_F_TEMP - 32)/9)}
---CelsiusTemperature = {MIN_F_TEMP..MAX_F_TEMP}					
+CelsiusTemperature = {(5*(MIN_F_TEMP - 32)/9)..(5*(MAX_F_TEMP - 32)/9)}				
 				
 			
 			
@@ -552,7 +551,7 @@ CalculateAverageTemperatureEQ_s =
 			
 			
 			
-CompareTemperatureEQ(x,target,average) = if (average>target) then x == ( On,Off ) else x == ( Off,On )
+CompareTemperatureEQ(x,target,average) = if (average>target) then x == ( Off,On ) else x == ( On,Off )
 
 channel CompareTemperatureEQ_target_CelsiusTemperature : CelsiusTemperature
 channel CompareTemperatureEQ_average_CelsiusTemperature : CelsiusTemperature

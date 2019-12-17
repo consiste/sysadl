@@ -7,22 +7,18 @@ Bundle-ClassPath: FDR-lib/bin/fdr.jar,
  .
 Automatic-Module-Name: org.sysadl.verification.csp
 Require-Bundle: org.eclipse.ui,
- org.eclipse.emf;bundle-version="2.8.0",
- org.eclipse.xtext,
- org.apache.log4j,
+ org.eclipse.core.runtime,
  org.eclipse.core.resources,
- org.sysadl.grammar,
+ org.eclipse.emf;bundle-version="2.8.0",
  org.eclipse.emf.common,
  org.eclipse.emf.ecore,
- org.eclipse.emf.mwe.core,
  org.sysadl.tradutor.csp.acceleo;bundle-version="1.0.0",
  org.eclipse.acceleo.engine;bundle-version="3.7.8"
-Import-Package: org.sysadl,
- org.sysadl.grammar.util,
- com.google.inject;version="1.3.0",
+Import-Package: com.google.inject;version="1.3.0",
  org.eclipse.core.runtime;version="3.5.0",
  org.eclipse.emf.common.util,
- org.eclipse.swt.widgets
+ org.sysadl,
+ org.sysadl.grammar.util
 Export-Package: org.sysadl.verification.csp,
  org.sysadl.verification.transformation
 

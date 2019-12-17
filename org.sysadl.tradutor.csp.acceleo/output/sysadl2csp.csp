@@ -13,11 +13,10 @@ Commands_heater((heater,cooler)) = heater
 Commands_cooler((heater,cooler)) = cooler
 			
 			
-MIN_F_TEMP = 35
-MAX_F_TEMP = 40
-DEFAULT_C_TEMP = 1
-FahrenheitTemperature = {MIN_F_TEMP..MAX_F_TEMP}
-CelsiusTemperature = {(5*(MIN_F_TEMP - 32)/9)..(5*(MAX_F_TEMP - 32)/9)}				
+CelsiusTemperature = {0..5}						
+				
+			
+FahrenheitTemperature = {0..5}						
 				
 			
 			
@@ -70,8 +69,6 @@ RTCSystemCFD_internal = {| rtc_detected_PresenceIPT,
 						rtc_heating_CommandOPT,
 						rtc_cooling_CommandOPT |}
 
-assert RTCSystemCFD:[deadlock free]
-assert RTCSystemCFD:[livelock free]
 
 RTCSystemCFD_COMPONENTS = 
 	s1_TemperatureSensorCP
@@ -144,8 +141,7 @@ rtc_COMPONENTS =
 	|||pc_PresenceCheckerCP
 
 rtc_CONNECTORS = 
-	target_CTemperatureCN
-	|||average_CTemperatureCN
+	target_CTemperatureCN	|||average_CTemperatureCN|||rtc_DELEGATIONS
 rtc_DELEGATIONS = 
 	userTemp_To_userTemp	
 	|||detected_To_detected	
@@ -272,6 +268,7 @@ cc1_CommandCN =
 	rtc_heating_CommandOPT?command->								
 	a1_controllerH_CommandIPT!command->								
 cc1_CommandCN
+
 
 			
 channel sm_s1_CTemperatureIPT : CelsiusTemperature
@@ -514,14 +511,23 @@ average_CTemperatureCN =
 	cm_average2_CTemperatureIPT!celsiustemperature->								
 average_CTemperatureCN
 
+
 			
+
 			
+
 			
+
 			
+
 			
+
 			
+
 			
+
 			
+
 			
 CalculateAverageTemperatureEQ(x,t1,t2) = x== (t1 + t2)/2
 
@@ -695,6 +701,19 @@ assert IS_TRUE(subset(CommandHeaterEx_s,CommandHeaterEQ_s)):[divergence free]
 assert IS_TRUE(subset(CommandCoolerEx_s,CommandCoolerEQ_s)):[divergence free]
 assert IS_TRUE(subset(CheckPresenceToSetTemperature_s,CheckPresenceToSetTemperatureEQ_s)):[divergence free]
 assert IS_TRUE(subset(CalculateAverageTemperatureEx_s,CalculateAverageTemperatureEQ_s)):[divergence free]
+
+assert RTCSystemCFD:[deadlock free]
+assert RTCSystemCFD:[livelock free]
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 	
 userTemp_To_userTemp= rtc_userTemp_CTemperatureIPT?celsiustemperature ->
 pc_userTemp_CTemperatureIPT!celsiustemperature ->

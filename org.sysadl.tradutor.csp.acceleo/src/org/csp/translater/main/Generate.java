@@ -348,8 +348,8 @@ public class Generate extends AbstractAcceleoGenerator {
      */
     @Override
     public void registerPackages(ResourceSet resourceSet) {
-        super.registerPackages(resourceSet);
-        
+        super.registerPackages(resourceSet);                       
+                
     	SysADLPackage.eINSTANCE.eClass(); // redudancy, add EMF package to registry as sideffect
     	//SysADLStandaloneSetup.doSetup(); // add xtext parser to registry 
         /*

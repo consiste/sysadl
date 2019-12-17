@@ -10,10 +10,9 @@ import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.sysadl.Model;
-
-import uk.ac.ox.cs.fdr.Assertion;
-import uk.ac.ox.cs.fdr.Session;
-import uk.ac.ox.cs.fdr.fdr;
+import org.sysadl.verification.fdr.adapters.Assertion;
+import org.sysadl.verification.fdr.adapters.FDR;
+import org.sysadl.verification.fdr.adapters.Session;
 
 public class PerformTransformation {
 
@@ -42,7 +41,7 @@ public class PerformTransformation {
 				System.out.println(assertion.toString() + " " + (assertion.passed() ? "Passed" : "Failed"));
 			}
 
-			fdr.libraryExit();
+			FDR.libraryExit();
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

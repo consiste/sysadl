@@ -6,24 +6,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.csp.translater.main.Generate;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.sysadl.Model;
 
 import uk.ac.ox.cs.fdr.Assertion;
-import uk.ac.ox.cs.fdr.FileLoadError;
-import uk.ac.ox.cs.fdr.InputFileError;
 import uk.ac.ox.cs.fdr.Session;
 import uk.ac.ox.cs.fdr.fdr;
 
 
 public class PerformTransformation {
 
-	public static void run(IFile file,Model model, Object architecture) {	
-		URI modelURI = URI.createFileURI(file.getLocation().toString());//sysadl model
-		String path = file.getLocation().toString();
-		path = path.replace(file.getLocation().lastSegment(), "");
+	public static void run(Model model, Object architecture) {	
+		Resource r = model.eResource();
+		URI modelURI = r.getURI();
+		String path = modelURI.path();
+		path = path.replace(modelURI.lastSegment(), "");
         File folder = new File(path+ "output");
         
         List<String> arguments = new ArrayList<String>();
@@ -33,11 +32,11 @@ public class PerformTransformation {
 			Generate generator = new Generate(modelURI, folder, arguments);
 			
 			//for (int i = 2; i < args.length; i++) {
-            generator.addPropertiesFile(file.getName());
+            generator.addPropertiesFile(model.getName()); // was file
             //}
             generator.doGenerate(new BasicMonitor()); 
             
-            try {
+//            try {
             	Session session = new Session();
               session.loadFile(folder.getAbsolutePath() + "\\sysadl2csp.csp");
               //session.loadFile("C:\\Users\\Fagne\\OneDrive\\Documentos\\SysADL_CSP\\Samples\\RTC\\RTC_Asserts.csp");              
@@ -49,12 +48,12 @@ public class PerformTransformation {
                     System.out.println(assertion.toString()+" "+
                         (assertion.passed() ? "Passed" : "Failed"));
                 }
-			} catch (InputFileError error) {
-		        System.out.println(error);
-		    }
-		    catch (FileLoadError error) {
-		        System.out.println(error);
-		    }
+//			} catch (InputFileError error) {
+//		        System.out.println(error);
+//		    }
+//		    catch (FileLoadError error) {
+//		        System.out.println(error);
+//		    }
 
 		    fdr.libraryExit();
             

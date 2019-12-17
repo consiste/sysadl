@@ -55,8 +55,6 @@ channel [compUse.name/]_[portUse.name/]_[compPort.name/]_[portUse.definition.nam
  [/for] 					|}
 [compDef.name/]_internal = {| [getInternalChannelsCompDef(compDef)/] |}
 
-assert [compDef.name/]:['['/]deadlock free]
-assert [compDef.name/]:['['/]livelock free]
 
 [compDef.name/]_COMPONENTS = ['\n\t'/][for (compUse : ComponentUse | compDef.composite.components)separator ('\t|||')]
 [compUse.name/]_[compUse.definition.name/]
@@ -114,9 +112,9 @@ assert [compDef.name/]:['['/]livelock free]
 [compUseInt.name/]_[compUseInt.definition.name/]
  [/for]
 
-[compUse.name/]_CONNECTORS = ['\n\t'/][for (connectorUse : ConnectorUse | compUse.definition.composite.connectors)separator ('\t|||')]
-[connectorUse.name/]_[connectorUse.definition.name/]
- [/for]
+[compUse.name/]_CONNECTORS = ['\n\t'/][for (connectorUse : ConnectorUse | compUse.definition.composite.connectors)separator ('\t|||')after ('|||')]
+[connectorUse.name/]_[connectorUse.definition.name/][/for]
+[compUse.name/]_DELEGATIONS
 								[if (compUse.definition.composite.delegations <> null)]
 [compUse.name/]_DELEGATIONS = ['\n\t'/][for (delegation : Delegation | compUse.definition.composite.delegations)separator ('\t|||')]
 [delegation.source.name/]_To_[delegation.destination.name/]	
@@ -302,6 +300,7 @@ channel [connector.name/]_[flow.source.oclAsType(Pin).name/]_[flow.source.oclAsT
 							[/for]																		
 						[/for]									
 					[/if]
+
 				[/let]
 				[let constraint : ConstraintDef = self]
 [constraint.name/]([if (constraint.inParameters <> null)]x[/if][for (param : Pin | constraint.inParameters)before (',')separator (',')][param.name/][/for]) = [constraint.getContraints(constraint)/]
@@ -340,6 +339,20 @@ assert [constraint.name/]_check:['['/]livelock free]
 	[for (behaviorExe : Allocation | aModel.allocation.allocs)? (behaviorExe.oclIsKindOf(ExecutableAllocation))]
 assert IS_TRUE(subset([behaviorExe.oclAsType(ExecutableAllocation).source.name/]_s,[for (constraint : ConstraintUse | behaviorExe.oclAsType(ExecutableAllocation).target.constraints)][constraint.definition.name/]_s[/for])):['['/]divergence free]
 	[/for]
+
+[for (pck : Package | aModel.packages)]
+	[for (elem : ElementDef | pck.definitions)]
+		[let compDef : ComponentDef = self]
+			[if (compDef.composite <> null)]
+				[if (isEmpty_Delegations(compDef.composite))]
+assert [compDef.name/]:['['/]deadlock free]
+assert [compDef.name/]:['['/]livelock free]
+				[/if]
+			[/if]
+			
+		[/let]
+	[/for]
+[/for]
 	
 [aModel.getDelegations()/]		
 

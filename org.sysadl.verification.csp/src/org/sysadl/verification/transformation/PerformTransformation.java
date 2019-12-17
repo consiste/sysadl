@@ -36,19 +36,18 @@ public class PerformTransformation {
             generator.addPropertiesFile(file.getName());
             //}
             generator.doGenerate(new BasicMonitor()); 
-            
-            try {
-            	Session session = new Session();
-              session.loadFile(folder.getAbsolutePath() + "\\sysadl2csp.csp");
+            Session session = new Session();
+            try {            	
+            	session.loadFile(folder.getAbsolutePath() + "\\sysadl2csp.csp");
               //session.loadFile("C:\\Users\\Fagne\\OneDrive\\Documentos\\SysADL_CSP\\Samples\\RTC\\RTC_Asserts.csp");              
 //                session.loadFile("C:\\Users\\Fagne\\OneDrive\\Documentos\\SysADL_CSP\\Samples\\AGV\\AGV.csp");
 //            	session.loadFile("C:\\Users\\Fagne\\OneDrive\\Documentos\\SysADL_CSP\\Samples\\RTC\\RTC_Ex.csp");
+            	for (Assertion assertion : session.assertions()) {
+    	            assertion.execute(null);
+    	            System.out.println(assertion.toString()+" "+
+    	                (assertion.passed() ? "Passed" : "Failed"));
+    	        }
                 
-                for (Assertion assertion : session.assertions()) {
-                    assertion.execute(null);
-                    System.out.println(assertion.toString()+" "+
-                        (assertion.passed() ? "Passed" : "Failed"));
-                }
 			} catch (InputFileError error) {
 		        System.out.println(error);
 		    }
@@ -57,11 +56,13 @@ public class PerformTransformation {
 		    }
 
 		    fdr.libraryExit();
+		    
             
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		// TODO Auto-generated method stub
 	}
 

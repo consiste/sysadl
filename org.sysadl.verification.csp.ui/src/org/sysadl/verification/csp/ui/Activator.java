@@ -7,6 +7,7 @@ import org.eclipse.sirius.business.api.componentization.ViewpointRegistry;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+import org.sysadl.verification.fdr.adapters.FDRAdapterLoader;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -36,6 +37,8 @@ public class Activator extends AbstractUIPlugin {
 	  plugin = this;
 	  viewpoints = new HashSet<Viewpoint>();
 	  viewpoints.addAll(ViewpointRegistry.getInstance().registerFromPlugin(PLUGIN_ID + "/description/ui.odesign")); 
+	  
+	  FDRAdapterLoader.setPreferenceStore(Activator.getDefault().getPreferenceStore()); // this is necessary to the preference pages
     }
 
     /*

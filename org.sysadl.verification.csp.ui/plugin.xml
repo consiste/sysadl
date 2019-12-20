@@ -14,4 +14,19 @@
            id="org.sysadl.verification.csp.ui.action">
      </javaActions>
   </extension>
+  <extension
+        point="org.eclipse.ui.preferencePages">
+     <page
+           category="org.sysadl.SysADL"
+           class="org.sysadl.verification.csp.ui.preferences.VerificationPreferences"
+           id="org.sysadl.verification.csp.ui.preferences.VerificationPreferences"
+           name="Verification Preferences">
+     </page>
+  </extension>
+  <extension
+        point="org.eclipse.core.runtime.preferences">
+     <initializer
+           class="org.sysadl.verification.csp.ui.preferences.PreferenceInitializer">
+     </initializer>
+  </extension>
 </plugin>

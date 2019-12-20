@@ -3,15 +3,7 @@ package org.sysadl.verification.csp.ui;
 import java.util.Collection;
 import java.util.Map;
 
-import org.eclipse.core.internal.resources.WorkspaceRoot;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.emf.common.CommonPlugin;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.diagram.business.internal.metamodel.spec.DNodeListSpec;
 import org.eclipse.sirius.tools.api.ui.IExternalJavaAction;
 import org.eclipse.ui.console.ConsolePlugin;
@@ -21,8 +13,8 @@ import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.sysadl.ComponentDef;
 import org.sysadl.Model;
-import org.sysadl.NamedElement;
 import org.sysadl.util.SysADLUtil;
+import org.sysadl.verification.fdr.adapters.FDRAdapterLoader;
 import org.sysadl.verification.transformation.PerformTransformation;
 
 public class Action implements IExternalJavaAction {

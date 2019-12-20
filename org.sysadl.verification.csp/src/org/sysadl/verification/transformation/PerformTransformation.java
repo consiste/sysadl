@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.csp.translater.main.Generate;
 import org.eclipse.emf.common.util.BasicMonitor;
@@ -12,6 +13,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.sysadl.Model;
 import org.sysadl.verification.fdr.adapters.Assertion;
 import org.sysadl.verification.fdr.adapters.FDR;
+import org.sysadl.verification.fdr.adapters.FDRAdapterLoader;
 import org.sysadl.verification.fdr.adapters.Session;
 
 public class PerformTransformation {
@@ -25,6 +27,13 @@ public class PerformTransformation {
 
 		List<String> arguments = new ArrayList<String>();
 
+			String fdrPath = FDRAdapterLoader.getPreferenceStore().getString("CSP.Path");
+			File f = new File(fdrPath);
+		if (!f.exists()) {
+			java.util.logging.Logger.getGlobal().log(Level.SEVERE, "FDR could not be found, abourting. Configure its path in Window > Preferences > SysADL");
+			return;
+		}
+		
 		try {
 
 			Generate generator = new Generate(modelURI, folder, arguments);

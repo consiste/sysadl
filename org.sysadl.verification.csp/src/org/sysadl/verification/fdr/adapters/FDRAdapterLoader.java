@@ -62,5 +62,12 @@ public class FDRAdapterLoader {
 	public static IPreferenceStore getPreferenceStore() {
 		return store;
 	}
+
+	public static boolean fdrExists() {
+		if (store==null) return false;
+		String fdrPath = store.getString("CSP.Path");
+		File f = new File(fdrPath);
+		return f.exists();
+	}
 	
 }

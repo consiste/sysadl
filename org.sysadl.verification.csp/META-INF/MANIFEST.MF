@@ -20,5 +20,6 @@ Import-Package: com.google.inject,
  org.sysadl,
  org.sysadl.grammar.util
 Export-Package: org.sysadl.verification.csp,
+ org.sysadl.verification.fdr.adapters,
  org.sysadl.verification.transformation
 

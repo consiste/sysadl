@@ -26,7 +26,7 @@ public class Assertion {
 			Method execute = adapteeClass.getMethod("execute", cancellerClass);
 			
 			execute.invoke(adaptee, arg);
-		} catch (NoSuchMethodException | SecurityException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		} catch (NoSuchMethodException | SecurityException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | MalformedURLException e) {
 			e.printStackTrace();
 		}
 	}

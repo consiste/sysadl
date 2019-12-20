@@ -97,7 +97,7 @@ public class SysADLCSPVerification implements IHandler {
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
+		// this is only enable if the FDR is found
 		return true;
 	}
 

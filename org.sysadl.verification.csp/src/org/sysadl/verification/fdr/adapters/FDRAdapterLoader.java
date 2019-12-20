@@ -5,6 +5,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
+
 public class FDRAdapterLoader {
 	protected static final String sessionClasspath = "uk.ac.ox.cs.fdr.Session";
 	protected static final String assertionClasspath = "uk.ac.ox.cs.fdr.Assertion";
@@ -13,30 +18,49 @@ public class FDRAdapterLoader {
 	protected static final String fileLoadErrorClasspath = "uk.ac.ox.cs.fdr.FileLoadError";
 	protected static final String cancellerClasspath = "uk.ac.ox.cs.fdr.Canceller";
 	
-	protected ClassLoader loader;
+	private static ClassLoader loader;
 	
 	private static FDRAdapterLoader instance;
+	private static IPreferenceStore store;
 	
-	protected static FDRAdapterLoader getInstance() throws MalformedURLException {
+	public static FDRAdapterLoader getInstance() throws MalformedURLException {
 		if (instance==null) instance = new FDRAdapterLoader();
 		return instance;
 	}
 	
-	private FDRAdapterLoader() throws MalformedURLException {
-		loader = getClass().getClassLoader();
-		File f = null; // TODO get from configuration
-		
-		for (File jar : f.listFiles()) {
-			// TODO selet only the jar files
+	private FDRAdapterLoader() {
+		try {
+			checkLoader();
+		} catch (Exception e) {
+			// do nothing
+		}
+	}
+
+	public Class loadClass(String classpath) throws ClassNotFoundException, MalformedURLException {
+		checkLoader();
+		return loader.loadClass(classpath);
+	}
+	
+	private void checkLoader() throws MalformedURLException {
+		if (loader == null) {
+			loader = getClass().getClassLoader();
+			
+			String path = store.getString("CSP.Path");
+			File f = new File(path); 
+
 			loader = URLClassLoader.newInstance(
-				new URL[] { jar.toURL() }, 
+				new URL[] { f.toURL() }, 
 		        loader
 		    );
 		}
 	}
 
-	public Class loadClass(String classpath) throws ClassNotFoundException {
-		return loader.loadClass(classpath);
+	public static void setPreferenceStore(IPreferenceStore newStore) {
+		store = newStore;
+	}
+	
+	public static IPreferenceStore getPreferenceStore() {
+		return store;
 	}
 	
 }

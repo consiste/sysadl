@@ -104,6 +104,10 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Style/invariants"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Style/definitions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Style/archs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Style/functions"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//Function">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//Function/def"/>
     </genClasses>
     <genClasses ecoreClass="sysadl.ecore#//ExampleArchitecture"/>
     <genClasses ecoreClass="sysadl.ecore#//Invariant">

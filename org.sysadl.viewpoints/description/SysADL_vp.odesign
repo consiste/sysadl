@@ -1996,7 +1996,7 @@
               <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
             </style>
           </subContainerMappings>
-          <subContainerMappings name="Styles.Function" semanticCandidatesExpression="feature:functions" domainClass="org.sysadl.Function">
+          <subContainerMappings name="Styles.Function" semanticCandidatesExpression="feature:functions" domainClass="Function" childrenPresentation="List">
             <subNodeMappings name="Style.Function.Expression" semanticCandidatesExpression="var:self" domainClass="Function">
               <style xsi:type="style:DotDescription" showIcon="false" labelExpression="['definition: ' + def/]" resizeKind="NSEW">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
@@ -2020,6 +2020,15 @@
           </style>
         </containerMappings>
         <toolSections name="Style.Tools.Types" label="Types">
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="Style.Tools.Create.Function" label="Function" containerMappings="//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Styles.Function']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:self">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="Function" referenceName="functions"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
           <ownedTools xsi:type="tool:ContainerCreationDescription" name="Style.Tools.Create.Component" label="Abstract Component" forceRefresh="true" containerMappings="//@ownedViewpoints[name='org.sysadl.Style']/@ownedRepresentations[name='SysADL.Style']/@defaultLayer/@containerMappings[name='Style.Self']/@subContainerMappings[name='Style.AbstractComponent']">
             <variable name="container"/>
             <viewVariable name="containerView"/>

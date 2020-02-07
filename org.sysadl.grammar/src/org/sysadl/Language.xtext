@@ -27,9 +27,13 @@ Style returns Style:
  	{Style}
 	'style' name=QualifiedName '{'
 		( invariants+=Invariant
-		| definitions+=AbstractDef)*
+		| definitions+=AbstractDef
+		| functions+=Function)*
 	'}'
  	;
+
+Function returns Function: 
+	'function' name=ID ('=' def=EString)?;
 
 Invariant returns Invariant:
    'invariant' name=ID ('=' expr=EString)?;

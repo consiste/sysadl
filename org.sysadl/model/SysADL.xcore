@@ -21,7 +21,7 @@ class Style extends NamedElement {
 	contains Invariant[] invariants keys name
 	contains AbstractDef[] definitions keys name
 	contains ExampleArchitecture[] archs keys name
-	contains Function[] functions keys name 
+	contains Function[] functions keys name
 }
 
 class Function extends NamedElement {

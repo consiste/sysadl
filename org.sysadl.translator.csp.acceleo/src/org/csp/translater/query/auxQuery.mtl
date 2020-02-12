@@ -66,3 +66,9 @@
 
 [query public getTypeUnity(typeDef : TypeDef) : String = 
 		invoke('org.csp.translater.query.AuxiliarsQuery', 'getTypeUnity(org.sysadl.TypeDef)', Sequence{typeDef}) /]
+
+[query public getRenamePortsComponent(compUse : ComponentUse) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getRenamePortsComponent(org.sysadl.ComponentUse)', Sequence{compUse}) /]
+
+[query public getRenamePortsConnector(connUse : ConnectorUse, compDef : ComponentDef) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getRenamePortsConnector(org.sysadl.ConnectorUse, org.sysadl.ComponentDef)', Sequence{connUse, compDef}) /]

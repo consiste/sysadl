@@ -793,4 +793,71 @@ public class AuxiliarsQuery {
 		return getTypeCSP(type);
 	}
 	
+	public String getRenamePortsComponent(ComponentUse compUse) {
+		String result = "";
+		Object[] portUse = compUse.getPorts().toArray();
+		Object[] portDef = compUse.getDefinition().getPorts().toArray();
+		
+		for (int i = 0; i < portDef.length; i++) {
+			if (i < portDef.length-1) {
+				result += ((PortUse) portDef[i]).getName().toString();
+				result += "_"+((PortUse) portDef[i]).getDefinition().getName().toString();
+				result += " <- ";
+				result += compUse.getName()+"_";
+				result += ((PortUse) portUse[i]).getName().toString();
+				result += "_"+((PortUse) portUse[i]).getDefinition().getName().toString();
+				result += ", ";
+			}
+			else {
+				result += ((PortUse) portDef[i]).getName().toString();
+				result += "_"+((PortUse) portDef[i]).getDefinition().getName().toString();
+				result += " <- ";
+				result += compUse.getName()+"_";
+				result += ((PortUse) portUse[i]).getName().toString();		
+				result += "_"+((PortUse) portUse[i]).getDefinition().getName().toString();
+				
+				
+			}
+			
+		}
+		
+		return result;
+	}
+	
+	public String getRenamePortsConnector(ConnectorUse connUse, ComponentDef compDef) {
+		String result ="";
+		String IN = "";
+		String OUT = "";
+		
+		for (int i = 0; i < connUse.getDefinition().getPorts().size(); i++) {
+			if (((SimplePortDef)connUse.getDefinition().getPorts().get(i).getDefinition()).getFlowProperties().toString().contains("in")) {
+				IN += connUse.getDefinition().getPorts().get(i).getName();
+				IN += "_"+connUse.getDefinition().getPorts().get(i).getDefinition().getName();
+				IN += " <- ";
+			}
+			else if(((SimplePortDef)connUse.getDefinition().getPorts().get(i).getDefinition()).getFlowProperties().toString().contains("out")) {
+				OUT += connUse.getDefinition().getPorts().get(i).getName();
+				OUT += "_"+connUse.getDefinition().getPorts().get(i).getDefinition().getName();
+				OUT += " <- ";
+
+			}
+		}
+		
+		for (ComponentUse compUse : compDef.getComposite().getComponents()) {
+			for (PortUse port : compUse.getPorts()) {
+				for (int i = 0; i < connUse.getBindings().size(); i++) {
+					if (port.getName().equals(connUse.getBindings().get(i).getSource().getName())) {
+						IN += port.getName() +"_"+ port.getDefinition().getName();
+					}
+					else if (port.getName().equals(connUse.getBindings().get(i).getDestination().getName())) {
+						OUT += port.getName() +"_"+ port.getDefinition().getName();
+					}
+				}
+				
+			}
+		}
+		result = IN + "," + OUT;
+		return result;
+	}
+	
 }

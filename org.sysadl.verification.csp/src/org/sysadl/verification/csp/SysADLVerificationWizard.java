@@ -33,7 +33,7 @@ public class SysADLVerificationWizard extends Wizard {
 	@Override
 	public boolean performFinish() {
 		Object e = map.get(selection);
-		PerformTransformation.run(model, e);
+		PerformTransformation.run(file, model, e);
 		return true;
 	}
 

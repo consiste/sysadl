@@ -1,0 +1,304 @@
+[comment encoding = UTF-8 /]
+[module generate('http://org.sysadl')]
+[import org::csp::translater::query::auxQuery /]
+
+[template public generateModel(aModel : sysadl::Model)]
+[comment @main/]
+[file ('sysadl2csp.csp', false, 'UTF-8')]
+subset(s1, s2) = (inter(s1,s2)==s1)
+IS_TRUE(h) = if (h) then SKIP else DIV
+
+	[for (pck : sysadl::Package | aModel.packages)]		
+	[comment Types /]		
+		[for (elem : ElementDef | pck.definitions)]
+			[let unity : UnitDef = self]				
+				[for (type : ElementDef | pck.definitions)? (type.oclIsKindOf(TypeDef))]
+					[if (unity.name + '' + unity.dimension.name = type.name)]
+[type.name/] = [getTypeUnity(type.oclAsType(TypeDef))/]						
+					[/if]
+				[/for]		
+			[/let]			
+			[let aux : Enumeration = self]
+datatype [aux.name/] = [for (literal : EnumLiteralValue | aux.literals)separator ('|')][literal.name/][/for] 					
+			[/let]		
+			[let datatype : DataTypeDef = self]
+[datatype.name/] = { [for (attribute : TypeUse | datatype.attributes)before ('(')separator(',')after (')')][attribute.name/][/for] | [for (attributeDef : TypeUse | datatype.attributes) separator (',')][attributeDef.name/]<- [if (attributeDef.definition.name = 'String')]Char [elseif(attributeDef.definition.name = 'Boolean')]Bool[elseif(attributeDef.definition.name = 'Int')]Nat[elseif(attributeDef.definition.name = 'Real')]Nat.Nat[else][attributeDef.definition.name/][/if] [/for] }
+[for (attribute : TypeUse | datatype.attributes)separator ('\n')][datatype.name/]_[attribute.name/]([for (attribute : TypeUse | datatype.attributes)before ('(')separator(',')after (')')][attribute.name/][/for]) = [attribute.name/][/for]
+			[/let]
+		[/for]
+	[/for]
+	
+	[for (pck : sysadl::Package | aModel.packages)]				
+		[for (elem : ElementDef | pck.definitions)]
+	[comment channel/]
+			[let channel : ComponentDef = self]
+				[if (channel.composite = null)]
+					[for (port : PortUse | channel.ports)]
+						[if (port.definition.oclIsKindOf(sysadl::SimplePortDef))]
+channel [port.name/]_[port.definition.name/] : [getTypePort(port)/]
+						[/if]
+						[if (port.definition.oclIsKindOf(sysadl::CompositePortDef))]
+						[for (compPort : PortUse | port.definition.oclAsType(sysadl::CompositePortDef).ports )]
+							[if (compPort.definition.oclIsKindOf(sysadl::SimplePortDef))]
+channel [port.name/]_[compPort.name/]_[port.definition.name/] : [getTypePort(port)/]
+							[/if]
+						[/for]
+						[/if]
+					[/for]
+				[/if]
+			[/let]
+		[/for]
+	[/for]
+
+	[for (pck : sysadl::Package | aModel.packages)]				
+		[for (elem : ElementDef | pck.definitions)]
+			[let compDef : ComponentDef = self]					
+				[if ( compDef.isBoundary = false and compDef.composite <> null)]		
+					[for (compUse : ComponentUse| compDef.composite.components)]
+						[for (portUse : PortUse | compUse.ports)]
+							[if (portUse.definition.oclIsKindOf(sysadl::SimplePortDef))]
+channel [compUse.name/]_[portUse.name/]_[portUse.definition.name/] : [getTypePort(portUse)/]
+							[/if]
+							[if (portUse.definition.oclIsKindOf(sysadl::CompositePortDef))]
+							[for (compPort : PortUse | portUse.definition.oclAsType(sysadl::CompositePortDef).ports )]
+								[if (compPort.definition.oclIsKindOf(sysadl::SimplePortDef))]
+channel [compUse.name/]_[portUse.name/]_[compPort.name/]_[portUse.definition.name/] : [getTypePort(portUse)/]
+								[/if]
+							[/for]
+							[/if]
+						[/for]
+					[/for]
+				[/if]			
+			[/let]
+		[/for]
+	[/for]
+
+	[comment configuration/]
+	[for (pck : sysadl::Package | aModel.packages)]				
+		[for (elem : ElementDef | pck.definitions)]
+			[let compDef : ComponentDef = self]
+				[if (compDef.composite <> null)]
+					[if (isEmpty_Delegations(compDef.composite))]
+[compDef.name/] = (Components_[compDef.name/] ['['/]| Sync_[compDef.name/] |] Connectors_[compDef.name/])\Internal_[compDef.name/]
+
+Sync_[compDef.name/] = {| [for (compUse : ComponentUse | compDef.composite.components)separator (',\n\t\t\t\t\t')? (compUse.definition.composite = null)][for (portUse : PortUse | compUse.ports)separator (',')] [portUse.name/]_[portUse.definition.name/][/for][/for] |}
+
+Internal_[compDef.name/] = {| [for (compUse : ComponentUse | compDef.composite.components)][if (compUse.definition.isBoundary = false)][for (port : PortUse | compUse.ports)separator (',\n\t\t\t\t\t\t')][port.name/]_[port.definition.name/][/for][/if][/for]|}
+
+Components_[compDef.name/] = [for (compUse : ComponentUse | compDef.composite.components)separator ('\n\t\t\t\t\t\t|||')][if (compUse.definition.composite = null)][compUse.definition.name/][else][compUse.definition.name/]([compUse.name/])[/if][/for]
+
+Connectors_[compDef.name/] = [for (conn : ConnectorUse | compDef.composite.connectors)separator ('\n\t\t\t\t\t\t|||')][conn.definition.name/][/for]
+													
+					[/if]					
+				[/if]				
+			[/let]
+		[/for]
+	[/for]
+
+	[for (pck : sysadl::Package | aModel.packages)]				
+		[for (elem : ElementDef | pck.definitions)]
+			[let compDef : ComponentDef = self]
+				[if (compDef.composite <> null)]
+					[if (isEmpty_Delegations(compDef.composite))]
+						[for (compUse : ComponentUse | compDef.composite.components)]
+							[if (compUse.definition.composite <> null)]
+[compUse.definition.name/]_config([compUse.name/]) = (Components_[compUse.definition.name/] ['['/]| Sync_[compUse.definition.name/] |]  Connectors_[compUse.definition.name/])\Internal_[compUse.definition.name/]
+
+Sync_[compUse.definition.name/] = 
+
+Internal_[compUse.definition.name/] = 
+
+Components_[compUse.definition.name/] = [for (comp : ComponentUse | compUse.definition.composite.components)separator ('\n\t\t\t\t\t\t|||')][comp.definition.name/][/for]
+
+Connectors_[compUse.definition.name/] = [for (conn : ConnectorUse | compUse.definition.composite.connectors)separator ('\n\t\t\t\t\t\t|||')after ('\n\t\t\t\t\t\t|||')][conn.definition.name/][/for]Delegation_[compUse.name/]
+
+Delegation_[compUse.name/] = [for (delegation : Delegation | compUse.definition.composite.delegations)separator ('\n\t\t\t\t|||')][delegation.source.name/]_[delegation.destination.name/][/for]
+							[/if]
+						[/for]
+					[/if]							
+				[/if]				
+			[/let]
+		[/for]
+	[/for]
+
+	[comment components/]
+	[for (pck : sysadl::Package | aModel.packages)]				
+		[for (elem : ElementDef | pck.definitions)]
+			[let compDef : ComponentDef = self]				
+				[if (compDef.composite = null and compDef.isBoundary = true)]												
+[compDef.name/] = 
+					[for (port : PortUse | compDef.ports)]								
+						[if (port.definition.oclIsKindOf(sysadl::SimplePortDef))]
+							[if (port.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('in'))]
+	['\t'/][port.name/]_[port.definition.name/]?[port.name/] ->
+							[/if]
+						[else]
+							[for (compPort : PortUse | port.definition.oclAsType(sysadl::CompositePortDef).ports)]
+								[if (compPort.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('in'))]
+	['\t'/][port.name/]_[compPort.name/]_[port.definition.name/]?[compPort.name/] ->
+								[/if]
+							[/for]
+						[/if]
+					[/for]
+					[for (port : PortUse | compDef.ports)]								
+						[if (port.definition.oclIsKindOf(sysadl::SimplePortDef))]
+							[if (port.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('out'))]
+['\t'/]|~| [port.name/]:[getTypePort(port)/] @ [port.name/]_[port.definition.name/]![port.name/] ->
+							[/if]
+						[else]
+							[for (compPort : PortUse | port.definition.oclAsType(sysadl::CompositePortDef).ports)]
+								[if (compPort.definition.oclAsType(sysadl::SimplePortDef).flowProperties.toString().contains('out'))]
+['\t'/]|~|[compPort.name/]:[getTypePort(port)/] @ [port.name/]_[compPort.name/]_[port.definition.name/]![compPort.name/] ->
+								[/if]
+							[/for]
+						[/if]
+					[/for]
+[compDef.name/]
+								
+				[elseif(compDef.composite = null and compDef.isBoundary = false)]
+[compDef.name/] =								
+['\t'/][getActivityToStructure(compDef, aModel.allocation)/]				
+				[/if]
+			[/let]
+		[/for]
+	[/for]
+
+	[for (pck : sysadl::Package | aModel.packages)]				
+		[for (elem : ElementDef | pck.definitions)]
+			[let connDef : ConnectorDef = self]
+[connDef.name/] = 
+				[if (connDef.getActivityToStructure(connDef, aModel.allocation) = '')]								
+					[for (port : PortUse | connDef.ports)]
+						[if (port.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('out'))]
+		ch_Out?out ->
+						[/if]
+					[/for]
+					[for (port : PortUse | connDef.ports)]
+						[if (port.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('in'))]
+		ch_In!out ->
+						[/if]
+					[/for]
+[connDef.name/]
+
+				[else]
+		[connDef.getActivityToStructure(connDef, aModel.allocation)/]
+
+				[/if]
+			[/let]
+		[/for]
+	[/for]
+
+	[for (pck : sysadl::Package | aModel.packages)]				
+		[for (elem : ElementDef | pck.definitions)]
+			[let activity : ActivityDef = self]
+				[for (flow : ActivityRelation | activity._body.flows)]
+					[if (flow.target.oclIsKindOf(Pin) and flow.oclIsKindOf(ActivityFlow))]
+channel [flow.target.oclAsType(Pin).name/]_[flow.target.oclAsType(Pin).definition.name/] : [getTypePin(flow.target.oclAsType(Pin))/]		
+					[else]
+channel [flow.source.oclAsType(Pin).name/]_[flow.source.oclAsType(Pin).definition.name/] : [getTypePin(flow.source.oclAsType(Pin))/]
+					[/if]
+				[/for]
+
+Sync_[activity.name/] = union(Internal_[activity.name/], Port_[activity.name/]) 
+
+Internal_[activity.name/] = {|
+[for (flow : ActivityRelation | activity._body.flows )separator (',')]
+	[if (flow.target.oclIsKindOf(Pin) and flow.oclIsKindOf(ActivityFlow))]
+[flow.target.oclAsType(Pin).name/]_[flow.target.oclAsType(Pin).definition.name/]
+	[else]
+[flow.source.oclAsType(Pin).name/]_[flow.source.oclAsType(Pin).definition.name/]
+	[/if]
+[/for] |}
+
+Port_[activity.name/] = {| |}
+
+[activity.name/] = (Pins_[activity.name/] ['['/]| Sync_[activity.name/] |]  Actions_[activity.name/])\Internal_[activity.name/]
+
+Pins_[activity.name/] = ['['/]| Internal_[activity.name/]|] i : {1 .. [getPinListSize(activity)/]} @ Pins_[activity.name/]_Func(i)
+
+Actions_[activity.name/] = ['['/]|Internal_[activity.name/] |] i :  [getActionListSize(activity)/]} @ Actions_[activity.name/]_Func(i)
+
+[getPinFunction(activity, 'Pins')/]
+
+				[for (pin : Pin | activity.inParameters)]
+[pin.name/]_[activity.name/] =
+TODO
+['\t'/][pin.name/]_[pin.definition.name/]![pin.name/] ->
+[pin.name/]_[activity.name/]				
+				[/for]
+
+				[for (pin : Pin | activity.outParameters)]
+[pin.name/]_[activity.name/] = 
+['\t'/][pin.name/]_[pin.definition.name/]?[pin.name/] ->
+TODO
+[pin.name/]_[activity.name/]
+				[/for]
+
+[getActionFunction(activity, 'Actions')/]
+
+				[for (action : ActionUse | activity._body.actions)]
+[action.name/]_[action.definition.name/] = 
+['\t'/][getActionBody(activity,action)/]
+[action.name/]_[action.definition.name/]
+				[/for]
+			[/let]
+		[/for]
+	[/for]
+
+	[for (pck : sysadl::Package | aModel.packages)]				
+		[for (elem : ElementDef | pck.definitions)]
+			[let constraint : ConstraintDef = self]
+[constraint.name/]([if (constraint.inParameters <> null)]x[/if][for (param : Pin | constraint.inParameters)before (',')separator (',')][param.name/][/for]) = [constraint.getContraints(constraint)/]
+
+			[for (paramIn : Pin | constraint.inParameters)]
+channel [constraint.name/]_[paramIn.name/]_[paramIn.definition.name/] : [getTypePin(paramIn)/]
+			[/for]
+[constraint.name/]_check = 
+			[for (paramIn : Pin | constraint.inParameters)]
+['\t'/][constraint.name/]_[paramIn.name/]_[paramIn.definition.name/]?[paramIn.name/] ->
+			[/for]
+['\t'/]true &
+['\t\t'/]let
+['\t\t'/] S = {[for (out : Pin | constraint.outParameters)separator (',')][out.name/][/for] | [for (out : Pin | constraint.outParameters)separator (',')][out.name/] <- [getTypePin(out)/][/for],
+				[constraint.name/]([for (out : Pin | constraint.outParameters)separator (',')][out.name/][/for],[for (paramIn : Pin | constraint.inParameters)separator (',')][paramIn.name/][/for])}
+['\t\t'/]within IS_TRUE(not (S == {}))
+
+assert [constraint.name/]_check:['['/]livelock free]
+
+[constraint.name/]_s = 
+			{([for (paramIn : Pin | constraint.inParameters)separator (',')][paramIn.name/][/for],[for (out : Pin | constraint.outParameters)separator (',')][out.name/][/for]) | [for (paramIn : Pin | constraint.inParameters)separator (',')][paramIn.name/] <- [getTypePin(paramIn)/][/for],
+['\t\t\t'/][for (out : Pin | constraint.outParameters)separator (',')][out.name/] <- [getTypePin(out)/][/for],
+['\t\t\t'/][constraint.name/]([for (out : Pin | constraint.outParameters)separator (',')][out.name/][/for],[for (paramIn : Pin | constraint.inParameters)separator (',')][paramIn.name/][/for])}  
+			[/let]
+			
+			[let exe: Executable = self]
+[exe.name/]([for (param : TypeUse | exe.params)separator (',')][param.name/][/for])= [exe.getExecution(exe)/]
+
+[exe.name/]_s = 
+			{([for (paramIn : TypeUse | exe.params)separator (',')][paramIn.name/][/for],[for (out : TypeDef | exe.returnType)separator (',')][out.name/][/for]) | [for (paramIn : TypeUse | exe.params)separator (',')][paramIn.name/] <- [getTypeCSP(paramIn.definition)/][/for],
+['\t\t\t'/][for (out : TypeDef | exe.returnType)separator (',')][out.name/] <- [getTypeCSP(out)/][/for],
+['\t\t\t'/][exe.returnType.name/] == [exe.name/]([for (paramIn : TypeUse | exe.params)separator (',')][paramIn.name/][/for])}
+			[/let]
+		[/for]
+	[/for]
+
+[for (behaviorExe : Allocation | aModel.allocation.allocs)? (behaviorExe.oclIsKindOf(ExecutableAllocation))]
+assert IS_TRUE(subset([behaviorExe.oclAsType(ExecutableAllocation).source.name/]_s,[for (constraint : ConstraintUse | behaviorExe.oclAsType(ExecutableAllocation).target.constraints)][constraint.definition.name/]_s[/for])):['['/]divergence free]
+[/for]
+
+[for (pck : Package | aModel.packages)]
+	[for (elem : ElementDef | pck.definitions)]
+		[let compDef : ComponentDef = self]
+			[if (compDef.composite <> null)]
+				[if (isEmpty_Delegations(compDef.composite))]
+assert [compDef.name/]:['['/]deadlock free]
+assert [compDef.name/]:['['/]livelock free]
+				[/if]
+			[/if]									
+		[/let]
+	[/for]
+[/for]
+
+[aModel.getDelegations()/]
+[/file]
+[/template]

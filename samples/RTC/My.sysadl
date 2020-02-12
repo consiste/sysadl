@@ -9,7 +9,7 @@ package types {
   datatype Commands {attributes : heater : Command ; cooler : Command ; }
   dimension Temperature unit Celsius {dimension = Temperature }
   unit Fahrenheit {dimension = Temperature }
-  value type temperature {dimension = Temperature }
+  value type temperature extends Real { dimension = Temperature }
   value type FahrenheitTemperature extends temperature { unit = Fahrenheit dimension = Temperature }
   value type CelsiusTemperature extends temperature { unit = Celsius dimension = Temperature }
   }
@@ -56,16 +56,23 @@ package types {
 	constraint CalculateAverageTemperatureEQ ( t1 : CelsiusTemperature , t2 : CelsiusTemperature ) : ( av : CelsiusTemperature ) {
 		equation = av == (t1 + t2)/2
 	} 
-	activity def CalculateAverageTemperatureAC ( t1 : CelsiusTemperature ) ( t2 : CelsiusTemperature ) : ( av : CelsiusTemperature ) { body { actions : CalcAvTemp : CalculateAverageTemperatureAN { using pins : t1 : CelsiusTemperature ; t2 : CelsiusTemperature ; } delegate t1 to t1 delegate t2 to t2 delegate av to CalcAvTemp } } action def CalculateAverageTemperatureAN ( t1 : CelsiusTemperature , t2 : CelsiusTemperature ) : CelsiusTemperature { constraint : post-condition CalculateAverageTemperatureEQ } 
-	activity def CheckPresenceToSetTemperatureAC { body { } } 
-	activity def DecideCommandAC ( averageTemp : CelsiusTemperature ) ( targetTemp : CelsiusTemperature ) : ( cool : Command , heat : Command ) { body { actions : ct : CompareTemperatureAN { using pins : averageTemp : CelsiusTemperature ; targetTemp : CelsiusTemperature ; } cmdH : CommandHeaterAN { using pins : cmdsH : Commands ; } cmdC : CommandCoolerAN { using pins : cmdsC : Commands ; } delegate averageTemp to averageTemp delegate targetTemp to targetTemp delegate heat to cmdH delegate cool to cmdC flow from ct to cmdsH flow from ct to cmdsC } } 
-	activity def FahrenheitToCelsiusAC ( f : FahrenheitTemperature ) : ( c : CelsiusTemperature ) { body { actions : FtC : FahrenheitToCelsiusAN { using pins : f : FahrenheitTemperature ; } delegate c to FtC delegate f to f } } 
-	action def CompareTemperatureAN ( averageTemp : CelsiusTemperature , targetTemp : CelsiusTemperature ) : Commands { constraint : post-condition CompareTemperatureEQ } 
+	activity def CalculateAverageTemperatureAC ( s1 : CelsiusTemperature ) ( s2 : CelsiusTemperature ) : ( average : CelsiusTemperature ) { body { actions : CalcAvTemp : CalculateAverageTemperatureAN { using pins : s1 : CelsiusTemperature ; s2 : CelsiusTemperature ; } delegate s1 to s1 delegate s2 to s2 delegate average to CalcAvTemp } } action def CalculateAverageTemperatureAN ( t1 : CelsiusTemperature , t2 : CelsiusTemperature ) : CelsiusTemperature { constraint : post-condition CalculateAverageTemperatureEQ } 
+	activity def CheckPresenceToSetTemperatureAC ( detected : Boolean ) ( userTemp : CelsiusTemperature ) : ( target : CelsiusTemperature ) { body { actions : CheckPeresenceToSetTemperatureAN : CheckPeresenceToSetTemperatureAN { using pins : detected : Boolean ; userTemp : CelsiusTemperature ; } delegate detected to detected delegate userTemp to userTemp delegate target to CheckPeresenceToSetTemperatureAN } } 
+	activity def DecideCommandAC ( average2 : CelsiusTemperature ) ( target2 : CelsiusTemperature ) : ( cooling : Command , heating : Command ) { body { actions : ct : CompareTemperatureAN { using pins : average2 : CelsiusTemperature ; target2 : CelsiusTemperature ; } cmdH : CommandHeaterAN { using pins : cmdsH : Commands ; } cmdC : CommandCoolerAN { using pins : cmdsC : Commands ; } delegate average2 to average2 delegate target2 to target2 delegate heating to cmdH delegate cooling to cmdC flow from ct to cmdsH flow from ct to cmdsC } } 
+	activity def FahrenheitToCelsiusAC ( current1 : FahrenheitTemperature ) : ( loalTemp1 : CelsiusTemperature ) { body { actions : FtC : FahrenheitToCelsiusAN { using pins : current1 : FahrenheitTemperature ; } delegate loalTemp1 to FtC delegate current1 to current1 } } 
+	action def CompareTemperatureAN ( average2 : CelsiusTemperature , target2 : CelsiusTemperature ) : Commands { constraint : post-condition CompareTemperatureEQ } 
 	action def CommandHeaterAN ( cmds : Commands ) : Command { constraint : post-condition CommandHeaterEQ } 
 	action def CommandCoolerAN ( cmds : Commands ) : Command { constraint : post-condition CommandCoolerEQ } 
-	constraint CompareTemperatureEQ ( target : CelsiusTemperature , average : CelsiusTemperature ) : ( cmds : Commands ) { equation = average > target ? cmds == types.Commands.cooler->On && types.Commands.heater->Off : cmds == types.Commands.cooler->Off && types.Commands.heater->On } 
+	constraint CompareTemperatureEQ ( target : CelsiusTemperature , average : CelsiusTemperature ) : ( cmds : Commands ) { equation = average > target ? cmds == types.Commands.heater->Off && types.Commands.cooler->On : types.Commands.heater->On && cmds == types.Commands.cooler->Off } 
 	constraint FahrenheitToCelsiusEQ ( f : FahrenheitTemperature ) : ( c : CelsiusTemperature ) { equation = c == (5*(f - 32)/9)} 
 	constraint CommandHeaterEQ ( cmds : Commands ) : ( c : Command ) { equation = c == cmds->heater } 
 	constraint CommandCoolerEQ ( cmds : Commands ) : ( c : Command ) {equation = c == cmds->cooler } 
-	action def FahrenheitToCelsiusAN ( f : FahrenheitTemperature ) : CelsiusTemperature { constraint : post-condition FahrenheitToCelsiusEQ } 	
-	} allocations { activity CalculateAverageTemperatureAC to SensorsMonitorCP activity CheckPresenceToSetTemperatureAC to PresenceCheckerCP activity DecideCommandAC to CommanderCP activity FahrenheitToCelsiusAC to FahrenheitToCelsiusCN }
+	action def FahrenheitToCelsiusAN ( current1 : FahrenheitTemperature ) : CelsiusTemperature { constraint : post-condition FahrenheitToCelsiusEQ } 	
+	action def CheckPeresenceToSetTemperatureAN ( detected : Boolean , userTemp : CelsiusTemperature ) : CelsiusTemperature { constraint : post-condition CheckPresenceToSetTemperatureEQ } 
+	constraint CheckPresenceToSetTemperatureEQ ( detected : Boolean , userTemp : CelsiusTemperature ) : ( target : CelsiusTemperature ) {equation = detected == true ? target == userTemp : target == 2 } 
+	executable def CommandCoolerEx(in cmds:Commands): out Command{return cmds->cooler ; }
+	executable def CommandHeaterEx(in cmds:Commands): out Command{return cmds->heater ; }
+	executable def FahrenheitToCelsiusEx(in f:FahrenheitTemperature): out CelsiusTemperature{return 5*(f - 32)/9 ; }
+	executable def CalculateAverageTemperatureEx(in temp1:CelsiusTemperature,in temp2:CelsiusTemperature):out CelsiusTemperature{return (temp1 + temp2)/2 ; }
+	executable def CheckPresenceToSetTemperature(in presence:Boolean, in userTemp:CelsiusTemperature):out CelsiusTemperature{if(presence == true) return userTemp; else return 2; }
+	executable def CompareTemperatureEx(in target:CelsiusTemperature, in average:CelsiusTemperature):out Commands{let heater:Command = types.Command::Off; let cooler:Command = types.Command::Off; if(average > target) {heater = types.Command::Off; cooler = types.Command::On ; } else {heater = types.Command::On; cooler = types.Command::Off ;} } } allocations { activity FahrenheitToCelsiusAC to FahrenheitToCelsiusCN activity DecideCommandAC to CommanderCP activity CheckPresenceToSetTemperatureAC to PresenceCheckerCP activity CalculateAverageTemperatureAC to SensorsMonitorCP executable FahrenheitToCelsiusEx to FahrenheitToCelsiusAN executable CompareTemperatureEx to CompareTemperatureAN executable CommandHeaterEx to CommandHeaterAN executable CommandCoolerEx to CommandCoolerAN executable CheckPresenceToSetTemperature to CheckPeresenceToSetTemperatureAN executable CalculateAverageTemperatureEx to CalculateAverageTemperatureAN }

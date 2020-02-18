@@ -848,10 +848,10 @@ public class AuxiliarsQuery {
 		for (ComponentUse compUse : compDef.getComposite().getComponents()) {
 			for (PortUse port : compUse.getPorts()) {
 				for (int i = 0; i < connUse.getBindings().size(); i++) {
-					if (port.getName().equals(connUse.getBindings().get(i).getSource().getName())) {
+					if (port.getName().equals(connUse.getBindings().get(i).getDestination().getName())) {
 						IN += compUse.getName()+"_"+port.getName() +"_"+ port.getDefinition().getName();
 					}
-					else if (port.getName().equals(connUse.getBindings().get(i).getDestination().getName())) {
+					else if (port.getName().equals(connUse.getBindings().get(i).getSource().getName())) {
 						OUT += compUse.getName()+"_"+port.getName() +"_"+ port.getDefinition().getName();
 					}
 				}

@@ -37,10 +37,10 @@ package types {
 	  connectors : c1 : FahrenheitToCelsiusCN bindings current1 = localtemp1 ; uc : CTemperatureCN bindings desired = userTemp ; cc2 : CommandCN bindings cooling = controllerC ; pc : PresenceCN bindings detectedS = detected ; c2 : FahrenheitToCelsiusCN bindings current2 = localTemp2 ; cc1 : CommandCN bindings heating = controllerH ; }
 	  }
 
-	component def RoomTemperatureControllerCP {	 ports : detected : PresenceIPT ; localtemp1 : CTemperatureIPT ; localTemp2 : CTemperatureIPT ; userTempRTC : CTemperatureIPT ; heatingRTC : CommandOPT ; coolingRTC : CommandOPT ; configuration {	 components : sm : SensorsMonitorCP {	 using ports : s1 : CTemperatureIPT ; s2 : CTemperatureIPT ; average : CTemperatureOPT ; }
+	component def RoomTemperatureControllerCP {	 ports : detectedRTC : PresenceIPT ; localtemp1 : CTemperatureIPT ; localTemp2 : CTemperatureIPT ; userTempRTC : CTemperatureIPT ; heatingRTC : CommandOPT ; coolingRTC : CommandOPT ; configuration {	 components : sm : SensorsMonitorCP {	 using ports : s1 : CTemperatureIPT ; s2 : CTemperatureIPT ; average : CTemperatureOPT ; }
 	  cm : CommanderCP {	 using ports : target2 : CTemperatureIPT ; average2 : CTemperatureIPT ; heating : CommandOPT ; cooling : CommandOPT ; }
 	  pc : PresenceCheckerCP {	 using ports : detected : PresenceIPT ; userTemp : CTemperatureIPT ; target : CTemperatureOPT ; }
-	  connectors : target : CTemperatureCN bindings target = target2 ; average : CTemperatureCN bindings average = average2 ; delegations : userTemp to userTemp detected to detected s1 to localtemp1 s2 to localTemp2 heating to heating cooling to cooling }
+	  connectors : target : CTemperatureCN bindings target = target2 ; average : CTemperatureCN bindings average = average2 ; delegations : userTemp to userTempRTC detected to detectedRTC s1 to localtemp1 s2 to localTemp2 heating to heatingRTC cooling to coolingRTC }
 	  } boundary
 	component def TemperatureSensorCP {	 ports : current : FTemperatureOPT ; } boundary
 	component def PresenceSensorCP {	 ports : detected : PresenceOPT ; } boundary
@@ -48,9 +48,9 @@ package types {
 	component def HeaterCP {	 ports : controllerH : CommandIPT ; } boundary
 	component def CoolerCP {	 ports : controllerC : CommandIPT ; }
 
-	component def PresenceCheckerCP {	 ports : detectedPC : PresenceIPT ; userTemp : CTemperatureIPT ; target : CTemperatureOPT ; }
+	component def PresenceCheckerCP {	 ports : detected : PresenceIPT ; userTemp : CTemperatureIPT ; target : CTemperatureOPT ; }
 
-	component def CommanderCP {	 ports : target : CTemperatureIPT ; average : CTemperatureIPT ; heating : CommandOPT ; cooling : CommandOPT ; }
+	component def CommanderCP {	 ports : target2 : CTemperatureIPT ; average2 : CTemperatureIPT ; heating : CommandOPT ; cooling : CommandOPT ; }
 
 	component def SensorsMonitorCP { ports : s1 : CTemperatureIPT ; s2 : CTemperatureIPT ; average : CTemperatureOPT ; }
 	constraint CalculateAverageTemperatureEQ ( t1 : CelsiusTemperature , t2 : CelsiusTemperature ) : ( av : CelsiusTemperature ) {

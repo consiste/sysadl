@@ -92,11 +92,7 @@ datatype ID = [for (pck : sysadl::Package | aModel.packages)][for (elem : Elemen
 					[if (isEmpty_Delegations(compDef.composite))]
 [compDef.name/] = (Components_[compDef.name/] ['['/]| Sync_[compDef.name/] |] Connectors_[compDef.name/])\Internal_[compDef.name/]
 
-Sync_[compDef.name/] = {| [for (compUse : ComponentUse | compDef.composite.components)separator (',\n\t\t\t\t\t')? (compUse.definition.composite = null)]
-							[for (portUse : PortUse | compUse.definition.ports)separator (',')] 
-								[portUse.name/]_[portUse.definition.name/]
-							[/for]
-						[/for] |}
+Sync_[compDef.name/] = {| [for (compUse : ComponentUse | compDef.composite.components)separator (',\n\t\t\t\t\t')? (compUse.definition.composite = null)][for (portUse : PortUse | compUse.definition.ports)separator (',')][portUse.name/]_[portUse.definition.name/][/for][/for] |}
 
 Internal_[compDef.name/] = {| [for (compUse : ComponentUse | compDef.composite.components)][if (compUse.definition.isBoundary = false)][for (port : PortUse | compUse.definition.ports)separator (',\n\t\t\t\t\t\t')][port.name/]_[port.definition.name/][/for][/if][/for]|}
 
@@ -119,7 +115,7 @@ Connectors_[compDef.name/] = [for (conn : ConnectorUse | compDef.composite.conne
 							[if (compUse.definition.composite <> null)]
 [compUse.definition.name/]_config([compUse.name/]) = (Components_[compUse.definition.name/] ['['/]| Sync_[compUse.definition.name/] |]  Connectors_[compUse.definition.name/])\Internal_[compUse.definition.name/]
 
-Sync_[compUse.definition.name/] = union(Internal_[compUse.definition.name/], Delegation_[compUse.name/])
+Sync_[compUse.definition.name/] = union(Internal_[compUse.definition.name/], Delegation_Internal_[compUse.name/])
 
 Internal_[compUse.definition.name/] = {| [for (comp : ComponentUse | compUse.definition.composite.components)separator (',\n\t\t\t\t\t\t')][for (port : PortUse | comp.definition.ports)separator (',\n\t\t\t\t\t\t')][port.name/]_[port.definition.name/][/for][/for] |}
 
@@ -127,7 +123,9 @@ Components_[compUse.definition.name/] = [for (comp : ComponentUse | compUse.defi
 
 Connectors_[compUse.definition.name/] = [for (conn : ConnectorUse | compUse.definition.composite.connectors)separator ('\n\t\t\t\t\t\t|||')after ('\n\t\t\t\t\t\t|||')][conn.definition.name/]['[['/][getRenamePortsConnector(conn, compUse.definition)/]]][/for]Delegation_[compUse.name/]
 
-Delegation_[compUse.name/] = [for (delegation : Delegation | compUse.definition.composite.delegations)separator ('\n\t\t\t\t|||')][delegation.source.name/]_To_[delegation.destination.name/][/for]
+Delegation_Internal_[compUse.name/] = {|[for (del : Delegation | compUse.definition.composite.delegations)separator (',\n\t\t\t\t\t\t')][if (del.source.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('in'))][del.destination.name/]_[del.destination.definition.name/][elseif (del.source.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('out'))][del.destination.name/]_[del.destination.definition.name/][/if][/for]|}
+
+Delegation_[compUse.name/] = [for (del : Delegation | compUse.definition.composite.delegations)separator ('\n\t\t\t\t|||')][if (del.source.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('in'))][del.destination.name/]_to_[del.source.name/][elseif (del.source.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('out'))][del.source.name/]_to_[del.destination.name/][/if][/for]
 							[/if]
 						[/for]
 					[/if]							
@@ -211,6 +209,31 @@ Delegation_[compUse.name/] = [for (delegation : Delegation | compUse.definition.
 		[/for]
 	[/for]
 
+	[comment delegations /]	
+	[for (pck : sysadl::Package | aModel.packages)]				
+		[for (elem : ElementDef | pck.definitions)]
+			[let compDef : ComponentDef = self]
+				[if (compDef.composite <> null)]
+					[if (isEmpty_Delegations(compDef.composite) = false)]
+						[for (del : Delegation | compDef.composite.delegations)]
+							[if (del.source.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('in'))]
+[del.destination.name/]_to_[del.source.name/] =
+	[del.destination.name/]_[del.destination.definition.name/]?[del.destination.definition.name/] ->
+	[del.source.name/]_[del.source.definition.name/]![del.source.definition.name/] ->
+[del.destination.name/]_to_[del.source.name/]
+							[elseif (del.source.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('out'))]
+[del.source.name/]_to_[del.destination.name/] =	
+	[del.source.name/]_[del.source.definition.name/]?[del.source.definition.name/] ->
+	[del.destination.name/]_[del.destination.definition.name/]![del.destination.definition.name/] ->
+[del.source.name/]_to_[del.destination.name/]						
+							[/if]						
+						[/for]
+					[/if]	
+				[/if]				
+			[/let]
+		[/for]
+	[/for]
+
 	[comment activities /]	
 	[for (pck : sysadl::Package | aModel.packages)]				
 		[for (elem : ElementDef | pck.definitions)]
@@ -248,7 +271,7 @@ Actions_[activity.name/] = ['['/]|Internal_[activity.name/] |] i : {1 .. [getAct
 		[/for]
 	[elseif (alloc.oclAsType(ActivityAllocation).target.oclIsKindOf(ConnectorDef) and activity.name = alloc.oclAsType(ActivityAllocation).source.name)]
 		[for (port : PortUse | alloc.oclAsType(ActivityAllocation).target.oclAsType(ConnectorDef).ports)]
-			[if (port.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('in'))]
+			[if (port.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('out'))]
 ['\t'/][port.name/]_[port.definition.name/]?[pin.name/] ->
 			[/if]
 		[/for]	
@@ -270,7 +293,7 @@ Actions_[activity.name/] = ['['/]|Internal_[activity.name/] |] i : {1 .. [getAct
 		[/for]
 	[elseif (alloc.oclAsType(ActivityAllocation).target.oclIsKindOf(ConnectorDef) and activity.name = alloc.oclAsType(ActivityAllocation).source.name)]
 		[for (port : PortUse | alloc.oclAsType(ActivityAllocation).target.oclAsType(ConnectorDef).ports)]
-			[if (port.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('out'))]
+			[if (port.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('in'))]
 ['\t'/][port.name/]_[port.definition.name/]![pin.name/] ->
 			[/if]
 		[/for]	
@@ -344,6 +367,5 @@ assert [compDef.name/]:['['/]livelock free]
 	[/for]
 [/for]
 
-[aModel.getDelegations()/]
 [/file]
 [/template]

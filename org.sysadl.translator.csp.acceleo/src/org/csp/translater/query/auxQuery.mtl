@@ -72,3 +72,6 @@
 
 [query public getRenamePortsConnector(connUse : ConnectorUse, compDef : ComponentDef) : String = 
 		invoke('org.csp.translater.query.AuxiliarsQuery', 'getRenamePortsConnector(org.sysadl.ConnectorUse, org.sysadl.ComponentDef)', Sequence{connUse, compDef}) /]
+
+[query public getDefPortComp(pck : Set(Package)) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getDefPortComp(Set(org.sysadl.Package)', Sequence{pck}) /]

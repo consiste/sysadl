@@ -29,8 +29,9 @@ datatype [aux.name/] = [for (literal : EnumLiteralValue | aux.literals)separator
 	[/for]
 
 	[comment channel/]
+
 	[for (pck : sysadl::Package | aModel.packages)]				
-		[for (elem : ElementDef | pck.definitions)]	
+		[for (elem : ElementDef | pck.definitions)]			
 			[let channel : ComponentDef = self]				
 				[for (port : PortUse | channel.ports)]
 					[if (port.definition.oclIsKindOf(sysadl::SimplePortDef))]
@@ -80,6 +81,9 @@ channel [compUse.name/]_[portUse.name/]_[compPort.name/]_[portUse.definition.nam
 		[/for]
 	[/for]
 
+	[comment ID configurations/]
+datatype ID = [for (pck : sysadl::Package | aModel.packages)][for (elem : ElementDef | pck.definitions)][let compDef : ComponentDef = self][if (compDef.composite <> null)][for (compUse : ComponentUse | compDef.composite.components)][if (compUse.definition.composite <> null)][compUse.name/][/if][/for][/if][/let][/for][/for]
+
 	[comment configuration/]
 	[for (pck : sysadl::Package | aModel.packages)]				
 		[for (elem : ElementDef | pck.definitions)]
@@ -88,9 +92,13 @@ channel [compUse.name/]_[portUse.name/]_[compPort.name/]_[portUse.definition.nam
 					[if (isEmpty_Delegations(compDef.composite))]
 [compDef.name/] = (Components_[compDef.name/] ['['/]| Sync_[compDef.name/] |] Connectors_[compDef.name/])\Internal_[compDef.name/]
 
-Sync_[compDef.name/] = {| [for (compUse : ComponentUse | compDef.composite.components)separator (',\n\t\t\t\t\t')? (compUse.definition.composite = null)][for (portUse : PortUse | compUse.ports)separator (',')] [portUse.name/]_[portUse.definition.name/][/for][/for] |}
+Sync_[compDef.name/] = {| [for (compUse : ComponentUse | compDef.composite.components)separator (',\n\t\t\t\t\t')? (compUse.definition.composite = null)]
+							[for (portUse : PortUse | compUse.definition.ports)separator (',')] 
+								[portUse.name/]_[portUse.definition.name/]
+							[/for]
+						[/for] |}
 
-Internal_[compDef.name/] = {| [for (compUse : ComponentUse | compDef.composite.components)][if (compUse.definition.isBoundary = false)][for (port : PortUse | compUse.ports)separator (',\n\t\t\t\t\t\t')][port.name/]_[port.definition.name/][/for][/if][/for]|}
+Internal_[compDef.name/] = {| [for (compUse : ComponentUse | compDef.composite.components)][if (compUse.definition.isBoundary = false)][for (port : PortUse | compUse.definition.ports)separator (',\n\t\t\t\t\t\t')][port.name/]_[port.definition.name/][/for][/if][/for]|}
 
 Components_[compDef.name/] = [for (compUse : ComponentUse | compDef.composite.components)separator ('\n\t\t\t\t\t\t|||')][if (compUse.definition.composite = null)][compUse.definition.name/]['[['/][getRenamePortsComponent(compUse)/]]][else][compUse.definition.name/]([compUse.name/])[/if][/for]
 
@@ -113,7 +121,7 @@ Connectors_[compDef.name/] = [for (conn : ConnectorUse | compDef.composite.conne
 
 Sync_[compUse.definition.name/] = union(Internal_[compUse.definition.name/], Delegation_[compUse.name/])
 
-Internal_[compUse.definition.name/] = {| [for (comp : ComponentUse | compUse.definition.composite.components)separator (',\n\t\t\t\t\t\t')][for (port : PortUse | comp.ports)separator (',\n\t\t\t\t\t\t')][port.name/]_[port.definition.name/][/for][/for] |}
+Internal_[compUse.definition.name/] = {| [for (comp : ComponentUse | compUse.definition.composite.components)separator (',\n\t\t\t\t\t\t')][for (port : PortUse | comp.definition.ports)separator (',\n\t\t\t\t\t\t')][port.name/]_[port.definition.name/][/for][/for] |}
 
 Components_[compUse.definition.name/] = [for (comp : ComponentUse | compUse.definition.composite.components)separator ('\n\t\t\t\t\t\t|||')][comp.definition.name/]['[['/][getRenamePortsComponent(comp)/]]][/for]
 
@@ -131,7 +139,15 @@ Delegation_[compUse.name/] = [for (delegation : Delegation | compUse.definition.
 	[comment components/]
 	[for (pck : sysadl::Package | aModel.packages)]				
 		[for (elem : ElementDef | pck.definitions)]
-			[let compDef : ComponentDef = self]				
+			[let compDef : ComponentDef = self]
+				[if ((compDef.composite <> null) and isEmpty_Delegations(compDef.composite) = true)]
+					[for (compUse : ComponentUse | compDef.composite.components)]
+						[if (compUse.definition.composite <> null)]
+[compUse.definition.name/]([compUse.name/]) =
+	[compUse.definition.name/]_config([compUse.name/])	
+						[/if]						
+					[/for]
+				[/if]				
 				[if (compDef.composite = null and compDef.isBoundary = true)]												
 [compDef.name/] = 
 					[for (port : PortUse | compDef.ports)]								

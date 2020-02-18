@@ -2,9 +2,11 @@ package org.csp.translater.query;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeoutException;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.ocl.ecore.OrderedSetType;
 import org.sysadl.ActionDef;
 import org.sysadl.ActionUse;
 import org.sysadl.ActivityAllocation;
@@ -847,16 +849,23 @@ public class AuxiliarsQuery {
 			for (PortUse port : compUse.getPorts()) {
 				for (int i = 0; i < connUse.getBindings().size(); i++) {
 					if (port.getName().equals(connUse.getBindings().get(i).getSource().getName())) {
-						IN += port.getName() +"_"+ port.getDefinition().getName();
+						IN += compUse.getName()+"_"+port.getName() +"_"+ port.getDefinition().getName();
 					}
 					else if (port.getName().equals(connUse.getBindings().get(i).getDestination().getName())) {
-						OUT += port.getName() +"_"+ port.getDefinition().getName();
+						OUT += compUse.getName()+"_"+port.getName() +"_"+ port.getDefinition().getName();
 					}
 				}
 				
 			}
 		}
 		result = IN + "," + OUT;
+		return result;
+	}
+	
+	public String getDefPortComp(Set<org.sysadl.Package> pck ) {
+		String result = "teste";
+		
+		
 		return result;
 	}
 	

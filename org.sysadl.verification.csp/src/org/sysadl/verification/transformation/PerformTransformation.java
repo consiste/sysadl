@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.JFrame;
 
 import org.csp.translater.main.Generate;
+import org.csp.translater.query.AuxiliarsQuery;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
@@ -31,38 +32,53 @@ public class PerformTransformation {
         File folder = new File(path+ "output");
         HashMap<String, String> mapAnwser = new HashMap<String, String>();
         List<String> arguments = new ArrayList<String>();
-        
-		try {
+        AuxiliarsQuery query = new AuxiliarsQuery();        
+        if (query.CheckPortsAndPinsNames(model).startsWith("Sucess:") && query.ExistEqualsNames(model).startsWith("Fail:")) {		
+			try {
+				
+				Generate generator = new Generate(modelURI, folder, arguments);
+							
+	            generator.addPropertiesFile(file.getName());         
+	            generator.doGenerate(new BasicMonitor()); 
+	            Session session = new Session();
+	            try {            	
+	            	session.loadFile(folder.getAbsolutePath() + "\\sysadl2csp.csp");
+	            	for (Assertion assertion : session.assertions()) {
+	    	            assertion.execute(null);    	
+	    	            mapAnwser.put(assertion.toString(), (assertion.passed() ? "Passed" : "Failed"));
+	    	            System.out.println(assertion.toString()+" "+
+	    	                (assertion.passed() ? "Passed" : "Failed"));
+	    	        }
+	                
+				} catch (InputFileError error) {
+			        System.out.println(error);
+			    }
+			    catch (FileLoadError error) {
+			        System.out.println(error);
+			    }
+	
+			    fdr.libraryExit();
+			    VerificationAnwserDialog dialog = new VerificationAnwserDialog(new JFrame(), "Results", mapAnwser, false);
 			
-			Generate generator = new Generate(modelURI, folder, arguments);
-						
-            generator.addPropertiesFile(file.getName());         
-            generator.doGenerate(new BasicMonitor()); 
-            Session session = new Session();
-            try {            	
-            	session.loadFile(folder.getAbsolutePath() + "\\sysadl2csp.csp");
-            	for (Assertion assertion : session.assertions()) {
-    	            assertion.execute(null);    	
-    	            mapAnwser.put(assertion.toString(), (assertion.passed() ? "Passed" : "Failed"));
-    	            System.out.println(assertion.toString()+" "+
-    	                (assertion.passed() ? "Passed" : "Failed"));
-    	        }
-                
-			} catch (InputFileError error) {
-		        System.out.println(error);
-		    }
-		    catch (FileLoadError error) {
-		        System.out.println(error);
-		    }
-
-		    fdr.libraryExit();
-		    VerificationAnwserDialog dialog = new VerificationAnwserDialog(new JFrame(), "Results", mapAnwser);
-            
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+	            
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}		
+        }
+        else {
+        	if (query.CheckPortsAndPinsNames(model).startsWith("Fail:")) {
+        		String[] aux = query.CheckPortsAndPinsNames(model).split(":");
+        		mapAnwser.put(aux[0], aux[1]);
+        		VerificationAnwserDialog dialog = new VerificationAnwserDialog(new JFrame(), "Error", mapAnwser, true);
+			}
+        	else if (query.ExistEqualsNames(model).startsWith("Sucess:")) {
+        		String[] aux = query.ExistEqualsNames(model).split(":");
+        		mapAnwser.put(aux[0], aux[1]);
+        		VerificationAnwserDialog dialog = new VerificationAnwserDialog(new JFrame(), "Error", mapAnwser, true);
+			}
+        	
+        }
 		// TODO Auto-generated method stub
 	}
 

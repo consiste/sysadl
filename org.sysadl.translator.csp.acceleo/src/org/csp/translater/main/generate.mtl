@@ -4,6 +4,7 @@
 
 [template public generateModel(aModel : sysadl::Model)]
 [comment @main/]
+[if (ExistEqualsNames(aModel).toString().startsWith('Sucess:') = false and CheckPortsAndPinsNames(aModel).toString().startsWith('Sucess:'))]
 [file ('sysadl2csp.csp', false, 'UTF-8')]
 subset(s1, s2) = (inter(s1,s2)==s1)
 IS_TRUE(h) = if (h) then SKIP else DIV
@@ -368,4 +369,13 @@ assert [compDef.name/]:['['/]livelock free]
 [/for]
 
 [/file]
+[elseif (ExistEqualsNames(aModel).toString().startsWith('Sucess:'))]
+	[file ('sysadl2csp.csp', false, 'UTF-8')]
+Error: Exit a duplicate port.
+	[/file]
+[elseif (CheckPortsAndPinsNames(aModel).toString().startsWith('Sucess:') = false)]
+	[file ('sysadl2csp.csp', false, 'UTF-8')]
+Error: The set of port and pin are not equals.
+	[/file]
+[/if]
 [/template]

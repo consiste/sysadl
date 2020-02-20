@@ -75,3 +75,9 @@
 
 [query public getDefPortComp(pck : Set(Package)) : String = 
 		invoke('org.csp.translater.query.AuxiliarsQuery', 'getDefPortComp(Set(org.sysadl.Package)', Sequence{pck}) /]
+
+[query public ExistEqualsNames(model : Model) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'ExistEqualsNames(org.sysadl.Model)', Sequence{model}) /]
+
+[query public CheckPortsAndPinsNames(model : Model) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'CheckPortsAndPinsNames(org.sysadl.Model)', Sequence{model}) /]

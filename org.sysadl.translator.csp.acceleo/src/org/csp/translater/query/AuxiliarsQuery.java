@@ -20,6 +20,7 @@ import org.sysadl.ComponentUse;
 import org.sysadl.CompositePortDef;
 import org.sysadl.Configuration;
 import org.sysadl.ConnectorBinding;
+import org.sysadl.ConnectorDef;
 import org.sysadl.ConnectorUse;
 import org.sysadl.ConstraintDef;
 import org.sysadl.ConstraintUse;
@@ -30,6 +31,7 @@ import org.sysadl.DimensionDef;
 import org.sysadl.ElementDef;
 import org.sysadl.Executable;
 import org.sysadl.Model;
+import org.sysadl.Package;
 import org.sysadl.Pin;
 import org.sysadl.PortUse;
 import org.sysadl.SimplePortDef;
@@ -867,6 +869,72 @@ public class AuxiliarsQuery {
 		
 		
 		return result;
+	}
+	
+	public String ExistEqualsNames(Model model) {
+		String result = " ";
+		ArrayList<String> names = new ArrayList<String>();		
+		for (Package pck : model.getPackages()) {
+			for (ElementDef elem : pck.getDefinitions()) {
+				if (elem instanceof ComponentDef) {
+					for (PortUse portUse : ((ComponentDef)elem).getPorts()) {
+						if (!names.contains(portUse.getName().concat("_"+portUse.getDefinition().getName()))) {
+							names.add(portUse.getName().concat("_"+portUse.getDefinition().getName()));
+						}
+						else {
+							result = "Fail: The port " + portUse.getName().concat("_"+portUse.getDefinition().getName()) + 
+									" already exists.";
+							return result;
+							
+						}						
+					}					
+				}
+			}
+		}
+		result = "Sucess: All ports have a unique name";
+		return result;			
+	}
+	
+	public String CheckPortsAndPinsNames(Model model) {
+		boolean result = false;
+		ArrayList<String> names = new ArrayList<String>();
+		for (Allocation allocation : model.getAllocation().getAllocs()) {
+			if (allocation instanceof ActivityAllocation) {				
+				if (((ActivityAllocation) allocation).getTarget() instanceof ComponentDef) {
+					for (PortUse portUse : ((ComponentDef)((ActivityAllocation) allocation).getTarget()).getPorts()) {
+						names.add(portUse.getName());
+					}
+					for (Pin pin : ((ActivityAllocation) allocation).getSource().getInParameters()) {						
+						if (names.contains(pin.getName())) {
+							result = true; 
+						}
+						else {
+							result = false;
+							return "Fail: The PIN " + pin.getName() + " of Activity"+
+									((ActivityAllocation) allocation).getSource().getName()+
+									" do not exist on set of ports " + names.toString() +" of ComponentDef " + 
+									((ActivityAllocation) allocation).getTarget().getName()+".";
+						}
+							
+					}
+					for (Pin pin : ((ActivityAllocation) allocation).getSource().getOutParameters()) {						
+						if (names.contains(pin.getName())) {
+							result = true; 
+						}
+						else {
+							result = false;
+							return "Fail: The PIN " + pin.getName() + " of Activity"+
+							((ActivityAllocation) allocation).getSource().getName()+
+							" do not exist on set " + names.toString() +" of ComponentDef " + 
+							((ActivityAllocation) allocation).getTarget().getName()+".";
+						}
+					}
+				}				
+				names.clear();
+			}
+		}
+		
+		return "Sucess: All PINS are OK.";
 	}
 	
 }

@@ -79,7 +79,40 @@
         eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"
         defaultValueLiteral="1"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="AbstractActivityDef" eSuperTypes="#//AbstractDef"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractActivityDef" eSuperTypes="#//AbstractDef">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="inParameters" upperBound="-1"
+        eType="#//AbstractPin" containment="true" resolveProxies="false" eKeys="#//NamedElement/name"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="outParameters" upperBound="-1"
+        eType="#//AbstractPin" containment="true" resolveProxies="false" eKeys="#//NamedElement/name"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractProtocol" eSuperTypes="#//AbstractDef">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//AbstractProtocolBody"
+        containment="true" resolveProxies="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractProtocolBody" eSuperTypes="#//AbstractProtocolBodyInternal">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="recControl" unique="false"
+        lowerBound="1" eType="#//ProtocolControl" defaultValueLiteral="several"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" lowerBound="1" eType="#//ProtocolBodyInternal"
+        containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="recursive" eType="#//ProtocolBody"
+        containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="recType" unique="false"
+        eType="#//ProtocolAlternativeType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractProtocolBodyInternal" abstract="true"
+      interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractActionSend" eSuperTypes="#//AbstractProtocolBodyInternal">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="flowTo" eType="#//AbstractPin"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractActionReceive" eSuperTypes="#//AbstractProtocolBodyInternal">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="flowTo" eType="#//AbstractPin"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractPin" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isFlow" unique="false"
+        eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="arrayIndex" unique="false"
+        eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Model" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="packages" upperBound="-1"
         eType="#//Package" containment="true" resolveProxies="false" eKeys="#//NamedElement/name"/>

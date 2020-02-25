@@ -63,6 +63,35 @@ class AbstractPortUse extends NamedElement {
 }
 
 class AbstractActivityDef extends AbstractDef {
+	contains AbstractPin[] inParameters keys name
+	contains AbstractPin[] outParameters keys name
+}
+
+class AbstractProtocol extends AbstractDef {
+	contains AbstractProtocolBody body
+}
+
+class AbstractProtocolBody extends AbstractProtocolBodyInternal {
+	ProtocolControl[1] recControl = "several"
+	contains ProtocolBodyInternal[1] body
+	contains ProtocolBody recursive
+	ProtocolAlternativeType recType
+}
+
+interface AbstractProtocolBodyInternal {
+}
+
+class AbstractActionSend extends AbstractProtocolBodyInternal {
+	refers AbstractPin flowTo
+}
+
+class AbstractActionReceive extends AbstractProtocolBodyInternal {
+	refers AbstractPin flowTo
+}
+
+class AbstractPin extends NamedElement {
+	boolean isFlow
+	contains ArrayIndex arrayIndex
 }
 
 class Model extends NamedElement {

@@ -73,8 +73,8 @@ class AbstractProtocol extends AbstractDef {
 
 class AbstractProtocolBody extends AbstractProtocolBodyInternal {
 	ProtocolControl[1] recControl = "several"
-	contains ProtocolBodyInternal[1] body
-	contains ProtocolBody recursive
+	contains AbstractProtocolBodyInternal[1] body
+	contains AbstractProtocolBody recursive
 	ProtocolAlternativeType recType
 }
 

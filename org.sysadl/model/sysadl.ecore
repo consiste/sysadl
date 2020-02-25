@@ -92,9 +92,9 @@
   <eClassifiers xsi:type="ecore:EClass" name="AbstractProtocolBody" eSuperTypes="#//AbstractProtocolBodyInternal">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="recControl" unique="false"
         lowerBound="1" eType="#//ProtocolControl" defaultValueLiteral="several"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="body" lowerBound="1" eType="#//ProtocolBodyInternal"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" lowerBound="1" eType="#//AbstractProtocolBodyInternal"
         containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="recursive" eType="#//ProtocolBody"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="recursive" eType="#//AbstractProtocolBody"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="recType" unique="false"
         eType="#//ProtocolAlternativeType"/>
@@ -110,8 +110,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="AbstractPin" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isFlow" unique="false"
         eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="arrayIndex" unique="false"
-        eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="arrayIndex" eType="#//ArrayIndex"
+        containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Model" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="packages" upperBound="-1"

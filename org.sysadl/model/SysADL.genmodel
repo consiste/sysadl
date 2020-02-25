@@ -155,7 +155,7 @@
     </genClasses>
     <genClasses ecoreClass="sysadl.ecore#//AbstractPin">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//AbstractPin/isFlow"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//AbstractPin/arrayIndex"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractPin/arrayIndex"/>
     </genClasses>
     <genClasses ecoreClass="sysadl.ecore#//Model">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Model/packages"/>

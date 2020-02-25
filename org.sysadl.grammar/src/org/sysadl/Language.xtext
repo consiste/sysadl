@@ -79,7 +79,7 @@ AbstractProtocol returns AbstractProtocol:
 
 AbstractProtocolBody returns AbstractProtocolBody:
 	{AbstractProtocolBody}
-	recControl=ProtocolControl body=AbstractProtocolBodyInternal (recType=ProtocolAlternativeType recursive=ProtocolBody)?
+	recControl=ProtocolControl body=AbstractProtocolBodyInternal (recType=ProtocolAlternativeType recursive=AbstractProtocolBody)?
 ;
 
 AbstractProtocolBodyInternal returns AbstractProtocolBodyInternal:

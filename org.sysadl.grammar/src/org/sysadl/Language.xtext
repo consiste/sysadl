@@ -44,7 +44,8 @@ Invariant returns Invariant:
 AbstractActivityDef returns AbstractActivityDef:
 	{AbstractActivityDef}
 	'abstract' 'activity' 'def'
-	name=ID ;
+	name=ID 
+	('(' inParameters+=AbstractPin (',' inParameters+=AbstractPin)* ')')* (':' '('outParameters+=AbstractPin (',' outParameters+=AbstractPin)* ')')?;
 
 AbstractComponentDef returns AbstractComponentDef:
    {AbstractComponentDef}

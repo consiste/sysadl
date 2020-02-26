@@ -21,6 +21,10 @@ Package sysadl <http://org.sysadl>
     Reference invariants : Invariant<<0..*>>
     Reference definitions : AbstractDef<<0..*>>
     Reference archs : ExampleArchitecture<<0..*>>
+    Reference functions : Function<<0..*>>
+
+  Class Function -> NamedElement
+    Attribute def : EString
 
   Class ExampleArchitecture -> NamedElement
 
@@ -49,6 +53,29 @@ Package sysadl <http://org.sysadl>
     Attribute upperBound : EInt
 
   Class AbstractActivityDef -> AbstractDef
+    Reference inParameters : AbstractPin<<0..*>>
+    Reference outParameters : AbstractPin<<0..*>>
+
+  Class AbstractProtocol -> AbstractDef
+    Reference body : AbstractProtocolBody
+
+  Class AbstractProtocolBody -> AbstractProtocolBodyInternal
+    Attribute recControl : ProtocolControl<<1..1>>
+    Reference body : AbstractProtocolBodyInternal<<1..1>>
+    Reference recursive : AbstractProtocolBody
+    Attribute recType : ProtocolAlternativeType
+
+  Class AbstractProtocolBodyInternal
+
+  Class AbstractActionSend -> AbstractProtocolBodyInternal
+    Reference flowTo : AbstractPin
+
+  Class AbstractActionReceive -> AbstractProtocolBodyInternal
+    Reference flowTo : AbstractPin
+
+  Class AbstractPin -> NamedElement
+    Attribute isFlow : EBoolean
+    Reference arrayIndex : ArrayIndex
 
   Class Model -> NamedElement
     Reference packages : Package<<0..*>>

@@ -1,6 +1,7 @@
 package org.csp.translater.query;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
@@ -873,17 +874,20 @@ public class AuxiliarsQuery {
 	
 	public String ExistEqualsNames(Model model) {
 		String result = " ";
-		ArrayList<String> names = new ArrayList<String>();		
+		ArrayList<String> names = new ArrayList<String>();
+		HashMap<String, String> port_Comp = new HashMap<String, String>();
 		for (Package pck : model.getPackages()) {
 			for (ElementDef elem : pck.getDefinitions()) {
 				if (elem instanceof ComponentDef) {
 					for (PortUse portUse : ((ComponentDef)elem).getPorts()) {
 						if (!names.contains(portUse.getName().concat("_"+portUse.getDefinition().getName()))) {
 							names.add(portUse.getName().concat("_"+portUse.getDefinition().getName()));
+							port_Comp.put(portUse.getName(), elem.getName());
 						}
 						else {
-							result = "Sucess: The port " + portUse.getName().concat("_"+portUse.getDefinition().getName()) + 
-									" already exists.";
+							result = "Sucess: The port " + portUse.getName() + " : " + portUse.getDefinition().getName() + 
+									" already exists in the components " + port_Comp.get(portUse.getName()) + 
+									" and " + elem.getName();
 							return result;
 							
 						}						

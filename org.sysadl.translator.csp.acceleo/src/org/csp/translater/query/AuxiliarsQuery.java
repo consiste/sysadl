@@ -882,7 +882,7 @@ public class AuxiliarsQuery {
 							names.add(portUse.getName().concat("_"+portUse.getDefinition().getName()));
 						}
 						else {
-							result = "Fail: The port " + portUse.getName().concat("_"+portUse.getDefinition().getName()) + 
+							result = "Sucess: The port " + portUse.getName().concat("_"+portUse.getDefinition().getName()) + 
 									" already exists.";
 							return result;
 							
@@ -891,7 +891,7 @@ public class AuxiliarsQuery {
 				}
 			}
 		}
-		result = "Sucess: All ports have a unique name";
+		result = "Fail: All ports have a unique name";
 		return result;			
 	}
 	
@@ -910,9 +910,9 @@ public class AuxiliarsQuery {
 						}
 						else {
 							result = false;
-							return "Fail: The PIN " + pin.getName() + " of Activity"+
+							return "Fail: The PIN " + pin.getName() + " of Activity "+
 									((ActivityAllocation) allocation).getSource().getName()+
-									" do not exist on set of ports " + names.toString() +" of ComponentDef " + 
+									" does not exist in the set of ports " + names.toString() +" of ComponentDef " + 
 									((ActivityAllocation) allocation).getTarget().getName()+".";
 						}
 							
@@ -923,9 +923,9 @@ public class AuxiliarsQuery {
 						}
 						else {
 							result = false;
-							return "Fail: The PIN " + pin.getName() + " of Activity"+
+							return "Fail: The PIN " + pin.getName() + " of Activity "+
 							((ActivityAllocation) allocation).getSource().getName()+
-							" do not exist on set " + names.toString() +" of ComponentDef " + 
+							" does not exist in the set of ports " + names.toString() +" of ComponentDef " + 
 							((ActivityAllocation) allocation).getTarget().getName()+".";
 						}
 					}

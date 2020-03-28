@@ -18,11 +18,11 @@ VehicleData_command((destination,command)) = command
 
 
 channel receiveStatus_inStatus : Status						
-channel in_outData_outMoveToStation_ISupervisorySystem : VehicleData
-channel in_outData_inNotifications_ISupervisorySystem : NotificationToSupervisory
+channel in_outData_outMoveToStation_ISupervisorySystem : 
+channel in_outData_inNotifications_ISupervisorySystem : 
 channel sendStatusAGV_outStatus : Status						
-channel in_outDataAGV_inMoveToStation_IAGVSystem : VehicleData
-channel in_outDataAGV_outNotifications_IAGVSystem : NotificationToSupervisory
+channel in_outDataAGV_inMoveToStation_IAGVSystem : 
+channel in_outDataAGV_outNotifications_IAGVSystem : 
 channel start_inCommandToArm : CommandToArm						
 channel started_outNotificationFromArm : NotificationFromArm						
 channel start_stop_inCommandToMotor : CommandToMotor						
@@ -34,8 +34,8 @@ channel startArmVC_outCommandToArm : CommandToArm
 channel startedArm_inNotificationFromArm : NotificationFromArm						
 channel started_stopped_inNotificationFromMotor : NotificationFromMotor						
 channel start_stop_outCommandToMotor : CommandToMotor						
-channel in_outData_inMoveToStation_IAGVSystem : VehicleData
-channel in_outData_outNotifications_IAGVSystem : NotificationToSupervisory
+channel in_outData_inMoveToStation_IAGVSystem : 
+channel in_outData_outNotifications_IAGVSystem : 
 channel AGVStatus_outStatus : Status						
 channel location_inLocation : Location						
 channel destinationVT_inLocation : Location						
@@ -59,32 +59,30 @@ channel cmd_outCommandToArm : CommandToArm
 channel destination_outLocation : Location						
 channel start_outCommandToMotor : CommandToMotor						
 
-channel nsIPT_inNotificationToSupervisory : NotificationToSupervisory						
-channel nsOPT_outNotificationToSupervisory : NotificationToSupervisory						
-channel vdOPT_outVehicleData : VehicleData						
-channel vdIPT_inVehicleData : VehicleData						
-channel nmOPT_outNotificationFromMotor : NotificationFromMotor						
-channel nmIPT_inNotificationFromMotor : NotificationFromMotor						
-channel caOPT_outCommandToArm : CommandToArm						
-channel caIPT_inCommandToArm : CommandToArm						
-channel naIPT_inNotificationFromArm : NotificationFromArm						
-channel naOPT_outNotificationFromArm : NotificationFromArm						
-channel cmOPT_outCommandToMotor : CommandToMotor						
-channel cmIPT_inCommandToMotor : CommandToMotor						
-channel iagvs_inMoveToStation_IAGVSystem : VehicleData
-channel iagvs_outNotifications_IAGVSystem : NotificationToSupervisory
-channel iss_outMoveToStation_ISupervisorySystem : VehicleData
-channel iss_inNotifications_ISupervisorySystem : NotificationToSupervisory
-channel lOPT_outLocation : Location						
-channel lIPT_inLocation : Location						
-channel sOPT_outStatus : Status						
-channel sIPT_inStatus : Status						
+channel nsIPT_inNotificationToSupervisory : NotificationToSupervisory
+channel nsOPT_outNotificationToSupervisory : NotificationToSupervisory
+channel vdOPT_outVehicleData : VehicleData
+channel vdIPT_inVehicleData : VehicleData
+channel nmOPT_outNotificationFromMotor : NotificationFromMotor
+channel nmIPT_inNotificationFromMotor : NotificationFromMotor
+channel caOPT_outCommandToArm : CommandToArm
+channel caIPT_inCommandToArm : CommandToArm
+channel naIPT_inNotificationFromArm : NotificationFromArm
+channel naOPT_outNotificationFromArm : NotificationFromArm
+channel cmOPT_outCommandToMotor : CommandToMotor
+channel cmIPT_inCommandToMotor : CommandToMotor
+channel iagvs_IAGVSystem : 
+channel iss_ISupervisorySystem : 
+channel lOPT_outLocation : Location
+channel lIPT_inLocation : Location
+channel sOPT_outStatus : Status
+channel sIPT_inStatus : Status
 
-channel ss_in_outDataS_outMoveToStation_ISupervisorySystem : VehicleData
-channel ss_in_outDataS_inNotifications_ISupervisorySystem : NotificationToSupervisory
+channel ss_in_outDataS_outMoveToStation_ISupervisorySystem : 
+channel ss_in_outDataS_inNotifications_ISupervisorySystem : 
 channel agvs_sendStatus_outStatus : Status
-channel agvs_in_outDataAgv_inMoveToStation_IAGVSystem : VehicleData
-channel agvs_in_outDataAgv_outNotifications_IAGVSystem : NotificationToSupervisory
+channel agvs_in_outDataAgv_inMoveToStation_IAGVSystem : 
+channel agvs_in_outDataAgv_outNotifications_IAGVSystem : 
 channel ds_receiveStatus_inStatus : Status
 channel m_start_stop_in_inCommandToMotor : CommandToMotor
 channel m_started_stopped_out_outNotificationFromMotor : NotificationFromMotor
@@ -97,8 +95,8 @@ channel vc_startArm_outCommandToArm : CommandToArm
 channel vc_startedArm_inNotificationFromArm : NotificationFromArm
 channel vc_started_stopped_in_inNotificationFromMotor : NotificationFromMotor
 channel vc_start_stop_out_outCommandToMotor : CommandToMotor
-channel vc_in_outData_inMoveToStation_IAGVSystem : VehicleData
-channel vc_in_outData_outNotifications_IAGVSystem : NotificationToSupervisory
+channel vc_in_outData_inMoveToStation_IAGVSystem : 
+channel vc_in_outData_outNotifications_IAGVSystem : 
 channel cs_ack_cs_inNotificationFromMotor : NotificationFromMotor
 channel cs_location_cs_outLocation : Location
 channel cs_destination_cs_inLocation : Location
@@ -122,7 +120,7 @@ channel vt_location_vt_inLocation : Location
 channel vt_destination_vt_inLocation : Location
 channel vt_cmd_inCommandToArm : CommandToArm
 
-datatype ID = ,agvs,,,,vc,,,,,
+datatype ID = agvsvc
 
 FactoryAutomationSystem = (Components_FactoryAutomationSystem [| Sync_FactoryAutomationSystem |] Connectors_FactoryAutomationSystem)\Internal_FactoryAutomationSystem
 
@@ -136,8 +134,8 @@ Components_FactoryAutomationSystem = SupervisorySystem[[in_outData_ISupervisoryS
 						|||AGVSystem(agvs)
 						|||DisplaySystem[[receiveStatus_inStatus <- ds_receiveStatus_inStatus]]
 
-Connectors_FactoryAutomationSystem = interactionAGVAndSupervisory[[iagvs_inMoveToStation_IAGVSystem <- iss_inNotifications_ISupervisorySystem <- ,iagvs_outNotifications_IAGVSystem <- iss_outMoveToStation_ISupervisorySystem <- ]]
-						|||status[[]]
+Connectors_FactoryAutomationSystem = interactionAGVAndSupervisory[[]]
+						|||status[[sIPT_inStatus <- ds_receiveStatus_inStatus,sOPT_outStatus <- agvs_sendStatus_outStatus]]
 													
 
 AGVSystem_config(agvs) = (Components_AGVSystem [| Sync_AGVSystem |]  Connectors_AGVSystem)\Internal_AGVSystem
@@ -162,11 +160,11 @@ Components_AGVSystem = Motor[[start_stop_inCommandToMotor <- m_start_stop_in_inC
 						|||RobotArm[[start_inCommandToArm <- ra_start_inCommandToArm, started_outNotificationFromArm <- ra_started_outNotificationFromArm]]
 						|||VehicleControl[[sendStatus_outStatus <- vc_sendStatus_outStatus, arrivalDetectedVC_inLocation <- vc_arrivalDetected_in_inLocation, startArmVC_outCommandToArm <- vc_startArm_outCommandToArm, startedArm_inNotificationFromArm <- vc_startedArm_inNotificationFromArm, started_stopped_inNotificationFromMotor <- vc_started_stopped_in_inNotificationFromMotor, start_stop_outCommandToMotor <- vc_start_stop_out_outCommandToMotor, in_outData_IAGVSystem <- vc_in_outData_IAGVSystem]]
 
-Connectors_AGVSystem = locationVehicle[[]]
-						|||notificationArm[[]]
-						|||commandArm[[]]
-						|||notificationMotor[[]]
-						|||commandMotor[[]]
+Connectors_AGVSystem = locationVehicle[[lIPT_inLocation <- vc_arrivalDetected_in_inLocation,lOPT_outLocation <- as_arrivalDetected_out_outLocation]]
+						|||notificationArm[[naIPT_inNotificationFromArm <- vc_startedArm_inNotificationFromArm,naOPT_outNotificationFromArm <- ra_started_outNotificationFromArm]]
+						|||commandArm[[caIPT_inCommandToArm <- ra_start_inCommandToArm,caOPT_outCommandToArm <- vc_startArm_outCommandToArm]]
+						|||notificationMotor[[nmIPT_inNotificationFromMotor <- vc_started_stopped_in_inNotificationFromMotor,nmOPT_outNotificationFromMotor <- m_started_stopped_out_outNotificationFromMotor]]
+						|||commandMotor[[cmIPT_inCommandToMotor <- m_start_stop_in_inCommandToMotor,cmOPT_outCommandToMotor <- vc_start_stop_out_outCommandToMotor]]
 						|||Delegation_agvs
 
 Delegation_Internal_agvs = {|sendStatusAGV_outStatus,

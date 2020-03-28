@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.sysADL_Sintax="com.sysADL_Sintax" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:description_2="http://www.eclipse.org/sirius/table/description/1.1.0" xmlns:diagram="http://www.eclipse.org/sirius/diagram/1.1.0" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:sysadl="http://org.sysadl" xmlns:table="http://www.eclipse.org/sirius/table/1.1.0" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xsi:schemaLocation="http://www.eclipse.org/sirius/description/1.1.0 http://www.eclipse.org/sirius/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description http://www.eclipse.org/sirius/table/description/1.1.0 http://www.eclipse.org/sirius/table/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/style/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description/style">
-  <viewpoint:DAnalysis uid="_2WSjUBlmEeisf8MmKsz9qw" selectedViews="_dDN7UP_nEemSBeNNE3eqlA _dD-JQP_nEemSBeNNE3eqlA _dQ8OQP_nEemSBeNNE3eqlA _dRRlcP_nEemSBeNNE3eqlA _dikJwP_nEemSBeNNE3eqlA _djrkEP_nEemSBeNNE3eqlA _dotOAP_nEemSBeNNE3eqlA" version="14.1.0.201810161215">
+  <viewpoint:DAnalysis uid="_2WSjUBlmEeisf8MmKsz9qw" selectedViews="_dDN7UP_nEemSBeNNE3eqlA _dD-JQP_nEemSBeNNE3eqlA _dQ8OQP_nEemSBeNNE3eqlA _dRRlcP_nEemSBeNNE3eqlA _dikJwP_nEemSBeNNE3eqlA _djrkEP_nEemSBeNNE3eqlA _dotOAP_nEemSBeNNE3eqlA" version="14.3.0.201909031200">
     <semanticResources>AGV.sysadl</semanticResources>
     <ownedViews xmi:type="viewpoint:DView" uid="_62ILsBlmEeisf8MmKsz9qw">
       <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Requirements']"/>
@@ -142,7 +142,7 @@
     </ownedViews>
     <ownedViews xmi:type="viewpoint:DView" uid="_dD-JQP_nEemSBeNNE3eqlA">
       <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Allocation']"/>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_dQBBMP_nEemSBeNNE3eqlA" name="Allocation Table for SysADLArchitecture" repPath="#_dNWHsP_nEemSBeNNE3eqlA">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_dQBBMP_nEemSBeNNE3eqlA" name="Allocation Table for SysADLArchitecture" repPath="#_dNWHsP_nEemSBeNNE3eqlA" changeId="b8dc6824-b19b-41b7-8740-8046cd990717">
         <description xmi:type="description_2:EditionTableDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Allocation']/@ownedRepresentations[name='SysADL.Allocation.Table']"/>
         <target xmi:type="sysadl:Model" href="AGV.sysadl#/"/>
       </ownedRepresentationDescriptors>
@@ -179,7 +179,7 @@
       </ownedRepresentationDescriptors>
     </ownedViews>
   </viewpoint:DAnalysis>
-  <diagram:DSemanticDiagram uid="_62szcBlmEeisf8MmKsz9qw" name="Requirements Diagram">
+  <diagram:DSemanticDiagram uid="_62szcBlmEeisf8MmKsz9qw">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_62szcRlmEeisf8MmKsz9qw" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_62szchlmEeisf8MmKsz9qw"/>
     </ownedAnnotationEntries>
@@ -1897,7 +1897,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Requirements']/@ownedRepresentations[name='SysADL.Requirements.Main']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:Model" href="AGV.sysadl#/"/>
   </diagram:DSemanticDiagram>
-  <table:DTable uid="_63bMMRlmEeisf8MmKsz9qw" name="Allocation Table for SysADLArchitecture" headerColumnWidth="15">
+  <table:DTable uid="_63bMMRlmEeisf8MmKsz9qw" headerColumnWidth="15">
     <lines xmi:type="table:DLine" uid="_4kzcwBvsEeiBfMcfBkJW2A" label="Activity Allocation">
       <originMapping xmi:type="description_2:LineMapping" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Allocation']/@ownedRepresentations[name='SysADL.Allocation.Table']/@ownedLineMappings[name='SysADL.Alloc']"/>
       <cells xmi:type="table:DCell" uid="_4k6KcBvsEeiBfMcfBkJW2A" label="CheckStationAC" column="_63bMMhlmEeisf8MmKsz9qw">
@@ -2141,7 +2141,7 @@
     <description xmi:type="description_2:EditionTableDescription" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Allocation']/@ownedRepresentations[name='SysADL.Allocation.Table']"/>
     <target xmi:type="com.sysADL_Sintax:Model" href="AGV.sysadl#/"/>
   </table:DTable>
-  <diagram:DSemanticDiagram uid="_63yYkBlmEeisf8MmKsz9qw" name="Package Diagram">
+  <diagram:DSemanticDiagram uid="_63yYkBlmEeisf8MmKsz9qw">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_63yYkRlmEeisf8MmKsz9qw" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_63yYkhlmEeisf8MmKsz9qw"/>
     </ownedAnnotationEntries>
@@ -2383,7 +2383,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.Package']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:Model" href="AGV.sysadl#/"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_s0wtQBlnEeisf8MmKsz9qw" name="Block Definition Diagram (Structural BDD) - Connectors">
+  <diagram:DSemanticDiagram uid="_s0wtQBlnEeisf8MmKsz9qw">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_s0wtQRlnEeisf8MmKsz9qw" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_s0wtQhlnEeisf8MmKsz9qw"/>
     </ownedAnnotationEntries>
@@ -3205,7 +3205,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:Package" href="AGV.sysadl#//@packages[name='ConnectorsAGV']"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_vFCGwBlnEeisf8MmKsz9qw" name="Block Definition Diagram (Structural BDD) - Ports">
+  <diagram:DSemanticDiagram uid="_vFCGwBlnEeisf8MmKsz9qw">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_vFCGwRlnEeisf8MmKsz9qw" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_vFCGwhlnEeisf8MmKsz9qw"/>
     </ownedAnnotationEntries>
@@ -3836,7 +3836,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:Package" href="AGV.sysadl#//@packages[name='PortsAGV']"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_zCO8IBlnEeisf8MmKsz9qw" name="Block Definition Diagram (Structural BDD) - Types">
+  <diagram:DSemanticDiagram uid="_zCO8IBlnEeisf8MmKsz9qw">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_zCO8IRlnEeisf8MmKsz9qw" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_zCO8IhlnEeisf8MmKsz9qw"/>
     </ownedAnnotationEntries>
@@ -4358,7 +4358,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:Package" href="AGV.sysadl#//@packages[name='SysADL.types']"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_1XIW8BlnEeisf8MmKsz9qw" name="Block Definition Diagram (Structural BDD) - Components">
+  <diagram:DSemanticDiagram uid="_1XIW8BlnEeisf8MmKsz9qw">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_1XIW8RlnEeisf8MmKsz9qw" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_1XIW8hlnEeisf8MmKsz9qw"/>
     </ownedAnnotationEntries>
@@ -5841,7 +5841,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:Package" href="AGV.sysadl#//@packages[name='ComponentsAGV']"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_-VLQARlnEeisf8MmKsz9qw" name="new Block Definition Diagram (Behavior BDD)">
+  <diagram:DSemanticDiagram uid="_-VLQARlnEeisf8MmKsz9qw">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_-VLQAhlnEeisf8MmKsz9qw" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_-VLQAxlnEeisf8MmKsz9qw"/>
     </ownedAnnotationEntries>
@@ -7956,7 +7956,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='BDD.Behavior']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:Package" href="AGV.sysadl#//@packages[name='ComponentsAGV']"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_zb8fIBqEEeiygKIhSJ4TaA" name="Activity Diagram - StartMovingAC">
+  <diagram:DSemanticDiagram uid="_zb8fIBqEEeiygKIhSJ4TaA">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_zb8fIRqEEeiygKIhSJ4TaA" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_zb8fIhqEEeiygKIhSJ4TaA"/>
     </ownedAnnotationEntries>
@@ -8414,7 +8414,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:ActivityBody" href="AGV.sysadl#//@packages[name='ComponentsAGV']/@architectures[name='StartMovingAC']/@acbody"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_2KVYABqEEeiygKIhSJ4TaA" name="Activity Diagram - NotifierMotorAC">
+  <diagram:DSemanticDiagram uid="_2KVYABqEEeiygKIhSJ4TaA">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_2KVYARqEEeiygKIhSJ4TaA" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_2KVYAhqEEeiygKIhSJ4TaA"/>
     </ownedAnnotationEntries>
@@ -8730,7 +8730,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:ActivityBody" href="AGV.sysadl#//@packages[name='ComponentsAGV']/@architectures[name='NotifierMotorAC']/@acbody"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_4NaDABqEEeiygKIhSJ4TaA" name="Activity Diagram - CheckStationAC">
+  <diagram:DSemanticDiagram uid="_4NaDABqEEeiygKIhSJ4TaA">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_4NaDARqEEeiygKIhSJ4TaA" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_4NaDAhqEEeiygKIhSJ4TaA"/>
     </ownedAnnotationEntries>
@@ -9509,7 +9509,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:ActivityBody" href="AGV.sysadl#//@packages[name='ComponentsAGV']/@architectures[name='CheckStationAC']/@acbody"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_7gC4cBqEEeiygKIhSJ4TaA" name="Activity Diagram - ControlArmAC">
+  <diagram:DSemanticDiagram uid="_7gC4cBqEEeiygKIhSJ4TaA">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_7gC4cRqEEeiygKIhSJ4TaA" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_7gC4chqEEeiygKIhSJ4TaA"/>
     </ownedAnnotationEntries>
@@ -9767,7 +9767,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:ActivityBody" href="AGV.sysadl#//@packages[name='ComponentsAGV']/@architectures[name='ControlArmAC']/@acbody"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_9pJ6ABqEEeiygKIhSJ4TaA" name="Activity Diagram - NotifierArmAC">
+  <diagram:DSemanticDiagram uid="_9pJ6ABqEEeiygKIhSJ4TaA">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_9pJ6ARqEEeiygKIhSJ4TaA" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_9pJ6AhqEEeiygKIhSJ4TaA"/>
     </ownedAnnotationEntries>
@@ -9956,7 +9956,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:ActivityBody" href="AGV.sysadl#//@packages[name='ComponentsAGV']/@architectures[name='NotifierArmAC']/@acbody"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="__ixuEBqEEeiygKIhSJ4TaA" name="Activity Diagram - VehicleTimerAC">
+  <diagram:DSemanticDiagram uid="__ixuEBqEEeiygKIhSJ4TaA">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="__ixuERqEEeiygKIhSJ4TaA" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="__ixuEhqEEeiygKIhSJ4TaA"/>
     </ownedAnnotationEntries>
@@ -10283,7 +10283,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='SysADL.AD']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:ActivityBody" href="AGV.sysadl#//@packages[name='ComponentsAGV']/@architectures[name='VehicleTimerAC']/@acbody"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_qXZv4BtdEeiBfMcfBkJW2A" name="new Block Definition Diagram (Execution BDD)">
+  <diagram:DSemanticDiagram uid="_qXZv4BtdEeiBfMcfBkJW2A">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_qXZv4RtdEeiBfMcfBkJW2A" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_qXZv4htdEeiBfMcfBkJW2A"/>
     </ownedAnnotationEntries>
@@ -11229,7 +11229,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Executable']/@ownedRepresentations[name='SysADL.Execution.BDD']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:Package" href="AGV.sysadl#//@packages[name='ComponentsAGV']"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_bkJQIBvPEeiBfMcfBkJW2A" name="Internal Block Diagram (Structural IBD) - FASystem">
+  <diagram:DSemanticDiagram uid="_bkJQIBvPEeiBfMcfBkJW2A">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_bkJQIRvPEeiBfMcfBkJW2A" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_bkJQIhvPEeiBfMcfBkJW2A"/>
     </ownedAnnotationEntries>
@@ -11467,7 +11467,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:Configuration" href="AGV.sysadl#//@packages[name='ComponentsAGV']/@architectures[name='FactoryAutomationSystem']/@composite"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_hCiygBvPEeiBfMcfBkJW2A" name="Internal Block Diagram (Structural IBD) - AGVSystem">
+  <diagram:DSemanticDiagram uid="_hCiygBvPEeiBfMcfBkJW2A">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_hCiygRvPEeiBfMcfBkJW2A" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_hCiyghvPEeiBfMcfBkJW2A"/>
     </ownedAnnotationEntries>
@@ -12116,7 +12116,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:Configuration" href="AGV.sysadl#//@packages[name='ComponentsAGV']/@architectures[name='AGVSystem']/@composite"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_lFo0gBvPEeiBfMcfBkJW2A" name="Internal Block Diagram (Structural IBD) - VehicleControl">
+  <diagram:DSemanticDiagram uid="_lFo0gBvPEeiBfMcfBkJW2A">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_lFo0gRvPEeiBfMcfBkJW2A" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_lFo0ghvPEeiBfMcfBkJW2A"/>
     </ownedAnnotationEntries>
@@ -13414,7 +13414,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:Configuration" href="AGV.sysadl#//@packages[name='ComponentsAGV']/@architectures[name='VehicleControl']/@composite"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_-VonYBv2Eei4wfm33dMB2A" name="Parametric Diagram - SendStartMotorAN">
+  <diagram:DSemanticDiagram uid="_-VonYBv2Eei4wfm33dMB2A">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_-VonYRv2Eei4wfm33dMB2A" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_-VonYhv2Eei4wfm33dMB2A"/>
     </ownedAnnotationEntries>
@@ -13561,7 +13561,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='Parametric']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:ActionDef" href="AGV.sysadl#//@packages[name='ComponentsAGV']/@architectures[name='SendStartMotorAN']"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_njOlURygEeikBYPd8wolCw" name="Parametric Diagram - SendCommandAN">
+  <diagram:DSemanticDiagram uid="_njOlURygEeikBYPd8wolCw">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_njOlUhygEeikBYPd8wolCw" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_njOlUxygEeikBYPd8wolCw"/>
     </ownedAnnotationEntries>
@@ -13755,7 +13755,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='Parametric']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:ActionDef" href="AGV.sysadl#//@packages[name='ComponentsAGV']/@architectures[name='SendCommandAN']"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_yvheoBygEeikBYPd8wolCw" name="Parametric Diagram - SendDestinationAN">
+  <diagram:DSemanticDiagram uid="_yvheoBygEeikBYPd8wolCw">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_yvheoRygEeikBYPd8wolCw" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_yvheohygEeikBYPd8wolCw"/>
     </ownedAnnotationEntries>
@@ -13949,7 +13949,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='Parametric']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:ActionDef" href="AGV.sysadl#//@packages[name='ComponentsAGV']/@architectures[name='SendDestinationAN']"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_84y0sRygEeikBYPd8wolCw" name="Parametric Diagram - NotifyAGVFromMotorAN">
+  <diagram:DSemanticDiagram uid="_84y0sRygEeikBYPd8wolCw">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_84y0shygEeikBYPd8wolCw" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_84y0sxygEeikBYPd8wolCw"/>
     </ownedAnnotationEntries>
@@ -14143,7 +14143,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='Parametric']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:ActionDef" href="AGV.sysadl#//@packages[name='ComponentsAGV']/@architectures[name='NotifyAGVFromMotorAN']"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_Iac6ARyhEeikBYPd8wolCw" name="Parametric Diagram - NotifySupervisoryFromMotorAN">
+  <diagram:DSemanticDiagram uid="_Iac6ARyhEeikBYPd8wolCw">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_Iac6AhyhEeikBYPd8wolCw" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_Iac6AxyhEeikBYPd8wolCw"/>
     </ownedAnnotationEntries>
@@ -14337,7 +14337,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='Parametric']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:ActionDef" href="AGV.sysadl#//@packages[name='ComponentsAGV']/@architectures[name='NotifySupervisoryFromMotorAN']"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_TSNtwByhEeikBYPd8wolCw" name="Parametric Diagram - CompareStationsAN">
+  <diagram:DSemanticDiagram uid="_TSNtwByhEeikBYPd8wolCw">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_TSNtwRyhEeikBYPd8wolCw" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_TSNtwhyhEeikBYPd8wolCw"/>
     </ownedAnnotationEntries>
@@ -14690,7 +14690,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='Parametric']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:ActionDef" href="AGV.sysadl#//@packages[name='ComponentsAGV']/@architectures[name='CompareStationsAN']"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_En9N4ByjEeikBYPd8wolCw" name="Parametric Diagram - StopMotorAN">
+  <diagram:DSemanticDiagram uid="_En9N4ByjEeikBYPd8wolCw">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_En9N4RyjEeikBYPd8wolCw" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_En9N4hyjEeikBYPd8wolCw"/>
     </ownedAnnotationEntries>
@@ -14884,7 +14884,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='Parametric']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:ActionDef" href="AGV.sysadl#//@packages[name='ComponentsAGV']/@architectures[name='StopMotorAN']"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_SwdZoRyjEeikBYPd8wolCw" name="Parametric Diagram - SendCurrentLocationAN">
+  <diagram:DSemanticDiagram uid="_SwdZoRyjEeikBYPd8wolCw">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_SwdZohyjEeikBYPd8wolCw" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_SwdZoxyjEeikBYPd8wolCw"/>
     </ownedAnnotationEntries>
@@ -15078,7 +15078,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='Parametric']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:ActionDef" href="AGV.sysadl#//@packages[name='ComponentsAGV']/@architectures[name='SendCurrentLocationAN']"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_cuKY4ByjEeikBYPd8wolCw" name="Parametric Diagram - PassedMotorAN">
+  <diagram:DSemanticDiagram uid="_cuKY4ByjEeikBYPd8wolCw">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_cuKY4RyjEeikBYPd8wolCw" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_cuKY4hyjEeikBYPd8wolCw"/>
     </ownedAnnotationEntries>
@@ -15272,7 +15272,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='Parametric']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:ActionDef" href="AGV.sysadl#//@packages[name='ComponentsAGV']/@architectures[name='PassedMotorAN']"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_nXcrwRyjEeikBYPd8wolCw" name="Parametric Diagram - ControlArmAN">
+  <diagram:DSemanticDiagram uid="_nXcrwRyjEeikBYPd8wolCw">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_nXcrwhyjEeikBYPd8wolCw" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_nXcrwxyjEeikBYPd8wolCw"/>
     </ownedAnnotationEntries>
@@ -15535,7 +15535,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='Parametric']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:ActionDef" href="AGV.sysadl#//@packages[name='ComponentsAGV']/@architectures[name='ControlArmAN']"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_ZsQcMRylEeikBYPd8wolCw" name="Parametric Diagram - NotifierArmAN">
+  <diagram:DSemanticDiagram uid="_ZsQcMRylEeikBYPd8wolCw">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_ZsQcMhylEeikBYPd8wolCw" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_ZsQcMxylEeikBYPd8wolCw"/>
     </ownedAnnotationEntries>
@@ -15682,7 +15682,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='Parametric']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:ActionDef" href="AGV.sysadl#//@packages[name='ComponentsAGV']/@architectures[name='NotifierArmAN']"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_i83E4RylEeikBYPd8wolCw" name="Parametric Diagram - VehicleTimerAN">
+  <diagram:DSemanticDiagram uid="_i83E4RylEeikBYPd8wolCw">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_i83E4hylEeikBYPd8wolCw" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_i83E4xylEeikBYPd8wolCw"/>
     </ownedAnnotationEntries>
@@ -16014,7 +16014,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/SysADL.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Behavioral']/@ownedRepresentations[name='Parametric']/@defaultLayer"/>
     <target xmi:type="com.sysADL_Sintax:ActionDef" href="AGV.sysadl#//@packages[name='ComponentsAGV']/@architectures[name='VehicleTimerAN']"/>
   </diagram:DSemanticDiagram>
-  <table:DTable uid="_dNWHsP_nEemSBeNNE3eqlA" name="Allocation Table for SysADLArchitecture">
+  <table:DTable uid="_dNWHsP_nEemSBeNNE3eqlA" headerColumnWidth="155">
     <target xmi:type="sysadl:Model" href="AGV.sysadl#/"/>
     <lines xmi:type="table:DLine" uid="_dOcT4P_nEemSBeNNE3eqlA" label="Activity Allocation">
       <target xmi:type="sysadl:ActivityAllocation" href="AGV.sysadl#//@allocation/@allocs.0"/>
@@ -16250,15 +16250,15 @@
         <semanticElements xmi:type="sysadl:ExecutableAllocation" href="AGV.sysadl#//@allocation/@allocs.17"/>
       </cells>
     </lines>
-    <columns xmi:type="table:DFeatureColumn" uid="_dO6N8P_nEemSBeNNE3eqlA" label="Source" cells="_dO8qMP_nEemSBeNNE3eqlA _dPPlIf_nEemSBeNNE3eqlA _dPPlJf_nEemSBeNNE3eqlA _dPPlKf_nEemSBeNNE3eqlA _dPWS0f_nEemSBeNNE3eqlA _dPW54f_nEemSBeNNE3eqlA _dPW55f_nEemSBeNNE3eqlA _dPuGQf_nEemSBeNNE3eqlA _dPuGRf_nEemSBeNNE3eqlA _dPxJkf_nEemSBeNNE3eqlA _dPyXsf_nEemSBeNNE3eqlA _dPzl0f_nEemSBeNNE3eqlA _dPzl1f_nEemSBeNNE3eqlA _dP2pIf_nEemSBeNNE3eqlA _dP3QM__nEemSBeNNE3eqlA _dP5FYf_nEemSBeNNE3eqlA _dP5FZf_nEemSBeNNE3eqlA _dP5Faf_nEemSBeNNE3eqlA" featureName="source">
+    <columns xmi:type="table:DFeatureColumn" uid="_dO6N8P_nEemSBeNNE3eqlA" label="Source" cells="_dO8qMP_nEemSBeNNE3eqlA _dPPlIf_nEemSBeNNE3eqlA _dPPlJf_nEemSBeNNE3eqlA _dPPlKf_nEemSBeNNE3eqlA _dPWS0f_nEemSBeNNE3eqlA _dPW54f_nEemSBeNNE3eqlA _dPW55f_nEemSBeNNE3eqlA _dPuGQf_nEemSBeNNE3eqlA _dPuGRf_nEemSBeNNE3eqlA _dPxJkf_nEemSBeNNE3eqlA _dPyXsf_nEemSBeNNE3eqlA _dPzl0f_nEemSBeNNE3eqlA _dPzl1f_nEemSBeNNE3eqlA _dP2pIf_nEemSBeNNE3eqlA _dP3QM__nEemSBeNNE3eqlA _dP5FYf_nEemSBeNNE3eqlA _dP5FZf_nEemSBeNNE3eqlA _dP5Faf_nEemSBeNNE3eqlA" width="177" featureName="source">
       <originMapping xmi:type="description_2:FeatureColumnMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Allocation']/@ownedRepresentations[name='SysADL.Allocation.Table']/@ownedColumnMappings[name='SysADL.Alloc.Source']"/>
     </columns>
-    <columns xmi:type="table:DFeatureColumn" uid="_dO6N8v_nEemSBeNNE3eqlA" label="Target" cells="_dPHCQf_nEemSBeNNE3eqlA _dPPlI__nEemSBeNNE3eqlA _dPPlJ__nEemSBeNNE3eqlA _dPVrwf_nEemSBeNNE3eqlA _dPWS0__nEemSBeNNE3eqlA _dPW54__nEemSBeNNE3eqlA _dPjHIf_nEemSBeNNE3eqlA _dPuGQ__nEemSBeNNE3eqlA _dPwigf_nEemSBeNNE3eqlA _dPxJk__nEemSBeNNE3eqlA _dPy-wf_nEemSBeNNE3eqlA _dPzl0__nEemSBeNNE3eqlA _dP2CEf_nEemSBeNNE3eqlA _dP3QMf_nEemSBeNNE3eqlA _dP4eUf_nEemSBeNNE3eqlA _dP5FY__nEemSBeNNE3eqlA _dP5FZ__nEemSBeNNE3eqlA _dP5Fa__nEemSBeNNE3eqlA" featureName="target">
+    <columns xmi:type="table:DFeatureColumn" uid="_dO6N8v_nEemSBeNNE3eqlA" label="Target" cells="_dPHCQf_nEemSBeNNE3eqlA _dPPlI__nEemSBeNNE3eqlA _dPPlJ__nEemSBeNNE3eqlA _dPVrwf_nEemSBeNNE3eqlA _dPWS0__nEemSBeNNE3eqlA _dPW54__nEemSBeNNE3eqlA _dPjHIf_nEemSBeNNE3eqlA _dPuGQ__nEemSBeNNE3eqlA _dPwigf_nEemSBeNNE3eqlA _dPxJk__nEemSBeNNE3eqlA _dPy-wf_nEemSBeNNE3eqlA _dPzl0__nEemSBeNNE3eqlA _dP2CEf_nEemSBeNNE3eqlA _dP3QMf_nEemSBeNNE3eqlA _dP4eUf_nEemSBeNNE3eqlA _dP5FY__nEemSBeNNE3eqlA _dP5FZ__nEemSBeNNE3eqlA _dP5Fa__nEemSBeNNE3eqlA" width="181" featureName="target">
       <originMapping xmi:type="description_2:FeatureColumnMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Allocation']/@ownedRepresentations[name='SysADL.Allocation.Table']/@ownedColumnMappings[name='SysADL.Alloc.Target']"/>
     </columns>
     <description xmi:type="description_2:EditionTableDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Allocation']/@ownedRepresentations[name='SysADL.Allocation.Table']"/>
   </table:DTable>
-  <diagram:DSemanticDiagram uid="_dT4NgP_nEemSBeNNE3eqlA" name="Package Diagram">
+  <diagram:DSemanticDiagram uid="_dT4NgP_nEemSBeNNE3eqlA">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_daWo8P_nEemSBeNNE3eqlA" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_daWo8f_nEemSBeNNE3eqlA"/>
     </ownedAnnotationEntries>
@@ -16485,7 +16485,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.Package']/@defaultLayer"/>
     <target xmi:type="sysadl:Model" href="AGV.sysadl#/"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_dotOAf_nEemSBeNNE3eqlA" name="Requirements Diagram">
+  <diagram:DSemanticDiagram uid="_dotOAf_nEemSBeNNE3eqlA">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_duuWi__nEemSBeNNE3eqlA" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_duuWjP_nEemSBeNNE3eqlA"/>
     </ownedAnnotationEntries>
@@ -18113,7 +18113,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Requirements']/@ownedRepresentations[name='SysADL.Requirements.Main']/@defaultLayer"/>
     <target xmi:type="sysadl:Model" href="AGV.sysadl#/"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_ipBtQP_nEemSBeNNE3eqlA" name="Block Definition Diagram (Structural BDD)">
+  <diagram:DSemanticDiagram uid="_ipBtQP_nEemSBeNNE3eqlA">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_irl5EP_nEemSBeNNE3eqlA" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_irl5Ef_nEemSBeNNE3eqlA"/>
     </ownedAnnotationEntries>
@@ -19452,7 +19452,7 @@
     <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']/@defaultLayer"/>
     <target xmi:type="sysadl:Package" href="AGV.sysadl#//@packages[name='ComponentsAGV']"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram uid="_mPYI4P_nEemSBeNNE3eqlA" name="Internal Block Diagram (Structural IBD)">
+  <diagram:DSemanticDiagram uid="_mPYI4P_nEemSBeNNE3eqlA">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_mQ7oEP_nEemSBeNNE3eqlA" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_mQ7oEf_nEemSBeNNE3eqlA"/>
     </ownedAnnotationEntries>

@@ -15,6 +15,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.sysadl.Model;
+import org.sysadl.verification.csp.ParserAnswerCSP;
 import org.sysadl.verification.csp.VerificationAnwserDialog;
 
 import uk.ac.ox.cs.fdr.Assertion;
@@ -52,8 +53,9 @@ public class PerformTransformation {
         File folder = new File(path+ "output");
         HashMap<String, String> mapAnwser = new HashMap<String, String>();
         List<String> arguments = new ArrayList<String>();
-        AuxiliarsQuery query = new AuxiliarsQuery();        
-        if (query.CheckPortsAndPinsNames(model).startsWith("Sucess:") && query.ExistEqualsNames(model).startsWith("Fail:")) {		
+        AuxiliarsQuery query = new AuxiliarsQuery();
+        ParserAnswerCSP parser = new ParserAnswerCSP();
+        if (query.CheckPortsAndPinsNames(model).startsWith("Sucess") && query.ExistEqualsNames(model).startsWith("Fail")) {		
 			try {
 				
 				Generate generator = new Generate(modelURI, folder, arguments);
@@ -73,6 +75,8 @@ public class PerformTransformation {
 	    	         // Pretty print the counterexamples
 	    	            for (Counterexample counterexample : assertion.counterexamples()) {
 	    	                describeCounterexample(out, session, counterexample);
+	    	                
+	    	                parser.getTrace(out.toString(), assertion.toString());
 	    	            }
 	    	        }
 	                
@@ -83,7 +87,7 @@ public class PerformTransformation {
 			        System.out.println(error);
 			    }
 	
-			    fdr.libraryExit();
+			    fdr.libraryExit();				    
 			    VerificationAnwserDialog dialog = new VerificationAnwserDialog(new JFrame(), "Results", mapAnwser, false);
 			
 	            
@@ -93,13 +97,13 @@ public class PerformTransformation {
 			}		
         }
         else {
-        	if (query.CheckPortsAndPinsNames(model).startsWith("Fail:")) {
-        		String[] aux = query.CheckPortsAndPinsNames(model).split(":");
+        	if (query.CheckPortsAndPinsNames(model).startsWith("Fail")) {
+        		String[] aux = query.CheckPortsAndPinsNames(model).split("-");
         		mapAnwser.put(aux[0], aux[1]);
         		VerificationAnwserDialog dialog = new VerificationAnwserDialog(new JFrame(), "Error", mapAnwser, true);
 			}
-        	else if (query.ExistEqualsNames(model).startsWith("Sucess:")) {
-        		String[] aux = query.ExistEqualsNames(model).split(":");
+        	else if (query.ExistEqualsNames(model).startsWith("Sucess")) {
+        		String[] aux = query.ExistEqualsNames(model).split("-");
         		mapAnwser.put(aux[0], aux[1]);
         		VerificationAnwserDialog dialog = new VerificationAnwserDialog(new JFrame(), "Error", mapAnwser, true);
 			}

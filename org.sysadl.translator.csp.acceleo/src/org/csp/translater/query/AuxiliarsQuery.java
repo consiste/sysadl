@@ -835,32 +835,54 @@ public class AuxiliarsQuery {
 		String OUT = "";
 		
 		for (int i = 0; i < connUse.getDefinition().getPorts().size(); i++) {
-			if (((SimplePortDef)connUse.getDefinition().getPorts().get(i).getDefinition()).getFlowProperties().toString().contains("in")) {
-				IN += connUse.getDefinition().getPorts().get(i).getName();
-				IN += "_"+connUse.getDefinition().getPorts().get(i).getDefinition().getName();
-				IN += " <- ";
-			}
-			else if(((SimplePortDef)connUse.getDefinition().getPorts().get(i).getDefinition()).getFlowProperties().toString().contains("out")) {
-				OUT += connUse.getDefinition().getPorts().get(i).getName();
-				OUT += "_"+connUse.getDefinition().getPorts().get(i).getDefinition().getName();
-				OUT += " <- ";
+			if (connUse.getDefinition().getPorts().get(i).getDefinition() instanceof SimplePortDef) {
+				if (((SimplePortDef)connUse.getDefinition().getPorts().get(i).getDefinition()).getFlowProperties().toString().contains("in")) {
+					IN += connUse.getDefinition().getPorts().get(i).getName();
+					IN += "_"+connUse.getDefinition().getPorts().get(i).getDefinition().getName();
+					IN += " <- ";
+				}
+				else if(((SimplePortDef)connUse.getDefinition().getPorts().get(i).getDefinition()).getFlowProperties().toString().contains("out")) {
+					OUT += connUse.getDefinition().getPorts().get(i).getName();
+					OUT += "_"+connUse.getDefinition().getPorts().get(i).getDefinition().getName();
+					OUT += " <- ";
 
-			}
-		}
-		
-		for (ComponentUse compUse : compDef.getComposite().getComponents()) {
-			for (PortUse port : compUse.getPorts()) {
-				for (int i = 0; i < connUse.getBindings().size(); i++) {
-					if (port.getName().equals(connUse.getBindings().get(i).getDestination().getName())) {
-						IN += compUse.getName()+"_"+port.getName() +"_"+ port.getDefinition().getName();
+				}
+				
+				for (ComponentUse compUse : compDef.getComposite().getComponents()) {
+					for (PortUse port : compUse.getPorts()) {
+						for (int j = 0; i < connUse.getBindings().size(); j++) {
+							if (port.getName().equals(connUse.getBindings().get(j).getDestination().getName())) {
+								IN += compUse.getName()+"_"+port.getName() +"_"+ port.getDefinition().getName();
+							}
+							else if (port.getName().equals(connUse.getBindings().get(j).getSource().getName())) {
+								OUT += compUse.getName()+"_"+port.getName() +"_"+ port.getDefinition().getName();
+							}
+						}
+						
 					}
-					else if (port.getName().equals(connUse.getBindings().get(i).getSource().getName())) {
-						OUT += compUse.getName()+"_"+port.getName() +"_"+ port.getDefinition().getName();
+				}
+			}			
+			else if(connUse.getDefinition().getPorts().get(i).getDefinition() instanceof CompositePortDef){
+				
+				for(int j =0; j < ((CompositePortDef)connUse.getDefinition().getPorts().get(i).getDefinition()).getPorts().size(); j++) {					
+					if (((SimplePortDef)((CompositePortDef)connUse.getDefinition().getPorts().get(i).getDefinition()).getPorts().get(j).getDefinition()).getFlowProperties().toString().contains("in")) {
+						IN += connUse.getDefinition().getPorts().get(i).getName();						
+						IN += "_"+((CompositePortDef)connUse.getDefinition().getPorts().get(i).getDefinition()).getPorts().get(j).getName();
+						IN += "_"+connUse.getDefinition().getPorts().get(i).getDefinition().getName();
+						IN += " <- ";
+					}
+					if (((SimplePortDef)((CompositePortDef)connUse.getDefinition().getPorts().get(i).getDefinition()).getPorts().get(j).getDefinition()).getFlowProperties().toString().contains("out")) {
+						OUT += connUse.getDefinition().getPorts().get(i).getName();						
+						OUT += "_"+((CompositePortDef)connUse.getDefinition().getPorts().get(i).getDefinition()).getPorts().get(j).getName();
+						OUT += "_"+connUse.getDefinition().getPorts().get(i).getDefinition().getName();
+						OUT += " <- ";
 					}
 				}
 				
-			}
+			}			
 		}
+		
+		
 		result = IN + "," + OUT;
 		return result;
 	}
@@ -882,12 +904,12 @@ public class AuxiliarsQuery {
 					for (PortUse portUse : ((ComponentDef)elem).getPorts()) {
 						if (!names.contains(portUse.getName().concat("_"+portUse.getDefinition().getName()))) {
 							names.add(portUse.getName().concat("_"+portUse.getDefinition().getName()));
-							port_Comp.put(portUse.getName(), elem.getName());
+							port_Comp.put(portUse.getName().concat("_"+portUse.getDefinition().getName()), elem.getName());
 						}
 						else {
-							result = "Sucess: The port " + portUse.getName() + " : " + portUse.getDefinition().getName() + 
-									" already exists in the components " + port_Comp.get(portUse.getName()) + 
-									" and " + elem.getName();
+							result = "Sucess- The port " + portUse.getName() + " : " + portUse.getDefinition().getName() + 
+									" exists in the components " + port_Comp.get(portUse.getName().concat("_"+portUse.getDefinition().getName())) + 
+									" and " + elem.getName()+". Please, make sure all ports have diferrent names.";
 							return result;
 							
 						}						
@@ -895,7 +917,7 @@ public class AuxiliarsQuery {
 				}
 			}
 		}
-		result = "Fail: All ports have a unique name";
+		result = "Fail- All ports have a unique name";
 		return result;			
 	}
 	
@@ -914,7 +936,7 @@ public class AuxiliarsQuery {
 						}
 						else {
 							result = false;
-							return "Fail: The PIN " + pin.getName() + " of Activity "+
+							return "Fail- The PIN " + pin.getName() + " of Activity "+
 									((ActivityAllocation) allocation).getSource().getName()+
 									" does not exist in the set of ports " + names.toString() +" of ComponentDef " + 
 									((ActivityAllocation) allocation).getTarget().getName()+".";
@@ -927,7 +949,7 @@ public class AuxiliarsQuery {
 						}
 						else {
 							result = false;
-							return "Fail: The PIN " + pin.getName() + " of Activity "+
+							return "Fail- The PIN " + pin.getName() + " of Activity "+
 							((ActivityAllocation) allocation).getSource().getName()+
 							" does not exist in the set of ports " + names.toString() +" of ComponentDef " + 
 							((ActivityAllocation) allocation).getTarget().getName()+".";
@@ -938,7 +960,7 @@ public class AuxiliarsQuery {
 			}
 		}
 		
-		return "Sucess: All PINS are OK.";
+		return "Sucess- All PINS are OK.";
 	}
 	
 }

@@ -206,9 +206,9 @@ package ComponentsAGV {
 		}
 	}
 	component def AGVSystem {
-		ports: sendStatus : outStatus {
+		ports: sendStatusAGV : outStatus {
 		}
-		in_outData : IAGVSystem {
+		in_outDataAGV : IAGVSystem {
 		}
 		configuration {
 			components:
@@ -251,8 +251,8 @@ package ComponentsAGV {
 			ackMotor : notificationMotor bindings started_stopped_out = started_stopped_in;
 			cmdMotor : commandMotor bindings /*Se der um Ctrl+space aqui ele não mostra as opções do escopo apesar de só aceitar as opções definidas no escopo*/ start_stop_out = start_stop_in;
 			delegations:
-			/*Se der um Ctrl+space aqui ele não mostra as opções do escopo apesar de só aceitar as opções definidas no escopo*/ sendStatus to sendStatus 
-			in_outData to in_outData
+			/*Se der um Ctrl+space aqui ele não mostra as opções do escopo apesar de só aceitar as opções definidas no escopo*/ sendStatus to sendStatusAGV 
+			in_outData to in_outDataAGV
 		}
 	}
 	boundary component def RobotArm {
@@ -274,9 +274,9 @@ package ComponentsAGV {
 	component def VehicleControl {
 		ports: sendStatus : outStatus {
 		}
-		arrivalDetected : inLocation {
+		arrivalDetectedVC : inLocation {
 		}
-		startArm : outCommandToArm {
+		startArmVC : outCommandToArm {
 		}
 		startedArm : inNotificationFromArm {
 		}
@@ -359,11 +359,11 @@ package ComponentsAGV {
 			passed to outNotifications
 			loaded_unloaded to startedArm
 			inAck to started_stopped
-			startArm to startArm 
+			startArm to startArmVC 
 			AGVStatus to sendStatus 
 			start to start_stop 
 			stop to start_stop 
-			arrivalDetected to arrivalDetected 
+			arrivalDetected to arrivalDetectedVC
 		}
 	}
 	component def VehicleTimer {
@@ -371,9 +371,9 @@ package ComponentsAGV {
 		}
 		location : inLocation {
 		}
-		destination : inLocation {
+		destinationVT : inLocation {
 		}
-		cmd : inCommandToArm {
+		cmdVT : inCommandToArm {
 		}
 	}
 	component def NotifierArm {
@@ -385,7 +385,7 @@ package ComponentsAGV {
 	component def ControlArm {
 		ports: cmd : inCommandToArm {
 		}
-		ack : inNotificationFromMotor {
+		ackCA : inNotificationFromMotor {
 		}
 		startArm : outCommandToArm {
 		}
@@ -453,7 +453,7 @@ action def SendStartMotorAN ( move : VehicleData ) : CommandToMotor {
 	constraint : post-condition SendDestinationEQ
 	delegate SendDestinationAN to destination delegate move to move
 	}
-	activity def NotifierMotorAC ( inStatusMotor : NotificationFromMotor ) : (outStatusMotor : NotificationFromMotor, ack : NotificationToSupervisory) {
+	activity def NotifierMotorAC ( inAck : NotificationFromMotor ) : (outAck : NotificationFromMotor, ack : NotificationToSupervisory) {
 		body {
 		actions : nagvm : NotifyAGVFromMotorAN {
 				using pins: statusMotor : NotificationFromMotor;
@@ -461,8 +461,8 @@ action def SendStartMotorAN ( move : VehicleData ) : CommandToMotor {
 			nsm : NotifySupervisoryFromMotorAN {
 				using pins: statusMotor : NotificationFromMotor;
 			}
-			delegate outStatusMotor to nagvm delegate ack to nsm delegate inStatusMotor
-			to statusMotor delegate inStatusMotor to statusMotor
+			delegate outAck to nagvm delegate ack to nsm delegate inAck
+			to statusMotor delegate inAck to statusMotor
 		}
 	}
 	action def NotifyAGVFromMotorAN ( statusMotor : NotificationFromMotor ) : NotificationFromMotor {
@@ -475,8 +475,8 @@ action def SendStartMotorAN ( move : VehicleData ) : CommandToMotor {
 	delegate NotifySupervisoryFromMotorAN to ack
 		delegate statusMotor to statusMotor
 	}
-	activity def CheckStationAC ( statusMotor : NotificationFromMotor ) ( destination : Location ) ( inLocation : Location ) : (stopMotor :
-	CommandToMotor, outLocation : Location, passed : NotificationToSupervisory) {
+	activity def CheckStationAC ( ack : NotificationFromMotor ) ( arrivalDetected : Location ) ( destination : Location ) : (stop :
+	CommandToMotor, location : Location, passed : NotificationToSupervisory) {
 		body {
 		actions : cs : CompareStationsAN {
 				using pins: statusMotor : NotificationFromMotor; 
@@ -491,13 +491,13 @@ action def SendStartMotorAN ( move : VehicleData ) : CommandToMotor {
 			pm : PassedMotorAN {
 				using pins: comparisonResultPM : Boolean;
 			}
-			delegate statusMotor to NotificationsMotor 
-			delegate destination to	Destinations 
+			delegate ack to NotificationsMotor 
+			delegate arrivalDetected to	Destinations 
 			flow from NotificationsMotor to statusMotor 
 			flow from Destinations to destination 
-			delegate inLocation to location delegate
-			outLocation to scl delegate inLocation to location 
-			delegate stopMotor to sm 
+			delegate location to location delegate
+			location to scl delegate location to location 
+			delegate stop to sm 
 			delegate passed to pm 
 			flow from cs to comparisonResultPM
 			flow from cs to comparisonResultSM
@@ -526,32 +526,32 @@ action def SendStartMotorAN ( move : VehicleData ) : CommandToMotor {
 	delegate location to inLocation delegate
 		SendCurrentLocationAN to outLocation
 	}
-	activity def ControlArmAC ( cmd : CommandToArm ) ( statusMotor : NotificationFromMotor ) : (startArm : CommandToArm) {
+	activity def ControlArmAC ( cmd : CommandToArm ) ( ackCA : NotificationFromMotor ) : (startArm : CommandToArm) {
 		body {
 		actions : ca : ControlArmAN {
 				using pins: cmd : CommandToArm;
 				statusMotor : NotificationFromMotor;
 			}
-			delegate startArm to ca delegate cmd to cmd delegate statusMotor to statusMotor
+			delegate startArm to ca delegate cmd to cmd delegate ackCA to statusMotor
 		}
 	}
-	activity def NotifierArmAC ( statusArm : NotificationFromArm ) :
-	(ack : NotificationToSupervisory) {
+	activity def NotifierArmAC ( loaded_unloaded : NotificationFromArm ) :
+	(arrivedStatus : NotificationToSupervisory) {
 		body {
 		actions : na : NotifierArmAN {
 				using pins: statusArm : NotificationFromArm;
 			}
-			delegate ack to na delegate statusArm to statusArm
+			delegate arrivedStatus to na delegate loaded_unloaded to statusArm
 		}
 	}
-	activity def VehicleTimerAC ( destination : Location ) ( location : Location ) ( cmd : CommandToArm ) : (status : Status) {
+	activity def VehicleTimerAC ( destinationVT : Location ) ( location : Location ) ( cmdVT : CommandToArm ) : (AGVStatus : Status) {
 		body {
 		actions : vt : VehicleTimerAN {
 				using pins: cmd : CommandToArm;
 				destination : Location;
 				location : Location;
 			}
-			delegate status to vt delegate cmd to cmd delegate destination to
+			delegate AGVStatus to vt delegate cmdVT to cmd delegate destinationVT to
 			destination delegate location to location
 		}
 	}

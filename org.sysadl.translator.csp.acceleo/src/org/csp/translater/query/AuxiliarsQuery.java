@@ -835,54 +835,32 @@ public class AuxiliarsQuery {
 		String OUT = "";
 		
 		for (int i = 0; i < connUse.getDefinition().getPorts().size(); i++) {
-			if (connUse.getDefinition().getPorts().get(i).getDefinition() instanceof SimplePortDef) {
-				if (((SimplePortDef)connUse.getDefinition().getPorts().get(i).getDefinition()).getFlowProperties().toString().contains("in")) {
-					IN += connUse.getDefinition().getPorts().get(i).getName();
-					IN += "_"+connUse.getDefinition().getPorts().get(i).getDefinition().getName();
-					IN += " <- ";
-				}
-				else if(((SimplePortDef)connUse.getDefinition().getPorts().get(i).getDefinition()).getFlowProperties().toString().contains("out")) {
-					OUT += connUse.getDefinition().getPorts().get(i).getName();
-					OUT += "_"+connUse.getDefinition().getPorts().get(i).getDefinition().getName();
-					OUT += " <- ";
+			if (((SimplePortDef)connUse.getDefinition().getPorts().get(i).getDefinition()).getFlowProperties().toString().contains("in")) {
+				IN += connUse.getDefinition().getPorts().get(i).getName();
+				IN += "_"+connUse.getDefinition().getPorts().get(i).getDefinition().getName();
+				IN += " <- ";
+			}
+			else if(((SimplePortDef)connUse.getDefinition().getPorts().get(i).getDefinition()).getFlowProperties().toString().contains("out")) {
+				OUT += connUse.getDefinition().getPorts().get(i).getName();
+				OUT += "_"+connUse.getDefinition().getPorts().get(i).getDefinition().getName();
+				OUT += " <- ";
 
-				}
-				
-				for (ComponentUse compUse : compDef.getComposite().getComponents()) {
-					for (PortUse port : compUse.getPorts()) {
-						for (int j = 0; i < connUse.getBindings().size(); j++) {
-							if (port.getName().equals(connUse.getBindings().get(j).getDestination().getName())) {
-								IN += compUse.getName()+"_"+port.getName() +"_"+ port.getDefinition().getName();
-							}
-							else if (port.getName().equals(connUse.getBindings().get(j).getSource().getName())) {
-								OUT += compUse.getName()+"_"+port.getName() +"_"+ port.getDefinition().getName();
-							}
-						}
-						
-					}
-				}
-			}			
-			else if(connUse.getDefinition().getPorts().get(i).getDefinition() instanceof CompositePortDef){
-				
-				for(int j =0; j < ((CompositePortDef)connUse.getDefinition().getPorts().get(i).getDefinition()).getPorts().size(); j++) {					
-					if (((SimplePortDef)((CompositePortDef)connUse.getDefinition().getPorts().get(i).getDefinition()).getPorts().get(j).getDefinition()).getFlowProperties().toString().contains("in")) {
-						IN += connUse.getDefinition().getPorts().get(i).getName();						
-						IN += "_"+((CompositePortDef)connUse.getDefinition().getPorts().get(i).getDefinition()).getPorts().get(j).getName();
-						IN += "_"+connUse.getDefinition().getPorts().get(i).getDefinition().getName();
-						IN += " <- ";
-					}
-					if (((SimplePortDef)((CompositePortDef)connUse.getDefinition().getPorts().get(i).getDefinition()).getPorts().get(j).getDefinition()).getFlowProperties().toString().contains("out")) {
-						OUT += connUse.getDefinition().getPorts().get(i).getName();						
-						OUT += "_"+((CompositePortDef)connUse.getDefinition().getPorts().get(i).getDefinition()).getPorts().get(j).getName();
-						OUT += "_"+connUse.getDefinition().getPorts().get(i).getDefinition().getName();
-						OUT += " <- ";
-					}
-				}
-				
-			}			
+			}
 		}
 		
-		
+		for (ComponentUse compUse : compDef.getComposite().getComponents()) {
+			for (PortUse port : compUse.getPorts()) {
+				for (int i = 0; i < connUse.getBindings().size(); i++) {
+					if (port.getName().equals(connUse.getBindings().get(i).getDestination().getName())) {
+						IN += compUse.getName()+"_"+port.getName() +"_"+ port.getDefinition().getName();
+					}
+					else if (port.getName().equals(connUse.getBindings().get(i).getSource().getName())) {
+						OUT += compUse.getName()+"_"+port.getName() +"_"+ port.getDefinition().getName();
+					}
+				}
+				
+			}
+		}
 		result = IN + "," + OUT;
 		return result;
 	}

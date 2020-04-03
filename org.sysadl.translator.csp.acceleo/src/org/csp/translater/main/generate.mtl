@@ -91,7 +91,7 @@ channel [compUse.name/]_[portUse.name/]_[compPort.name/]_[portUse.definition.nam
 	[/for]
 
 	[comment ID configurations/]
-datatype ID = [for (pck : sysadl::Package | aModel.packages)][for (elem : ElementDef | pck.definitions)][let compDef : ComponentDef = self][if (compDef.composite <> null)][for (compUse : ComponentUse | compDef.composite.components)separator (',')][if (compUse.definition.composite <> null)][compUse.name/][/if][/for][/if][/let][/for][/for]
+datatype ID = [for (pck : sysadl::Package | aModel.packages)][for (elem : ElementDef | pck.definitions)][let compDef : ComponentDef = self][if (compDef.composite <> null)][for (compUse : ComponentUse | compDef.composite.components)][if (compUse.definition.composite <> null)][compUse.name/][/if][/for][/if][/let][/for][/for]
 
 	[comment configuration/]
 	[for (pck : sysadl::Package | aModel.packages)]				

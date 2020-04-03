@@ -9,6 +9,7 @@ import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -97,7 +98,7 @@ public class SysADLCSPVerification implements IHandler {
 
 	@Override
 	public boolean isEnabled() {
-		// this is only enable if the FDR is found
+		// TODO Auto-generated method stub
 		return true;
 	}
 

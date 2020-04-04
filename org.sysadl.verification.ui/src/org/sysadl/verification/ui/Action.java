@@ -196,12 +196,27 @@ public class Action implements IExternalJavaAction {
 				+ "and "
 				+ "configuration.components->forAll(cp | (not cp.definition.composite.oclIsUndefined()) implies self.Communication(cp.definition.composite))");
 
-		helper.defineOperation("ExistsConnectionForAll(src : String, tar : String) : Boolean = let cps : OrderedSet(ComponentUse) = self.components->select(cp | (not cp.definition.abstractComponent.oclIsUndefined()) and cp.definition.abstractComponent.name = src) in (cps->isEmpty() or cps->forAll(cp | self.connectors->exists(cn |((self.checkPortUseAbstractComponent(cn.bindings->first().destination, tar) and cp.ports->exists(p | p.name = cn.bindings->first().source.name)) or (self.checkPortUseAbstractComponent(cn.bindings->first().source, tar) and cp.ports->exists(p | p.name = cn.bindings->first().destination.name))))))");
+		helper.defineOperation("ExistsConnectionForAll(src : String, tar : String) : Boolean = "
+				+ "let cps : OrderedSet(ComponentUse) = self.components->select(cp | (not cp.definition.abstractComponent.oclIsUndefined()) and cp.definition.abstractComponent.name = src) in "
+				+ "(cps->isEmpty() or cps->forAll(cp | self.connectors->exists(cn |self.checkPortUseAbstractComponent(cn.bindings->first().destination, tar) and cp.ports->exists(p | p.name = cn.bindings->first().source.name))))");
 
 		helper.defineOperation("ExistsConnection(src : String, tar : String) : Boolean = "
 				+ "let cps : OrderedSet(ComponentUse) = self.components->select(cp | (not cp.definition.abstractComponent.oclIsUndefined()) and cp.definition.abstractComponent.name = src) in "
-				+ "(cps->isEmpty() or cps->exists(cp | self.connectors->exists(cn |(self.checkPortUseAbstractComponent(cn.bindings->first().destination, tar) and cp.ports->exists(p | p.name = cn.bindings->first().source.name)"
-				+ "or (self.checkPortUseAbstractComponent(cn.bindings->first().destination, tar) and cp.ports->exists(p | p.name = cn.bindings->first().source.name))))))");
+				+ "(cps->isEmpty() or cps->exists(cp | self.connectors->exists(cn |self.checkPortUseAbstractComponent(cn.bindings->first().destination, tar) and cp.ports->exists(p | p.name = cn.bindings->first().source.name))))");
+		
+		helper.defineOperation("CheckActivities(configuration : Configuration, abstractActivityName : String) : Boolean = "
+				+ "let pkg : Package = configuration.eContainer().eContainer().oclAsType(Package) in "
+				+ "pkg.definitions->select(d | d.oclIsTypeOf(ActivityDef))->exists(act | act.oclAsType(ActivityDef).abstractActivity->exists(abAct | abAct.name = abstractActivityName))");
+		
+		helper.defineOperation("CheckMonitoringAct(configuration : Configuration) : Boolean = "
+				+ "let pkg : Package = configuration.eContainer().eContainer().oclAsType(Package) in "
+				+ "pkg.definitions->select(d | d.oclIsTypeOf(ActivityDef))->"
+				+ "select(act | act.oclAsType(ActivityDef).abstractActivity->exists(abAct | abAct.name = 'Monitoring'))->"
+				+ "forAll(actDef | pkg.eContainer().oclAsType(Model).allocation.allocs->"
+				+ "select(alloc | alloc.oclIsTypeOf(ActivityAllocation))->"
+				+ "select(actAlloc | actAlloc.oclAsType(ActivityAllocation).source = actDef)->"
+				+ "forAll(allocActDef | allocActDef.oclAsType(ActivityAllocation).target.oclIsTypeOf(ComponentDef) and "
+				+ "allocActDef.oclAsType(ActivityAllocation).target.oclAsType(ComponentDef).abstractComponent.name = 'SensorCP'))");
 	}
 
 	/**

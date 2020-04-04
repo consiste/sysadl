@@ -33,7 +33,12 @@ public class SysADLVerificationWizard extends Wizard {
 	@Override
 	public boolean performFinish() {
 		Object e = map.get(selection);
+		long start = System.currentTimeMillis();
 		PerformTransformation.run(file, model, e);
+		long elapsed = System.currentTimeMillis() - start;
+		System.out.println("-------------- Tempo---------");
+		System.out.println(elapsed);
+		System.out.println("-------------- Tempo---------");
 		return true;
 	}
 

@@ -326,33 +326,41 @@ public class StyleIoTBuilder extends ElementBuilder {
 		checkDeviceDataCN.setName("checkDeviceDataCN");
 		checkDeviceDataCN.setExpr("not (self.checkPTRecursive(self, 'DeviceOPT') xor self.checkCNRecursive(self, 'DeviceDataCN'))");
 		
-		Invariant ControllerMustBeEmbeddedInDevice = SysADLFactory.eINSTANCE.createInvariant();
-		ControllerMustBeEmbeddedInDevice.setName("ControllerMustBeEmbeddedInDevice");
-		ControllerMustBeEmbeddedInDevice.setExpr("self.ControllerCPEmbedded(self)");
+		Invariant ConstraintC1 = SysADLFactory.eINSTANCE.createInvariant();
+		ConstraintC1.setName("ConstraintC1");
+		ConstraintC1.setExpr("self.CheckActivities(self, 'Monitoring') and self.CheckActivities(self, 'Analysis') and self.CheckActivities(self, 'Planning') and self.CheckActivities(self, 'Execution')");
 		
-		Invariant SensorMustBeConnectedToDeviceOrController = SysADLFactory.eINSTANCE.createInvariant();
-		SensorMustBeConnectedToDeviceOrController.setName("SensorMustBeConnectedToDeviceOrController");
-		SensorMustBeConnectedToDeviceOrController.setExpr("self.SensorConnection(self)");
+		Invariant ConstraintC3 = SysADLFactory.eINSTANCE.createInvariant();
+		ConstraintC3.setName("ConstraintC3");
+		ConstraintC3.setExpr("self.CheckMonitoringAct(self)");
 		
-		Invariant ActuatorMustBeConnectedToDeviceOrController = SysADLFactory.eINSTANCE.createInvariant();
-		ActuatorMustBeConnectedToDeviceOrController.setName("ActuatorMustBeConnectedToDeviceOrController");
-		ActuatorMustBeConnectedToDeviceOrController.setExpr("self.ActuatorConnection(self)");
+		Invariant ConstraintC4 = SysADLFactory.eINSTANCE.createInvariant();
+		ConstraintC4.setName("ControllerMustBeEmbeddedInDevice");
+		ConstraintC4.setExpr("self.ControllerCPEmbedded(self)");
 		
-		Invariant SensorAndActuatorDontCommunicate = SysADLFactory.eINSTANCE.createInvariant();
-		SensorAndActuatorDontCommunicate.setName("SensorAndActuatorDontCommunicate");
-		SensorAndActuatorDontCommunicate.setExpr("self.Communication(self)");
+		Invariant ConstraintC5 = SysADLFactory.eINSTANCE.createInvariant();
+		ConstraintC5.setName("SensorMustBeConnectedToDeviceOrController");
+		ConstraintC5.setExpr("self.SensorConnection(self)");
 		
-		Invariant SensorDataCNMustNotBeMultiplex = SysADLFactory.eINSTANCE.createInvariant();
-		SensorDataCNMustNotBeMultiplex.setName("SensorDataCNMustNotBeMultiplex");
-		SensorDataCNMustNotBeMultiplex.setExpr("self.checkBindingsRecursive(self, 'SensorDataCN')");
+		Invariant ConstraintC6 = SysADLFactory.eINSTANCE.createInvariant();
+		ConstraintC6.setName("ActuatorMustBeConnectedToDeviceOrController");
+		ConstraintC6.setExpr("self.ActuatorConnection(self)");
 		
-		Invariant ActuatorCommandCNMustNotBeMultiplex = SysADLFactory.eINSTANCE.createInvariant();
-		ActuatorCommandCNMustNotBeMultiplex.setName("ActuatorCommandCNMustNotBeMultiplex");
-		ActuatorCommandCNMustNotBeMultiplex.setExpr("self.checkBindingsRecursive(self, 'ActuatorCommandCN')");
+		Invariant ConstraintC7 = SysADLFactory.eINSTANCE.createInvariant();
+		ConstraintC7.setName("SensorAndActuatorDontCommunicate");
+		ConstraintC7.setExpr("self.Communication(self)");
 		
-		Invariant DeviceDataCNMustNotBeMultiplex = SysADLFactory.eINSTANCE.createInvariant();
-		DeviceDataCNMustNotBeMultiplex.setName("DeviceDataCNMustNotBeMultiplex");
-		DeviceDataCNMustNotBeMultiplex.setExpr("self.checkBindingsRecursive(self, 'DeviceDataCN')");
+		Invariant ConstraintC8 = SysADLFactory.eINSTANCE.createInvariant();
+		ConstraintC8.setName("SensorDataCNMustNotBeMultiplex");
+		ConstraintC8.setExpr("self.checkBindingsRecursive(self, 'SensorDataCN')");
+		
+		Invariant ConstraintC9 = SysADLFactory.eINSTANCE.createInvariant();
+		ConstraintC9.setName("ActuatorCommandCNMustNotBeMultiplex");
+		ConstraintC9.setExpr("self.checkBindingsRecursive(self, 'ActuatorCommandCN')");
+		
+		Invariant ConstraintC10 = SysADLFactory.eINSTANCE.createInvariant();
+		ConstraintC10.setName("DeviceDataCNMustNotBeMultiplex");
+		ConstraintC10.setExpr("self.checkBindingsRecursive(self, 'DeviceDataCN')");
 		
 		/*end Constraints*/
 		
@@ -454,13 +462,15 @@ public class StyleIoTBuilder extends ElementBuilder {
 		IoTStyle.getInvariants().add(checkActuatorCommandCN);
 		IoTStyle.getInvariants().add(checkServiceCN);
 		IoTStyle.getInvariants().add(checkDeviceDataCN);
-		IoTStyle.getInvariants().add(ControllerMustBeEmbeddedInDevice);
-		IoTStyle.getInvariants().add(SensorMustBeConnectedToDeviceOrController);
-		IoTStyle.getInvariants().add(ActuatorMustBeConnectedToDeviceOrController);
-		IoTStyle.getInvariants().add(SensorAndActuatorDontCommunicate);
-		IoTStyle.getInvariants().add(SensorDataCNMustNotBeMultiplex);
-		IoTStyle.getInvariants().add(ActuatorCommandCNMustNotBeMultiplex);
-		IoTStyle.getInvariants().add(DeviceDataCNMustNotBeMultiplex);
+		IoTStyle.getInvariants().add(ConstraintC1);
+		IoTStyle.getInvariants().add(ConstraintC3);
+		IoTStyle.getInvariants().add(ConstraintC4);
+		IoTStyle.getInvariants().add(ConstraintC5);
+		IoTStyle.getInvariants().add(ConstraintC6);
+		IoTStyle.getInvariants().add(ConstraintC7);
+		IoTStyle.getInvariants().add(ConstraintC8);
+		IoTStyle.getInvariants().add(ConstraintC9);
+		IoTStyle.getInvariants().add(ConstraintC10);
 		
 		return IoTStyle;
 	}

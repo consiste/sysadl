@@ -1,0 +1,754 @@
+subset(s1, s2) = (inter(s1,s2)==s1)
+IS_TRUE(h) = if (h) then SKIP else DIV
+
+
+datatype Command = On|Off 					
+Commands = { (heater,cooler) | heater<- Command ,cooler<- Command  }
+Commands_heater((heater,cooler)) = heater
+Commands_cooler((heater,cooler)) = cooler
+CelsiusTemperature = {0..5}						
+FahrenheitTemperature = {0..5}						
+
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+channel s1_current1_FTemperatureOPT : FahrenheitTemperature
+channel s2_current2_FTemperatureOPT : FahrenheitTemperature
+channel s3_detectedS_PresenceOPT : Bool
+channel ui_desired_CTemperatureOPT : CelsiusTemperature
+channel a2_controllerC_CommandIPT : Command
+channel a1_controllerH_CommandIPT : Command
+channel rtc_detected_PresenceIPT : Bool
+channel rtc_localtemp1_CTemperatureIPT : CelsiusTemperature
+channel rtc_localTemp2_CTemperatureIPT : CelsiusTemperature
+channel rtc_userTemp_CTemperatureIPT : CelsiusTemperature
+channel rtc_heating_CommandOPT : Command
+channel rtc_cooling_CommandOPT : Command
+
+RTCSystemCFD =  (RTCSystemCFD_COMPONENTS [| RTCSystemCFD_sync |] RTCSystemCFD_CONNECTORS) \RTCSystemCFD_internal
+
+RTCSystemCFD_sync = {| s1_current1_FTemperatureOPT
+					,s2_current2_FTemperatureOPT
+					,s3_detectedS_PresenceOPT
+					,ui_desired_CTemperatureOPT
+					,a2_controllerC_CommandIPT
+					,a1_controllerH_CommandIPT
+ 					|}
+RTCSystemCFD_internal = {| rtc_detected_PresenceIPT,
+						rtc_localtemp1_CTemperatureIPT,
+						rtc_localTemp2_CTemperatureIPT,
+						rtc_userTemp_CTemperatureIPT,
+						rtc_heating_CommandOPT,
+						rtc_cooling_CommandOPT |}
+
+
+RTCSystemCFD_COMPONENTS = 
+	s1_TemperatureSensorCP
+	|||s2_TemperatureSensorCP
+	|||s3_PresenceSensorCP
+	|||ui_UserInterfaceCP
+	|||a2_CoolerCP
+	|||a1_HeaterCP
+	|||rtc_RoomTemperatureControllerCP
+
+RTCSystemCFD_CONNECTORS = 
+	c1_FahrenheitToCelsiusCN
+	|||uc_CTemperatureCN
+	|||cc2_CommandCN
+	|||pc_PresenceCN
+	|||c2_FahrenheitToCelsiusCN
+	|||cc1_CommandCN
+													
+						
+s1_TemperatureSensorCP = 
+	|~| current1:FahrenheitTemperature @ s1_current1_FTemperatureOPT!current1 ->
+s1_TemperatureSensorCP
+
+s2_TemperatureSensorCP = 
+	|~| current2:FahrenheitTemperature @ s2_current2_FTemperatureOPT!current2 ->
+s2_TemperatureSensorCP
+
+s3_PresenceSensorCP = 
+	|~| detectedS:Bool @ s3_detectedS_PresenceOPT!detectedS ->
+s3_PresenceSensorCP
+
+ui_UserInterfaceCP = 
+	|~| desired:CelsiusTemperature @ ui_desired_CTemperatureOPT!desired ->
+ui_UserInterfaceCP
+
+a2_CoolerCP = 
+	a2_controllerC_CommandIPT?controllerC ->
+a2_CoolerCP
+
+a1_HeaterCP = 
+	a1_controllerH_CommandIPT?controllerH ->
+a1_HeaterCP
+
+rtc_RoomTemperatureControllerCP = 								
+	rtc_RoomTemperatureControllerCP_Config
+
+rtc_RoomTemperatureControllerCP_Config = (rtc_COMPONENTS [| rtc_sync |] rtc_CONNECTORS) \rtc_internal
+
+rtc_internal = {| sm_s1_CTemperatureIPT,
+						sm_s2_CTemperatureIPT,
+						sm_average_CTemperatureOPT,
+						cm_target2_CTemperatureIPT,
+						cm_average2_CTemperatureIPT,
+						cm_heating_CommandOPT,
+						cm_cooling_CommandOPT,
+						pc_detected_PresenceIPT,
+						pc_userTemp_CTemperatureIPT,
+						pc_target_CTemperatureOPT
+							|}
+rtc_delegations = {| rtc_detected_PresenceIPT
+					,rtc_localtemp1_CTemperatureIPT
+					,rtc_localTemp2_CTemperatureIPT
+					,rtc_userTemp_CTemperatureIPT
+					,rtc_heating_CommandOPT
+					,rtc_cooling_CommandOPT
+|}
+
+rtc_sync = union(rtc_internal, rtc_delegations)
+
+rtc_COMPONENTS = 
+	sm_SensorsMonitorCP
+	|||cm_CommanderCP
+	|||pc_PresenceCheckerCP
+
+rtc_CONNECTORS = 
+	target_CTemperatureCN	|||average_CTemperatureCN|||rtc_DELEGATIONS
+rtc_DELEGATIONS = userTempRTC_to_userTemp
+				|||detectedRTC_to_detected
+				|||localtemp1_to_s1
+				|||localTemp2_to_s2
+				|||heating_to_heatingRTC
+				|||cooling_to_coolingRTC
+									
+
+c1_FahrenheitToCelsiusCN =
+	c1_FahrenheitToCelsiusAC
+
+c1_FahrenheitToCelsiusAC = 
+	(c1_PINS_FahrenheitToCelsiusAC 
+		[| c1_FahrenheitToCelsiusAC_sync |]
+	c1_ACTIONS_FahrenheitToCelsiusAC) \c1_FahrenheitToCelsiusAC_internal 
+
+c1_FahrenheitToCelsiusAC_internal = {| 
+c1_loalTemp1_CelsiusTemperature 
+,c1_current1_FahrenheitTemperature 
+,	s1_current1_FTemperatureOPT
+|}
+
+c1_FahrenheitToCelsiusAC_port = {| 	rtc_localtemp1_CTemperatureIPT
+|}
+
+c1_FahrenheitToCelsiusAC_sync = union(c1_FahrenheitToCelsiusAC_internal , c1_FahrenheitToCelsiusAC_port)
+
+channel c1_loalTemp1_CelsiusTemperature : CelsiusTemperature
+channel c1_current1_FahrenheitTemperature : FahrenheitTemperature
+
+c1_ACTIONS_FahrenheitToCelsiusAC =
+[| c1_FahrenheitToCelsiusAC_internal |] i : {1 .. 1} @ c1_FahrenheitToCelsiusAC_ACTIONS(i)
+
+c1_FahrenheitToCelsiusAC_ACTIONS(1)= c1_FtC_FahrenheitToCelsiusAN
+
+
+c1_FtC_FahrenheitToCelsiusAN = 
+	c1_current1_FahrenheitTemperature?current1-> 
+	|~|loalTemp1: {x | x <- CelsiusTemperature,FahrenheitToCelsiusEQ(x, current1) } @ 
+		c1_loalTemp1_CelsiusTemperature!loalTemp1 ->
+	c1_FtC_FahrenheitToCelsiusAN
+
+c1_PINS_FahrenheitToCelsiusAC = 
+	[| c1_FahrenheitToCelsiusAC_internal |] i : {1 .. 2} @ c1_FahrenheitToCelsiusAC_PIN(i)
+
+c1_FahrenheitToCelsiusAC_PIN(1) = c1_loalTemp1_FahrenheitToCelsiusAC
+c1_FahrenheitToCelsiusAC_PIN(2) = c1_current1_FahrenheitToCelsiusAC
+
+
+c1_current1_FahrenheitToCelsiusAC =
+	s1_current1_FTemperatureOPT?FahrenheitTemperature ->
+	c1_current1_FahrenheitTemperature!FahrenheitTemperature ->
+	c1_current1_FahrenheitToCelsiusAC
+
+c1_loalTemp1_FahrenheitToCelsiusAC = 
+	c1_loalTemp1_CelsiusTemperature?CelsiusTemperature ->
+	rtc_localtemp1_CTemperatureIPT!CelsiusTemperature ->
+	c1_loalTemp1_FahrenheitToCelsiusAC
+
+	
+uc_CTemperatureCN =
+	ui_desired_CTemperatureOPT?CelsiusTemperature->								
+	rtc_userTemp_CTemperatureIPT!CelsiusTemperature->								
+uc_CTemperatureCN
+
+cc2_CommandCN =
+	rtc_cooling_CommandOPT?Command->								
+	a2_controllerC_CommandIPT!Command->								
+cc2_CommandCN
+
+pc_PresenceCN =
+	s3_detectedS_PresenceOPT?Boolean->								
+	rtc_detected_PresenceIPT!Boolean->								
+pc_PresenceCN
+
+c2_FahrenheitToCelsiusCN =
+	c2_FahrenheitToCelsiusAC
+
+c2_FahrenheitToCelsiusAC = 
+	(c2_PINS_FahrenheitToCelsiusAC 
+		[| c2_FahrenheitToCelsiusAC_sync |]
+	c2_ACTIONS_FahrenheitToCelsiusAC) \c2_FahrenheitToCelsiusAC_internal 
+
+c2_FahrenheitToCelsiusAC_internal = {| 
+c2_loalTemp1_CelsiusTemperature 
+,c2_current1_FahrenheitTemperature 
+,	s2_current2_FTemperatureOPT
+|}
+
+c2_FahrenheitToCelsiusAC_port = {| 	rtc_localTemp2_CTemperatureIPT
+|}
+
+c2_FahrenheitToCelsiusAC_sync = union(c2_FahrenheitToCelsiusAC_internal , c2_FahrenheitToCelsiusAC_port)
+
+channel c2_loalTemp1_CelsiusTemperature : CelsiusTemperature
+channel c2_current1_FahrenheitTemperature : FahrenheitTemperature
+
+c2_ACTIONS_FahrenheitToCelsiusAC =
+[| c2_FahrenheitToCelsiusAC_internal |] i : {1 .. 1} @ c2_FahrenheitToCelsiusAC_ACTIONS(i)
+
+c2_FahrenheitToCelsiusAC_ACTIONS(1)= c2_FtC_FahrenheitToCelsiusAN
+
+
+c2_FtC_FahrenheitToCelsiusAN = 
+	c2_current1_FahrenheitTemperature?current1-> 
+	|~|loalTemp1: {x | x <- CelsiusTemperature,FahrenheitToCelsiusEQ(x, current1) } @ 
+		c2_loalTemp1_CelsiusTemperature!loalTemp1 ->
+	c2_FtC_FahrenheitToCelsiusAN
+
+c2_PINS_FahrenheitToCelsiusAC = 
+	[| c2_FahrenheitToCelsiusAC_internal |] i : {1 .. 2} @ c2_FahrenheitToCelsiusAC_PIN(i)
+
+c2_FahrenheitToCelsiusAC_PIN(1) = c2_loalTemp1_FahrenheitToCelsiusAC
+c2_FahrenheitToCelsiusAC_PIN(2) = c2_current1_FahrenheitToCelsiusAC
+
+
+c2_current1_FahrenheitToCelsiusAC =
+	s2_current2_FTemperatureOPT?FahrenheitTemperature ->
+	c2_current1_FahrenheitTemperature!FahrenheitTemperature ->
+	c2_current1_FahrenheitToCelsiusAC
+
+c2_loalTemp1_FahrenheitToCelsiusAC = 
+	c2_loalTemp1_CelsiusTemperature?CelsiusTemperature ->
+	rtc_localTemp2_CTemperatureIPT!CelsiusTemperature ->
+	c2_loalTemp1_FahrenheitToCelsiusAC
+
+	
+cc1_CommandCN =
+	rtc_heating_CommandOPT?Command->								
+	a1_controllerH_CommandIPT!Command->								
+cc1_CommandCN
+
+
+			
+channel sm_s1_CTemperatureIPT : CelsiusTemperature
+channel sm_s2_CTemperatureIPT : CelsiusTemperature
+channel sm_average_CTemperatureOPT : CelsiusTemperature
+channel cm_target2_CTemperatureIPT : CelsiusTemperature
+channel cm_average2_CTemperatureIPT : CelsiusTemperature
+channel cm_heating_CommandOPT : Command
+channel cm_cooling_CommandOPT : Command
+channel pc_detected_PresenceIPT : Bool
+channel pc_userTemp_CTemperatureIPT : CelsiusTemperature
+channel pc_target_CTemperatureOPT : CelsiusTemperature
+
+						
+sm_SensorsMonitorCP =								
+	sm_CalculateAverageTemperatureAC
+
+sm_CalculateAverageTemperatureAC = 
+	(sm_PINS_CalculateAverageTemperatureAC 
+		[| sm_CalculateAverageTemperatureAC_sync|]
+	sm_ACTIONS_CalculateAverageTemperatureAC) \sm_CalculateAverageTemperatureAC_internal 
+
+sm_CalculateAverageTemperatureAC_internal = {|
+sm_s1_CelsiusTemperature
+,sm_s2_CelsiusTemperature
+,sm_average_CelsiusTemperature
+,
+sm_s1_CTemperatureIPT
+,sm_s2_CTemperatureIPT
+,sm_average_CTemperatureOPT
+ |}
+ sm_CalculateAverageTemperatureAC_port = {||}
+
+sm_CalculateAverageTemperatureAC_sync = union(sm_CalculateAverageTemperatureAC_internal , sm_CalculateAverageTemperatureAC_port)
+
+channel sm_s1_CelsiusTemperature : CelsiusTemperature
+channel sm_s2_CelsiusTemperature : CelsiusTemperature
+channel sm_average_CelsiusTemperature : CelsiusTemperature
+
+
+sm_ACTIONS_CalculateAverageTemperatureAC =
+[| sm_CalculateAverageTemperatureAC_internal |] i : {1 .. 1} @ sm_CalculateAverageTemperatureAC_ACTIONS(i)
+
+sm_CalculateAverageTemperatureAC_ACTIONS(1)= sm_CalcAvTemp_CalculateAverageTemperatureAN
+
+
+sm_CalcAvTemp_CalculateAverageTemperatureAN = 
+	sm_s1_CelsiusTemperature?s1-> 
+	sm_s2_CelsiusTemperature?s2-> 
+	|~|average: {x | x <- CelsiusTemperature,CalculateAverageTemperatureEQ(x, s1,s2) } @ 
+		sm_average_CelsiusTemperature!average ->
+	sm_CalcAvTemp_CalculateAverageTemperatureAN
+
+sm_PINS_CalculateAverageTemperatureAC = 
+	[| sm_CalculateAverageTemperatureAC_internal |] i : {1 .. 3} @ sm_CalculateAverageTemperatureAC_PIN(i)
+
+sm_CalculateAverageTemperatureAC_PIN(1) = sm_s1_CalculateAverageTemperatureAC
+sm_CalculateAverageTemperatureAC_PIN(2) = sm_s2_CalculateAverageTemperatureAC
+sm_CalculateAverageTemperatureAC_PIN(3) = sm_average_CalculateAverageTemperatureAC
+
+
+sm_s1_CalculateAverageTemperatureAC =
+	sm_s1_CTemperatureIPT?s1-> 
+
+	sm_s1_CelsiusTemperature!s1 ->
+	sm_s1_CalculateAverageTemperatureAC
+
+sm_s2_CalculateAverageTemperatureAC =
+	sm_s2_CTemperatureIPT?s2-> 
+
+	sm_s2_CelsiusTemperature!s2 ->
+	sm_s2_CalculateAverageTemperatureAC
+
+sm_average_CalculateAverageTemperatureAC = 
+	sm_average_CelsiusTemperature?average ->
+	sm_average_CTemperatureOPT!average-> 
+
+	sm_average_CalculateAverageTemperatureAC
+
+			
+cm_CommanderCP =								
+	cm_DecideCommandAC
+
+cm_DecideCommandAC = 
+	(cm_PINS_DecideCommandAC 
+		[| cm_DecideCommandAC_sync|]
+	cm_ACTIONS_DecideCommandAC) \cm_DecideCommandAC_internal 
+
+cm_DecideCommandAC_internal = {|
+cm_average2_CelsiusTemperature
+,cm_target2_CelsiusTemperature
+,cm_heating_Command
+,cm_cooling_Command
+,cm_cmdsH_Commands
+,cm_cmdsC_Commands
+,
+cm_target2_CTemperatureIPT
+,cm_average2_CTemperatureIPT
+,cm_heating_CommandOPT
+,cm_cooling_CommandOPT
+ |}
+ cm_DecideCommandAC_port = {||}
+
+cm_DecideCommandAC_sync = union(cm_DecideCommandAC_internal , cm_DecideCommandAC_port)
+
+channel cm_average2_CelsiusTemperature : CelsiusTemperature
+channel cm_target2_CelsiusTemperature : CelsiusTemperature
+channel cm_heating_Command : Command
+channel cm_cooling_Command : Command
+channel cm_cmdsH_Commands : Commands		
+channel cm_cmdsC_Commands : Commands		
+
+
+cm_ACTIONS_DecideCommandAC =
+[| cm_DecideCommandAC_internal |] i : {1 .. 3} @ cm_DecideCommandAC_ACTIONS(i)
+
+cm_DecideCommandAC_ACTIONS(1)= cm_ct_CompareTemperatureAN
+cm_DecideCommandAC_ACTIONS(2)= cm_cmdH_CommandHeaterAN
+cm_DecideCommandAC_ACTIONS(3)= cm_cmdC_CommandCoolerAN
+
+
+cm_ct_CompareTemperatureAN = 
+	cm_average2_CelsiusTemperature?average2-> 
+	cm_target2_CelsiusTemperature?target2-> 
+	|~|out: {x | x <- Commands,CompareTemperatureEQ(x, average2,target2) } @ 
+		cm_cmdsH_Commands!out ->
+		cm_cmdsC_Commands!out ->
+		
+	cm_ct_CompareTemperatureAN
+
+cm_cmdH_CommandHeaterAN = 
+	cm_cmdsH_Commands?cmdsH-> 
+	|~|heating: {x | x <- Command,CommandHeaterEQ(x, cmdsH) } @ 
+		cm_heating_Command!heating ->
+	cm_cmdH_CommandHeaterAN
+
+cm_cmdC_CommandCoolerAN = 
+	cm_cmdsC_Commands?cmdsC-> 
+	|~|cooling: {x | x <- Command,CommandCoolerEQ(x, cmdsC) } @ 
+		cm_cooling_Command!cooling ->
+	cm_cmdC_CommandCoolerAN
+
+cm_PINS_DecideCommandAC = 
+	[| cm_DecideCommandAC_internal |] i : {1 .. 4} @ cm_DecideCommandAC_PIN(i)
+
+cm_DecideCommandAC_PIN(1) = cm_average2_DecideCommandAC
+cm_DecideCommandAC_PIN(2) = cm_target2_DecideCommandAC
+cm_DecideCommandAC_PIN(3) = cm_heating_DecideCommandAC
+cm_DecideCommandAC_PIN(4) = cm_cooling_DecideCommandAC
+
+
+cm_average2_DecideCommandAC =
+	cm_average2_CTemperatureIPT?average2-> 
+
+	cm_average2_CelsiusTemperature!average2 ->
+	cm_average2_DecideCommandAC
+
+cm_target2_DecideCommandAC =
+	cm_target2_CTemperatureIPT?target2-> 
+
+	cm_target2_CelsiusTemperature!target2 ->
+	cm_target2_DecideCommandAC
+
+cm_cooling_DecideCommandAC = 
+	cm_cooling_Command?cooling ->
+	cm_cooling_CommandOPT!cooling-> 
+
+	cm_cooling_DecideCommandAC
+cm_heating_DecideCommandAC = 
+	cm_heating_Command?heating ->
+	cm_heating_CommandOPT!heating-> 
+
+	cm_heating_DecideCommandAC
+
+			
+pc_PresenceCheckerCP =								
+	pc_CheckPresenceToSetTemperatureAC
+
+pc_CheckPresenceToSetTemperatureAC = 
+	(pc_PINS_CheckPresenceToSetTemperatureAC 
+		[| pc_CheckPresenceToSetTemperatureAC_sync|]
+	pc_ACTIONS_CheckPresenceToSetTemperatureAC) \pc_CheckPresenceToSetTemperatureAC_internal 
+
+pc_CheckPresenceToSetTemperatureAC_internal = {|
+pc_detected_Boolean
+,pc_userTemp_CelsiusTemperature
+,pc_target_CelsiusTemperature
+,
+pc_detected_PresenceIPT
+,pc_userTemp_CTemperatureIPT
+,pc_target_CTemperatureOPT
+ |}
+ pc_CheckPresenceToSetTemperatureAC_port = {||}
+
+pc_CheckPresenceToSetTemperatureAC_sync = union(pc_CheckPresenceToSetTemperatureAC_internal , pc_CheckPresenceToSetTemperatureAC_port)
+
+channel pc_detected_Boolean : Bool
+channel pc_userTemp_CelsiusTemperature : CelsiusTemperature
+channel pc_target_CelsiusTemperature : CelsiusTemperature
+
+
+pc_ACTIONS_CheckPresenceToSetTemperatureAC =
+[| pc_CheckPresenceToSetTemperatureAC_internal |] i : {1 .. 1} @ pc_CheckPresenceToSetTemperatureAC_ACTIONS(i)
+
+pc_CheckPresenceToSetTemperatureAC_ACTIONS(1)= pc_CheckPeresenceToSetTemperatureAN_CheckPeresenceToSetTemperatureAN
+
+
+pc_CheckPeresenceToSetTemperatureAN_CheckPeresenceToSetTemperatureAN = 
+	pc_detected_Boolean?detected-> 
+	pc_userTemp_CelsiusTemperature?userTemp-> 
+	|~|target: {x | x <- CelsiusTemperature,CheckPresenceToSetTemperatureEQ(x, detected,userTemp) } @ 
+		pc_target_CelsiusTemperature!target ->
+	pc_CheckPeresenceToSetTemperatureAN_CheckPeresenceToSetTemperatureAN
+
+pc_PINS_CheckPresenceToSetTemperatureAC = 
+	[| pc_CheckPresenceToSetTemperatureAC_internal |] i : {1 .. 3} @ pc_CheckPresenceToSetTemperatureAC_PIN(i)
+
+pc_CheckPresenceToSetTemperatureAC_PIN(1) = pc_detected_CheckPresenceToSetTemperatureAC
+pc_CheckPresenceToSetTemperatureAC_PIN(2) = pc_userTemp_CheckPresenceToSetTemperatureAC
+pc_CheckPresenceToSetTemperatureAC_PIN(3) = pc_target_CheckPresenceToSetTemperatureAC
+
+
+pc_detected_CheckPresenceToSetTemperatureAC =
+	pc_detected_PresenceIPT?detected-> 
+
+	pc_detected_Boolean!detected ->
+	pc_detected_CheckPresenceToSetTemperatureAC
+
+pc_userTemp_CheckPresenceToSetTemperatureAC =
+	pc_userTemp_CTemperatureIPT?userTemp-> 
+
+	pc_userTemp_CelsiusTemperature!userTemp ->
+	pc_userTemp_CheckPresenceToSetTemperatureAC
+
+pc_target_CheckPresenceToSetTemperatureAC = 
+	pc_target_CelsiusTemperature?target ->
+	pc_target_CTemperatureOPT!target-> 
+
+	pc_target_CheckPresenceToSetTemperatureAC
+
+			
+target_CTemperatureCN =
+	pc_target_CTemperatureOPT?CelsiusTemperature->								
+	cm_target2_CTemperatureIPT!CelsiusTemperature->								
+target_CTemperatureCN
+
+average_CTemperatureCN =
+	sm_average_CTemperatureOPT?CelsiusTemperature->								
+	cm_average2_CTemperatureIPT!CelsiusTemperature->								
+average_CTemperatureCN
+
+
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+CalculateAverageTemperatureEQ(x,t1,t2) = x== (t1 + t2)/2
+
+channel CalculateAverageTemperatureEQ_t1_CelsiusTemperature : CelsiusTemperature
+channel CalculateAverageTemperatureEQ_t2_CelsiusTemperature : CelsiusTemperature
+CalculateAverageTemperatureEQ_check = 
+	CalculateAverageTemperatureEQ_t1_CelsiusTemperature?t1 ->
+	CalculateAverageTemperatureEQ_t2_CelsiusTemperature?t2 ->
+	true &
+		let
+		 S = {av | av <- CelsiusTemperature,
+				CalculateAverageTemperatureEQ(av,t1,t2)}
+		within IS_TRUE(not (S == {}))
+
+assert CalculateAverageTemperatureEQ_check:[livelock free]
+
+CalculateAverageTemperatureEQ_s = 
+			{(t1,t2,av) | t1 <- CelsiusTemperature,t2 <- CelsiusTemperature,
+			av <- CelsiusTemperature,
+			CalculateAverageTemperatureEQ(av,t1,t2)}  
+			
+			
+			
+			
+			
+			
+			
+			
+			
+CompareTemperatureEQ(x,target,average) = if (average>target) then x == ( Off,On ) else x == ( On,Off )
+
+channel CompareTemperatureEQ_target_CelsiusTemperature : CelsiusTemperature
+channel CompareTemperatureEQ_average_CelsiusTemperature : CelsiusTemperature
+CompareTemperatureEQ_check = 
+	CompareTemperatureEQ_target_CelsiusTemperature?target ->
+	CompareTemperatureEQ_average_CelsiusTemperature?average ->
+	true &
+		let
+		 S = {cmds | cmds <- Commands,
+				CompareTemperatureEQ(cmds,target,average)}
+		within IS_TRUE(not (S == {}))
+
+assert CompareTemperatureEQ_check:[livelock free]
+
+CompareTemperatureEQ_s = 
+			{(target,average,cmds) | target <- CelsiusTemperature,average <- CelsiusTemperature,
+			cmds <- Commands,
+			CompareTemperatureEQ(cmds,target,average)}  
+			
+FahrenheitToCelsiusEQ(x,f) = x== (5*(f - 32)/9)
+
+channel FahrenheitToCelsiusEQ_f_FahrenheitTemperature : FahrenheitTemperature
+FahrenheitToCelsiusEQ_check = 
+	FahrenheitToCelsiusEQ_f_FahrenheitTemperature?f ->
+	true &
+		let
+		 S = {c | c <- CelsiusTemperature,
+				FahrenheitToCelsiusEQ(c,f)}
+		within IS_TRUE(not (S == {}))
+
+assert FahrenheitToCelsiusEQ_check:[livelock free]
+
+FahrenheitToCelsiusEQ_s = 
+			{(f,c) | f <- FahrenheitTemperature,
+			c <- CelsiusTemperature,
+			FahrenheitToCelsiusEQ(c,f)}  
+			
+CommandHeaterEQ(x,cmds) = x==Commands_heater(cmds)
+
+channel CommandHeaterEQ_cmds_Commands : Commands
+CommandHeaterEQ_check = 
+	CommandHeaterEQ_cmds_Commands?cmds ->
+	true &
+		let
+		 S = {c | c <- Command,
+				CommandHeaterEQ(c,cmds)}
+		within IS_TRUE(not (S == {}))
+
+assert CommandHeaterEQ_check:[livelock free]
+
+CommandHeaterEQ_s = 
+			{(cmds,c) | cmds <- Commands,
+			c <- Command,
+			CommandHeaterEQ(c,cmds)}  
+			
+CommandCoolerEQ(x,cmds) = x==Commands_cooler(cmds)
+
+channel CommandCoolerEQ_cmds_Commands : Commands
+CommandCoolerEQ_check = 
+	CommandCoolerEQ_cmds_Commands?cmds ->
+	true &
+		let
+		 S = {c | c <- Command,
+				CommandCoolerEQ(c,cmds)}
+		within IS_TRUE(not (S == {}))
+
+assert CommandCoolerEQ_check:[livelock free]
+
+CommandCoolerEQ_s = 
+			{(cmds,c) | cmds <- Commands,
+			c <- Command,
+			CommandCoolerEQ(c,cmds)}  
+			
+			
+			
+CheckPresenceToSetTemperatureEQ(x,detected,userTemp) = if (detected==true) then x == userTemp else x == 2
+
+channel CheckPresenceToSetTemperatureEQ_detected_Boolean : Bool
+channel CheckPresenceToSetTemperatureEQ_userTemp_CelsiusTemperature : CelsiusTemperature
+CheckPresenceToSetTemperatureEQ_check = 
+	CheckPresenceToSetTemperatureEQ_detected_Boolean?detected ->
+	CheckPresenceToSetTemperatureEQ_userTemp_CelsiusTemperature?userTemp ->
+	true &
+		let
+		 S = {target | target <- CelsiusTemperature,
+				CheckPresenceToSetTemperatureEQ(target,detected,userTemp)}
+		within IS_TRUE(not (S == {}))
+
+assert CheckPresenceToSetTemperatureEQ_check:[livelock free]
+
+CheckPresenceToSetTemperatureEQ_s = 
+			{(detected,userTemp,target) | detected <- Bool,userTemp <- CelsiusTemperature,
+			target <- CelsiusTemperature,
+			CheckPresenceToSetTemperatureEQ(target,detected,userTemp)}  
+			
+CommandCoolerEx(cmds)= Commands_cooler(cmds)
+
+CommandCoolerEx_s = 
+			{(cmds,Command) | cmds <- Commands,
+			Command <- Command,
+			Command == CommandCoolerEx(cmds)}
+			
+CommandHeaterEx(cmds)= Commands_heater(cmds)
+
+CommandHeaterEx_s = 
+			{(cmds,Command) | cmds <- Commands,
+			Command <- Command,
+			Command == CommandHeaterEx(cmds)}
+			
+FahrenheitToCelsiusEx(f)= 5*(f-32)/9
+
+FahrenheitToCelsiusEx_s = 
+			{(f,CelsiusTemperature) | f <- FahrenheitTemperature,
+			CelsiusTemperature <- CelsiusTemperature,
+			CelsiusTemperature == FahrenheitToCelsiusEx(f)}
+			
+CalculateAverageTemperatureEx(temp1,temp2)= (temp1+temp2)/2
+
+CalculateAverageTemperatureEx_s = 
+			{(temp1,temp2,CelsiusTemperature) | temp1 <- CelsiusTemperature,temp2 <- CelsiusTemperature,
+			CelsiusTemperature <- CelsiusTemperature,
+			CelsiusTemperature == CalculateAverageTemperatureEx(temp1,temp2)}
+			
+CheckPresenceToSetTemperature(presence,userTemp)= if(presence==true) then userTemp else 2
+
+CheckPresenceToSetTemperature_s = 
+			{(presence,userTemp,CelsiusTemperature) | presence <- Bool,userTemp <- CelsiusTemperature,
+			CelsiusTemperature <- CelsiusTemperature,
+			CelsiusTemperature == CheckPresenceToSetTemperature(presence,userTemp)}
+			
+CompareTemperatureEx(target,average)= if(average>target) then (Off,On)    else(On,Off)    
+
+CompareTemperatureEx_s = 
+			{(target,average,Commands) | target <- CelsiusTemperature,average <- CelsiusTemperature,
+			Commands <- Commands,
+			Commands == CompareTemperatureEx(target,average)}
+			
+
+assert IS_TRUE(subset(FahrenheitToCelsiusEx_s,FahrenheitToCelsiusEQ_s)):[divergence free]
+assert IS_TRUE(subset(CompareTemperatureEx_s,CompareTemperatureEQ_s)):[divergence free]
+assert IS_TRUE(subset(CommandHeaterEx_s,CommandHeaterEQ_s)):[divergence free]
+assert IS_TRUE(subset(CommandCoolerEx_s,CommandCoolerEQ_s)):[divergence free]
+assert IS_TRUE(subset(CheckPresenceToSetTemperature_s,CheckPresenceToSetTemperatureEQ_s)):[divergence free]
+assert IS_TRUE(subset(CalculateAverageTemperatureEx_s,CalculateAverageTemperatureEQ_s)):[divergence free]
+
+assert RTCSystemCFD:[deadlock free]
+assert RTCSystemCFD:[livelock free]
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+	
+userTempRTC_to_userTemp= rtc_userTemp_CTemperatureIPT?ctemperatureipt ->
+pc_userTemp_CTemperatureIPT!ctemperatureipt ->
+userTempRTC_to_userTemp
+
+detectedRTC_to_detected= rtc_detected_PresenceIPT?presenceipt ->
+pc_detected_PresenceIPT!presenceipt ->
+detectedRTC_to_detected
+
+localtemp1_to_s1= rtc_localtemp1_CTemperatureIPT?ctemperatureipt ->
+sm_s1_CTemperatureIPT!ctemperatureipt ->
+localtemp1_to_s1
+
+localTemp2_to_s2= rtc_localTemp2_CTemperatureIPT?ctemperatureipt ->
+sm_s2_CTemperatureIPT!ctemperatureipt ->
+localTemp2_to_s2
+
+heating_to_heatingRTC= cm_heating_CommandOPT?command ->
+rtc_heating_CommandOPT!command ->
+heating_to_heatingRTC
+
+cooling_to_coolingRTC= cm_cooling_CommandOPT?command ->
+rtc_cooling_CommandOPT!command ->
+cooling_to_coolingRTC
+
+
+

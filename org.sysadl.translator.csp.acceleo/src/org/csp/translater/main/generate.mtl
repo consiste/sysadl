@@ -263,9 +263,9 @@ Port_[activity.name/] = {| [for (alloc : Allocation | aModel.allocation.allocs)?
 
 [activity.name/] = (Pins_[activity.name/] ['['/]| Sync_[activity.name/] |]  Actions_[activity.name/])\Internal_[activity.name/]
 
-Pins_[activity.name/] = ['['/]| Internal_[activity.name/]|] i : {1 .. [getPinListSize(activity)/]} @ Pins_[activity.name/]_Func(i)
+Pins_[activity.name/] = ['['/]| Sync_[activity.name/]|] i : {1 .. [getPinListSize(activity)/]} @ Pins_[activity.name/]_Func(i)
 
-Actions_[activity.name/] = ['['/]|Internal_[activity.name/] |] i : {1 .. [getActionListSize(activity)/]} @ Actions_[activity.name/]_Func(i)
+Actions_[activity.name/] = ['['/]| Sync_[activity.name/] |] i : {1 .. [getActionListSize(activity)/]} @ Actions_[activity.name/]_Func(i)
 
 [getPinFunction(activity, 'Pins')/]
 

@@ -740,13 +740,13 @@ public class AuxiliarsQuery {
 	public String getTypeCSP(TypeDef type) {
 		switch (type.getName()) {
 		case "Int":			
-			return "{0..5}";
+			return "{0 .. 5}";//"Int";
 		case "Boolean":
 			return "Bool";
 		case "String":
 			return "Char";
 		case "Real":
-			return "{0..5}";
+			return "{0 .. 5}";//"Int";//"{(x,y) | x -> Int, y ->Int}";
 		default:
 			return type.getName();
 		}

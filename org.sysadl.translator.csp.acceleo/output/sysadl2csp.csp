@@ -5,8 +5,8 @@ datatype Command = On|Off
 Commands = { (heater,cooler) | heater<- Command ,cooler<- Command  }
 Commands_heater((heater,cooler)) = heater
 Commands_cooler((heater,cooler)) = cooler
-CelsiusTemperature = {0..5}						
-FahrenheitTemperature = {0..5}						
+CelsiusTemperature = {0 .. 5}						
+FahrenheitTemperature = {0 .. 5}						
 
 
 channel detectedRTC_PresenceIPT : Bool						
@@ -223,9 +223,9 @@ Port_CalculateAverageTemperatureAC = {| s1_CTemperatureIPT,
 
 CalculateAverageTemperatureAC = (Pins_CalculateAverageTemperatureAC [| Sync_CalculateAverageTemperatureAC |]  Actions_CalculateAverageTemperatureAC)\Internal_CalculateAverageTemperatureAC
 
-Pins_CalculateAverageTemperatureAC = [| Internal_CalculateAverageTemperatureAC|] i : {1 .. 3} @ Pins_CalculateAverageTemperatureAC_Func(i)
+Pins_CalculateAverageTemperatureAC = [| Sync_CalculateAverageTemperatureAC|] i : {1 .. 3} @ Pins_CalculateAverageTemperatureAC_Func(i)
 
-Actions_CalculateAverageTemperatureAC = [|Internal_CalculateAverageTemperatureAC |] i : {1 .. 1} @ Actions_CalculateAverageTemperatureAC_Func(i)
+Actions_CalculateAverageTemperatureAC = [| Sync_CalculateAverageTemperatureAC |] i : {1 .. 1} @ Actions_CalculateAverageTemperatureAC_Func(i)
 
 Pins_CalculateAverageTemperatureAC_Func(1) = s1_CalculateAverageTemperatureAC
 Pins_CalculateAverageTemperatureAC_Func(2) = s2_CalculateAverageTemperatureAC
@@ -271,9 +271,9 @@ Port_CheckPresenceToSetTemperatureAC = {| detected_PresenceIPT,
 
 CheckPresenceToSetTemperatureAC = (Pins_CheckPresenceToSetTemperatureAC [| Sync_CheckPresenceToSetTemperatureAC |]  Actions_CheckPresenceToSetTemperatureAC)\Internal_CheckPresenceToSetTemperatureAC
 
-Pins_CheckPresenceToSetTemperatureAC = [| Internal_CheckPresenceToSetTemperatureAC|] i : {1 .. 3} @ Pins_CheckPresenceToSetTemperatureAC_Func(i)
+Pins_CheckPresenceToSetTemperatureAC = [| Sync_CheckPresenceToSetTemperatureAC|] i : {1 .. 3} @ Pins_CheckPresenceToSetTemperatureAC_Func(i)
 
-Actions_CheckPresenceToSetTemperatureAC = [|Internal_CheckPresenceToSetTemperatureAC |] i : {1 .. 1} @ Actions_CheckPresenceToSetTemperatureAC_Func(i)
+Actions_CheckPresenceToSetTemperatureAC = [| Sync_CheckPresenceToSetTemperatureAC |] i : {1 .. 1} @ Actions_CheckPresenceToSetTemperatureAC_Func(i)
 
 Pins_CheckPresenceToSetTemperatureAC_Func(1) = detected_CheckPresenceToSetTemperatureAC
 Pins_CheckPresenceToSetTemperatureAC_Func(2) = userTemp_CheckPresenceToSetTemperatureAC
@@ -326,9 +326,9 @@ Port_DecideCommandAC = {| target2_CTemperatureIPT,
 
 DecideCommandAC = (Pins_DecideCommandAC [| Sync_DecideCommandAC |]  Actions_DecideCommandAC)\Internal_DecideCommandAC
 
-Pins_DecideCommandAC = [| Internal_DecideCommandAC|] i : {1 .. 4} @ Pins_DecideCommandAC_Func(i)
+Pins_DecideCommandAC = [| Sync_DecideCommandAC|] i : {1 .. 4} @ Pins_DecideCommandAC_Func(i)
 
-Actions_DecideCommandAC = [|Internal_DecideCommandAC |] i : {1 .. 3} @ Actions_DecideCommandAC_Func(i)
+Actions_DecideCommandAC = [| Sync_DecideCommandAC |] i : {1 .. 3} @ Actions_DecideCommandAC_Func(i)
 
 Pins_DecideCommandAC_Func(1) = average2_DecideCommandAC
 Pins_DecideCommandAC_Func(2) = target2_DecideCommandAC
@@ -389,9 +389,9 @@ Port_FahrenheitToCelsiusAC = {| Ft_FTemperatureOPT,Ct_CTemperatureIPT |}
 
 FahrenheitToCelsiusAC = (Pins_FahrenheitToCelsiusAC [| Sync_FahrenheitToCelsiusAC |]  Actions_FahrenheitToCelsiusAC)\Internal_FahrenheitToCelsiusAC
 
-Pins_FahrenheitToCelsiusAC = [| Internal_FahrenheitToCelsiusAC|] i : {1 .. 2} @ Pins_FahrenheitToCelsiusAC_Func(i)
+Pins_FahrenheitToCelsiusAC = [| Sync_FahrenheitToCelsiusAC|] i : {1 .. 2} @ Pins_FahrenheitToCelsiusAC_Func(i)
 
-Actions_FahrenheitToCelsiusAC = [|Internal_FahrenheitToCelsiusAC |] i : {1 .. 1} @ Actions_FahrenheitToCelsiusAC_Func(i)
+Actions_FahrenheitToCelsiusAC = [| Sync_FahrenheitToCelsiusAC |] i : {1 .. 1} @ Actions_FahrenheitToCelsiusAC_Func(i)
 
 Pins_FahrenheitToCelsiusAC_Func(1) = loalTemp1_FahrenheitToCelsiusAC
 Pins_FahrenheitToCelsiusAC_Func(2) = current1_FahrenheitToCelsiusAC

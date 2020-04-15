@@ -63,8 +63,6 @@ channel pc_detected_PresenceIPT : Bool
 channel pc_userTemp_CTemperatureIPT : CelsiusTemperature
 channel pc_target_CTemperatureOPT : CelsiusTemperature
 
-datatype ID = rtc
-
 RTCSystemCFD = (Components_RTCSystemCFD [| Sync_RTCSystemCFD |] Connectors_RTCSystemCFD)\Internal_RTCSystemCFD
 
 Sync_RTCSystemCFD = {| current_FTemperatureOPT,
@@ -87,7 +85,7 @@ Components_RTCSystemCFD = TemperatureSensorCP[[current_FTemperatureOPT <- s1_cur
 						|||UserInterfaceCP[[desired_CTemperatureOPT <- ui_desired_CTemperatureOPT]]
 						|||CoolerCP[[controllerC_CommandIPT <- a2_controllerC_CommandIPT]]
 						|||HeaterCP[[controllerH_CommandIPT <- a1_controllerH_CommandIPT]]
-						|||RoomTemperatureControllerCP(rtc)
+						|||RoomTemperatureControllerCP[[detectedRTC_PresenceIPT <- rtc_detected_PresenceIPT, localtemp1_CTemperatureIPT <- rtc_localtemp1_CTemperatureIPT, localTemp2_CTemperatureIPT <- rtc_localTemp2_CTemperatureIPT, userTempRTC_CTemperatureIPT <- rtc_userTemp_CTemperatureIPT, heatingRTC_CommandOPT <- rtc_heating_CommandOPT, coolingRTC_CommandOPT <- rtc_cooling_CommandOPT]]
 
 Connectors_RTCSystemCFD = FahrenheitToCelsiusCN[[Ct_CTemperatureIPT <- rtc_localtemp1_CTemperatureIPT,Ft_FTemperatureOPT <- s1_current1_FTemperatureOPT]]
 						|||CTemperatureCN[[ctIn_CTemperatureIPT <- rtc_userTemp_CTemperatureIPT,CtOut_CTemperatureOPT <- ui_desired_CTemperatureOPT]]
@@ -97,7 +95,7 @@ Connectors_RTCSystemCFD = FahrenheitToCelsiusCN[[Ct_CTemperatureIPT <- rtc_local
 						|||CommandCN[[commandIn_CommandIPT <- a1_controllerH_CommandIPT,commandOut_CommandOPT <- rtc_heating_CommandOPT]]
 													
 
-RoomTemperatureControllerCP_config(rtc) = (Components_RoomTemperatureControllerCP [| Sync_RoomTemperatureControllerCP |]  Connectors_RoomTemperatureControllerCP)\Internal_RoomTemperatureControllerCP
+RoomTemperatureControllerCP_config = (Components_RoomTemperatureControllerCP [| Sync_RoomTemperatureControllerCP |]  Connectors_RoomTemperatureControllerCP)\Internal_RoomTemperatureControllerCP
 
 Sync_RoomTemperatureControllerCP = union(Internal_RoomTemperatureControllerCP, Delegation_Internal_rtc)
 
@@ -134,8 +132,8 @@ Delegation_rtc = userTempRTC_to_userTemp
 				|||heating_to_heatingRTC
 				|||cooling_to_coolingRTC
 
-RoomTemperatureControllerCP(rtc) =
-	RoomTemperatureControllerCP_config(rtc)	
+RoomTemperatureControllerCP =
+	RoomTemperatureControllerCP_config	
 TemperatureSensorCP = 
 	|~| current:FahrenheitTemperature @ current_FTemperatureOPT!current ->
 TemperatureSensorCP

@@ -96,7 +96,10 @@ channel [compUse.name/]_[portUse.name/]_[compPort.name/]_[portUse.definition.nam
 			[let compDef : ComponentDef = self]
 				[if (compDef.composite <> null)]
 					[if (isEmpty_Delegations(compDef.composite))]
-[compDef.name/] = (Components_[compDef.name/] ['['/]| Sync_[compDef.name/] |] Connectors_[compDef.name/])\Internal_[compDef.name/]
+[compDef.name/] = 
+['\t'/][compDef.name/]_config
+
+[compDef.name/]_config = (Components_[compDef.name/] ['['/]| Sync_[compDef.name/] |] Connectors_[compDef.name/])\Internal_[compDef.name/]
 
 Sync_[compDef.name/] = {| [for (compUse : ComponentUse | compDef.composite.components)separator (',\n\t\t\t\t\t')? (compUse.definition.composite = null)][for (portUse : PortUse | compUse.definition.ports)separator (',')][portUse.name/]_[portUse.definition.name/][/for][/for] |}
 

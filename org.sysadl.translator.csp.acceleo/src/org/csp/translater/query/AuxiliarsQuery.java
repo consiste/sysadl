@@ -941,4 +941,22 @@ public class AuxiliarsQuery {
 		return "Sucess- All PINS are OK.";
 	}
 	
+	public String getCompUse(Model model, ComponentDef compDef){
+		for (Package pck : model.getPackages()) {
+			for (ElementDef elem : pck.getDefinitions()) {
+				if (elem instanceof ComponentDef) {
+					if (((ComponentDef)elem).getComposite() != null) {
+						for (ComponentUse compUse : ((ComponentDef)elem).getComposite().getComponents()) {
+							if (compUse.getDefinition().equals(compDef)) {
+								return compUse.getName();
+							}
+						}
+					}
+					
+				}
+			}
+		}
+		return null; 
+	}
+	
 }

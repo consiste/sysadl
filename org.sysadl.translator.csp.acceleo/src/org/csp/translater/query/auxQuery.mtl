@@ -81,3 +81,5 @@
 
 [query public CheckPortsAndPinsNames(model : Model) : String = 
 		invoke('org.csp.translater.query.AuxiliarsQuery', 'CheckPortsAndPinsNames(org.sysadl.Model)', Sequence{model}) /]
+[query public getCompUse(model : Model, compDef : ComponentDef) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getCompUse(org.sysadl.Model, org.sysadl.ComponentDef)', Sequence{model,compDef}) /]

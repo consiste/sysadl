@@ -90,6 +90,7 @@ channel [compUse.name/]_[portUse.name/]_[compPort.name/]_[portUse.definition.nam
 		[/for]
 	[/for]
 
+
 	[comment configuration/]
 	[for (pck : sysadl::Package | aModel.packages)]				
 		[for (elem : ElementDef | pck.definitions)]
@@ -222,23 +223,21 @@ Delegation_[compUse.name/] = [for (del : Delegation | compUse.definition.composi
 	[for (pck : sysadl::Package | aModel.packages)]				
 		[for (elem : ElementDef | pck.definitions)]
 			[let compDef : ComponentDef = self]
-				[if (compDef.composite <> null)]
-					[if (isEmpty_Delegations(compDef.composite) = false)]
+				[if (compDef.composite <> null)]					
 						[for (del : Delegation | compDef.composite.delegations)]
 							[if (del.source.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('in'))]
 [del.destination.name/]_to_[del.source.name/] =
-	[del.destination.name/]_[del.destination.definition.name/]?[del.destination.definition.name/] ->
-	[del.source.name/]_[del.source.definition.name/]![del.source.definition.name/] ->
+	[getCompUse(aModel, compDef)/]_[del.destination.name/]_[del.destination.definition.name/]?[del.destination.definition.name/] ->
+	[for (compUse : ComponentUse | compDef.composite.components)][for (portUse : PortUse | compUse.ports)][if (portUse.name = del.source.name and portUse.definition.name = del.source.definition.name)][compUse.name/]_[del.source.name/]_[del.source.definition.name/]![del.source.definition.name/] ->[/if][/for][/for]
 [del.destination.name/]_to_[del.source.name/]
 							[elseif (del.source.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('out'))]
 [del.source.name/]_to_[del.destination.name/] =	
-	[del.source.name/]_[del.source.definition.name/]?[del.source.definition.name/] ->
-	[del.destination.name/]_[del.destination.definition.name/]![del.destination.definition.name/] ->
+	[for (compUse : ComponentUse | compDef.composite.components)][for (portUse : PortUse | compUse.ports)][if (portUse.name = del.source.name and portUse.definition.name = del.source.definition.name)][compUse.name/]_[del.source.name/]_[del.source.definition.name/]?[del.source.definition.name/] ->[/if][/for][/for]
+	[getCompUse(aModel, compDef)/]_[del.destination.name/]_[del.destination.definition.name/]![del.destination.definition.name/] ->
 [del.source.name/]_to_[del.destination.name/]						
 							[/if]						
 						[/for]
-					[/if]	
-				[/if]				
+					[/if]								
 			[/let]
 		[/for]
 	[/for]
@@ -259,7 +258,7 @@ Sync_[activity.name/] = union(Internal_[activity.name/], Port_[activity.name/])
 
 Internal_[activity.name/] = {|[for (flow : ActivityRelation | activity._body.flows )separator (',\n\t\t\t\t\t')][if (flow.target.oclIsKindOf(Pin) and flow.oclIsKindOf(ActivityFlow))][flow.target.oclAsType(Pin).name/]_[flow.target.oclAsType(Pin).definition.name/][else][flow.source.oclAsType(Pin).name/]_[flow.source.oclAsType(Pin).definition.name/][/if][/for] |}
 
-Port_[activity.name/] = {| [for (alloc : Allocation | aModel.allocation.allocs)? (alloc.oclIsKindOf(ActivityAllocation))][if (alloc.oclAsType(ActivityAllocation).source.name = activity.name and alloc.oclAsType(ActivityAllocation).target.oclIsKindOf(ComponentDef))][for (port : PortUse | alloc.oclAsType(ActivityAllocation).target.oclAsType(ComponentDef).ports)separator (',\n\t\t\t\t\t')][port.name/]_[port.definition.name/][/for][elseif (alloc.oclAsType(ActivityAllocation).source.name = activity.name and alloc.oclAsType(ActivityAllocation).target.oclIsKindOf(ConnectorDef))][for (port : PortUse | alloc.oclAsType(ActivityAllocation).target.oclAsType(ConnectorDef).ports)separator (',')][port.name/]_[port.definition.name/][/for][/if][/for] |}
+Port_[activity.name/] = {| [for (alloc : Allocation | aModel.allocation.allocs)? (alloc.oclIsKindOf(ActivityAllocation))][if ((alloc.oclAsType(ActivityAllocation).source.name = activity.name) and (alloc.oclAsType(ActivityAllocation).target.oclIsKindOf(ComponentDef)))][for (port : PortUse | alloc.oclAsType(ActivityAllocation).target.oclAsType(ComponentDef).ports)separator (',\n\t\t\t\t\t')][port.name/]_[port.definition.name/][/for][elseif (alloc.oclAsType(ActivityAllocation).source.name = activity.name and alloc.oclAsType(ActivityAllocation).target.oclIsKindOf(ConnectorDef))][for (port : PortUse | alloc.oclAsType(ActivityAllocation).target.oclAsType(ConnectorDef).ports)separator (',')][port.name/]_[port.definition.name/][/for][/if][/for] |}
 
 [activity.name/] = (Pins_[activity.name/] ['['/]| Sync_[activity.name/] |]  Actions_[activity.name/])\Internal_[activity.name/]
 

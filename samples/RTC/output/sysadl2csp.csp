@@ -40,30 +40,18 @@ channel commandIn_CommandIPT : Command
 channel CtOut_CTemperatureOPT : CelsiusTemperature						
 channel ctIn_CTemperatureIPT : CelsiusTemperature						
 
-channel s10_current10_FTemperatureOPT : FahrenheitTemperature
-channel s20_current20_FTemperatureOPT : FahrenheitTemperature
-channel s30_detectedS0_PresenceOPT : Bool
-channel ui0_desired0_CTemperatureOPT : CelsiusTemperature
-channel a20_controllerC0_CommandIPT : Command
-channel a10_controllerH0_CommandIPT : Command
-channel rtc0_detected0_PresenceIPT : Bool
-channel rtc0_localtemp10_CTemperatureIPT : CelsiusTemperature
-channel rtc0_localTemp20_CTemperatureIPT : CelsiusTemperature
-channel rtc0_userTemp0_CTemperatureIPT : CelsiusTemperature
-channel rtc0_heating0_CommandOPT : Command
-channel rtc0_cooling0_CommandOPT : Command
-channel s11_current11_FTemperatureOPT : FahrenheitTemperature
-channel s21_current21_FTemperatureOPT : FahrenheitTemperature
-channel s31_detectedS1_PresenceOPT : Bool
-channel ui1_desired1_CTemperatureOPT : CelsiusTemperature
-channel a21_controllerC1_CommandIPT : Command
-channel a11_controllerH1_CommandIPT : Command
-channel rtc1_detected1_PresenceIPT : Bool
-channel rtc1_localtemp11_CTemperatureIPT : CelsiusTemperature
-channel rtc1_localTemp21_CTemperatureIPT : CelsiusTemperature
-channel rtc1_userTemp1_CTemperatureIPT : CelsiusTemperature
-channel rtc1_heating1_CommandOPT : Command
-channel rtc1_cooling1_CommandOPT : Command
+channel s1_current1_FTemperatureOPT : FahrenheitTemperature
+channel s2_current2_FTemperatureOPT : FahrenheitTemperature
+channel s3_detectedS_PresenceOPT : Bool
+channel ui_desired_CTemperatureOPT : CelsiusTemperature
+channel a2_controllerC_CommandIPT : Command
+channel a1_controllerH_CommandIPT : Command
+channel rtc_detected_PresenceIPT : Bool
+channel rtc_localtemp1_CTemperatureIPT : CelsiusTemperature
+channel rtc_localTemp2_CTemperatureIPT : CelsiusTemperature
+channel rtc_userTemp_CTemperatureIPT : CelsiusTemperature
+channel rtc_heating_CommandOPT : Command
+channel rtc_cooling_CommandOPT : Command
 channel sm_s1_CTemperatureIPT : CelsiusTemperature
 channel sm_s2_CTemperatureIPT : CelsiusTemperature
 channel sm_average_CTemperatureOPT : CelsiusTemperature
@@ -86,49 +74,34 @@ Sync_RTCSystemCFD = {| current_FTemperatureOPT,
 					detected_PresenceOPT,
 					desired_CTemperatureOPT,
 					controllerC_CommandIPT,
-					controllerH_CommandIPT,
-					current_FTemperatureOPT,
-					current_FTemperatureOPT,
-					detected_PresenceOPT,
-					desired_CTemperatureOPT,
-					controllerC_CommandIPT,
 					controllerH_CommandIPT |}
 
-Internal_RTCSystemCFD = {| detectedRTC_PresenceIPT,localtemp1_CTemperatureIPT,localTemp2_CTemperatureIPT,userTempRTC_CTemperatureIPT,heatingRTC_CommandOPT,coolingRTC_CommandOPT,
-					detectedRTC_PresenceIPT,localtemp1_CTemperatureIPT,localTemp2_CTemperatureIPT,userTempRTC_CTemperatureIPT,heatingRTC_CommandOPT,coolingRTC_CommandOPT|}
+Internal_RTCSystemCFD = {| detectedRTC_PresenceIPT,
+						localtemp1_CTemperatureIPT,
+						localTemp2_CTemperatureIPT,
+						userTempRTC_CTemperatureIPT,
+						heatingRTC_CommandOPT,
+						coolingRTC_CommandOPT|}
 
-Components_RTCSystemCFD = TemperatureSensorCP[[current_FTemperatureOPT <- s10_current10_FTemperatureOPT]]
-						|||TemperatureSensorCP[[current_FTemperatureOPT <- s20_current20_FTemperatureOPT]]
-						|||PresenceSensorCP[[detected_PresenceOPT <- s30_detectedS0_PresenceOPT]]
-						|||UserInterfaceCP[[desired_CTemperatureOPT <- ui0_desired0_CTemperatureOPT]]
-						|||CoolerCP[[controllerC_CommandIPT <- a20_controllerC0_CommandIPT]]
-						|||HeaterCP[[controllerH_CommandIPT <- a10_controllerH0_CommandIPT]]
-						|||RoomTemperatureControllerCP[[detectedRTC_PresenceIPT <- rtc0_detected0_PresenceIPT, localtemp1_CTemperatureIPT <- rtc0_localtemp10_CTemperatureIPT, localTemp2_CTemperatureIPT <- rtc0_localTemp20_CTemperatureIPT, userTempRTC_CTemperatureIPT <- rtc0_userTemp0_CTemperatureIPT, heatingRTC_CommandOPT <- rtc0_heating0_CommandOPT, coolingRTC_CommandOPT <- rtc0_cooling0_CommandOPT]]
-						|||TemperatureSensorCP[[current_FTemperatureOPT <- s11_current11_FTemperatureOPT]]
-						|||TemperatureSensorCP[[current_FTemperatureOPT <- s21_current21_FTemperatureOPT]]
-						|||PresenceSensorCP[[detected_PresenceOPT <- s31_detectedS1_PresenceOPT]]
-						|||UserInterfaceCP[[desired_CTemperatureOPT <- ui1_desired1_CTemperatureOPT]]
-						|||CoolerCP[[controllerC_CommandIPT <- a21_controllerC1_CommandIPT]]
-						|||HeaterCP[[controllerH_CommandIPT <- a11_controllerH1_CommandIPT]]
-						|||RoomTemperatureControllerCP[[detectedRTC_PresenceIPT <- rtc1_detected1_PresenceIPT, localtemp1_CTemperatureIPT <- rtc1_localtemp11_CTemperatureIPT, localTemp2_CTemperatureIPT <- rtc1_localTemp21_CTemperatureIPT, userTempRTC_CTemperatureIPT <- rtc1_userTemp1_CTemperatureIPT, heatingRTC_CommandOPT <- rtc1_heating1_CommandOPT, coolingRTC_CommandOPT <- rtc1_cooling1_CommandOPT]]
+Components_RTCSystemCFD = TemperatureSensorCP[[current_FTemperatureOPT <- s1_current1_FTemperatureOPT]]
+						|||TemperatureSensorCP[[current_FTemperatureOPT <- s2_current2_FTemperatureOPT]]
+						|||PresenceSensorCP[[detected_PresenceOPT <- s3_detectedS_PresenceOPT]]
+						|||UserInterfaceCP[[desired_CTemperatureOPT <- ui_desired_CTemperatureOPT]]
+						|||CoolerCP[[controllerC_CommandIPT <- a2_controllerC_CommandIPT]]
+						|||HeaterCP[[controllerH_CommandIPT <- a1_controllerH_CommandIPT]]
+						|||RoomTemperatureControllerCP[[detectedRTC_PresenceIPT <- rtc_detected_PresenceIPT, localtemp1_CTemperatureIPT <- rtc_localtemp1_CTemperatureIPT, localTemp2_CTemperatureIPT <- rtc_localTemp2_CTemperatureIPT, userTempRTC_CTemperatureIPT <- rtc_userTemp_CTemperatureIPT, heatingRTC_CommandOPT <- rtc_heating_CommandOPT, coolingRTC_CommandOPT <- rtc_cooling_CommandOPT]]
 
-Connectors_RTCSystemCFD = FahrenheitToCelsiusCN[[Ct_CTemperatureIPT <- rtc0_localtemp10_CTemperatureIPT,Ft_FTemperatureOPT <- s10_current10_FTemperatureOPT]]
-						|||CTemperatureCN[[ctIn_CTemperatureIPT <- rtc0_userTemp0_CTemperatureIPT,CtOut_CTemperatureOPT <- ui0_desired0_CTemperatureOPT]]
-						|||CommandCN[[commandIn_CommandIPT <- a20_controllerC0_CommandIPT,commandOut_CommandOPT <- rtc0_cooling0_CommandOPT]]
-						|||PresenceCN[[pIn_PresenceIPT <- rtc0_detected0_PresenceIPT,pOut_PresenceOPT <- s30_detectedS0_PresenceOPT]]
-						|||FahrenheitToCelsiusCN[[Ct_CTemperatureIPT <- rtc0_localTemp20_CTemperatureIPT,Ft_FTemperatureOPT <- s20_current20_FTemperatureOPT]]
-						|||CommandCN[[commandIn_CommandIPT <- a10_controllerH0_CommandIPT,commandOut_CommandOPT <- rtc0_heating0_CommandOPT]]
-						|||FahrenheitToCelsiusCN[[Ct_CTemperatureIPT <- rtc1_localtemp11_CTemperatureIPT,Ft_FTemperatureOPT <- s11_current11_FTemperatureOPT]]
-						|||CTemperatureCN[[ctIn_CTemperatureIPT <- rtc1_userTemp1_CTemperatureIPT,CtOut_CTemperatureOPT <- ui1_desired1_CTemperatureOPT]]
-						|||CommandCN[[commandIn_CommandIPT <- a21_controllerC1_CommandIPT,commandOut_CommandOPT <- rtc1_cooling1_CommandOPT]]
-						|||PresenceCN[[pIn_PresenceIPT <- rtc1_detected1_PresenceIPT,pOut_PresenceOPT <- s31_detectedS1_PresenceOPT]]
-						|||FahrenheitToCelsiusCN[[Ct_CTemperatureIPT <- rtc1_localTemp21_CTemperatureIPT,Ft_FTemperatureOPT <- s21_current21_FTemperatureOPT]]
-						|||CommandCN[[commandIn_CommandIPT <- a11_controllerH1_CommandIPT,commandOut_CommandOPT <- rtc1_heating1_CommandOPT]]
+Connectors_RTCSystemCFD = FahrenheitToCelsiusCN[[Ct_CTemperatureIPT <- rtc_localtemp1_CTemperatureIPT,Ft_FTemperatureOPT <- s1_current1_FTemperatureOPT]]
+						|||CTemperatureCN[[ctIn_CTemperatureIPT <- rtc_userTemp_CTemperatureIPT,CtOut_CTemperatureOPT <- ui_desired_CTemperatureOPT]]
+						|||CommandCN[[commandIn_CommandIPT <- a2_controllerC_CommandIPT,commandOut_CommandOPT <- rtc_cooling_CommandOPT]]
+						|||PresenceCN[[pIn_PresenceIPT <- rtc_detected_PresenceIPT,pOut_PresenceOPT <- s3_detectedS_PresenceOPT]]
+						|||FahrenheitToCelsiusCN[[Ct_CTemperatureIPT <- rtc_localTemp2_CTemperatureIPT,Ft_FTemperatureOPT <- s2_current2_FTemperatureOPT]]
+						|||CommandCN[[commandIn_CommandIPT <- a1_controllerH_CommandIPT,commandOut_CommandOPT <- rtc_heating_CommandOPT]]
 													
 
 RoomTemperatureControllerCP_config = (Components_RoomTemperatureControllerCP [| Sync_RoomTemperatureControllerCP |]  Connectors_RoomTemperatureControllerCP)\Internal_RoomTemperatureControllerCP
 
-Sync_RoomTemperatureControllerCP = union(Internal_RoomTemperatureControllerCP, Delegation_Internal_RoomTemperatureControllerCP)
+Sync_RoomTemperatureControllerCP = union(Internal_RoomTemperatureControllerCP, Delegation_Internal_rtc)
 
 Internal_RoomTemperatureControllerCP = {| s1_CTemperatureIPT,
 						s2_CTemperatureIPT,
@@ -147,24 +120,24 @@ Components_RoomTemperatureControllerCP = SensorsMonitorCP[[s1_CTemperatureIPT <-
 
 Connectors_RoomTemperatureControllerCP = CTemperatureCN[[ctIn_CTemperatureIPT <- cm_target2_CTemperatureIPT,CtOut_CTemperatureOPT <- pc_target_CTemperatureOPT]]
 						|||CTemperatureCN[[ctIn_CTemperatureIPT <- cm_average2_CTemperatureIPT,CtOut_CTemperatureOPT <- sm_average_CTemperatureOPT]]
-						|||Delegation_RoomTemperatureControllerCP
+						|||Delegation_rtc
 
-Delegation_Internal_RoomTemperatureControllerCP = {|userTempRTC_CTemperatureIPT,
+Delegation_Internal_rtc = {|userTempRTC_CTemperatureIPT,
 						detectedRTC_PresenceIPT,
 						localtemp1_CTemperatureIPT,
 						localTemp2_CTemperatureIPT,
 						heatingRTC_CommandOPT,
 						coolingRTC_CommandOPT|}
 
-Delegation_RoomTemperatureControllerCP = userTempRTC_to_userTemp
+Delegation_rtc = userTempRTC_to_userTemp
 				|||detectedRTC_to_detected
 				|||localtemp1_to_s1
 				|||localTemp2_to_s2
 				|||heating_to_heatingRTC
-				|||cooling_to_coolingRTC										
+				|||cooling_to_coolingRTC
 
 RoomTemperatureControllerCP =
-	RoomTemperatureControllerCP_config																	
+	RoomTemperatureControllerCP_config	
 TemperatureSensorCP = 
 	|~| current:FahrenheitTemperature @ current_FTemperatureOPT!current ->
 TemperatureSensorCP
@@ -212,28 +185,28 @@ CTemperatureCN
 
 
 userTempRTC_to_userTemp =
-	userTempRTC_CTemperatureIPT?CTemperatureIPT ->
+	rtc_userTempRTC_CTemperatureIPT?CTemperatureIPT ->
 	pc_userTemp_CTemperatureIPT!CTemperatureIPT ->
 userTempRTC_to_userTemp
 detectedRTC_to_detected =
-	detectedRTC_PresenceIPT?PresenceIPT ->
+	rtc_detectedRTC_PresenceIPT?PresenceIPT ->
 	pc_detected_PresenceIPT!PresenceIPT ->
 detectedRTC_to_detected
 localtemp1_to_s1 =
-	localtemp1_CTemperatureIPT?CTemperatureIPT ->
+	rtc_localtemp1_CTemperatureIPT?CTemperatureIPT ->
 	sm_s1_CTemperatureIPT!CTemperatureIPT ->
 localtemp1_to_s1
 localTemp2_to_s2 =
-	localTemp2_CTemperatureIPT?CTemperatureIPT ->
+	rtc_localTemp2_CTemperatureIPT?CTemperatureIPT ->
 	sm_s2_CTemperatureIPT!CTemperatureIPT ->
 localTemp2_to_s2
 heating_to_heatingRTC =	
 	cm_heating_CommandOPT?CommandOPT ->
-	heatingRTC_CommandOPT!CommandOPT ->
+	rtc_heatingRTC_CommandOPT!CommandOPT ->
 heating_to_heatingRTC						
 cooling_to_coolingRTC =	
 	cm_cooling_CommandOPT?CommandOPT ->
-	coolingRTC_CommandOPT!CommandOPT ->
+	rtc_coolingRTC_CommandOPT!CommandOPT ->
 cooling_to_coolingRTC						
 
 channel s1_CelsiusTemperature : CelsiusTemperature

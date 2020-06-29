@@ -9,6 +9,16 @@
 subset(s1, s2) = (inter(s1,s2)==s1)
 IS_TRUE(h) = if (h) then SKIP else DIV
 
+MAX = 4
+
+SysADLChar = {'a','b','c'}
+
+FSeq(T,0) = {<>}
+FSeq(T,1) = union( FSeq(T,0), {<z> | z <- T} )
+FSeq(T,s) = {z^z'| z <- FSeq(T,1), z' <- FSeq(T,s-1)}
+
+String = FSeq(SysADLChar,MAX)
+
 	[for (pck : sysadl::Package | aModel.packages)]		
 	[comment Types /]		
 		[for (elem : ElementDef | pck.definitions)]
@@ -23,7 +33,7 @@ IS_TRUE(h) = if (h) then SKIP else DIV
 datatype [aux.name/] = [for (literal : EnumLiteralValue | aux.literals)separator ('|')][literal.name/][/for] 					
 			[/let]		
 			[let datatype : DataTypeDef = self]
-[datatype.name/] = { [for (attribute : TypeUse | datatype.attributes)before ('(')separator(',')after (')')][attribute.name/][/for] | [for (attributeDef : TypeUse | datatype.attributes) separator (',')][attributeDef.name/]<- [if (attributeDef.definition.name = 'String')]Char [elseif(attributeDef.definition.name = 'Boolean')]Bool[elseif(attributeDef.definition.name = 'Int')]Nat[elseif(attributeDef.definition.name = 'Real')]Nat.Nat[else][attributeDef.definition.name/][/if] [/for] }
+[datatype.name/] = { [for (attribute : TypeUse | datatype.attributes)before ('(')separator(',')after (')')][attribute.name/][/for] | [for (attributeDef : TypeUse | datatype.attributes) separator (',')][attributeDef.name/]<- [if (attributeDef.definition.name = 'String')]String [elseif(attributeDef.definition.name = 'Boolean')]Bool[elseif(attributeDef.definition.name = 'Int')]{0 .. 5}[elseif(attributeDef.definition.name = 'Real')]Nat.Nat[else][attributeDef.definition.name/][/if] [/for] }
 [for (attribute : TypeUse | datatype.attributes)separator ('\n')][datatype.name/]_[attribute.name/]([for (attribute : TypeUse | datatype.attributes)before ('(')separator(',')after (')')][attribute.name/][/for]) = [attribute.name/][/for]
 			[/let]
 		[/for]
@@ -69,7 +79,7 @@ channel [port.name/]_[compPort.name/]_[port.definition.name/] : [getTypePort(com
 
 	[for (pck : sysadl::Package | aModel.packages)]				
 		[for (elem : ElementDef | pck.definitions)]
-			[let compDef : ComponentDef = self]					
+			[let compDef : ComponentDef = elem]					
 				[if ( compDef.isBoundary = false and compDef.composite <> null)]		
 					[for (compUse : ComponentUse| compDef.composite.components)]
 						[for (portUse : PortUse | compUse.ports)]

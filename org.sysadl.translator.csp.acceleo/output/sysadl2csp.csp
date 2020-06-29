@@ -1,12 +1,24 @@
 subset(s1, s2) = (inter(s1,s2)==s1)
 IS_TRUE(h) = if (h) then SKIP else DIV
 
+MAX = 4
+
+SysADLChar = {'a','b','c'}
+
+FSeq(T,0) = {<>}
+FSeq(T,1) = union( FSeq(T,0), {<z> | z <- T} )
+FSeq(T,s) = {z^z'| z <- FSeq(T,1), z' <- FSeq(T,s-1)}
+
+String = FSeq(SysADLChar,MAX)
+
 datatype Command = On|Off 					
 Commands = { (heater,cooler) | heater<- Command ,cooler<- Command  }
 Commands_heater((heater,cooler)) = heater
 Commands_cooler((heater,cooler)) = cooler
-CelsiusTemperature = {0 .. 5}						
-FahrenheitTemperature = {0 .. 5}						
+CelsiusTemperature = String
+						
+FahrenheitTemperature = String
+						
 
 
 channel detectedRTC_PresenceIPT : Bool						

@@ -39,6 +39,7 @@ import org.sysadl.SimplePortDef;
 import org.sysadl.Statement;
 import org.sysadl.StructuralDef;
 import org.sysadl.TypeDef;
+import org.sysadl.UnitDef;
 import org.sysadl.ValueTypeDef;
 import org.sysadl.grammar.util.SysADLGrammarUtil;
 import org.sysadl.impl.ActionDefImpl;
@@ -743,13 +744,48 @@ public class AuxiliarsQuery {
 			return "{0 .. 5}";//"Int";
 		case "Boolean":
 			return "Bool";
-		case "String":
-			return "Char";
+		case "String":			
+			return "String\n";
 		case "Real":
 			return "{0 .. 5}";//"Int";//"{(x,y) | x -> Int, y ->Int}";
 		default:
 			return type.getName();
 		}
+	}
+	
+	public String ExistStringType(Package pck) {
+		for (ElementDef elem : pck.getDefinitions()) {
+			if (elem instanceof UnitDef) {
+				for (ElementDef type : pck.getDefinitions()) {
+					if (type instanceof TypeDef) {
+						if ((((UnitDef)elem).getName() + "" + ((UnitDef)elem).getDimension().getName()).equals(((TypeDef)type).getName())) {
+							String value = getTypeUnity((TypeDef)type);
+							if(value.equalsIgnoreCase("String")) {
+								return stringType(true);
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	public String stringType(boolean isString) {
+		if(isString) {
+			String str = "MAX = 4\r\n" + 
+					"\r\n" + 
+					"SysADLChar = {'a','b','c'}\r\n" + 
+					"\r\n" + 
+					"FSeq(T,0) = {<>}\r\n" + 
+					"FSeq(T,1) = union( FSeq(T,0), {<z> | z <- T} )\r\n" + 
+					"FSeq(T,s) = {z^z'| z <- FSeq(T,1), z' <- FSeq(T,s-1)}\r\n" + 
+					"\r\n" + 
+					"String = FSeq(SysADLChar,MAX)\n";			
+			return str;
+		}
+		return null;
 	}
 	
 	public String getTypePin(Pin pin) {		
@@ -957,6 +993,21 @@ public class AuxiliarsQuery {
 			}
 		}
 		return null; 
+	}
+	
+	public String getPortsCompUse(ComponentUse compUse) {
+		String result = "";
+		
+		for (PortUse portUse : compUse.getPorts()) {
+			if (portUse.getDefinition() instanceof SimplePortDef) {
+				result += "channel "+ compUse.getName()+"_"+portUse.getName()+"_"+portUse.getDefinition().getName()+" : "+getTypePort(portUse)+"\n";
+			}else if (portUse.getDefinition() instanceof CompositePortDef) {
+				for (PortUse compPortUse : ((CompositePortDef)portUse).getPorts()) {
+					result += "channel "+ compUse.getName()+"_"+portUse.getName()+"_"+compPortUse.getName()+"_"+portUse.getDefinition().getName()+" : "+getTypePort(compPortUse)+"\n";
+				}				
+			}
+		}
+		return result;
 	}
 	
 }

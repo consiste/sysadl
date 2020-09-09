@@ -9,6 +9,9 @@
 subset(s1, s2) = (inter(s1,s2)==s1)
 IS_TRUE(h) = if (h) then SKIP else DIV
 
+RUN(A) = ['['/]] x:A @ x -> RUN(A)
+CHAOS(A) = STOP |~|  ['['/]] x:A @ x -> CHAOS(A)
+
 MAX = 4
 
 SysADLChar = {'a','b','c'}
@@ -112,9 +115,10 @@ channel [compUse.name/]_[portUse.name/]_[compPort.name/]_[portUse.definition.nam
 
 [compDef.name/]_config = (Components_[compDef.name/] ['['/]| Sync_[compDef.name/] |] Connectors_[compDef.name/])\Internal_[compDef.name/]
 
-Sync_[compDef.name/] = {| [for (compUse : ComponentUse | compDef.composite.components)separator (',\n\t\t\t\t\t')? (compUse.definition.composite = null)][for (portUse : PortUse | compUse.definition.ports)separator (',')][portUse.name/]_[portUse.definition.name/][/for][/for] |}
+Sync_[compDef.name/] = {| [for (compUse : ComponentUse | compDef.composite.components)separator (',\n\t\t\t\t\t')? (compUse.definition.composite = null)][for (portUse : PortUse | compUse.ports)separator (',')][compUse.name/]_[portUse.name/]_[portUse.definition.name/][/for][/for],
+					[for (compUse : ComponentUse | compDef.composite.components)? (compUse.definition.isBoundary = false)][for (port : PortUse | compUse.ports)separator (',\n\t\t\t\t\t')? (port.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('out'))][compUse.name/]_[port.name/]_[port.definition.name/][/for][/for] |}
 
-Internal_[compDef.name/] = {| [for (compUse : ComponentUse | compDef.composite.components)separator (',\n\t\t\t\t\t')? (compUse.definition.isBoundary = false)][for (port : PortUse | compUse.definition.ports)separator (',')][port.name/]_[port.definition.name/][/for][/for]|}
+Internal_[compDef.name/] = {| [for (compUse : ComponentUse | compDef.composite.components)? (compUse.definition.isBoundary = false)][for (port : PortUse | compUse.ports)separator (',\n\t\t\t\t\t')? (port.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('in'))][compUse.name/]_[port.name/]_[port.definition.name/][/for][/for]|}
 
 Components_[compDef.name/] = [for (compUse : ComponentUse | compDef.composite.components)separator ('\n\t\t\t\t\t\t|||')][compUse.definition.name/]['[['/][getRenamePortsComponent(compUse)/]]][/for]
 
@@ -128,23 +132,35 @@ Connectors_[compDef.name/] = [for (conn : ConnectorUse | compDef.composite.conne
 
 	[for (pck : sysadl::Package | aModel.packages)]				
 		[for (elem : ElementDef | pck.definitions)]
-			[let compDef : ComponentDef = self]														
+			[let compDef : ComponentDef = self]					
 				[if ((compDef.composite <> null and isEmpty_Delegations(compDef.composite) = false))]
+					
 [compDef.name/]_config = (Components_[compDef.name/] ['['/]| Sync_[compDef.name/] |]  Connectors_[compDef.name/])\Internal_[compDef.name/]
 
 Sync_[compDef.name/] = union(Internal_[compDef.name/], Delegation_Internal_[compDef.name/])
 
-Internal_[compDef.name/] = {| [for (comp : ComponentUse | compDef.composite.components)separator (',\n\t\t\t\t\t\t')][for (port : PortUse | comp.definition.ports)separator (',\n\t\t\t\t\t\t')][port.name/]_[port.definition.name/][/for][/for] |}
+Internal_[compDef.name/] = {| [for (comp : ComponentUse | compDef.composite.components)separator (',\n\t\t\t\t\t\t')][for (port : PortUse | comp.ports)separator (',\n\t\t\t\t\t\t')][comp.name/]_[port.name/]_[port.definition.name/][/for][/for] |}
 
 Components_[compDef.name/] = [for (comp : ComponentUse | compDef.composite.components)separator ('\n\t\t\t\t\t\t|||')][comp.definition.name/]['[['/][getRenamePortsComponent(comp)/]]][/for]
 
-Connectors_[compDef.name/] = [for (conn : ConnectorUse | compDef.composite.connectors)separator ('\n\t\t\t\t\t\t|||')after ('\n\t\t\t\t\t\t|||')][conn.definition.name/]['[['/][getRenamePortsConnector(conn, compDef)/]]][/for]Delegation_[compDef.name/]
+Connectors_[compDef.name/] = [for (conn : ConnectorUse | compDef.composite.connectors)separator ('\n\t\t\t\t\t\t|||')after ('\n\t\t\t\t\t\t|||')][conn.definition.name/]['[['/][getRenamePortsConnector(conn, compDef)/]]][/for]Delegation_[compDef.name/]			
+															
+				[/if]							
+			[/let]			
+		[/for]
+	[/for]
 
-Delegation_Internal_[compDef.name/] = {|[for (del : Delegation | compDef.composite.delegations)separator (',\n\t\t\t\t\t\t')][if (del.source.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('in'))][del.destination.name/]_[del.destination.definition.name/][elseif (del.source.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('out'))][del.destination.name/]_[del.destination.definition.name/][/if][/for]|}
+	[for (pck : sysadl::Package | aModel.packages)]				
+		[for (elem : ElementDef | pck.definitions)]
+			[let compDef : ComponentDef = self]					
+				[if ((compDef.composite <> null and isEmpty_Delegations(compDef.composite)))]
+					[for (compUse : ComponentUse | compDef.composite.components)? (compUse.definition.composite <> null)]						
+Delegation_Internal_[compUse.definition.name/] = {|[for (port : PortUse | compUse.ports)separator (',\n\t\t\t\t\t\t\t\t\t\t\t')][compUse.name/]_[port.name/]_[port.definition.name/][/for] |}
 
-Delegation_[compDef.name/] = [for (del : Delegation | compDef.composite.delegations)separator ('\n\t\t\t\t|||')][if (del.source.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('in'))][del.destination.name/]_to_[del.source.name/][elseif (del.source.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('out'))][del.source.name/]_to_[del.destination.name/][/if][/for]										
-				[/if]				
-			[/let]
+Delegation_[compUse.definition.name/] = [for (del : Delegation | compUse.definition.composite.delegations)separator ('\n\t\t\t\t|||')][if (del.source.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('in'))][del.destination.name/]_to_[del.source.name/]['[['/][getRenamePortsDelegation(del, compUse)/]]][elseif (del.source.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('out'))][del.source.name/]_to_[del.destination.name/]['[['/][getRenamePortsDelegation(del, compUse)/]]][/if][/for]												
+					[/for]					
+				[/if]							
+			[/let]			
 		[/for]
 	[/for]
 
@@ -258,7 +274,7 @@ Sync_[activity.name/] = union(Internal_[activity.name/], Port_[activity.name/])
 
 Internal_[activity.name/] = {|[for (flow : ActivityRelation | activity._body.flows )separator (',\n\t\t\t\t\t')][if (flow.target.oclIsKindOf(Pin) and flow.oclIsKindOf(ActivityFlow))][flow.target.oclAsType(Pin).name/]_[flow.target.oclAsType(Pin).definition.name/][else][flow.source.oclAsType(Pin).name/]_[flow.source.oclAsType(Pin).definition.name/][/if][/for] |}
 
-Port_[activity.name/] = {| [for (alloc : Allocation | aModel.allocation.allocs)? (alloc.oclIsKindOf(ActivityAllocation))][if ((alloc.oclAsType(ActivityAllocation).source.name = activity.name) and (alloc.oclAsType(ActivityAllocation).target.oclIsKindOf(ComponentDef)))][for (port : PortUse | alloc.oclAsType(ActivityAllocation).target.oclAsType(ComponentDef).ports)separator (',\n\t\t\t\t\t')][port.name/]_[port.definition.name/][/for][elseif (alloc.oclAsType(ActivityAllocation).source.name = activity.name and alloc.oclAsType(ActivityAllocation).target.oclIsKindOf(ConnectorDef))][for (port : PortUse | alloc.oclAsType(ActivityAllocation).target.oclAsType(ConnectorDef).ports)separator (',')][port.name/]_[port.definition.name/][/for][/if][/for] |}
+Port_[activity.name/] = {| [for (alloc : Allocation | aModel.allocation.allocs)? (alloc.oclIsKindOf(ActivityAllocation))][if ((alloc.oclAsType(ActivityAllocation).source.name = activity.name) and (alloc.oclAsType(ActivityAllocation).target.oclIsKindOf(ComponentDef)))][getPortsActivities(pck,alloc.oclAsType(ActivityAllocation).target, alloc)/][elseif (alloc.oclAsType(ActivityAllocation).source.name = activity.name and alloc.oclAsType(ActivityAllocation).target.oclIsKindOf(ConnectorDef))][getPortsActivities(pck, alloc.oclAsType(ActivityAllocation).target, alloc)/][/if][/for] |}
 
 [activity.name/] = (Pins_[activity.name/] ['['/]| Sync_[activity.name/] |]  Actions_[activity.name/])\Internal_[activity.name/]
 

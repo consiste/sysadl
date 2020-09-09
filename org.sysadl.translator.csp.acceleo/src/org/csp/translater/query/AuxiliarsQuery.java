@@ -834,6 +834,26 @@ public class AuxiliarsQuery {
 		return getTypeCSP(type);
 	}
 	
+	public String getRenamePortsDelegation(Delegation delegation , ComponentUse compUse ) {
+		String result = "";
+		Object[] portUse = compUse.getPorts().toArray();
+		Object[] portDef = compUse.getDefinition().getPorts().toArray();
+		
+		result += ((PortUse)delegation.getDestination()).getName().toString();
+		result += "_"+((PortUse)delegation.getDestination()).getDefinition().getName().toString();
+		result += " <- ";
+		for (int i = 0; i < portDef.length; i++) {
+			if (((PortUse)portDef[i]).getName().equals(((PortUse)delegation.getDestination()).getName().toString())) {
+				result += compUse.getName()+"_";
+				result += ((PortUse) portUse[i]).getName().toString();
+				result += "_"+((PortUse) portUse[i]).getDefinition().getName().toString();
+			}
+		}
+		
+		
+		return result;
+	}
+	
 	public String getRenamePortsComponent(ComponentUse compUse) {
 		String result = "";
 		Object[] portUse = compUse.getPorts().toArray();
@@ -1008,6 +1028,57 @@ public class AuxiliarsQuery {
 			}
 		}
 		return result;
+	}
+	
+	public String getPortsActivities(Package pck , StructuralDef structure , Allocation alloc ) {
+		String result = "";
+		if (structure instanceof ComponentDef) {
+			for (ElementDef elem : pck.getDefinitions()) {
+				if (elem instanceof ComponentDef) {
+					if (((ComponentDef)elem).getComposite() != null) {
+						for (ComponentUse compUse : ((ComponentDef)elem).getComposite().getComponents()) {
+							if (((ComponentDef)structure).equals(compUse.getDefinition())) {
+								for (PortUse portUse : compUse.getPorts()) {
+									if (portUse.equals(compUse.getPorts().get(compUse.getPorts().size()-1))) {
+										result += compUse.getName()+"_"+portUse.getName().toString()+"_"+portUse.getDefinition().getName().toString();
+									}
+									else
+										result += compUse.getName()+"_"+portUse.getName().toString()+"_"+portUse.getDefinition().getName().toString()+" , ";								
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		else if (structure instanceof ConnectorDef) {
+			for (ElementDef elem : pck.getDefinitions()) {
+				if (elem instanceof ComponentDef) {
+					if (((ComponentDef)elem).getComposite() != null) {
+						for (ConnectorUse connUse : ((ComponentDef)elem).getComposite().getConnectors()) {
+							if (((ConnectorDef)structure).equals(connUse.getDefinition())) {								
+								for (ComponentUse compUse : ((ComponentDef)elem).getComposite().getComponents()) {
+									for (PortUse port : compUse.getPorts()) {
+										for (int i = 0; i < connUse.getBindings().size(); i++) {										
+											if (port.getName().equals(connUse.getBindings().get(i).getDestination().getName())) {
+												result += compUse.getName()+"_"+port.getName() +"_"+ port.getDefinition().getName()+",";
+											}
+											else if (port.getName().equals(connUse.getBindings().get(i).getSource().getName())) {
+												result += compUse.getName()+"_"+port.getName() +"_"+ port.getDefinition().getName()+",";
+											}											
+										}
+										
+									}
+								}
+							}
+							
+						}
+						
+					}
+				}
+			}
+		}
+		return (String) result.subSequence(0, result.lastIndexOf(","));
 	}
 	
 }

@@ -73,6 +73,9 @@
 [query public getRenamePortsConnector(connUse : ConnectorUse, compDef : ComponentDef) : String = 
 		invoke('org.csp.translater.query.AuxiliarsQuery', 'getRenamePortsConnector(org.sysadl.ConnectorUse, org.sysadl.ComponentDef)', Sequence{connUse, compDef}) /]
 
+[query public getRenamePortsDelegation(delegation : Delegation, compUse : ComponentUse) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getRenamePortsDelegation(org.sysadl.Delegation, org.sysadl.ComponentUse)', Sequence{delegation, compUse}) /]
+
 [query public getDefPortComp(pck : Set(Package)) : String = 
 		invoke('org.csp.translater.query.AuxiliarsQuery', 'getDefPortComp(Set(org.sysadl.Package)', Sequence{pck}) /]
 
@@ -89,3 +92,6 @@
 
 [query public ExistStringType(pck : Package) : String = 
 		invoke('org.csp.translater.query.AuxiliarsQuery', 'ExistStringType(org.sysadl.Package)', Sequence{pck}) /]
+
+[query public getPortsActivities(pck : Package, structure : StructuralDef, alloc : Allocation) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getPortsActivities(org.sysadl.Package, org.sysadl.StructuralDef, org.sysadl.Allocation )', Sequence{pck, structure, alloc}) /]

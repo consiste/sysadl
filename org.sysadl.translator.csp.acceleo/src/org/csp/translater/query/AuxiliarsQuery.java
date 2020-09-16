@@ -30,6 +30,7 @@ import org.sysadl.DataTypeDef;
 import org.sysadl.Delegation;
 import org.sysadl.DimensionDef;
 import org.sysadl.ElementDef;
+import org.sysadl.Enumeration;
 import org.sysadl.Executable;
 import org.sysadl.Model;
 import org.sysadl.Package;
@@ -45,6 +46,7 @@ import org.sysadl.grammar.util.SysADLGrammarUtil;
 import org.sysadl.impl.ActionDefImpl;
 import org.sysadl.impl.ActionUseImpl;
 import org.sysadl.impl.ActivityDelegationImpl;
+import org.sysadl.impl.EnumerationImpl;
 import org.sysadl.impl.PinImpl;
 import org.sysadl.impl.SimplePortDefImpl;
 
@@ -1079,6 +1081,94 @@ public class AuxiliarsQuery {
 			}
 		}
 		return (String) result.subSequence(0, result.lastIndexOf(","));
+	}
+	
+	
+	public String getPortUseFromPinSpec(Pin pin, Model model) {
+		String result = "";
+		for (Package pck : model.getPackages()) {
+			for (ElementDef elem : pck.getDefinitions()) {
+				if (elem instanceof ComponentDef) {
+					if (((ComponentDef)elem).getComposite() != null && isEmpty_Delegations(((ComponentDef)elem).getComposite())) {
+						for (ComponentUse compUse : ((ComponentDef)elem).getComposite().getComponents()) {
+							for (PortUse portUse : compUse.getPorts()) {
+								if (pin.getName().equals(portUse.getName())) {
+									result += compUse.getName() + "_" + pin.getName() + "_"+ portUse.getDefinition().getName(); 
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return result;
+	}
+	
+	public String getArchitectureName(Model model ) {
+		String result = ""; 
+		for (Package pck : model.getPackages()) {
+			for (ElementDef elem : pck.getDefinitions()) {
+				if (elem instanceof ComponentDef) {
+					if (((ComponentDef)elem).getComposite() != null && isEmpty_Delegations(((ComponentDef)elem).getComposite())) {
+						result += ((ComponentDef)elem).getName(); 
+					}
+				}
+			}
+		}
+		return result;
+	}
+	
+	
+	public boolean isPinFromPortIn(Pin pin, Model model) {
+		String result = "";
+		for (Package pck : model.getPackages()) {
+			for (ElementDef elem : pck.getDefinitions()) {
+				if (elem instanceof ComponentDef) {
+					if (((ComponentDef)elem).getComposite() != null && isEmpty_Delegations(((ComponentDef)elem).getComposite())) {
+						for (ComponentUse compUse : ((ComponentDef)elem).getComposite().getComponents()) {
+							for (PortUse portUse : compUse.getPorts()) {
+								if (pin.getName().equals(portUse.getName())) {
+									if (((SimplePortDef)portUse.getDefinition()).getFlowProperties().getLiteral().equalsIgnoreCase("out")) {
+										return true;
+									} 
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	public String getDefaultValueType(Pin pin) {
+		String result = "";		
+		switch (pin.getDefinition().getName()) {
+		case "Boolean":
+			return "false";
+		case "Int":
+			return "0";
+		case "Real":
+			return "0";
+		case "String":
+			return "test";
+		case "Char":
+			return "a";		
+		default:
+			TypeDef type = pin.getDefinition();
+			int cont =0;
+			if (type instanceof Enumeration) {
+				return ((EnumerationImpl)type).getLiterals().get(((EnumerationImpl)type).getLiterals().size()-1).getName();
+				
+			}
+			else {
+				while (! (((ValueTypeDef)type).getSuperType() == null) && cont < 100) {
+					type = ((ValueTypeDef)type).getSuperType();			
+				}
+			}
+			pin.setDefinition(type);
+			return getDefaultValueType(pin);
+		}		
 	}
 	
 }

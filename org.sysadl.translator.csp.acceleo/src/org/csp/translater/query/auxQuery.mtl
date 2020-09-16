@@ -95,3 +95,16 @@
 
 [query public getPortsActivities(pck : Package, structure : StructuralDef, alloc : Allocation) : String = 
 		invoke('org.csp.translater.query.AuxiliarsQuery', 'getPortsActivities(org.sysadl.Package, org.sysadl.StructuralDef, org.sysadl.Allocation )', Sequence{pck, structure, alloc}) /]
+
+[query public getPortUseFromPinSpec(pin : Pin, model : Model) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getPortUseFromPinSpec(org.sysadl.Pin, org.sysadl.Model)', Sequence{pin, model}) /]
+
+[query public getArchitectureName(model : Model) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getArchitectureName(org.sysadl.Model)', Sequence{ model}) /]
+
+[query public isPinFromPortIn(pin : Pin, model : Model) : Boolean = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'isPinFromPortIn(org.sysadl.Pin, org.sysadl.Model)', Sequence{pin, model}) /]
+
+[query public getDefaultValueType(pin : Pin) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getDefaultValueType(org.sysadl.Pin)', Sequence{pin}) /]
+

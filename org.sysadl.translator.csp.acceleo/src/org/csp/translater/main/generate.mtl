@@ -262,6 +262,9 @@ Delegation_[compUse.definition.name/] = [for (del : Delegation | compUse.definit
 	[for (pck : sysadl::Package | aModel.packages)]				
 		[for (elem : ElementDef | pck.definitions)]
 			[let activity : ActivityDef = self]
+				[if (not activity.name.toString().startsWith('SPEC'))]
+					
+				
 				[for (flow : ActivityRelation | activity._body.flows)]
 					[if (flow.target.oclIsKindOf(Pin) and flow.oclIsKindOf(ActivityFlow))]
 channel [flow.target.oclAsType(Pin).name/]_[flow.target.oclAsType(Pin).definition.name/] : [getTypePin(flow.target.oclAsType(Pin))/]		
@@ -333,13 +336,16 @@ Actions_[activity.name/] = ['['/]| Sync_[activity.name/] |] i : {1 .. [getAction
 ['\t'/][getActionBody(activity,action)/]
 [action.name/]_[action.definition.name/]
 				[/for]
+				[/if]
 			[/let]
 		[/for]
 	[/for]
 
+[comment Constraint /]
 	[for (pck : sysadl::Package | aModel.packages)]				
 		[for (elem : ElementDef | pck.definitions)]
 			[let constraint : ConstraintDef = self]
+				[if (not constraint.name.toString().startsWith('SPEC'))]					
 [constraint.name/]([if (constraint.inParameters <> null)]x[/if][for (param : Pin | constraint.inParameters)before (',')separator (',')][param.name/][/for]) = [constraint.getContraints(constraint)/]
 
 			[for (paramIn : Pin | constraint.inParameters)]
@@ -361,8 +367,9 @@ assert [constraint.name/]_check:['['/]livelock free]
 			{([for (paramIn : Pin | constraint.inParameters)separator (',')][paramIn.name/][/for],[for (out : Pin | constraint.outParameters)separator (',')][out.name/][/for]) | [for (paramIn : Pin | constraint.inParameters)separator (',')][paramIn.name/] <- [getTypePin(paramIn)/][/for],
 ['\t\t\t'/][for (out : Pin | constraint.outParameters)separator (',')][out.name/] <- [getTypePin(out)/][/for],
 ['\t\t\t'/][constraint.name/]([for (out : Pin | constraint.outParameters)separator (',')][out.name/][/for],[for (paramIn : Pin | constraint.inParameters)separator (',')][paramIn.name/][/for])}  
-			[/let]
-			
+			[/if]			
+		[/let]
+[comment execution /]
 			[let exe: Executable = self]
 [exe.name/]([for (param : TypeUse | exe.params)separator (',')][param.name/][/for])= [exe.getExecution(exe)/]
 
@@ -370,9 +377,64 @@ assert [constraint.name/]_check:['['/]livelock free]
 			{([for (paramIn : TypeUse | exe.params)separator (',')][paramIn.name/][/for],[for (out : TypeDef | exe.returnType)separator (',')][out.name/][/for]) | [for (paramIn : TypeUse | exe.params)separator (',')][paramIn.name/] <- [getTypeCSP(paramIn.definition)/][/for],
 ['\t\t\t'/][for (out : TypeDef | exe.returnType)separator (',')][out.name/] <- [getTypeCSP(out)/][/for],
 ['\t\t\t'/][exe.returnType.name/] == [exe.name/]([for (paramIn : TypeUse | exe.params)separator (',')][paramIn.name/][/for])}
+
 			[/let]
 		[/for]
 	[/for]
+channel ERROR
+[for (pck : Package | aModel.packages)]
+	[for (elem : ElementDef | pck.definitions)]
+		[let compDef : ComponentDef = elem]					
+			[if (compDef.composite <> null and isEmpty_Delegations(compDef.composite))]
+[compDef.name/]_ALF = {|[for (compUse : ComponentUse | compDef.composite.components)separator (',\n\t\t\t\t\t')after ('|}')][for (portUse : PortUse | compUse.ports)separator (',\n\t\t\t\t\t')][compUse.name/]_[portUse.name/]_[portUse.definition.name/][/for][/for]
+
+			[/if]		
+		[/let]
+		[let spec : ActivityDef = self]
+			[if (spec.name.toString().startsWith('SPEC') and spec.name.toString().endsWith('SFT'))]
+[spec.name/] = [for (pin : Pin | spec._body.actions.pinIn)separator ('\n\t\t\t')][getPortUseFromPinSpec(pin, aModel)/]?[pin.name.toString().toLower()/] ->[/for] 
+			if not[for (constraint : ConstraintUse | spec._body.actions.definition.constraints)] [constraint.definition.name/]([for (pin : Pin | spec._body.actions.pinIn)separator (',')][pin.name.toString().toLower()/][/for])[/for] then
+				ERROR -> [spec.name/]
+			else
+				[spec.name/]
+
+[spec.name/]_FULL = [spec.name/] ['['/]{| [for (pin : Pin | spec._body.actions.pinIn)separator (',\n\t\t\t')][getPortUseFromPinSpec(pin, aModel)/][/for] |} || [getArchitectureName(aModel)/]_ALF ] [getArchitectureName(aModel)/]
+
+assert [getArchitectureName(aModel)/] ['[T='/] [spec.name/]_FULL
+
+			[elseif (spec.name.toString().startsWith('SPEC') and spec.name.toString().endsWith('LVN'))]
+[spec.name/] =	[spec.name/]_IN([for (pin : Pin | spec.inParameters)separator (',')? (isPinFromPortIn(pin, aModel))] [getDefaultValueType(pin)/], false[/for])
+
+[spec.name/]_IN([for (pin : Pin | spec.inParameters)separator (',')? (isPinFromPortIn(pin, aModel))] [pin.name/], [pin.name/]_bool[/for]) = 
+				[for (pin : Pin | spec.inParameters)separator ('[]\n')after ('[]\n')? (isPinFromPortIn(pin, aModel))]
+not([pin.name/]_bool) & [getPortUseFromPinSpec(pin, aModel)/]?[pin.definition.name.toString().toLower()/] -> [spec.name/]_IN([for (pin1 : Pin | spec.inParameters)separator (',')? (isPinFromPortIn(pin1, aModel))] [if(pin.name = pin1.name)] [pin.definition.name.toString().toLower()/], true [else] [pin1.name/], [pin1.name/]_bool [/if][/for]) 
+				[/for]
+[for (pin : Pin | spec.inParameters)separator (' & ')after (' & ')? (isPinFromPortIn(pin, aModel))][pin.name/]_bool[/for][spec.name/]_OUT([for (pin : Pin | spec.inParameters)separator (',')after (',')? (isPinFromPortIn(pin, aModel))] [pin.name/][/for][for (pin : Pin | spec.inParameters)separator (',')? (not isPinFromPortIn(pin, aModel))] [getDefaultValueType(pin)/],false[/for]) 
+			
+[spec.name/]_OUT([for (pin : Pin | spec.inParameters)separator (',')after (',')? (isPinFromPortIn(pin, aModel))] [pin.name/][/for][for (pin : Pin | spec.inParameters)separator (',')? (not isPinFromPortIn(pin, aModel))] [pin.name/],[pin.name/]_bool[/for]) =
+	[for (pin : Pin | spec.inParameters)separator ('[]\n')after ('[]\n')? (not isPinFromPortIn(pin, aModel))]
+not([pin.name/]_bool) & [getPortUseFromPinSpec(pin, aModel)/]?[pin.definition.name.toString().toLower()/] -> [spec.name/]_OUT([for (pin1 : Pin | spec.inParameters)separator (',')after (',')? (isPinFromPortIn(pin1, aModel))] [pin1.name/][/for][for (pin1 : Pin | spec.inParameters)separator (',')? (not isPinFromPortIn(pin1, aModel))] [if(pin.name = pin1.name)] [pin.definition.name.toString().toLower()/], true [else] [pin1.name/], [pin1.name/]_bool [/if][/for]) 
+				[/for]
+[for (pin : Pin | spec.inParameters)separator (' & ')after (' & ')? (not isPinFromPortIn(pin, aModel))][pin.name/]_bool[/for][spec.name/]_v([for (pin : Pin | spec.inParameters)separator (',')][pin.name/][/for])
+
+[spec.name/]_v([for (pin : Pin | spec.inParameters)separator (',')][pin.name/][/for]) =
+		if not [for (constraint : ConstraintUse | spec._body.actions.definition.constraints)] [constraint.definition.name/]([for (pin : Pin | spec._body.actions.pinIn)separator (',')][pin.name/][/for])[/for] then
+			STOP
+		else
+			[spec.name/]
+ 
+[spec.name/]_FULL = [spec.name/] ['['/]{| [for (pin : Pin | spec._body.actions.pinIn)separator (',\n\t\t\t')][getPortUseFromPinSpec(pin, aModel)/][/for] |} || [getArchitectureName(aModel)/]_ALF ] [getArchitectureName(aModel)/]
+
+assert [spec.name/]_FULL:['[deadlock free[FD]]'/] 
+			[/if]
+		[/let]
+	 [let specEQ : ConstraintDef = self]
+	 	[if (specEQ.name.toString().startsWith('SPEC'))]
+[specEQ.name/]([for (pin : Pin | specEQ.inParameters)separator (',')] [pin.name/][/for])= [specEQ.getContraints(specEQ)/]
+	 	[/if]
+	 [/let]
+	[/for]
+[/for]
 
 [for (behaviorExe : Allocation | aModel.allocation.allocs)? (behaviorExe.oclIsKindOf(ExecutableAllocation))]
 assert IS_TRUE(subset([behaviorExe.oclAsType(ExecutableAllocation).source.name/]_s,[for (constraint : ConstraintUse | behaviorExe.oclAsType(ExecutableAllocation).target.constraints)][constraint.definition.name/]_s[/for])):['['/]divergence free]

@@ -292,110 +292,216 @@ public class AuxiliarsQuery {
 		return null;
 	}	
 	
+	public String expresWithImplies(String express) {
+		String result = "";
+		String[] aux = express.split(" ");
+		ArrayList<String> implies = new ArrayList<String>();
+		int open = 0, close = 0, begin = 0;
+		for (int i = 0; i < aux.length; i++) {
+			if (aux[i].contains("->") && aux[i].contains(".")) {
+				String[] type = aux[i].split("->");
+				aux[i] = type[1];
+			}				
+		}
+		for (int i = 0; i < aux.length; i++) {
+			if (aux[i].equals("implies")) {
+				for (int j = i; j >= begin; j--) {
+					if (aux[j].contains("((")) {
+						open++;
+						open++;
+					}
+					else if (aux[j].contains("(")) {
+						open++;
+					}
+					if (aux[j].contains("))")) {
+						close++;
+						close++;
+					}
+					else if (aux[j].contains(")")) {
+						close++;
+					}
+				}
+				for (int j = i; j < aux.length; j++) {
+					if (aux[j].contains("((")) {
+						open++;
+						open++;
+					}
+					else if (aux[j].contains("(")) {
+						open++;
+					}
+					if (aux[j].contains("))")) {
+						close++;
+						close++;
+					}
+					else if (aux[j].contains(")")) {
+						close++;						
+					}
+					if (open == close) {
+						String string = "";
+						for (int j2 = begin; j2 <= j; j2++) {
+							string += aux[j2];							
+						}
+						implies.add(string);
+						begin = j;
+						begin++;
+						break;
+					}
+					
+				}
+			}
+			
+		}
+		if (implies.size() > 0) {
+			ArrayList<String> conn = new ArrayList<String>();			
+			for (int j =0; j < implies.size(); j++) {				
+				if (implies.get(j).startsWith("||")) {
+					conn.add(" or ");
+					implies.set(j,implies.get(j).replaceFirst("||", "")) ;
+				}
+				else if (implies.get(j).startsWith("&&")) {
+					conn.add(" and ");
+					implies.set(j,implies.get(j).replaceFirst("&&", "")) ;
+				}				
+				String[] aux2 = implies.get(j).split("implies");
+				for (int i = 0; i < aux2.length; i++) {
+					aux2[i] = aux2[i].replaceAll("&&", " and ");				
+				}
+				
+				if (!conn.isEmpty()) {
+					result += conn.get(0);
+					conn.remove(0);
+				}
+				result += "(not " + aux2[0] + ") or " + aux2[1];
+				
+			}
+		}
+		
+		
+		return result;
+	}
+	
+	public String expresWithIfAndElse(String express) {
+		String result ="";
+		String[] aux = express.split(" ");
+		int cont = 0;
+		boolean open = true;
+		for (int i = 0; i < aux.length; i++) {
+			if (aux[i].equals("?")) {
+				cont = i;
+				result += "if ";
+				for (int j = 0; j < i; j++) {					
+					result += aux[j]+ " ";					
+				}
+				result += " then ";
+			}
+			else if (aux[i].contains(":")) {				
+				for (int j = cont+1; j < i; j++) {					
+					if (aux[j].contains("->") && aux[j].contains(".")) {
+						if (open) {
+							result += " (";
+							open = false;
+						}
+						String[] type = aux[j].split("->");						
+						result += type[1]+ " ";
+					}
+					else if (aux[j].contains("&&")) 
+						result += ", ";
+					else
+						result += aux[j]+ " ";		
+				}
+				if (express.contains("->")) {
+					result += ")";
+				}
+				
+				open = true;
+				result += " else ";				
+				for (int j = i+1; j < aux.length; j++) {
+					if (aux[j].contains("->") && aux[j].contains(".")) {
+						if (open) {
+							result += " (";
+							open = false;
+						}
+						String[] type = aux[j].split("->");						
+						result += type[1]+ " ";
+					}
+					else if (aux[j].contains("&&")) 
+						result += ", ";
+					else
+						result += aux[j]+ " ";					
+				}
+				if (express.contains("->")) {
+					result += ")";
+				}
+			}										
+		}
+		return result;
+	}
+	
 	public String getContraints(ConstraintDef constraint) {
 		String result = "";
 		String expres = SysADLGrammarUtil.getInstance().nodeText(constraint.getEquation());	
 		if (expres != "") {			
 			String[] aux = expres.split(" ");
-			String operation = "";
-			if (!(expres.contains("->") || expres.contains("?")|| expres.contains("&&") || expres.contains(":"))) {
-				String[] aux2 = expres.split("==");
-				operation += aux2[1];
+			for (int i = 0; i < aux.length; i++) {
+				if (aux[i].equals("==") && i > 0) {
+			 		for (int j = 0; j < constraint.getOutParameters().size(); j++) {
+						if (constraint.getOutParameters().get(j).getName().equals(aux[i-1])) {
+							aux[i-1] = "x";
+						}						
+					}						
+			 	}				
 			}
 			for (int i = 0; i < aux.length; i++) {
-				for (int j = 0; j < constraint.getOutParameters().size(); j++) {
-					if (constraint.getOutParameters().get(j).getName().equals(aux[i])) {
-						aux[i] = "";
-						result += "x";
+				result += aux[i] + " ";
+				
+			}
+			if (!(expres.contains("implies") || expres.contains("hastype") || expres.contains("instanceof") || expres.contains("?"))) {
+				result ="";
+				for (int i = 0; i < aux.length; i++) {
+				 	if (aux[i].equals("==") && i > 0) {
+				 		for (int j = 0; j < constraint.getOutParameters().size(); j++) {
+							if (constraint.getOutParameters().get(j).getName().equals(aux[i-1])) {
+								aux[i-1] = "x";
+							}						
+						}						
+				 	}
+				 	else if (aux[i].equals("&&")) {
+						 aux[i] = " and ";
 					}
-				}
-				if (aux[i].equals("==")) {
-					result += aux[i];
-				}
-				else if (aux[i].equals("&&")) {
-					result += " and ";
-				}				
-				if (aux[i].equals("?")) {
-					String condition = "";
-					for (int j = 0; j < i; j++) {					
-						condition += aux[j];
+				 	else if (aux[i].equals("||")) {
+						 aux[i] = " or ";
 					}
-					result = "if ("+condition+ ") then ";
-					String[] aux2 = aux;
-					for (int j = 0; j < aux2.length; j++) {
-						if (aux2[j].equals(":")) {
-							String stmtElse = "";
-							String stmtIF = "";
-							if (constraint.getOutParameters().get(0).getDefinition() instanceof DataTypeDef) {
-								ArrayList<String> outParam = new ArrayList<String>();
-								for (int k = j; k > i; k--) {																
-									if (aux2[k].contains("->") && aux2[k].contains(".")) {
-										String[] type = aux2[k].split("->");
-										outParam.add(type[1]);
-									}																	
-								}
-								String param = "";
-								for (int h = outParam.size(); h > 0 ; h--) {
-									if (h == 1) {
-										param += outParam.get(h-1);
-									}
-									else {
-										param += outParam.get(h-1)+",";
-									}
-								}
-								stmtIF = "x == ( "+param+" ) else";
-								outParam.clear();
-								for (int k = j; k < aux2.length; k++) {																	
-									if (aux2[k].contains("->") && aux2[k].contains(".")) {
-										String[] type = aux2[k].split("->");
-										outParam.add(type[1]);
-									}																		
-								}
-								param = "";
-								for (int h = 0; h < outParam.size() ; h++) {
-									if (h == outParam.size()-1) {
-										param += outParam.get(h);
-									}
-									else {
-										param += outParam.get(h)+",";
-									}
-								}
-								stmtElse = " x == ( "+param+" )";
-								result += stmtIF + stmtElse;
-							}
-							else {
-								result += "x == "+aux[j-1] + " else x == "+ aux[aux.length-1];
-								
+				 	else if (aux[i].contains("->") && aux[i].contains(".")) {
+						String[] type = aux[i].split("->");
+						aux[i] = type[1];
+					}
+				 	else if (aux[i].contains("->") && !aux[i].contains(".")) {
+						String[] aux2 = aux[i].split("->");
+						for (int j = 0; j < constraint.getInParameters().size(); j++) {
+							if (constraint.getInParameters().get(j).getName().equals(aux2[0])) {
+								aux2[1] = constraint.getInParameters().get(j).getDefinition().getName()+"_"+aux2[1]+"("+aux2[0]+")";
 							}
 						}
+						for (int j = 0; j < constraint.getOutParameters().size(); j++) {
+							if (constraint.getOutParameters().get(j).getName().equals(aux2[0])) {
+								aux2[1] = constraint.getOutParameters().get(j).getDefinition().getName()+"_"+aux2[1]+"(x)";
+							}
+						}
+						aux[i] = aux2[1];
 					}
-					break;
 				}				
-				else if (aux[i].contains("->") && aux[i].contains(".")) {
-					String[] type = aux[i].split("->");
-					result += type[1];
-				}
-				else if (aux[i].contains("->") && !aux[i].contains(".")) {
-					String[] aux2 = aux[i].split("->");
-					for (int j = 0; j < constraint.getInParameters().size(); j++) {
-						if (constraint.getInParameters().get(j).getName().equals(aux2[0])) {
-							aux2[1] = constraint.getInParameters().get(j).getDefinition().getName()+"_"+aux2[1]+"("+aux2[0]+")";
-						}
-					}
-					for (int j = 0; j < constraint.getOutParameters().size(); j++) {
-						if (constraint.getOutParameters().get(j).getName().equals(aux2[0])) {
-							aux2[1] = constraint.getOutParameters().get(j).getDefinition().getName()+"_"+aux2[1]+"(x)";
-						}
-					}
-					result += aux2[1];
-				}
-				else {
+				for (int i = 0; i < aux.length; i++) {
+					result += aux[i] + " ";
 					
 				}				
 			}
-			result += operation;			
+			else if(expres.contains("implies")) {
+				result = expresWithImplies(expres);
+			}
+			else if(expres.contains("?")) {
+				result = expresWithIfAndElse(result);
+			}
 		}
-		
 		return result;
 	}
 	

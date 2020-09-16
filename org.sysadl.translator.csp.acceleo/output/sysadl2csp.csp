@@ -18,8 +18,12 @@ datatype Command = On|Off
 Commands = { (heater,cooler) | heater<- Command ,cooler<- Command  }
 Commands_heater((heater,cooler)) = heater
 Commands_cooler((heater,cooler)) = cooler
-CelsiusTemperature = {0 .. 5}						
-FahrenheitTemperature = {0 .. 5}						
+MIN_F_TEMP = 35
+MAX_F_TEMP = 40
+DEFAULT_C_TEMP = 1
+DEFAULT_F_TEMP = 35
+FahrenheitTemperature = {MIN_F_TEMP..MAX_F_TEMP}
+CelsiusTemperature = {(5*(MIN_F_TEMP - 32)/9)..(5*(MAX_F_TEMP - 32)/9)}					
 
 
 channel detectedRTC_PresenceIPT : Bool						
@@ -434,7 +438,7 @@ FtC_FahrenheitToCelsiusAN =
 		loalTemp1_CelsiusTemperature!loalTemp1 ->
 FtC_FahrenheitToCelsiusAN
 
-CalculateAverageTemperatureEQ(x,t1,t2) = x== (t1 + t2)/2
+CalculateAverageTemperatureEQ(x,t1,t2) = x == (t1 + t2)/2 
 
 channel CalculateAverageTemperatureEQ_t1_CelsiusTemperature : CelsiusTemperature
 channel CalculateAverageTemperatureEQ_t2_CelsiusTemperature : CelsiusTemperature
@@ -453,7 +457,7 @@ CalculateAverageTemperatureEQ_s =
 			{(t1,t2,av) | t1 <- CelsiusTemperature,t2 <- CelsiusTemperature,
 			av <- CelsiusTemperature,
 			CalculateAverageTemperatureEQ(av,t1,t2)}  
-CompareTemperatureEQ(x,target,average) = if (average>target) then x == ( Off,On ) else x == ( On,Off )
+CompareTemperatureEQ(x,target,average) = if average > target  then x ==  (Off , On ) else x ==  (On , Off )
 
 channel CompareTemperatureEQ_target_CelsiusTemperature : CelsiusTemperature
 channel CompareTemperatureEQ_average_CelsiusTemperature : CelsiusTemperature
@@ -472,7 +476,7 @@ CompareTemperatureEQ_s =
 			{(target,average,cmds) | target <- CelsiusTemperature,average <- CelsiusTemperature,
 			cmds <- Commands,
 			CompareTemperatureEQ(cmds,target,average)}  
-FahrenheitToCelsiusEQ(x,f) = x== (5*(f - 32)/9)
+FahrenheitToCelsiusEQ(x,f) = x == (5*(f - 32)/9) 
 
 channel FahrenheitToCelsiusEQ_f_FahrenheitTemperature : FahrenheitTemperature
 FahrenheitToCelsiusEQ_check = 
@@ -489,7 +493,7 @@ FahrenheitToCelsiusEQ_s =
 			{(f,c) | f <- FahrenheitTemperature,
 			c <- CelsiusTemperature,
 			FahrenheitToCelsiusEQ(c,f)}  
-CommandHeaterEQ(x,cmds) = x==Commands_heater(cmds)
+CommandHeaterEQ(x,cmds) = x == Commands_heater(cmds) 
 
 channel CommandHeaterEQ_cmds_Commands : Commands
 CommandHeaterEQ_check = 
@@ -506,7 +510,7 @@ CommandHeaterEQ_s =
 			{(cmds,c) | cmds <- Commands,
 			c <- Command,
 			CommandHeaterEQ(c,cmds)}  
-CommandCoolerEQ(x,cmds) = x==Commands_cooler(cmds)
+CommandCoolerEQ(x,cmds) = x == Commands_cooler(cmds) 
 
 channel CommandCoolerEQ_cmds_Commands : Commands
 CommandCoolerEQ_check = 
@@ -523,7 +527,7 @@ CommandCoolerEQ_s =
 			{(cmds,c) | cmds <- Commands,
 			c <- Command,
 			CommandCoolerEQ(c,cmds)}  
-CheckPresenceToSetTemperatureEQ(x,detected,userTemp) = if (detected==true) then x == userTemp else x == 1
+CheckPresenceToSetTemperatureEQ(x,detected,userTemp) = if detected == true  then x == userTemp  else x == 1 
 
 channel CheckPresenceToSetTemperatureEQ_detected_Boolean : Bool
 channel CheckPresenceToSetTemperatureEQ_userTemp_CelsiusTemperature : CelsiusTemperature
@@ -598,7 +602,7 @@ RTCSystemCFD_ALF = {|s1_current1_FTemperatureOPT,
 					rtc_heating_CommandOPT,
 					rtc_cooling_CommandOPT|}
 
-SPEC01EQ( cooler, heater)= On and Command_On)(heater)
+SPEC01EQ( cooler, heater)= cooler == On  and  heater == On 
 SPEC01SFT = a2_controllerC_CommandIPT?controllerc ->
 			a1_controllerH_CommandIPT?controllerh -> 
 			if not SPEC01EQ(controllerc,controllerh) then
@@ -611,7 +615,7 @@ SPEC01SFT_FULL = SPEC01SFT [{| a2_controllerC_CommandIPT,
 
 assert RTCSystemCFD [T= SPEC01SFT_FULL
 
-SPEC02EQ( detectedS, current1, current2, controllerH, controllerC)= == and On and Command_Off))(controllerH) and == and Off and Command_On))(controllerH) and == and ==Off and Command_Off))(controllerH)
+SPEC02EQ( detectedS, current1, current2, controllerH, controllerC)= (not (detectedS==false and (current1+current2)/2>1) or (controllerC==On and controllerH==Off)) and (not (detectedS==false and (current1+current2)/2<1) or (controllerC==Off and controllerH==On)) and (not (detectedS==false and (current1+current2)/2==1) or (controllerC==Off and controllerH==Off))
 SPEC02LVN =	SPEC02LVN_IN( false, false, 0, false, 0, false)
 
 SPEC02LVN_IN( detectedS, detectedS_bool, current1, current1_bool, current2, current2_bool) = 

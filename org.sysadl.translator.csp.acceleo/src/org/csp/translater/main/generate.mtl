@@ -391,7 +391,7 @@ channel ERROR
 			[/if]		
 		[/let]
 		[let spec : ActivityDef = self]
-			[if (spec.name.toString().startsWith('SPEC') and spec.name.toString().endsWith('SFT'))]
+			[if (spec.name.toString().startsWith('SPEC_S_'))]
 [spec.name/] = [for (pin : Pin | spec._body.actions.pinIn)separator ('\n\t\t\t')][getPortUseFromPinSpec(pin, aModel)/]?[pin.name.toString().toLower()/] ->[/for] 
 			if not[for (constraint : ConstraintUse | spec._body.actions.definition.constraints)] [constraint.definition.name/]([for (pin : Pin | spec._body.actions.pinIn)separator (',')][pin.name.toString().toLower()/][/for])[/for] then
 				ERROR -> [spec.name/]
@@ -402,7 +402,7 @@ channel ERROR
 
 assert [getArchitectureName(aModel)/] ['[T='/] [spec.name/]_FULL
 
-			[elseif (spec.name.toString().startsWith('SPEC') and spec.name.toString().endsWith('LVN'))]
+			[elseif (spec.name.toString().startsWith('SPEC_L_'))]
 [spec.name/] =	[spec.name/]_IN([for (pin : Pin | spec.inParameters)separator (',')? (isPinFromPortIn(pin, aModel))] [getDefaultValueType(pin)/], false[/for])
 
 [spec.name/]_IN([for (pin : Pin | spec.inParameters)separator (',')? (isPinFromPortIn(pin, aModel))] [pin.name/], [pin.name/]_bool[/for]) = 

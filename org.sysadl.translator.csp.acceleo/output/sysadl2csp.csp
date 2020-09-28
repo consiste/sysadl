@@ -23,7 +23,7 @@ MAX_F_TEMP = 40
 DEFAULT_C_TEMP = 1
 DEFAULT_F_TEMP = 35
 FahrenheitTemperature = {MIN_F_TEMP..MAX_F_TEMP}
-CelsiusTemperature = {(5*(MIN_F_TEMP - 32)/9)..(5*(MAX_F_TEMP - 32)/9)}					
+CelsiusTemperature = {(5*(MIN_F_TEMP - 32)/9)..(5*(MAX_F_TEMP - 32)/9)}
 
 
 channel detectedRTC_PresenceIPT : Bool						
@@ -603,50 +603,50 @@ RTCSystemCFD_ALF = {|s1_current1_FTemperatureOPT,
 					rtc_cooling_CommandOPT|}
 
 SPEC01EQ( cooler, heater)= cooler == On  and  heater == On 
-SPEC01SFT = a2_controllerC_CommandIPT?controllerc ->
+SPEC_S_01 = a2_controllerC_CommandIPT?controllerc ->
 			a1_controllerH_CommandIPT?controllerh -> 
 			if not SPEC01EQ(controllerc,controllerh) then
-				ERROR -> SPEC01SFT
+				ERROR -> SPEC_S_01
 			else
-				SPEC01SFT
+				SPEC_S_01
 
-SPEC01SFT_FULL = SPEC01SFT [{| a2_controllerC_CommandIPT,
+SPEC_S_01_FULL = SPEC_S_01 [{| a2_controllerC_CommandIPT,
 			a1_controllerH_CommandIPT |} || RTCSystemCFD_ALF ] RTCSystemCFD
 
-assert RTCSystemCFD [T= SPEC01SFT_FULL
+assert RTCSystemCFD [T= SPEC_S_01_FULL
 
 SPEC02EQ( detectedS, current1, current2, controllerH, controllerC)= (not (detectedS==false and (current1+current2)/2>1) or (controllerC==On and controllerH==Off)) and (not (detectedS==false and (current1+current2)/2<1) or (controllerC==Off and controllerH==On)) and (not (detectedS==false and (current1+current2)/2==1) or (controllerC==Off and controllerH==Off))
-SPEC02LVN =	SPEC02LVN_IN( false, false, 0, false, 0, false)
+SPEC_L_02 =	SPEC_L_02_IN( false, false, 0, false, 0, false)
 
-SPEC02LVN_IN( detectedS, detectedS_bool, current1, current1_bool, current2, current2_bool) = 
-not(detectedS_bool) & s3_detectedS_PresenceOPT?boolean -> SPEC02LVN_IN(  boolean, true ,  current1, current1_bool ,  current2, current2_bool ) 
+SPEC_L_02_IN( detectedS, detectedS_bool, current1, current1_bool, current2, current2_bool) = 
+not(detectedS_bool) & s3_detectedS_PresenceOPT?boolean -> SPEC_L_02_IN(  boolean, true ,  current1, current1_bool ,  current2, current2_bool ) 
 []
-not(current1_bool) & s1_current1_FTemperatureOPT?real -> SPEC02LVN_IN(  detectedS, detectedS_bool ,  real, true ,  current2, current2_bool ) 
+not(current1_bool) & s1_current1_FTemperatureOPT?real -> SPEC_L_02_IN(  detectedS, detectedS_bool ,  real, true ,  current2, current2_bool ) 
 []
-not(current2_bool) & s2_current2_FTemperatureOPT?real -> SPEC02LVN_IN(  detectedS, detectedS_bool ,  current1, current1_bool ,  real, true ) 
+not(current2_bool) & s2_current2_FTemperatureOPT?real -> SPEC_L_02_IN(  detectedS, detectedS_bool ,  current1, current1_bool ,  real, true ) 
 []
-detectedS_bool & current1_bool & current2_bool & SPEC02LVN_OUT( detectedS, current1, current2, Off,false, Off,false) 
+detectedS_bool & current1_bool & current2_bool & SPEC_L_02_OUT( detectedS, current1, current2, Off,false, Off,false) 
 			
-SPEC02LVN_OUT( detectedS, current1, current2, controllerH,controllerH_bool, controllerC,controllerC_bool) =
-not(controllerH_bool) & a1_controllerH_CommandIPT?command -> SPEC02LVN_OUT( detectedS, current1, current2,  command, true ,  controllerC, controllerC_bool ) 
+SPEC_L_02_OUT( detectedS, current1, current2, controllerH,controllerH_bool, controllerC,controllerC_bool) =
+not(controllerH_bool) & a1_controllerH_CommandIPT?command -> SPEC_L_02_OUT( detectedS, current1, current2,  command, true ,  controllerC, controllerC_bool ) 
 []
-not(controllerC_bool) & a2_controllerC_CommandIPT?command -> SPEC02LVN_OUT( detectedS, current1, current2,  controllerH, controllerH_bool ,  command, true ) 
+not(controllerC_bool) & a2_controllerC_CommandIPT?command -> SPEC_L_02_OUT( detectedS, current1, current2,  controllerH, controllerH_bool ,  command, true ) 
 []
-controllerH_bool & controllerC_bool & SPEC02LVN_v(detectedS,current1,current2,controllerH,controllerC)
+controllerH_bool & controllerC_bool & SPEC_L_02_v(detectedS,current1,current2,controllerH,controllerC)
 
-SPEC02LVN_v(detectedS,current1,current2,controllerH,controllerC) =
+SPEC_L_02_v(detectedS,current1,current2,controllerH,controllerC) =
 		if not  SPEC02EQ(detectedS,current1,current2,controllerH,controllerC) then
 			STOP
 		else
-			SPEC02LVN
+			SPEC_L_02
  
-SPEC02LVN_FULL = SPEC02LVN [{| s3_detectedS_PresenceOPT,
+SPEC_L_02_FULL = SPEC_L_02 [{| s3_detectedS_PresenceOPT,
 			s1_current1_FTemperatureOPT,
 			s2_current2_FTemperatureOPT,
 			a1_controllerH_CommandIPT,
 			a2_controllerC_CommandIPT |} || RTCSystemCFD_ALF ] RTCSystemCFD
 
-assert SPEC02LVN_FULL:[deadlock free[FD]] 
+assert SPEC_L_02_FULL:[deadlock free[FD]] 
 
 assert IS_TRUE(subset(FahrenheitToCelsiusEx_s,FahrenheitToCelsiusEQ_s)):[divergence free]
 assert IS_TRUE(subset(CompareTemperatureEx_s,CompareTemperatureEQ_s)):[divergence free]

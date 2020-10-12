@@ -105,6 +105,9 @@
 [query public isPinFromPortIn(pin : Pin, model : Model) : Boolean = 
 		invoke('org.csp.translater.query.AuxiliarsQuery', 'isPinFromPortIn(org.sysadl.Pin, org.sysadl.Model)', Sequence{pin, model}) /]
 
+[query public existPinOfPortOPT(action : ActionDef, model : Model) : Integer= 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'existPinOfPortOPT(org.sysadl.ActionDef, org.sysadl.Model)', Sequence{action, model}) /]
+
 [query public getDefaultValueType(pin : Pin) : String = 
 		invoke('org.csp.translater.query.AuxiliarsQuery', 'getDefaultValueType(org.sysadl.Pin)', Sequence{pin}) /]
 

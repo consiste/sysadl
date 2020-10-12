@@ -468,6 +468,9 @@ public class AuxiliarsQuery {
 				 	else if (aux[i].equals("&&")) {
 						 aux[i] = " and ";
 					}
+				 	else if (aux[i].equals("~")) {
+						 aux[i] = " not ";
+					}
 				 	else if (aux[i].equals("||")) {
 						 aux[i] = " or ";
 					}
@@ -1245,6 +1248,29 @@ public class AuxiliarsQuery {
 			}
 		}
 		return false;
+	}
+	
+	public int existPinOfPortOPT(ActionDef action, Model model) {
+		ArrayList<Boolean> ports = new ArrayList<Boolean>();
+		//pin of port In : false
+		//pin of port out : true
+		for (Pin pin : action.getInParameters()) {
+			if (!isPinFromPortIn(pin, model)) {
+				ports.add(true);
+			}
+			else
+				ports.add(false);
+		}
+		
+		// do not exist port OUT
+		if (!ports.contains(true)) {
+			return 1;
+		}
+		// do not exist port IN
+		else if (!ports.contains(false)) {
+			return 0;
+		}
+		return 2;
 	}
 	
 	public String getDefaultValueType(Pin pin) {

@@ -387,22 +387,29 @@ channel ERROR
 		[let compDef : ComponentDef = elem]					
 			[if (compDef.composite <> null and isEmpty_Delegations(compDef.composite))]
 [compDef.name/]_ALF = {|[for (compUse : ComponentUse | compDef.composite.components)separator (',\n\t\t\t\t\t')after ('|}')][for (portUse : PortUse | compUse.ports)separator (',\n\t\t\t\t\t')][compUse.name/]_[portUse.name/]_[portUse.definition.name/][/for][/for]
-
 			[/if]		
 		[/let]
-		[let spec : ActivityDef = self]
-			[if (spec.name.toString().startsWith('SPEC_S_'))]
-[spec.name/] = [for (pin : Pin | spec._body.actions.pinIn)separator ('\n\t\t\t')][getPortUseFromPinSpec(pin, aModel)/]?[pin.name.toString().toLower()/] ->[/for] 
-			if not[for (constraint : ConstraintUse | spec._body.actions.definition.constraints)] [constraint.definition.name/]([for (pin : Pin | spec._body.actions.pinIn)separator (',')][pin.name.toString().toLower()/][/for])[/for] then
-				ERROR -> [spec.name/]
-			else
-				[spec.name/]
+		[let spec : ActionDef = self]
+			[if (spec.name.toString().startsWith('SPEC_'))]
+				[if (existPinOfPortOPT(spec, aModel) =  1 )]
+[spec.name/] =	[spec.name/]_IN([for (pin : Pin | spec.inParameters)separator (',')? (isPinFromPortIn(pin, aModel))] [getDefaultValueType(pin)/], false[/for])
+[spec.name/]_IN([for (pin : Pin | spec.inParameters)separator (',')? (isPinFromPortIn(pin, aModel))] [pin.name/], [pin.name/]_bool[/for]) = 
+				[for (pin : Pin | spec.inParameters)separator ('[]\n')after ('[]\n')? (isPinFromPortIn(pin, aModel))]
+not([pin.name/]_bool) & [getPortUseFromPinSpec(pin, aModel)/]?[pin.definition.name.toString().toLower()/] -> [spec.name/]_IN([for (pin1 : Pin | spec.inParameters)separator (',')? (isPinFromPortIn(pin1, aModel))] [if(pin.name = pin1.name)] [pin.definition.name.toString().toLower()/], true [else] [pin1.name/], [pin1.name/]_bool [/if][/for]) 
+				[/for]
+([for (pin : Pin | spec.inParameters)separator (' & ')after (' & ')? (isPinFromPortIn(pin, aModel))][pin.name/]_bool[/for])[spec.name/]_v([for (pin : Pin | spec.inParameters)separator (',')][pin.name/][/for])					
+				
+				[elseif (existPinOfPortOPT(spec, aModel) =  0)]
 
-[spec.name/]_FULL = [spec.name/] ['['/]{| [for (pin : Pin | spec._body.actions.pinIn)separator (',\n\t\t\t')][getPortUseFromPinSpec(pin, aModel)/][/for] |} || [getArchitectureName(aModel)/]_ALF ] [getArchitectureName(aModel)/]
+[spec.name/] =	[spec.name/]_OUT([for (pin : Pin | spec.inParameters)? (isPinFromPortIn(pin, aModel))] [pin.name/][/for][for (pin : Pin | spec.inParameters)separator (',')? (not isPinFromPortIn(pin, aModel))] [getDefaultValueType(pin)/],false[/for])			
+[spec.name/]_OUT([for (pin : Pin | spec.inParameters)? (isPinFromPortIn(pin, aModel))] [pin.name/][/for][for (pin : Pin | spec.inParameters)separator (',')? (not isPinFromPortIn(pin, aModel))] [pin.name/],[pin.name/]_bool[/for]) =
+	[for (pin : Pin | spec.inParameters)separator ('[]\n')after ('[]\n')? (not isPinFromPortIn(pin, aModel))]
+not([pin.name/]_bool) & [getPortUseFromPinSpec(pin, aModel)/]?[pin.definition.name.toString().toLower()/] -> [spec.name/]_OUT([for (pin1 : Pin | spec.inParameters)? (isPinFromPortIn(pin1, aModel))] [pin1.name/][/for][for (pin1 : Pin | spec.inParameters)separator (',')? (not isPinFromPortIn(pin1, aModel))] [if(pin.name = pin1.name)] [pin.definition.name.toString().toLower()/], true [else] [pin1.name/], [pin1.name/]_bool [/if][/for]) 
+				[/for]
+[for (pin : Pin | spec.inParameters)separator (' & ')after (' & ')? (not isPinFromPortIn(pin, aModel))][pin.name/]_bool[/for][spec.name/]_v([for (pin : Pin | spec.inParameters)separator (',')][pin.name/][/for])
 
-assert [getArchitectureName(aModel)/] ['[T='/] [spec.name/]_FULL
+				[elseif (existPinOfPortOPT(spec, aModel) =  2)]
 
-			[elseif (spec.name.toString().startsWith('SPEC_L_'))]
 [spec.name/] =	[spec.name/]_IN([for (pin : Pin | spec.inParameters)separator (',')? (isPinFromPortIn(pin, aModel))] [getDefaultValueType(pin)/], false[/for])
 
 [spec.name/]_IN([for (pin : Pin | spec.inParameters)separator (',')? (isPinFromPortIn(pin, aModel))] [pin.name/], [pin.name/]_bool[/for]) = 
@@ -417,16 +424,27 @@ not([pin.name/]_bool) & [getPortUseFromPinSpec(pin, aModel)/]?[pin.definition.na
 				[/for]
 [for (pin : Pin | spec.inParameters)separator (' & ')after (' & ')? (not isPinFromPortIn(pin, aModel))][pin.name/]_bool[/for][spec.name/]_v([for (pin : Pin | spec.inParameters)separator (',')][pin.name/][/for])
 
+
+				[/if]
+
 [spec.name/]_v([for (pin : Pin | spec.inParameters)separator (',')][pin.name/][/for]) =
-		if not [for (constraint : ConstraintUse | spec._body.actions.definition.constraints)] [constraint.definition.name/]([for (pin : Pin | spec._body.actions.pinIn)separator (',')][pin.name/][/for])[/for] then
+		if not [for (constraint : ConstraintUse | spec.constraints)] [constraint.definition.name/]([for (pin : Pin | spec.inParameters)separator (',')][pin.name/][/for])[/for] then
 			STOP
 		else
 			[spec.name/]
  
-[spec.name/]_FULL = [spec.name/] ['['/]{| [for (pin : Pin | spec._body.actions.pinIn)separator (',\n\t\t\t')][getPortUseFromPinSpec(pin, aModel)/][/for] |} || [getArchitectureName(aModel)/]_ALF ] [getArchitectureName(aModel)/]
-
-assert [spec.name/]_FULL:['[deadlock free[FD]]'/] 
+[spec.name/]_FULL = [spec.name/] ['['/]{| [for (pin : Pin | spec.inParameters)separator (',\n\t\t\t')][getPortUseFromPinSpec(pin, aModel)/][/for] |} || [getArchitectureName(aModel)/]_ALF ] [getArchitectureName(aModel)/]
+		 
 			[/if]
+
+			[if (spec.name.toString().startsWith('SPEC_S_'))]
+assert [getArchitectureName(aModel)/] ['[T='/] [spec.name/]_FULL
+
+			[elseif (spec.name.toString().startsWith('SPEC_L_'))]
+
+assert [spec.name/]_FULL:['[deadlock free[FD]]'/]
+			[/if]
+
 		[/let]
 	 [let specEQ : ConstraintDef = self]
 	 	[if (specEQ.name.toString().startsWith('SPEC'))]

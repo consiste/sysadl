@@ -33,11 +33,13 @@ import uk.ac.ox.cs.fdr.LoopBehaviour;
 import uk.ac.ox.cs.fdr.MinAcceptanceBehaviour;
 import uk.ac.ox.cs.fdr.MinAcceptanceCounterexample;
 import uk.ac.ox.cs.fdr.Node;
+import uk.ac.ox.cs.fdr.PrintStatement;
 import uk.ac.ox.cs.fdr.ProcessName;
 import uk.ac.ox.cs.fdr.PropertyCounterexample;
 import uk.ac.ox.cs.fdr.RefinementCounterexample;
 import uk.ac.ox.cs.fdr.SegmentedBehaviour;
 import uk.ac.ox.cs.fdr.Session;
+import uk.ac.ox.cs.fdr.StringEvaluatorResult;
 import uk.ac.ox.cs.fdr.TraceBehaviour;
 import uk.ac.ox.cs.fdr.TraceCounterexample;
 import uk.ac.ox.cs.fdr.fdr;
@@ -65,6 +67,13 @@ public class PerformTransformation {
 	            Session session = new Session();
 	            try {            	
 	            	session.loadFile(folder.getAbsolutePath() + "\\sysadl2csp.csp");
+	            	for (PrintStatement stm : session.printStatements()) {	            			            		
+	            		System.out.println("---------------------------------------TSETSETSTE-------------------------------------------");
+	            		String result = session.evaluateExpression(stm.expression(), null).result();
+	            		System.out.println(result);
+	            		System.out.println("---------------------------------------TSETSETSTE-------------------------------------------");
+					
+					}
 	            	for (Assertion assertion : session.assertions()) {
 	    	            assertion.execute(null);    	
 	    	            mapAnwser.put(assertion.toString(), (assertion.passed() ? "Passed" : "Failed"));
@@ -79,6 +88,7 @@ public class PerformTransformation {
 	    	                parser.getTrace(out.toString(), assertion.toString());
 	    	            }
 	    	        }
+	            	
 	                
 				} catch (InputFileError error) {
 			        System.out.println(error);
@@ -253,4 +263,5 @@ public class PerformTransformation {
 	    for (int i = 0; i < indent; ++i)
 	        out.print(' ');
 	}
+		
 }

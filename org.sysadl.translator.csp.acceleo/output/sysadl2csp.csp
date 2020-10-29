@@ -1,8 +1,4 @@
 subset(s1, s2) = (inter(s1,s2)==s1)
-IS_TRUE(h) = if (h) then SKIP else DIV
-
-RUN(A) = [] x:A @ x -> RUN(A)
-CHAOS(A) = STOP |~|  [] x:A @ x -> CHAOS(A)
 
 MAX = 4
 
@@ -18,12 +14,8 @@ datatype Command = On|Off
 Commands = { (heater,cooler) | heater<- Command ,cooler<- Command  }
 Commands_heater((heater,cooler)) = heater
 Commands_cooler((heater,cooler)) = cooler
-MIN_F_TEMP = 35
-MAX_F_TEMP = 40
-DEFAULT_C_TEMP = 1
-DEFAULT_F_TEMP = 35
-FahrenheitTemperature = {MIN_F_TEMP..MAX_F_TEMP}
-CelsiusTemperature = {(5*(MIN_F_TEMP - 32)/9)..(5*(MAX_F_TEMP - 32)/9)}						
+CelsiusTemperature = {0 .. 5}						
+FahrenheitTemperature = {0 .. 5}						
 
 
 channel detectedRTC_PresenceIPT : Bool						
@@ -440,18 +432,14 @@ FtC_FahrenheitToCelsiusAN
 
 CalculateAverageTemperatureEQ(x,t1,t2) = x == (t1 + t2)/2 
 
-channel CalculateAverageTemperatureEQ_t1_CelsiusTemperature : CelsiusTemperature
-channel CalculateAverageTemperatureEQ_t2_CelsiusTemperature : CelsiusTemperature
 CalculateAverageTemperatureEQ_check = 
-	CalculateAverageTemperatureEQ_t1_CelsiusTemperature?t1 ->
-	CalculateAverageTemperatureEQ_t2_CelsiusTemperature?t2 ->
-	true &
-		let
-		 S = {av | av <- CelsiusTemperature,
-				CalculateAverageTemperatureEQ(av,t1,t2)}
-		within IS_TRUE(not (S == {}))
+			{(t1, t2) | t1 <- CelsiusTemperature , t2 <- CelsiusTemperature , 
+						not ({av | av <- CelsiusTemperature,
+							CalculateAverageTemperatureEQ(av,t1,t2)} == {})}
+			==
+			{(t1, t2) | t1 <- CelsiusTemperature, t2 <- CelsiusTemperature}
 
-assert CalculateAverageTemperatureEQ_check:[livelock free]
+print CalculateAverageTemperatureEQ_check
 
 CalculateAverageTemperatureEQ_s = 
 			{(t1,t2,av) | t1 <- CelsiusTemperature,t2 <- CelsiusTemperature,
@@ -459,18 +447,14 @@ CalculateAverageTemperatureEQ_s =
 			CalculateAverageTemperatureEQ(av,t1,t2)}  
 CompareTemperatureEQ(x,target,average) = if average > target  then x ==  (Off , On ) else x ==  (On , Off )
 
-channel CompareTemperatureEQ_target_CelsiusTemperature : CelsiusTemperature
-channel CompareTemperatureEQ_average_CelsiusTemperature : CelsiusTemperature
 CompareTemperatureEQ_check = 
-	CompareTemperatureEQ_target_CelsiusTemperature?target ->
-	CompareTemperatureEQ_average_CelsiusTemperature?average ->
-	true &
-		let
-		 S = {cmds | cmds <- Commands,
-				CompareTemperatureEQ(cmds,target,average)}
-		within IS_TRUE(not (S == {}))
+			{(target, average) | target <- CelsiusTemperature , average <- CelsiusTemperature , 
+						not ({cmds | cmds <- Commands,
+							CompareTemperatureEQ(cmds,target,average)} == {})}
+			==
+			{(target, average) | target <- CelsiusTemperature, average <- CelsiusTemperature}
 
-assert CompareTemperatureEQ_check:[livelock free]
+print CompareTemperatureEQ_check
 
 CompareTemperatureEQ_s = 
 			{(target,average,cmds) | target <- CelsiusTemperature,average <- CelsiusTemperature,
@@ -478,16 +462,14 @@ CompareTemperatureEQ_s =
 			CompareTemperatureEQ(cmds,target,average)}  
 FahrenheitToCelsiusEQ(x,f) = x == (5*(f - 32)/9) 
 
-channel FahrenheitToCelsiusEQ_f_FahrenheitTemperature : FahrenheitTemperature
 FahrenheitToCelsiusEQ_check = 
-	FahrenheitToCelsiusEQ_f_FahrenheitTemperature?f ->
-	true &
-		let
-		 S = {c | c <- CelsiusTemperature,
-				FahrenheitToCelsiusEQ(c,f)}
-		within IS_TRUE(not (S == {}))
+			{(f) | f <- FahrenheitTemperature , 
+						not ({c | c <- CelsiusTemperature,
+							FahrenheitToCelsiusEQ(c,f)} == {})}
+			==
+			{(f) | f <- FahrenheitTemperature}
 
-assert FahrenheitToCelsiusEQ_check:[livelock free]
+print FahrenheitToCelsiusEQ_check
 
 FahrenheitToCelsiusEQ_s = 
 			{(f,c) | f <- FahrenheitTemperature,
@@ -495,16 +477,14 @@ FahrenheitToCelsiusEQ_s =
 			FahrenheitToCelsiusEQ(c,f)}  
 CommandHeaterEQ(x,cmds) = x == Commands_heater(cmds) 
 
-channel CommandHeaterEQ_cmds_Commands : Commands
 CommandHeaterEQ_check = 
-	CommandHeaterEQ_cmds_Commands?cmds ->
-	true &
-		let
-		 S = {c | c <- Command,
-				CommandHeaterEQ(c,cmds)}
-		within IS_TRUE(not (S == {}))
+			{(cmds) | cmds <- Commands , 
+						not ({c | c <- Command,
+							CommandHeaterEQ(c,cmds)} == {})}
+			==
+			{(cmds) | cmds <- Commands}
 
-assert CommandHeaterEQ_check:[livelock free]
+print CommandHeaterEQ_check
 
 CommandHeaterEQ_s = 
 			{(cmds,c) | cmds <- Commands,
@@ -512,16 +492,14 @@ CommandHeaterEQ_s =
 			CommandHeaterEQ(c,cmds)}  
 CommandCoolerEQ(x,cmds) = x == Commands_cooler(cmds) 
 
-channel CommandCoolerEQ_cmds_Commands : Commands
 CommandCoolerEQ_check = 
-	CommandCoolerEQ_cmds_Commands?cmds ->
-	true &
-		let
-		 S = {c | c <- Command,
-				CommandCoolerEQ(c,cmds)}
-		within IS_TRUE(not (S == {}))
+			{(cmds) | cmds <- Commands , 
+						not ({c | c <- Command,
+							CommandCoolerEQ(c,cmds)} == {})}
+			==
+			{(cmds) | cmds <- Commands}
 
-assert CommandCoolerEQ_check:[livelock free]
+print CommandCoolerEQ_check
 
 CommandCoolerEQ_s = 
 			{(cmds,c) | cmds <- Commands,
@@ -529,18 +507,14 @@ CommandCoolerEQ_s =
 			CommandCoolerEQ(c,cmds)}  
 CheckPresenceToSetTemperatureEQ(x,detected,userTemp) = if detected == true  then x == userTemp  else x == 1 
 
-channel CheckPresenceToSetTemperatureEQ_detected_Boolean : Bool
-channel CheckPresenceToSetTemperatureEQ_userTemp_CelsiusTemperature : CelsiusTemperature
 CheckPresenceToSetTemperatureEQ_check = 
-	CheckPresenceToSetTemperatureEQ_detected_Boolean?detected ->
-	CheckPresenceToSetTemperatureEQ_userTemp_CelsiusTemperature?userTemp ->
-	true &
-		let
-		 S = {target | target <- CelsiusTemperature,
-				CheckPresenceToSetTemperatureEQ(target,detected,userTemp)}
-		within IS_TRUE(not (S == {}))
+			({(detected, userTemp) | detected <- Bool , userTemp <- CelsiusTemperature , 
+						not ({target | target <- CelsiusTemperature,
+							CheckPresenceToSetTemperatureEQ(target,detected,userTemp)} == {})}
+			==
+			{(detected, userTemp) | detected <- Bool, userTemp <- CelsiusTemperature})
 
-assert CheckPresenceToSetTemperatureEQ_check:[livelock free]
+print CheckPresenceToSetTemperatureEQ_check
 
 CheckPresenceToSetTemperatureEQ_s = 
 			{(detected,userTemp,target) | detected <- Bool,userTemp <- CelsiusTemperature,
@@ -676,12 +650,12 @@ SPEC_L_02_FULL = SPEC_L_02 [{| s3_detectedS_PresenceOPT,
 assert SPEC_L_02_FULL:[deadlock free[FD]]
 
 
-assert IS_TRUE(subset(FahrenheitToCelsiusEx_s,FahrenheitToCelsiusEQ_s)):[divergence free]
-assert IS_TRUE(subset(CompareTemperatureEx_s,CompareTemperatureEQ_s)):[divergence free]
-assert IS_TRUE(subset(CommandHeaterEx_s,CommandHeaterEQ_s)):[divergence free]
-assert IS_TRUE(subset(CommandCoolerEx_s,CommandCoolerEQ_s)):[divergence free]
-assert IS_TRUE(subset(CheckPresenceToSetTemperature_s,CheckPresenceToSetTemperatureEQ_s)):[divergence free]
-assert IS_TRUE(subset(CalculateAverageTemperatureEx_s,CalculateAverageTemperatureEQ_s)):[divergence free]
+print subset(FahrenheitToCelsiusEx_s,FahrenheitToCelsiusEQ_s)
+print subset(CompareTemperatureEx_s,CompareTemperatureEQ_s)
+print subset(CommandHeaterEx_s,CommandHeaterEQ_s)
+print subset(CommandCoolerEx_s,CommandCoolerEQ_s)
+print subset(CheckPresenceToSetTemperature_s,CheckPresenceToSetTemperatureEQ_s)
+print subset(CalculateAverageTemperatureEx_s,CalculateAverageTemperatureEQ_s)
 
 assert RTCSystemCFD:[deadlock free]
 assert RTCSystemCFD:[livelock free]

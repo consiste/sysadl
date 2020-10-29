@@ -102,7 +102,7 @@ public class MakeSysADLModelFile {
 							"					  heating"+10 +" : CommandOPT ; \r\n" + 
 							"					  cooling"+10 +" : CommandOPT ; }\r\n";
 							
-		}else if(index < 10){
+		}else {//if(index < 10){
 			this.ComponentsRTCSystemCFD_Componet +=  
 					"				s1"+(10+(index*10)) +": TemperatureSensorCP {	 using ports : current1"+(10+(index*10)) +" : FTemperatureOPT ; }\r\n" + 
 							"	  			s2"+(10+(index*10)) +" : TemperatureSensorCP {	 using ports : current2"+(10+(index*10)) +" : FTemperatureOPT ; }\r\n" + 
@@ -119,26 +119,26 @@ public class MakeSysADLModelFile {
 							"					  heating"+(10+(index*10)) +" : CommandOPT ; \r\n" + 
 							"					  cooling"+(10+(index*10)) +" : CommandOPT ; }\r\n";
 		}
-		if (index >= 100) {
-			for (int i = 110; i <= index; i = i +10) {
-				this.ComponentsRTCSystemCFD_Componet +=
-						"				s1"+i +": TemperatureSensorCP {	 using ports : current1"+i +" : FTemperatureOPT ; }\r\n" + 
-								"	  			s2"+i +" : TemperatureSensorCP {	 using ports : current2"+i +" : FTemperatureOPT ; }\r\n" + 
-								"	  			s3"+i +" : PresenceSensorCP {	 using ports : detectedS"+i +" : PresenceOPT ; }\r\n" + 
-								"	  			ui"+i +" : UserInterfaceCP {	 using ports : desired"+i +" : CTemperatureOPT ; }\r\n" + 
-								"	  			a2"+i +" : CoolerCP {	 using ports : controllerC"+i +" : CommandIPT ; }\r\n" + 
-								"	  			a1"+i +" : HeaterCP {	 using ports : controllerH"+i +" : CommandIPT ; }\r\n" + 
-								"	  			rtc"+i +" : RoomTemperatureControllerCP {	 \r\n" + 
-								"					  using ports : \r\n" + 
-								"					  detected"+i +" : PresenceIPT ; \r\n" + 
-								"					  localtemp1"+i +" : CTemperatureIPT ; \r\n" + 
-								"					  localTemp2"+i +" : CTemperatureIPT ; \r\n" + 
-								"					  userTemp"+i +" : CTemperatureIPT ; \r\n" + 
-								"					  heating"+i +" : CommandOPT ; \r\n" + 
-								"					  cooling"+i +" : CommandOPT ; }\r\n";
-			}
-			
-		}
+//		if (index >= 100) {
+//			for (int i = index-90; i <= index; i = i +10) {
+//				this.ComponentsRTCSystemCFD_Componet +=
+//						"				s1"+i +": TemperatureSensorCP {	 using ports : current1"+i +" : FTemperatureOPT ; }\r\n" + 
+//								"	  			s2"+i +" : TemperatureSensorCP {	 using ports : current2"+i +" : FTemperatureOPT ; }\r\n" + 
+//								"	  			s3"+i +" : PresenceSensorCP {	 using ports : detectedS"+i +" : PresenceOPT ; }\r\n" + 
+//								"	  			ui"+i +" : UserInterfaceCP {	 using ports : desired"+i +" : CTemperatureOPT ; }\r\n" + 
+//								"	  			a2"+i +" : CoolerCP {	 using ports : controllerC"+i +" : CommandIPT ; }\r\n" + 
+//								"	  			a1"+i +" : HeaterCP {	 using ports : controllerH"+i +" : CommandIPT ; }\r\n" + 
+//								"	  			rtc"+i +" : RoomTemperatureControllerCP {	 \r\n" + 
+//								"					  using ports : \r\n" + 
+//								"					  detected"+i +" : PresenceIPT ; \r\n" + 
+//								"					  localtemp1"+i +" : CTemperatureIPT ; \r\n" + 
+//								"					  localTemp2"+i +" : CTemperatureIPT ; \r\n" + 
+//								"					  userTemp"+i +" : CTemperatureIPT ; \r\n" + 
+//								"					  heating"+i +" : CommandOPT ; \r\n" + 
+//								"					  cooling"+i +" : CommandOPT ; }\r\n";
+//			}
+//			
+//		}
 		
 		
 		if (index == 0) {
@@ -152,7 +152,7 @@ public class MakeSysADLModelFile {
 					"	  			cc1"+10 +" : CommandCN bindings heating"+10 +" = controllerH"+10 +" ;\n\n";		
 
 			
-		}else if(index <10) {
+		}else {//if(index <10) {
 			this.ComponentsRTCSystemCFD_Connectors +=
 					"	  			c1"+(10+(index*10)) +" : FahrenheitToCelsiusCN bindings current1"+(10+(index*10)) +" = localtemp1"+(10+(index*10)) +" ; \r\n" + 
 					"	  			uc"+(10+(index*10)) +" : CTemperatureCN bindings desired"+(10+(index*10)) +" = userTemp"+(10+(index*10)) +" ; \r\n" + 
@@ -160,21 +160,21 @@ public class MakeSysADLModelFile {
 					"	  			pc"+(10+(index*10)) +" : PresenceCN bindings detectedS"+(10+(index*10)) +" = detected"+(10+(index*10)) +" ; \r\n" + 
 					"	  			c2"+(10+(index*10)) +" : FahrenheitToCelsiusCN bindings current2"+(10+(index*10)) +" = localTemp2"+(10+(index*10)) +" ; \r\n" + 
 					"	  			cc1"+(10+(index*10)) +" : CommandCN bindings heating"+(10+(index*10)) +" = controllerH"+(10+(index*10)) +" ;\n\n";
-		}
-		if(index >= 100) {
-			for (int i = 110; i <= index; i = i+10) {
-				this.ComponentsRTCSystemCFD_Connectors +=
-						"	  			c1"+i +" : FahrenheitToCelsiusCN bindings current1"+i +" = localtemp1"+i +" ; \r\n" + 
-						"	  			uc"+i +" : CTemperatureCN bindings desired"+i +" = userTemp"+i +" ; \r\n" + 
-						"	  			cc2"+i +" : CommandCN bindings cooling"+i +" = controllerC"+i +" ; \r\n" + 
-						"	  			pc"+i +" : PresenceCN bindings detectedS"+i +" = detected"+i +" ; \r\n" + 
-						"	  			c2"+i +" : FahrenheitToCelsiusCN bindings current2"+i +" = localTemp2"+i +" ; \r\n" + 
-						"	  			cc1"+i +" : CommandCN bindings heating"+i +" = controllerH"+i +" ;\n\n";
-			}
-		}			
+		}		
+//		if(index >= 100) {
+//			for (int i = index-90; i <= index; i = i+10) {
+//				this.ComponentsRTCSystemCFD_Connectors +=
+//						"	  			c1"+i +" : FahrenheitToCelsiusCN bindings current1"+i +" = localtemp1"+i +" ; \r\n" + 
+//						"	  			uc"+i +" : CTemperatureCN bindings desired"+i +" = userTemp"+i +" ; \r\n" + 
+//						"	  			cc2"+i +" : CommandCN bindings cooling"+i +" = controllerC"+i +" ; \r\n" + 
+//						"	  			pc"+i +" : PresenceCN bindings detectedS"+i +" = detected"+i +" ; \r\n" + 
+//						"	  			c2"+i +" : FahrenheitToCelsiusCN bindings current2"+i +" = localTemp2"+i +" ; \r\n" + 
+//						"	  			cc1"+i +" : CommandCN bindings heating"+i +" = controllerH"+i +" ;\n\n";
+//			}
+//		}			
 		
 		
-		this.finish = "}\n";
+		this.finish = "}}\n";
 		
 		
 		this.ComponetDefRoomTemperatureControllerCP = "component def RoomTemperatureControllerCP {	 \r\n" + 
@@ -257,13 +257,19 @@ public class MakeSysADLModelFile {
 	}
 	
 	public void executeTest(int index) {
-		URI modelURI = URI.createFileURI("D:\\RTCScability\\RTC-"+(10+(index*10))+".sysadl");//sysadl model		
-		File folder = new File("D:\\RTCScability\\RTC-"+(10+(index*10))+"\\"+ "output");
+		String path = "";
+		//if(index <= 10) {
+			path = "D:\\RTCScability\\RTC-"+(index);
+//		}else
+//			path = "D:\\RTCScability\\RTC-"+index;
+		
+		URI modelURI = URI.createFileURI(path+".sysadl");//sysadl model		
+		File folder = new File(path+"\\"+ "output");
 		List<String> arguments = new ArrayList<String>();		
 		HashMap<String, String> mapAnwser = new HashMap<String, String>();			
 		try {
 			Generate generator = new Generate(modelURI, folder, arguments);
-			generator.addPropertiesFile("RTC-"+(10+(index*10))+".sysadl");         
+			generator.addPropertiesFile(path+".sysadl");         
             generator.doGenerate(new BasicMonitor()); 
             Session session = new Session();
             try {            	
@@ -272,8 +278,8 @@ public class MakeSysADLModelFile {
     	            assertion.execute(null);    	
     	            mapAnwser.put(assertion.toString(), (assertion.passed() ? "Passed" : "Failed"));
     	            
-    	            System.out.println(assertion.toString()+" "+
-    	                (assertion.passed() ? "Passed" : "Failed"));
+//    	            System.out.println(assertion.toString()+" "+
+//    	                (assertion.passed() ? "Passed" : "Failed"));
             	}
                 
 			} catch (InputFileError error) {
@@ -291,41 +297,69 @@ public class MakeSysADLModelFile {
 		}	
 	}
 	
+	public void executeByIndex(int index) {
+		String time = "";
+		long sum = 0;
+		try {
+		for (int j = 0; j < 12; j++) {
+			sum = 0;
+			long inicio = System.currentTimeMillis();
+			executeTest(index);
+			long fim  = System.currentTimeMillis();
+			time += "time (ms): " + (fim - inicio) + "\n";
+			sum += fim-inicio;
+		}
+			time += "avg (ms): " +(sum/12)+"\n";
+			FileWriter fileTime = new FileWriter("D:\\RTCScability\\RTC-"+index+"\\output\\time.txt");		
+			fileTime.write(index+"\n");
+			fileTime.write(time);
+			fileTime.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public void makeFile() {
 		String time;
 		long sum;
 		//instantiations for 10,20,30,40,50,60,70,80,90,100		
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i <= 100; i++) {
 			time = "";
 			sum = 0;
 			contentsModel(i);			
 			try {
-				FileWriter file = new FileWriter("D:\\RTCScability\\RTC-"+(10+(i*10))+".sysadl");
-				file.write("Model SysADLModel ; \n");
-				file.write(this.types);
-				file.write(this.ports);
-				file.write(this.connectors);
-				file.write(this.componentsImports);
-				file.write(this.ComponentDefRTCSystemCFD);
-				file.write(this.ComponentsRTCSystemCFD_Componet);
-				file.write(this.ComponentsRTCSystemCFD_Connectors);
-				file.write(this.finish);
-				file.write(this.ComponetDefRoomTemperatureControllerCP);
-				file.write(this.componetsDef);
-				file.write(this.behavior);
-				file.write(this.allocations);										
-				file.close();
-				for (int j = 0; j < 10; j++) {
-					long inicio = System.currentTimeMillis();
-					executeTest(i);
-					long fim  = System.currentTimeMillis();
-					time += "time (ms): " + (fim - inicio) + "\n";
-					sum += fim-inicio;
-				}
-				time += "avg (ms): " +(sum/10)+"\n";
-				FileWriter fileTime = new FileWriter("D:\\RTCScability\\RTC-"+(10+(i*10))+"\\output\\time.txt");
-				fileTime.write(time);
-				fileTime.close();
+				System.out.println(i);
+				
+					FileWriter file = new FileWriter("D:\\RTCScability\\RTC-"+(10+(i*10))+".sysadl");
+					file.write("Model SysADLModel ; \n");
+					file.write(this.types);
+					file.write(this.ports);
+					file.write(this.connectors);
+					file.write(this.componentsImports);
+					file.write(this.ComponentDefRTCSystemCFD);
+					file.write(this.ComponentsRTCSystemCFD_Componet);
+					file.write(this.ComponentsRTCSystemCFD_Connectors);
+					file.write(this.finish);
+					file.write(this.ComponetDefRoomTemperatureControllerCP);
+					file.write(this.componetsDef);
+					file.write(this.behavior);
+					file.write(this.allocations);										
+					file.close();
+								
+//				for (int j = 0; j < 12; j++) {
+//					long inicio = System.currentTimeMillis();
+//					executeTest(i);
+//					long fim  = System.currentTimeMillis();
+//					time += "time (ms): " + (fim - inicio) + "\n";
+//					sum += fim-inicio;
+//				}
+//				time += "avg (ms): " +(sum/10)+"\n";
+//				FileWriter fileTime = new FileWriter("D:\\RTCScability\\RTC-"+(10+(i*10))+"\\output\\time.txt");
+//				fileTime.write((10+(i*10))+"\n");
+//				fileTime.write(time);
+//				fileTime.close();
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -334,30 +368,44 @@ public class MakeSysADLModelFile {
 		}
 		
 		//instantiations for 200,300,400,500,600,700,800,900,1000
-		for (int i = 200; i <= 1000; i = i+100) {
-			contentsModel(i);			
-			try {
-				FileWriter file = new FileWriter("D:\\RTCScability\\RTC-"+i+".sysadl");
-				file.write("Model SysADLModel ; \n");
-				file.write(this.types);
-				file.write(this.ports);
-				file.write(this.connectors);
-				file.write(this.componentsImports);
-				file.write(this.ComponentDefRTCSystemCFD);
-				file.write(this.ComponentsRTCSystemCFD_Componet);
-				file.write(this.ComponentsRTCSystemCFD_Connectors);
-				file.write(this.finish);
-				file.write(this.ComponetDefRoomTemperatureControllerCP);
-				file.write(this.componetsDef);
-				file.write(this.behavior);
-				file.write(this.allocations);
-				
-				file.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+//		for (int i = 110; i <= 1000; i = i+10) {
+//			time = "";
+//			sum = 0;
+//			contentsModel(i);			
+//			try {
+//				FileWriter file = new FileWriter("D:\\RTCScability\\RTC-"+i+".sysadl");
+//				file.write("Model SysADLModel ; \n");
+//				file.write(this.types);
+//				file.write(this.ports);
+//				file.write(this.connectors);
+//				file.write(this.componentsImports);
+//				file.write(this.ComponentDefRTCSystemCFD);				
+//				file.write(this.ComponentsRTCSystemCFD_Componet);
+//				file.write(this.ComponentsRTCSystemCFD_Connectors);
+//				file.write(this.finish);
+//				file.write(this.ComponetDefRoomTemperatureControllerCP);
+//				file.write(this.componetsDef);
+//				file.write(this.behavior);
+//				file.write(this.allocations);
+//				
+//				file.close();
+//				
+//				for (int j = 0; j < 12; j++) {
+//					long inicio = System.currentTimeMillis();
+//					executeTest(i);
+//					long fim  = System.currentTimeMillis();
+//					time += "time (ms): " + (fim - inicio) + "\n";
+//					sum += fim-inicio;
+//				}
+//				time += "avg (ms): " +(sum/10)+"\n";
+//				FileWriter fileTime = new FileWriter("D:\\RTCScability\\RTC-"+i+"\\output\\time.txt");
+//				fileTime.write(time);
+//				fileTime.close();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
 		
 		//instantiations for 100,200,300,400,500,600,700,800,900,1000
 //		for (int i = 100; i < 1000; i = i+100) {

@@ -13,8 +13,16 @@ import org.csp.translater.main.Generate;
 import org.csp.translater.query.AuxiliarsQuery;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.util.BasicMonitor;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.sysadl.ConstraintDef;
+import org.sysadl.ElementDef;
+import org.sysadl.Enumeration;
 import org.sysadl.Model;
+import org.sysadl.Pin;
+import org.sysadl.TypeDef;
+import org.sysadl.ValueTypeDef;
+import org.sysadl.grammar.util.SysADLGrammarUtil;
 import org.sysadl.verification.csp.ParserAnswerCSP;
 import org.sysadl.verification.csp.VerificationAnwserDialog;
 
@@ -39,7 +47,6 @@ import uk.ac.ox.cs.fdr.PropertyCounterexample;
 import uk.ac.ox.cs.fdr.RefinementCounterexample;
 import uk.ac.ox.cs.fdr.SegmentedBehaviour;
 import uk.ac.ox.cs.fdr.Session;
-import uk.ac.ox.cs.fdr.StringEvaluatorResult;
 import uk.ac.ox.cs.fdr.TraceBehaviour;
 import uk.ac.ox.cs.fdr.TraceCounterexample;
 import uk.ac.ox.cs.fdr.fdr;
@@ -54,6 +61,7 @@ public class PerformTransformation {
 		path = path.replace(file.getLocation().lastSegment(), "");
         File folder = new File(path+ "output");
         HashMap<String, String> mapAnwser = new HashMap<String, String>();
+        HashMap<String, String> falseCase = new HashMap<String, String>();
         List<String> arguments = new ArrayList<String>();
         AuxiliarsQuery query = new AuxiliarsQuery();
         ParserAnswerCSP parser = new ParserAnswerCSP();
@@ -68,10 +76,26 @@ public class PerformTransformation {
 	            try {            	
 	            	session.loadFile(folder.getAbsolutePath() + "\\sysadl2csp.csp");
 	            	for (PrintStatement stm : session.printStatements()) {	            			            		
-	            		System.out.println("---------------------------------------TSETSETSTE-------------------------------------------");
-	            		String result = session.evaluateExpression(stm.expression(), null).result();
-	            		System.out.println(result);
-	            		System.out.println("---------------------------------------TSETSETSTE-------------------------------------------");
+	            		
+	            		String result = session.evaluateExpression(stm.expression(), null).result();	            			            		
+	            		mapAnwser.put(stm.expression().toString(), result);
+	            		
+	            		if (result.equals("false")) {
+							if (stm.expression().toString().contains("subset")) {
+								String[] sets = stm.expression().replace("subset(", "").replace(")\r", "").split(",");
+								String diffResult =  session.evaluateExpression("diff(" + sets[0]+ ","+sets[1]+")", null).result();
+								falseCase.put(stm.expression().toString(), diffResult);
+							}
+							else {
+								stm.expression().toString();
+								String check = session.evaluateExpression(stm.expression().toString().replace("check", "case_false"), null).result();								
+								ConstraintDef constraintEQ = getEquation(model,stm.expression().toString().replace("_check", " "));
+								String equation = SysADLGrammarUtil.getInstance().nodeText(constraintEQ.getEquation());
+								String types = getTypes(constraintEQ);								
+								falseCase.put(stm.expression().toString(), check+";"+equation+";"+types);
+							}
+						}
+	            		
 					
 					}
 	            	for (Assertion assertion : session.assertions()) {
@@ -98,7 +122,7 @@ public class PerformTransformation {
 			    }
 	
 			    fdr.libraryExit();				    
-			    VerificationAnwserDialog dialog = new VerificationAnwserDialog(new JFrame(), "Results", mapAnwser, false);
+			    VerificationAnwserDialog dialog = new VerificationAnwserDialog(new JFrame(), "Results", mapAnwser, falseCase, false);
 			
 	            
 			} catch (IOException e) {
@@ -110,17 +134,77 @@ public class PerformTransformation {
         	if (query.CheckPortsAndPinsNames(model).startsWith("Fail")) {
         		String[] aux = query.CheckPortsAndPinsNames(model).split("-");
         		mapAnwser.put(aux[0], aux[1]);
-        		VerificationAnwserDialog dialog = new VerificationAnwserDialog(new JFrame(), "Error", mapAnwser, true);
+        		VerificationAnwserDialog dialog = new VerificationAnwserDialog(new JFrame(), "Error", mapAnwser,falseCase, true);
 			}
         	else if (query.ExistEqualsNames(model).startsWith("Sucess")) {
         		String[] aux = query.ExistEqualsNames(model).split("-");
         		mapAnwser.put(aux[0], aux[1]);
-        		VerificationAnwserDialog dialog = new VerificationAnwserDialog(new JFrame(), "Error", mapAnwser, true);
+        		VerificationAnwserDialog dialog = new VerificationAnwserDialog(new JFrame(), "Error", mapAnwser,falseCase, true);
 			}
         	
         }
 		// TODO Auto-generated method stub
 	}
+	
+	private static String getTypes(ConstraintDef constraintEQ) {
+		String result = "";
+		TypeDef type = null;
+		int cont =0;
+		EList<Pin> parans = constraintEQ.getInParameters();
+		parans.addAll(constraintEQ.getOutParameters());
+		for (Pin pin : parans) {
+			type = pin.getDefinition();
+			result += pin.getName() + "= ";
+			if (type instanceof ValueTypeDef) {
+				while (! (((ValueTypeDef)type).getSuperType() == null) && cont < 100) {
+					type = ((ValueTypeDef)type).getSuperType();			
+				}
+			}
+			else if (type instanceof Enumeration) {
+				return ((Enumeration)type).getLiterals().get(((Enumeration)type).getLiterals().size()-1).getName();
+				
+			}
+			result += getTypesCSP(type.getName());
+			result += "; ";
+		}		
+				
+		return result;
+	}
+	
+	
+	private static String getTypesCSP(String type) {
+		String result = "";
+		switch (type) {
+		case "Int":
+			result = "{0 .. 5}";
+			break;
+		case "Real":
+			result = "{0 .. 5}";
+			break;
+		default:
+			break;
+		}
+		return result;
+	}
+
+	private static ConstraintDef getEquation(Model model, String constraint) {
+		ConstraintDef result = null;
+		for (org.sysadl.Package pck : model.getPackages()) {
+			for (ElementDef elem : pck.getDefinitions()) {
+				if (elem instanceof ConstraintDef) {
+					if (((ConstraintDef)elem).getName().equals(constraint.trim())) {
+						result = ((ConstraintDef)elem); 
+					}
+					
+							
+				}
+			}
+		}
+		
+		return result;
+	}
+	
+	
 	
 	private static void describeCounterexample(PrintStream out, Session session,
 		    Counterexample counterexample)

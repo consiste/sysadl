@@ -23,11 +23,12 @@ public class VerificationAnwserDialog extends JDialog {
 	
 	 private static final long serialVersionUID = 1L;
 	 
-	    public VerificationAnwserDialog(JFrame parent, String title, HashMap<String, String> message, boolean error) {
+	    public VerificationAnwserDialog(JFrame parent, String title, HashMap<String, String> message,HashMap<String, String> falseCase, boolean error) {
 	        super(parent, title);
 	        System.out.println("creating the window..");
 	        // set the position of the window
 	        Point p = new Point(400, 400);
+	        int c =0;
 	        setLocation(p.x, p.y);
 	        	
 	        // Create a message
@@ -57,7 +58,7 @@ public class VerificationAnwserDialog extends JDialog {
 						String[] aux = array[i].toString().split("_");
 						text += "It is possible to find values satisfying the restrictions imposed by the constraint " + aux[0];
 					}
-		        	else if (array[i].toString().contains("IS_TRUE")) {
+		        	else if (array[i].toString().contains("subset")) {
 		        		String noSpaces = array[i].toString().replaceAll("\n", "").replaceAll(" ", "");
 						String[] aux = noSpaces.split(",");
 						String[] aux2 = aux[0].split("\\(");
@@ -72,27 +73,47 @@ public class VerificationAnwserDialog extends JDialog {
 		        	else
 		        		text += array[i].toString();
 		        	text += "</p>";
-		        	if (message.get(array[i]).toString().contains("Passed")) {
+		        	if (message.get(array[i]).toString().contains("Passed") || message.get(array[i]).toString().contains("true")) {
 						text += "<p style = \"color:green;\">";
 						text += message.get(array[i]).toString();
 						text += "</p>";
 					}
-		        	else {
+		        	else {		        		
 		        		text += "<p style = \"color:red;\">";
 						text += message.get(array[i]).toString();
-						text += "</p>";
-		        	}
+						JButton errorbutton = new JButton("?");
+						errorbutton.setLocation(400, 400);
+						messagePane.add(errorbutton);						
+						errorbutton.addActionListener(new ActionListener() {
+							
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								 JFrame frame = new JFrame();		               
+					               String textFalseCase = "";
+					               Object[] falseKeys = falseCase.keySet().toArray();
+					               for (int j = 0; j < falseKeys.length; j++) {
+					            	   textFalseCase += "";  
+					            	   textFalseCase += falseCase.get(falseKeys[j]);
+					               }
+					               createFrameWithMessage(frame, "?", textFalseCase);
+					            
+								}
+							});
+						
+		        	}		        			        
 		        	
 				}	        
 		        
 		        // get content pane, which is usually the
 		        // Container of all the dialog's components.	        
 		        messagePane.add(new JLabel("<html>" + text + "<br/>" + "</html>"));
-		        getContentPane().add(messagePane);
+		        getContentPane().add(messagePane);		        		       		        
+		        
 		    }
 	        // Create a button
 	        JPanel buttonPane = new JPanel();
 	        JButton button = new JButton("Close");
+	        	        
 	        buttonPane.add(button);
 	        // set action listener on the button
 	        button.addActionListener(new MyActionListener());
@@ -100,6 +121,26 @@ public class VerificationAnwserDialog extends JDialog {
 	        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	        pack();
 	        setVisible(true);
+	    }
+	    
+	    public void createFrameWithMessage(JFrame frame,String title, String message) {
+	    	frame.setTitle(title);
+            frame.setSize(400, 150);
+            frame.setVisible(true);
+            frame.setLocationRelativeTo(null);
+            JPanel panel = new JPanel();
+            String[] parts = message.split(";");
+            String anwser = "<html>The folow set it is not valid for the equation " + parts[0];
+            anwser += "<br/>";
+            anwser += "equation: " + parts[1];
+            anwser += "<br/>";
+            for (int i = 2; i < parts.length; i++) {
+				anwser += parts[i];
+				anwser += "<br/>";
+			}
+            anwser += "</html>";
+            panel.add(new JLabel(anwser));
+            frame.add(panel);
 	    }
 	 
 	    // override the createRootPane inherited by the JDialog, to create the rootPane.

@@ -354,6 +354,12 @@ Actions_[activity.name/] = ['['/]| Sync_[activity.name/] |] i : {1 .. [getAction
 
 print [constraint.name/]_check
 
+[constraint.name/]_case_false = 
+			{([for (paramIn : Pin | constraint.inParameters)separator (', ')]
+[paramIn.name/][/for]) | [for (paramIn : Pin | constraint.inParameters)separator (', ')][paramIn.name/] <- [getTypePin(paramIn)/] [/for], 
+						 ({[for (out : Pin | constraint.outParameters)separator (',')][out.name/][/for] | [for (out : Pin | constraint.outParameters)separator (',')][out.name/] <- [getTypePin(out)/][/for],
+							[constraint.name/]([for (out : Pin | constraint.outParameters)separator (',')][out.name/][/for],[for (paramIn : Pin | constraint.inParameters)separator (',')][paramIn.name/][/for])} == {})}
+
 [constraint.name/]_s = 
 			{([for (paramIn : Pin | constraint.inParameters)separator (',')][paramIn.name/][/for],[for (out : Pin | constraint.outParameters)separator (',')][out.name/][/for]) | [for (paramIn : Pin | constraint.inParameters)separator (',')][paramIn.name/] <- [getTypePin(paramIn)/][/for],
 ['\t\t\t'/][for (out : Pin | constraint.outParameters)separator (',')][out.name/] <- [getTypePin(out)/][/for],

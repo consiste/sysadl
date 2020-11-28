@@ -51,9 +51,17 @@ public class VerificationAnwserDialog extends JDialog {
 		        Object[] array = message.keySet().toArray();
 		        for (int i = 0; i < array.length; i++) {
 		        	text += "<p style = \"color:black;\">";
-		        	if (array[i].toString().contains("deadlock free")) {
+		        	if (array[i].toString().contains("[deadlock free]")) {
 						text += "Deadlock Free: ";
 					}
+		        	else if(array[i].toString().contains("[T=")) {
+		        		String[] aux = array[i].toString().split(" ");
+		        		text+= "Safety property: " + aux[2];
+		        	}
+		        	else if(array[i].toString().contains("[deadlock free [FD]]")) {
+		        		String[] aux = array[i].toString().split(" :");
+		        		text+= "Liveness property: " + aux[0];
+		        	}
 		        	else if (array[i].toString().contains("_check")) {
 						String[] aux = array[i].toString().split("_");
 						text += "It is possible to find values satisfying the restrictions imposed by the constraint " + aux[0];
@@ -67,7 +75,7 @@ public class VerificationAnwserDialog extends JDialog {
 						refinement += " is a refinement of the action that uses the constraint " + aux3[0].replaceAll("_s", "");
 						text += "The Execution " + refinement +": ";					
 					}
-		        	else if(array[i].toString().contains("divergence free")) {
+		        	else if(array[i].toString().contains("[divergence free]")) {
 						text += "Divergence Free: ";
 		        	}
 		        	else
@@ -81,24 +89,24 @@ public class VerificationAnwserDialog extends JDialog {
 		        	else {		        		
 		        		text += "<p style = \"color:red;\">";
 						text += message.get(array[i]).toString();
-						JButton errorbutton = new JButton("?");
-						errorbutton.setLocation(400, 400);
-						messagePane.add(errorbutton);						
-						errorbutton.addActionListener(new ActionListener() {
-							
-							@Override
-							public void actionPerformed(ActionEvent e) {
-								 JFrame frame = new JFrame();		               
-					               String textFalseCase = "";
-					               Object[] falseKeys = falseCase.keySet().toArray();
-					               for (int j = 0; j < falseKeys.length; j++) {
-					            	   textFalseCase += "";  
-					            	   textFalseCase += falseCase.get(falseKeys[j]);
-					               }
-					               createFrameWithMessage(frame, "?", textFalseCase);
-					            
-								}
-							});
+//						JButton errorbutton = new JButton("?");
+//						errorbutton.setLocation(400, 400);
+//						messagePane.add(errorbutton);						
+//						errorbutton.addActionListener(new ActionListener() {
+//							
+//							@Override
+//							public void actionPerformed(ActionEvent e) {
+//								 JFrame frame = new JFrame();		               
+//					               String textFalseCase = "";
+//					               Object[] falseKeys = falseCase.keySet().toArray();
+//					               for (int j = 0; j < falseKeys.length; j++) {
+//					            	   textFalseCase += "";  
+//					            	   textFalseCase += falseCase.get(falseKeys[j]);
+//					               }
+//					               createFrameWithMessage(frame, "?", textFalseCase);
+//					            
+//								}
+//							});
 						
 		        	}		        			        
 		        	

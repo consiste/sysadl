@@ -49,4 +49,11 @@
            id="org.sysadl.viewpoints.verify">
      </javaActions>
   </extension>
+  <extension
+        point="org.eclipse.sirius.externalJavaAction">
+     <javaActions
+           actionClass="sysadl.viewpoints.actions.Traceability"
+           id="org.sysadl.viewpoints.actions.traceability">
+     </javaActions>
+  </extension>  
 </plugin>

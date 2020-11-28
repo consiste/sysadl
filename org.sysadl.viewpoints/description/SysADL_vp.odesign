@@ -2115,6 +2115,15 @@
         </toolSections>
       </layers>
     </ownedRepresentationExtensions>
+    <ownedRepresentationExtensions xsi:type="description_1:DiagramExtensionDescription" name="Tracebility" viewpointURI="viewpoint:/org.sysadl.viewpoints/SysADL.Structural" representationName="SysADL.IBD">
+      <layers name="traceabilityLayer" label="Traceability Layer" activeByDefault="true" optional="false">
+        <toolSections name="trceabilityApply" label="Trceability Apply">
+          <ownedTools xsi:type="tool_1:ExternalJavaAction" name="org.sysadl.viewpoints.actions.traceability" label="Traceability" id="org.sysadl.viewpoints.actions.traceability">
+            <parameters name="componnet" value="var:self"/>
+          </ownedTools>
+        </toolSections>
+      </layers>
+    </ownedRepresentationExtensions>
   </ownedViewpoints>
   <userColorsPalettes name="Colors">
     <entries xsi:type="description:UserFixedColor" red="255" green="228" blue="130" name="DefColor"/>

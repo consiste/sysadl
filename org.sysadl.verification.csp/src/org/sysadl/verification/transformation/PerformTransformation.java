@@ -16,6 +16,7 @@ import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.sysadl.ConstraintDef;
+import org.sysadl.DataTypeDef;
 import org.sysadl.ElementDef;
 import org.sysadl.Enumeration;
 import org.sysadl.Model;
@@ -150,11 +151,13 @@ public class PerformTransformation {
 		String result = "";
 		TypeDef type = null;
 		int cont =0;
-		EList<Pin> parans = constraintEQ.getInParameters();
-		parans.addAll(constraintEQ.getOutParameters());
-		for (Pin pin : parans) {
+		EList<Pin> Inparans = constraintEQ.getInParameters();
+		EList<Pin> Outparans = constraintEQ.getOutParameters();
+		result += "InParameters: ";
+		for (Pin pin : Inparans) {
 			type = pin.getDefinition();
 			result += pin.getName() + "= ";
+			
 			if (type instanceof ValueTypeDef) {
 				while (! (((ValueTypeDef)type).getSuperType() == null) && cont < 100) {
 					type = ((ValueTypeDef)type).getSuperType();			
@@ -164,9 +167,34 @@ public class PerformTransformation {
 				return ((Enumeration)type).getLiterals().get(((Enumeration)type).getLiterals().size()-1).getName();
 				
 			}
+			else if (type instanceof DataTypeDef) {
+				return ((DataTypeDef)type).getName();
+				
+			}
+			if ( type.getName().equals("Boolean") || type.getName().equals("void")) 
+				result += type.getName();		
+			else
+				result += getTypesCSP(type.getName());
+			result += "; ";
+		}
+		
+		result += "OutParameters: ";
+		for (Pin pin : Outparans) {
+			type = pin.getDefinition();
+			result += pin.getName() + "= ";
+			
+			if (type instanceof ValueTypeDef) {
+				while (! (((ValueTypeDef)type).getSuperType() == null) && cont < 100) {
+					type = ((ValueTypeDef)type).getSuperType();			
+				}
+			}
+			else if (type instanceof Enumeration) {
+				return ((Enumeration)type).getLiterals().get(((Enumeration)type).getLiterals().size()-1).getName();
+				
+			}			
 			result += getTypesCSP(type.getName());
 			result += "; ";
-		}		
+		}
 				
 		return result;
 	}

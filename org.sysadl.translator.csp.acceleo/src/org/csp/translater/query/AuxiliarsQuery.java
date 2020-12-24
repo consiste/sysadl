@@ -8,9 +8,12 @@ import java.util.concurrent.TimeoutException;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.ocl.ecore.OrderedSetType;
+import org.eclipse.ocl.ecore.SequenceType;
+import org.eclipse.ocl.ecore.impl.OrderedSetTypeImpl;
 import org.sysadl.ActionDef;
 import org.sysadl.ActionUse;
 import org.sysadl.ActivityAllocation;
+import org.sysadl.ActivityBody;
 import org.sysadl.ActivityDef;
 import org.sysadl.ActivityFlow;
 import org.sysadl.ActivityRelation;
@@ -653,8 +656,7 @@ public class AuxiliarsQuery {
 			if (activityRelation.getSource() instanceof ActionUse) {
 				if (activityRelation.getTarget() instanceof Pin) {
 					if (action.getName().equals(((ActionUse)activityRelation.getSource()).getName())) {
-						out +=  ((Pin)activityRelation.getTarget()).getName() + "_" + ((Pin)activityRelation.getTarget()).getDefinition().getName() +"!out ->\n\t\t";
-						
+						out +=  ((ActionUse)activityRelation.getSource()).getName() + "_" + ((Pin)activityRelation.getTarget()).getName() + "!out ->\n\t\t";
 					}
 				
 				}
@@ -664,8 +666,7 @@ public class AuxiliarsQuery {
 					if (action.getName().equals(((ActionUse)activityRelation.getTarget()).getName())) {
 						out += ((Pin)activityRelation.getSource()).getName() + "_" + 
 								((Pin)activityRelation.getSource()).getDefinition().getName() +"!"+ 
-								((Pin)activityRelation.getSource()).getName() +" ->";
-						
+								((Pin)activityRelation.getSource()).getName() +" ->";						
 					}
 				
 				}
@@ -858,7 +859,7 @@ public class AuxiliarsQuery {
 		case "String":			
 			return "String\n";
 		case "Real":
-			return "{0 .. 5}";//"Int";//"{(x,y) | x -> Int, y ->Int}";
+			return "{32 .. 41}";//"Int";//"{(x,y) | x -> Int, y ->Int}";
 		default:
 			return type.getName();
 		}
@@ -1303,4 +1304,52 @@ public class AuxiliarsQuery {
 		}		
 	}
 	
+	public String getChannelActionUse(ActivityDef b) {
+		String result = "";
+		ArrayList<ActionUse> channels = new ArrayList<ActionUse>();
+		for (ActivityRelation flow : b.getBody().getFlows()) {
+			if (flow.getSource() instanceof ActionUse && flow.getTarget() instanceof Pin && !channels.contains(flow.getSource()) ) {
+				channels.add((ActionUse) flow.getSource());		
+			}
+		}
+		
+		for (ActionUse action : channels) {
+			result += "channel "+ action.getName()+"_result : " + action.getDefinition().getReturnType().getName()+ "\n"; 
+		}
+		return result;
+	}
+	
+	
+	public String getActionFuncProcess(ActivityDef activity) {
+		String result = "";
+		for (ActivityRelation flow : activity.getBody().getFlows()) {
+			if (flow.getSource() instanceof ActionUse && flow.getTarget() instanceof Pin ) {
+				result += "Actions_"+activity.getName()+" = "+"Actions_"+activity.getName()+"_Flows"+ "[| Sync_"+activity.getName()+"_Actions |] Action_" + activity.getName()+"_function\n";
+				result += "Action_" + activity.getName()+"_function = "+"||| i : {1 .. "+activity.getBody().getActions().size()+"} @ Actions_"+activity.getName()+"_Func(i)\n";
+				return result;
+			}
+		}		
+		result += "Actions_"+activity.getName()+" = ||| i : {1 .. "+activity.getBody().getActions().size()+"} @ Actions_"+activity.getName()+"_Func(i)\n";
+		return result;
+	}
+	
+	public String getActionFlow(ActivityDef activity) {
+		String result = "";
+		for (ActivityRelation flow : activity.getBody().getFlows()) {
+			if (flow.getSource() instanceof ActionUse && flow.getTarget() instanceof Pin ) {
+				return "Actions_"+activity.getName()+"_Flows = ";				
+			}
+		}				
+		return result;
+	}
+	
+	public String getSyncAction(ActivityDef activity) {
+		String result = "";
+		for (ActivityRelation flow : activity.getBody().getFlows()) {
+			if (flow.getSource() instanceof ActionUse && flow.getTarget() instanceof Pin ) {
+				return "Sync_"+activity.getName()+"_Actions = ";				
+			}
+		}				
+		return result;
+	}
 }

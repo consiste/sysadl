@@ -112,9 +112,9 @@ channel [compUse.name/]_[portUse.name/]_[compPort.name/]_[portUse.definition.nam
 [compDef.name/]_config = (Components_[compDef.name/] ['['/]| Sync_[compDef.name/] |] Connectors_[compDef.name/])\Internal_[compDef.name/]
 
 Sync_[compDef.name/] = {| [for (compUse : ComponentUse | compDef.composite.components)separator (',\n\t\t\t\t\t')? (compUse.definition.composite = null)][for (portUse : PortUse | compUse.ports)separator (',')][compUse.name/]_[portUse.name/]_[portUse.definition.name/][/for][/for],
-					[for (compUse : ComponentUse | compDef.composite.components)? (compUse.definition.isBoundary = false)][for (port : PortUse | compUse.ports)separator (',\n\t\t\t\t\t')? (port.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('out'))][compUse.name/]_[port.name/]_[port.definition.name/][/for][/for] |}
+					[for (compUse : ComponentUse | compDef.composite.components)? (compUse.definition.isBoundary = false)][for (port : PortUse | compUse.ports)separator (',\n\t\t\t\t\t')][compUse.name/]_[port.name/]_[port.definition.name/][/for][/for] |}
 
-Internal_[compDef.name/] = {| [for (compUse : ComponentUse | compDef.composite.components)? (compUse.definition.isBoundary = false)][for (port : PortUse | compUse.ports)separator (',\n\t\t\t\t\t')? (port.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('in'))][compUse.name/]_[port.name/]_[port.definition.name/][/for][/for]|}
+Internal_[compDef.name/] = {| [for (compUse : ComponentUse | compDef.composite.components)? (compUse.definition.isBoundary = false)][for (port : PortUse | compUse.ports)separator (',\n\t\t\t\t\t')][compUse.name/]_[port.name/]_[port.definition.name/][/for][/for]|}
 
 Components_[compDef.name/] = [for (compUse : ComponentUse | compDef.composite.components)separator ('\n\t\t\t\t\t\t|||')][compUse.definition.name/]['[['/][getRenamePortsComponent(compUse)/]]][/for]
 
@@ -133,7 +133,7 @@ Connectors_[compDef.name/] = [for (conn : ConnectorUse | compDef.composite.conne
 					
 [compDef.name/]_config = (Components_[compDef.name/] ['['/]| Sync_[compDef.name/] |]  Connectors_[compDef.name/])\Internal_[compDef.name/]
 
-Sync_[compDef.name/] = union(Internal_[compDef.name/], Delegation_Internal_[compDef.name/])
+Sync_[compDef.name/] = Internal_[compDef.name/]
 
 Internal_[compDef.name/] = {| [for (comp : ComponentUse | compDef.composite.components)separator (',\n\t\t\t\t\t\t')][for (port : PortUse | comp.ports)separator (',\n\t\t\t\t\t\t')][comp.name/]_[port.name/]_[port.definition.name/][/for][/for] |}
 
@@ -151,7 +151,6 @@ Connectors_[compDef.name/] = [for (conn : ConnectorUse | compDef.composite.conne
 			[let compDef : ComponentDef = self]					
 				[if ((compDef.composite <> null and isEmpty_Delegations(compDef.composite)))]
 					[for (compUse : ComponentUse | compDef.composite.components)? (compUse.definition.composite <> null)]						
-Delegation_Internal_[compUse.definition.name/] = {|[for (port : PortUse | compUse.ports)separator (',\n\t\t\t\t\t\t\t\t\t\t\t')][compUse.name/]_[port.name/]_[port.definition.name/][/for] |}
 
 Delegation_[compUse.definition.name/] = [for (del : Delegation | compUse.definition.composite.delegations)separator ('\n\t\t\t\t|||')][if (del.source.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('in'))][del.destination.name/]_to_[del.source.name/]['[['/][getRenamePortsDelegation(del, compUse)/]]][elseif (del.source.definition.oclAsType(SimplePortDef).flowProperties.toString().contains('out'))][del.source.name/]_to_[del.destination.name/]['[['/][getRenamePortsDelegation(del, compUse)/]]][/if][/for]												
 					[/for]					
@@ -263,24 +262,36 @@ Delegation_[compUse.definition.name/] = [for (del : Delegation | compUse.definit
 				
 				[for (flow : ActivityRelation | activity._body.flows)]
 					[if (flow.target.oclIsKindOf(Pin) and flow.oclIsKindOf(ActivityFlow))]
-channel [flow.target.oclAsType(Pin).name/]_[flow.target.oclAsType(Pin).definition.name/] : [getTypePin(flow.target.oclAsType(Pin))/]		
+channel [flow.target.oclAsType(Pin).name/]_[flow.target.oclAsType(Pin).definition.name/] : [getTypePin(flow.target.oclAsType(Pin))/]	
 					[else]
 channel [flow.source.oclAsType(Pin).name/]_[flow.source.oclAsType(Pin).definition.name/] : [getTypePin(flow.source.oclAsType(Pin))/]
 					[/if]
-				[/for]
+				[/for]	 
+[for (flow : ActivityRelation | activity._body.flows)separator ('\n')? (flow.source.oclIsTypeOf(ActionUse) and flow.target.oclIsTypeOf(Pin))]channel  [flow.source.oclAsType(ActionUse).name/]_[flow.target.oclAsType(Pin).name/] : [flow.source.oclAsType(ActionUse).definition.returnType.name/][/for]
+
+Sync_[activity.name/]_Actions = {| [for (flow : ActivityRelation | activity._body.flows)separator (',\n\t\t\t\t\t')? (flow.source.oclIsTypeOf(ActionUse) and flow.target.oclIsTypeOf(Pin))][flow.target.oclAsType(Pin).name/]_[flow.target.oclAsType(Pin).definition.name/], [flow.source.oclAsType(ActionUse).name/]_[flow.target.oclAsType(Pin).name/][/for]|}
 
 Sync_[activity.name/] = union(Internal_[activity.name/], Port_[activity.name/]) 
 
-Internal_[activity.name/] = {|[for (flow : ActivityRelation | activity._body.flows )separator (',\n\t\t\t\t\t')][if (flow.target.oclIsKindOf(Pin) and flow.oclIsKindOf(ActivityFlow))][flow.target.oclAsType(Pin).name/]_[flow.target.oclAsType(Pin).definition.name/][else][flow.source.oclAsType(Pin).name/]_[flow.source.oclAsType(Pin).definition.name/][/if][/for] |}
+Internal_[activity.name/] = {|[for (flow : ActivityRelation | activity._body.flows )separator (',\n\t\t\t\t\t')? (not(flow.target.oclIsKindOf(Pin) and flow.oclIsKindOf(ActivityFlow)))][flow.source.oclAsType(Pin).name/]_[flow.source.oclAsType(Pin).definition.name/][/for] |}
 
 Port_[activity.name/] = {| [for (alloc : Allocation | aModel.allocation.allocs)? (alloc.oclIsKindOf(ActivityAllocation))][if ((alloc.oclAsType(ActivityAllocation).source.name = activity.name) and (alloc.oclAsType(ActivityAllocation).target.oclIsKindOf(ComponentDef)))][getPortsActivities(pck,alloc.oclAsType(ActivityAllocation).target, alloc)/][elseif (alloc.oclAsType(ActivityAllocation).source.name = activity.name and alloc.oclAsType(ActivityAllocation).target.oclIsKindOf(ConnectorDef))][getPortsActivities(pck, alloc.oclAsType(ActivityAllocation).target, alloc)/][/if][/for] |}
 
 [activity.name/] = (Pins_[activity.name/] ['['/]| Sync_[activity.name/] |]  Actions_[activity.name/])\Internal_[activity.name/]
 
-Pins_[activity.name/] = ['['/]| Sync_[activity.name/]|] i : {1 .. [getPinListSize(activity)/]} @ Pins_[activity.name/]_Func(i)
+Pins_[activity.name/] = ||| i : {1 .. [getPinListSize(activity)/]} @ Pins_[activity.name/]_Func(i)
 
-Actions_[activity.name/] = ['['/]| Sync_[activity.name/] |] i : {1 .. [getActionListSize(activity)/]} @ Actions_[activity.name/]_Func(i)
+[getActionFuncProcess(activity)/]
 
+[getActionFlow(activity)/][for (flow : ActivityRelation | activity._body.flows)separator (' ||| ')? (flow.source.oclIsTypeOf(ActionUse) and flow.target.oclIsTypeOf(Pin))][flow.source.oclAsType(ActionUse).name/]_To_[flow.target.oclAsType(Pin).name/][/for]
+ 	
+	 [for (flow : ActivityRelation | activity._body.flows)? (flow.source.oclIsTypeOf(ActionUse) and flow.target.oclIsTypeOf(Pin))]										
+[flow.source.oclAsType(ActionUse).name/]_To_[flow.target.oclAsType(Pin).name/] =
+	[flow.source.oclAsType(ActionUse).name/]_[flow.target.oclAsType(Pin).name/]?result ->
+	[flow.target.oclAsType(Pin).name/]_[flow.target.oclAsType(Pin).definition.name/]!result ->
+[flow.source.oclAsType(ActionUse).name/]_To_[flow.target.oclAsType(Pin).name/]
+ 		[/for]
+	 
 [getPinFunction(activity, 'Pins')/]
 
 				[for (pin : Pin | activity.inParameters)]
@@ -331,6 +342,7 @@ Actions_[activity.name/] = ['['/]| Sync_[activity.name/] |] i : {1 .. [getAction
 [action.name/]_[action.definition.name/] = 
 ['\t'/][getActionBody(activity,action)/]
 [action.name/]_[action.definition.name/]
+
 				[/for]
 				[/if]
 			[/let]

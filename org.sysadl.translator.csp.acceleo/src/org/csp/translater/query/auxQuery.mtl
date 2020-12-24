@@ -111,3 +111,14 @@
 [query public getDefaultValueType(pin : Pin) : String = 
 		invoke('org.csp.translater.query.AuxiliarsQuery', 'getDefaultValueType(org.sysadl.Pin)', Sequence{pin}) /]
 
+[query public getChannelActionUse(b : ActivityDef) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getChannelActionUse(org.sysadl.ActivityDef)', Sequence{b}) /]
+
+[query public getActionFuncProcess(b : ActivityDef) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getActionFuncProcess(org.sysadl.ActivityDef)', Sequence{b}) /]
+
+[query public getActionFlow(b : ActivityDef) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getActionFlow(org.sysadl.ActivityDef)', Sequence{b}) /]
+
+[query public getSyncAction(b : ActivityDef) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getSyncAction(org.sysadl.ActivityDef)', Sequence{b}) /]

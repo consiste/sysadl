@@ -1,9 +1,13 @@
 package sysadl.viewpoints.actions;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.nio.file.ReadOnlyFileSystemException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.business.api.color.RGBValuesProvider;
@@ -15,6 +19,7 @@ import org.eclipse.sirius.diagram.DDiagramElementContainer;
 import org.eclipse.sirius.diagram.DNode;
 import org.eclipse.sirius.diagram.DNodeList;
 import org.eclipse.sirius.diagram.DiagramPackage;
+import org.eclipse.sirius.diagram.EdgeStyle;
 import org.eclipse.sirius.diagram.LineStyle;
 import org.eclipse.sirius.diagram.NodeStyle;
 import org.eclipse.sirius.diagram.Square;
@@ -72,14 +77,40 @@ public class Traceability implements IExternalJavaAction{
 						style.getCustomFeatures().add(DiagramPackage.Literals.BORDERED_STYLE__BORDER_COLOR.getName());
 						style.getCustomFeatures().add(DiagramPackage.Literals.BORDERED_STYLE__BORDER_LINE_STYLE.getName());
 						style.getCustomFeatures().add(DiagramPackage.Literals.BORDERED_STYLE__BORDER_SIZE_COMPUTATION_EXPRESSION.getName());											
-					}					
+					}
+					else {
+						Style style = ((DNodeSpec)nodeSpec).getStyle();	
+						style.getCustomFeatures().clear();
+						((Square)style).setBorderColor(RGBValues.create(0, 0, 0));
+						((Square)style).setBorderSizeComputationExpression("0");
+						((Square)style).setBorderSize(0);
+						((Square)style).setColor(RGBValues.create(0, 0, 0));						
+						style.getCustomFeatures().clear();
+						style.getCustomFeatures().add(DiagramPackage.Literals.BORDERED_STYLE__BORDER_COLOR.getName());
+						style.getCustomFeatures().add(DiagramPackage.Literals.BORDERED_STYLE__BORDER_LINE_STYLE.getName());
+						style.getCustomFeatures().add(DiagramPackage.Literals.BORDERED_STYLE__BORDER_SIZE_COMPUTATION_EXPRESSION.getName());
+					}
 				}
+				
 			}
 			else if (node instanceof DEdgeSpec) {
 				if(structures.contains(((DEdgeSpec)node).getName())) {
-					((DEdgeSpec)node).getStyle();
+					Style style = ((DEdgeSpec)node).getStyle();
+					style.getCustomFeatures().clear();
+					((EdgeStyle)style).setStrokeColor(RGBValues.create(255, 0, 0));
+					
+					style.getCustomFeatures().add(DiagramPackage.Literals.EDGE_STYLE__STROKE_COLOR.getName());
+					
+				}
+				else {
+					Style style = ((DEdgeSpec)node).getStyle();
+					style.getCustomFeatures().clear();
+					((EdgeStyle)style).setStrokeColor(RGBValues.create(136,136,136));
+					
+					style.getCustomFeatures().add(DiagramPackage.Literals.EDGE_STYLE__STROKE_COLOR.getName());
 				}
 			}
+			
 		}
 				
 		
@@ -105,12 +136,26 @@ public class Traceability implements IExternalJavaAction{
 	
 	private ArrayList<String> getStructureForApplyTracebility(){
 		ArrayList<String> structures = new ArrayList<String>();
-		structures.add("s1:TemperatureSensorCP");
-		structures.add("s2:TemperatureSensorCP");
-		structures.add("s3:PresenceSensorCP");
-		structures.add("ui:UserInterfaceCP");
-		structures.add("c1 : FahrenheitToCelsiusCN");
-		
+        String path = System.getProperty("user.dir");
+		try {
+			FileReader file = new FileReader(path+"//trace");
+			Scanner in = new Scanner(file);
+			while (in.hasNextLine()) {
+			    String line = in.nextLine();
+			    System.out.println(line);
+			    structures.add(line);
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		
+//		structures.add("s1:TemperatureSensorCP");
+//		structures.add("s2:TemperatureSensorCP");
+//		structures.add("s3:PresenceSensorCP");
+//		structures.add("ui:UserInterfaceCP");
+//		structures.add("c1 : FahrenheitToCelsiusCN");
+//		
 		return structures;
 	}
 

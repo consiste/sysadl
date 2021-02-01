@@ -21,6 +21,11 @@ class Style extends NamedElement {
 	contains Invariant[] invariants keys name
 	contains AbstractDef[] definitions keys name
 	contains ExampleArchitecture[] archs keys name
+	contains Function[] functions keys name
+}
+
+class Function extends NamedElement {
+	String[0..1] def
 }
 
 class ExampleArchitecture extends NamedElement {
@@ -58,6 +63,35 @@ class AbstractPortUse extends NamedElement {
 }
 
 class AbstractActivityDef extends AbstractDef {
+	contains AbstractPin[] inParameters keys name
+	contains AbstractPin[] outParameters keys name
+}
+
+class AbstractProtocol extends AbstractDef {
+	contains AbstractProtocolBody body
+}
+
+class AbstractProtocolBody extends AbstractProtocolBodyInternal {
+	ProtocolControl[1] recControl = "several"
+	contains AbstractProtocolBodyInternal[1] body
+	contains AbstractProtocolBody recursive
+	ProtocolAlternativeType recType
+}
+
+interface AbstractProtocolBodyInternal {
+}
+
+class AbstractActionSend extends AbstractProtocolBodyInternal {
+	refers AbstractPin flowTo
+}
+
+class AbstractActionReceive extends AbstractProtocolBodyInternal {
+	refers AbstractPin flowTo
+}
+
+class AbstractPin extends NamedElement {
+	boolean isFlow
+	contains ArrayIndex arrayIndex
 }
 
 class Model extends NamedElement {

@@ -345,13 +345,13 @@ package ComponentsAGV {
 				}
 			}
 			connectors:
-			destinationStation : locationVehicle bindings destination = destination_vt; 
+			destinationStation2 : locationVehicle bindings destination = destination_vt; 
 			destinationStation : locationVehicle bindings destination = destination_cs;
 			command : commandArm bindings cmd_sm = cmd;
-			command : commandArm bindings cmd_sm = cmd_ca;
+			command2 : commandArm bindings cmd_sm = cmd_ca;
 			currentLocation : locationVehicle bindings location_cs = location_vt;
 			sendNotificationMotor : notificationMotor bindings outAck = ack_ca;
-			sendNotificationMotor : notificationMotor bindings outAck = ack_cs;
+			sendNotificationMotor2 : notificationMotor bindings outAck = ack_cs;
 			delegations:
 			ack to outNotifications
 			arrivedStatus to outNotifications
@@ -475,7 +475,7 @@ action def SendStartMotorAN ( move : VehicleData ) : CommandToMotor {
 	delegate NotifySupervisoryFromMotorAN to ack
 		delegate statusMotor to statusMotor
 	}
-	activity def CheckStationAC ( statusMotor : NotificationFromMotor, destination : Location, inLocation : Location ) : (stopMotor :
+	activity def CheckStationAC ( statusMotor : NotificationFromMotor ) ( destination : Location ) ( inLocation : Location ) : (stopMotor :
 	CommandToMotor, outLocation : Location, passed : NotificationToSupervisory) {
 		body {
 		actions : cs : CompareStationsAN {
@@ -526,7 +526,7 @@ action def SendStartMotorAN ( move : VehicleData ) : CommandToMotor {
 	delegate location to inLocation delegate
 		SendCurrentLocationAN to outLocation
 	}
-	activity def ControlArmAC ( cmd : CommandToArm, statusMotor : NotificationFromMotor ) : (startArm : CommandToArm) {
+	activity def ControlArmAC ( cmd : CommandToArm ) ( statusMotor : NotificationFromMotor ) : (startArm : CommandToArm) {
 		body {
 		actions : ca : ControlArmAN {
 				using pins: cmd : CommandToArm;
@@ -544,7 +544,7 @@ action def SendStartMotorAN ( move : VehicleData ) : CommandToMotor {
 			delegate ack to na delegate statusArm to statusArm
 		}
 	}
-	activity def VehicleTimerAC ( destination : Location, location : Location, cmd : CommandToArm ) : (status : Status) {
+	activity def VehicleTimerAC ( destination : Location ) ( location : Location ) ( cmd : CommandToArm ) : (status : Status) {
 		body {
 		actions : vt : VehicleTimerAN {
 				using pins: cmd : CommandToArm;
@@ -624,63 +624,63 @@ action def SendStartMotorAN ( move : VehicleData ) : CommandToMotor {
 		(s : Status) {
 			equation = s->destination == dest && s->location == loc && s->command == cmd
 		}
-	executable def SendStartMotorEX ( in move : VehicleData;) : out CommandToMotor {
+	executable def SendStartMotorEX ( in move : VehicleData) : out CommandToMotor {
 		return CommandToMotor::start;
 	}
-	executable def SendCommandEX ( in move : VehicleData;) : out CommandToArm {
+	executable def SendCommandEX ( in move : VehicleData) : out CommandToArm {
 		return move->command;
 	}
-	executable def SendDestinationEX ( in move : VehicleData;) : out Location {
+	executable def SendDestinationEX ( in move : VehicleData) : out Location {
 		return move->destination;
 	}
-	executable def NotifyAGVFromMotorEX ( in statusMotor : NotificationFromMotor;) : 
+	executable def NotifyAGVFromMotorEX ( in statusMotor : NotificationFromMotor) : 
 	out NotificationFromMotor{
 		return statusMotor;
 	}
-	executable def NotifySupervisoryFromMotorEX ( in statusMotor : NotificationFromMotor;) : 
+	executable def NotifySupervisoryFromMotorEX ( in statusMotor : NotificationFromMotor) : 
 		out	NotificationToSupervisory {
 		if (statusMotor == NotificationFromMotor::started) 
 			return NotificationToSupervisory::departed;
 		else
 			return NotificationToSupervisory::traveling;
 	}
-	executable def CompareStationsEX ( in destination : Location;, in location : Location;, 
-		in statusMotor : NotificationFromMotor;) : 	out Boolean {
+	executable def CompareStationsEX ( in destination : Location, in location : Location, 
+		in statusMotor : NotificationFromMotor) : 	out Boolean {
 		if(statusMotor == NotificationFromMotor::started && destination == location)
 			return true;
 		else
 			return false;
 	}
-	executable def StopMotorEX ( in comparisonResult : Boolean;) :
+	executable def StopMotorEX ( in comparisonResult : Boolean) :
 	out CommandToMotor {
 		if(comparisonResult == true)
 			return CommandToMotor::stop;
 		else
 			return null;
 	}
-	executable def PassedMotorEX ( in comparisonResult : Boolean;) :
+	executable def PassedMotorEX ( in comparisonResult : Boolean) :
 	out NotificationToSupervisory {
 		if(comparisonResult == false)
 			return NotificationToSupervisory::passed;
 		else
 			return null;
 	}
-	executable def SendCurrentLocationEX ( in location : Location;)
+	executable def SendCurrentLocationEX ( in location : Location)
 	: out Location {
 		return location;
 	}
-	executable def ControlArmEX ( in statusMotor : NotificationFromMotor;, in cmd : CommandToArm;) : out CommandToArm {
+	executable def ControlArmEX ( in statusMotor : NotificationFromMotor, in cmd : CommandToArm) : out CommandToArm {
 		if(statusMotor == NotificationFromMotor::stopped)
 			return cmd;
 		else
 			return CommandToArm::idle;
 	}
-	executable def NotifierArmEX ( in statusArm : NotificationFromArm;) : 
+	executable def NotifierArmEX ( in statusArm : NotificationFromArm) : 
 	out	NotificationToSupervisory {
 		return NotificationToSupervisory::arrived;
 	}
-	executable def VehicleTimerEX ( in location : Location;, in cmd : CommandToArm;, 
-		in destination : Location;) : out Status {
+	executable def VehicleTimerEX ( in location : Location, in cmd : CommandToArm, 
+		in destination : Location) : out Status {
 		
 		let s : Status;
 		s->destination = destination;

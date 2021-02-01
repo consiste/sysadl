@@ -27,20 +27,25 @@ Style returns Style:
  	{Style}
 	'style' name=QualifiedName '{'
 		( invariants+=Invariant
-		| definitions+=AbstractDef)*
+		| definitions+=AbstractDef
+		| functions+=Function)*
 	'}'
  	;
 
+Function returns Function: 
+	'function' name=ID ('=' def=STRING)?;
+
 Invariant returns Invariant:
-   'invariant' name=ID ('=' expr=EString)?;
+   'invariant' name=ID ('=' expr=STRING)?;
    
  AbstractDef returns AbstractDef:
-    AbstractComponentDef | AbstractConnectorDef | AbstractActivityDef;
+    AbstractComponentDef | AbstractConnectorDef | AbstractActivityDef | AbstractProtocol;
     
 AbstractActivityDef returns AbstractActivityDef:
 	{AbstractActivityDef}
 	'abstract' 'activity' 'def'
-	name=ID ;
+	name=ID 
+	('(' inParameters+=AbstractPin (',' inParameters+=AbstractPin)* ')')* (':' '('outParameters+=AbstractPin (',' outParameters+=AbstractPin)* ')')?;
 
 AbstractComponentDef returns AbstractComponentDef:
    {AbstractComponentDef}
@@ -66,6 +71,32 @@ AbstractFlow returns AbstractFlow:
 
 AbstractPortUse_Reverse returns AbstractPortUse:
 	'~' name=ID ':' flowProperty=FlowProperty 'any';
+
+AbstractProtocol returns AbstractProtocol:
+	'activity' 'protocol' name=ID '{'
+		body=AbstractProtocolBody
+	'}'
+;
+
+AbstractProtocolBody returns AbstractProtocolBody:
+	{AbstractProtocolBody}
+	recControl=ProtocolControl body=AbstractProtocolBodyInternal (recType=ProtocolAlternativeType recursive=AbstractProtocolBody)?
+;
+
+AbstractProtocolBodyInternal returns AbstractProtocolBodyInternal:
+	'(' AbstractProtocolBody ')' | AbstractActionSend | AbstractActionReceive;
+
+AbstractActionSend returns AbstractActionSend:
+	'send' 'any' 'via' flowTo=[AbstractPin|QualifiedName]
+;
+
+AbstractActionReceive returns AbstractActionReceive:
+	'receive' 'any' 'from' flowTo=[AbstractPin|QualifiedName]
+;
+
+AbstractPin returns AbstractPin:
+	name=ID ':' (isFlow?='flow')? 'any' (arrayIndex=Index)?
+;
 
  /**
   * Core elements

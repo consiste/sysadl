@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+  <extension point="org.eclipse.sirius.componentization">
+    <component class="org.sysadl.verification.csp.ui.Activator"
+               id="org.sysadl.verification.csp.ui"
+	       name="ui">
+    </component>
+  </extension>
+  <extension
+        point="org.eclipse.sirius.externalJavaAction">
+     <javaActions
+           actionClass="org.sysadl.verification.csp.ui.Action"
+           id="org.sysadl.verification.csp.ui.action">
+     </javaActions>
+  </extension>
+  <extension
+        point="org.eclipse.ui.preferencePages">
+     <page
+           category="org.sysadl.SysADL"
+           class="org.sysadl.verification.csp.ui.preferences.VerificationPreferences"
+           id="org.sysadl.verification.csp.ui.preferences.VerificationPreferences"
+           name="Verification Preferences">
+     </page>
+  </extension>
+  <extension
+        point="org.eclipse.core.runtime.preferences">
+     <initializer
+           class="org.sysadl.verification.csp.ui.preferences.PreferenceInitializer">
+     </initializer>
+  </extension>
+</plugin>

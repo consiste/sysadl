@@ -32,10 +32,11 @@ import org.sysadl.SysADLFactory;
 import org.sysadl.impl.SysADLFactoryImpl;
 
 public class SysADLCreationTools {
+	
 	public static EList clonePorts(PortUse p) {
 		EList l = new BasicEList();
 		if (p.getDefinition() instanceof CompositePortDef) {
-			EList ports = ((CompositePortDef) p.getDefinition()).getPorts();
+			EList<?> ports = ((CompositePortDef) p.getDefinition()).getPorts();
 			for (Object lp : ports) {
 				PortUse _p = (PortUse) lp;
 				PortUse newp = SysADLFactoryImpl.eINSTANCE.createPortUse();
@@ -48,14 +49,34 @@ public class SysADLCreationTools {
 		}
 		return l;
 	}
+
 	public static EList clonePorts(ConnectorUse p) {
 		EList l = new BasicEList();
-		// TODO
+		PortUse newP;
+		for (PortUse port : p.getDefinition().getPorts()) {
+			newP = SysADLFactory.eINSTANCE.createPortUse();
+			newP.setName(port.getName());
+			newP.setDefinition(port.getDefinition());
+			newP.setLowerBound(port.getLowerBound());
+			newP.setUpperBound(port.getUpperBound());
+			newP.setAbstractPort(port.getAbstractPort());
+			l.add(newP);
+		}
 		return l;
 	}
+	
 	public static EList clonePorts(ComponentUse p) {
 		EList l = new BasicEList();
-		// TODO
+		PortUse newP;
+		for (PortUse port : p.getDefinition().getPorts()) {
+			newP = SysADLFactory.eINSTANCE.createPortUse();
+			newP.setName(port.getName());
+			newP.setDefinition(port.getDefinition());
+			newP.setLowerBound(port.getLowerBound());
+			newP.setUpperBound(port.getUpperBound());
+			newP.setAbstractPort(port.getAbstractPort());
+			l.add(newP);
+		}
 		return l;
 	}
 	

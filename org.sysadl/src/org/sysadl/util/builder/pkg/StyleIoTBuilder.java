@@ -1,12 +1,19 @@
 package org.sysadl.util.builder.pkg;
 
+import org.sysadl.AbstractActionReceive;
+import org.sysadl.AbstractActionSend;
 import org.sysadl.AbstractActivityDef;
 import org.sysadl.AbstractComponentDef;
 import org.sysadl.AbstractConnectorDef;
 import org.sysadl.AbstractFlow;
+import org.sysadl.AbstractPin;
 import org.sysadl.AbstractPortUse;
+import org.sysadl.AbstractProtocol;
+import org.sysadl.AbstractProtocolBody;
 import org.sysadl.FlowProperty;
 import org.sysadl.Invariant;
+import org.sysadl.ProtocolAlternativeType;
+import org.sysadl.ProtocolControl;
 import org.sysadl.Style;
 import org.sysadl.SysADLFactory;
 
@@ -17,7 +24,7 @@ public class StyleIoTBuilder extends ElementBuilder {
 		Style IoTStyle = SysADLFactory.eINSTANCE.createStyle();
 		IoTStyle.setName("IoTStyle");
 
-		// components
+		/*start Components*/
 		AbstractComponentDef sensor = SysADLFactory.eINSTANCE.createAbstractComponentDef();
 		sensor.setName("SensorCP");
 		sensor.setLowerBound(1);
@@ -140,7 +147,9 @@ public class StyleIoTBuilder extends ElementBuilder {
 		IoTARCH.getComposition().add(gateway);
 		IoTARCH.getComposition().add(datastore);
 		
-		// connectors
+		/*end Components*/
+		
+		/*start Connectors*/ 
 		AbstractConnectorDef sensorDataCN = SysADLFactory.eINSTANCE.createAbstractConnectorDef();
 		sensorDataCN.setName("SensorDataCN");
 		AbstractPortUse sensorOPT_ = SysADLFactory.eINSTANCE.createAbstractPortUse();
@@ -216,17 +225,51 @@ public class StyleIoTBuilder extends ElementBuilder {
 		f_serviceCN.setTarget(serviceIPT_);
 		serviceCN.getFlows().add(f_serviceCN);
 		
-		// activities
+		/*end Connectors*/ 
+		
+		/*start AbstractPins*/
+		AbstractPin outSensorData = SysADLFactory.eINSTANCE.createAbstractPin();
+		outSensorData.setName("outSensorData");
+		
+		AbstractPin inSensorData = SysADLFactory.eINSTANCE.createAbstractPin();
+		inSensorData.setName("inSensorData");
+		
+		AbstractPin outData = SysADLFactory.eINSTANCE.createAbstractPin();
+		outData.setName("outData");
+		
+		AbstractPin inData = SysADLFactory.eINSTANCE.createAbstractPin();
+		inData.setName("inData");
+		
+		AbstractPin inCmd = SysADLFactory.eINSTANCE.createAbstractPin();
+		inCmd.setName("inCmd");
+		
+		AbstractPin outCmd = SysADLFactory.eINSTANCE.createAbstractPin();
+		outCmd.setName("outCmd");
+		
+		/*end AbstractPins*/
+		
+		/*start AbstractActivities*/
 		AbstractActivityDef monitoring = SysADLFactory.eINSTANCE.createAbstractActivityDef();
 		monitoring.setName("Monitoring");
+		monitoring.getOutParameters().add(outSensorData);
+				
 		AbstractActivityDef analysis = SysADLFactory.eINSTANCE.createAbstractActivityDef();
 		analysis.setName("Analysis");
+		analysis.getInParameters().add(inSensorData);
+		analysis.getOutParameters().add(outData);
+		
 		AbstractActivityDef planning = SysADLFactory.eINSTANCE.createAbstractActivityDef();
 		planning.setName("Planning");
+		planning.getInParameters().add(inData);
+		planning.getOutParameters().add(outCmd);
+		
 		AbstractActivityDef execution = SysADLFactory.eINSTANCE.createAbstractActivityDef();
 		execution.setName("Execution");
+		execution.getInParameters().add(inCmd);
 		
-		// constraints
+		/*end AbstractActivities*/
+		
+		/*start Constraints*/
 		Invariant checkSensorCP = SysADLFactory.eINSTANCE.createInvariant();
 		checkSensorCP.setName("checkSensorCP");
 		checkSensorCP.setExpr("self.checkCPRecursive(self, 'SensorCP')");
@@ -283,33 +326,106 @@ public class StyleIoTBuilder extends ElementBuilder {
 		checkDeviceDataCN.setName("checkDeviceDataCN");
 		checkDeviceDataCN.setExpr("not (self.checkPTRecursive(self, 'DeviceOPT') xor self.checkCNRecursive(self, 'DeviceDataCN'))");
 		
-		Invariant ControllerMustBeEmbeddedInDevice = SysADLFactory.eINSTANCE.createInvariant();
-		ControllerMustBeEmbeddedInDevice.setName("ControllerMustBeEmbeddedInDevice");
-		ControllerMustBeEmbeddedInDevice.setExpr("self.ControllerCPEmbedded(self)");
+		Invariant ConstraintC1 = SysADLFactory.eINSTANCE.createInvariant();
+		ConstraintC1.setName("ConstraintC1");
+		ConstraintC1.setExpr("self.CheckActivities(self, 'Monitoring') and self.CheckActivities(self, 'Analysis') and self.CheckActivities(self, 'Planning') and self.CheckActivities(self, 'Execution')");
 		
-		Invariant SensorMustBeConnectedToDeviceOrController = SysADLFactory.eINSTANCE.createInvariant();
-		SensorMustBeConnectedToDeviceOrController.setName("SensorMustBeConnectedToDeviceOrController");
-		SensorMustBeConnectedToDeviceOrController.setExpr("self.SensorConnection(self)");
+		Invariant ConstraintC3 = SysADLFactory.eINSTANCE.createInvariant();
+		ConstraintC3.setName("ConstraintC3");
+		ConstraintC3.setExpr("self.CheckMonitoringAct(self)");
 		
-		Invariant ActuatorMustBeConnectedToDeviceOrController = SysADLFactory.eINSTANCE.createInvariant();
-		ActuatorMustBeConnectedToDeviceOrController.setName("ActuatorMustBeConnectedToDeviceOrController");
-		ActuatorMustBeConnectedToDeviceOrController.setExpr("self.ActuatorConnection(self)");
+		Invariant ConstraintC4 = SysADLFactory.eINSTANCE.createInvariant();
+		ConstraintC4.setName("ControllerMustBeEmbeddedInDevice");
+		ConstraintC4.setExpr("self.ControllerCPEmbedded(self)");
 		
-		Invariant SensorAndActuatorDontCommunicate = SysADLFactory.eINSTANCE.createInvariant();
-		SensorAndActuatorDontCommunicate.setName("SensorAndActuatorDontCommunicate");
-		SensorAndActuatorDontCommunicate.setExpr("self.Communication(self)");
+		Invariant ConstraintC5 = SysADLFactory.eINSTANCE.createInvariant();
+		ConstraintC5.setName("SensorMustBeConnectedToDeviceOrController");
+		ConstraintC5.setExpr("self.SensorConnection(self)");
 		
-		Invariant SensorDataCNMustNotBeMultiplex = SysADLFactory.eINSTANCE.createInvariant();
-		SensorDataCNMustNotBeMultiplex.setName("SensorDataCNMustNotBeMultiplex");
-		SensorDataCNMustNotBeMultiplex.setExpr("self.checkBindingsRecursive(self, 'SensorDataCN')");
+		Invariant ConstraintC6 = SysADLFactory.eINSTANCE.createInvariant();
+		ConstraintC6.setName("ActuatorMustBeConnectedToDeviceOrController");
+		ConstraintC6.setExpr("self.ActuatorConnection(self)");
 		
-		Invariant ActuatorCommandCNMustNotBeMultiplex = SysADLFactory.eINSTANCE.createInvariant();
-		ActuatorCommandCNMustNotBeMultiplex.setName("ActuatorCommandCNMustNotBeMultiplex");
-		ActuatorCommandCNMustNotBeMultiplex.setExpr("self.checkBindingsRecursive(self, 'ActuatorCommandCN')");
+		Invariant ConstraintC7 = SysADLFactory.eINSTANCE.createInvariant();
+		ConstraintC7.setName("SensorAndActuatorDontCommunicate");
+		ConstraintC7.setExpr("self.Communication(self)");
 		
-		Invariant DeviceDataCNMustNotBeMultiplex = SysADLFactory.eINSTANCE.createInvariant();
-		DeviceDataCNMustNotBeMultiplex.setName("DeviceDataCNMustNotBeMultiplex");
-		DeviceDataCNMustNotBeMultiplex.setExpr("self.checkBindingsRecursive(self, 'DeviceDataCN')");
+		Invariant ConstraintC8 = SysADLFactory.eINSTANCE.createInvariant();
+		ConstraintC8.setName("SensorDataCNMustNotBeMultiplex");
+		ConstraintC8.setExpr("self.checkBindingsRecursive(self, 'SensorDataCN')");
+		
+		Invariant ConstraintC9 = SysADLFactory.eINSTANCE.createInvariant();
+		ConstraintC9.setName("ActuatorCommandCNMustNotBeMultiplex");
+		ConstraintC9.setExpr("self.checkBindingsRecursive(self, 'ActuatorCommandCN')");
+		
+		Invariant ConstraintC10 = SysADLFactory.eINSTANCE.createInvariant();
+		ConstraintC10.setName("DeviceDataCNMustNotBeMultiplex");
+		ConstraintC10.setExpr("self.checkBindingsRecursive(self, 'DeviceDataCN')");
+		
+		/*end Constraints*/
+		
+		/*start Protocol*/
+		AbstractProtocol iotStyleProtocol = SysADLFactory.eINSTANCE.createAbstractProtocol();
+		iotStyleProtocol.setName("IoTStyle");
+		
+		AbstractProtocolBody body = SysADLFactory.eINSTANCE.createAbstractProtocolBody();
+		body.setRecControl(ProtocolControl.ALWAYS);
+		
+		AbstractProtocolBody bodyInternalMonitoringOut = SysADLFactory.eINSTANCE.createAbstractProtocolBody();
+		bodyInternalMonitoringOut.setRecControl(ProtocolControl.SEVERAL);
+		AbstractActionSend sendMonitoring = SysADLFactory.eINSTANCE.createAbstractActionSend();
+		sendMonitoring.setFlowTo(outSensorData);
+		bodyInternalMonitoringOut.setRecType(ProtocolAlternativeType.COMPLIMENTARY);
+		
+		AbstractProtocolBody bodyInternalAnalysisIn = SysADLFactory.eINSTANCE.createAbstractProtocolBody();
+		bodyInternalAnalysisIn.setRecControl(ProtocolControl.SEVERAL);
+		AbstractActionReceive receiveAnalysis = SysADLFactory.eINSTANCE.createAbstractActionReceive();
+		receiveAnalysis.setFlowTo(inSensorData);
+		bodyInternalAnalysisIn.setRecType(ProtocolAlternativeType.COMPLIMENTARY);
+		
+		AbstractProtocolBody bodyInternalAnalysisOut = SysADLFactory.eINSTANCE.createAbstractProtocolBody();
+		bodyInternalAnalysisOut.setRecControl(ProtocolControl.SEVERAL);
+		AbstractActionSend sendAnalysis = SysADLFactory.eINSTANCE.createAbstractActionSend();
+		sendAnalysis.setFlowTo(outData);
+		bodyInternalAnalysisOut.setRecType(ProtocolAlternativeType.COMPLIMENTARY);
+		
+		AbstractProtocolBody bodyInternalPlanningIn = SysADLFactory.eINSTANCE.createAbstractProtocolBody();
+		bodyInternalPlanningIn.setRecControl(ProtocolControl.SEVERAL);
+		AbstractActionReceive receivePlanning = SysADLFactory.eINSTANCE.createAbstractActionReceive();
+		receivePlanning.setFlowTo(inData);
+		bodyInternalPlanningIn.setRecType(ProtocolAlternativeType.COMPLIMENTARY);
+		
+		AbstractProtocolBody bodyInternalPlanningOut = SysADLFactory.eINSTANCE.createAbstractProtocolBody();
+		bodyInternalPlanningOut.setRecControl(ProtocolControl.SEVERAL);
+		AbstractActionSend sendPlanning = SysADLFactory.eINSTANCE.createAbstractActionSend();
+		sendPlanning.setFlowTo(outCmd);
+		bodyInternalPlanningOut.setRecType(ProtocolAlternativeType.COMPLIMENTARY);
+		
+		AbstractProtocolBody bodyInternalExecutionIn = SysADLFactory.eINSTANCE.createAbstractProtocolBody();
+		bodyInternalExecutionIn.setRecControl(ProtocolControl.SEVERAL);
+		AbstractActionReceive receiveExecution = SysADLFactory.eINSTANCE.createAbstractActionReceive();
+		receiveExecution.setFlowTo(inCmd);
+		bodyInternalExecutionIn.setBody(receiveExecution);
+		
+		bodyInternalPlanningOut.setRecursive(bodyInternalExecutionIn);
+		bodyInternalPlanningOut.setBody(sendPlanning);
+		
+		bodyInternalPlanningIn.setRecursive(bodyInternalPlanningOut);
+		bodyInternalPlanningIn.setBody(receivePlanning);
+		
+		bodyInternalAnalysisOut.setRecursive(bodyInternalPlanningIn);
+		bodyInternalAnalysisOut.setBody(sendAnalysis);
+		
+		bodyInternalAnalysisIn.setRecursive(bodyInternalAnalysisOut);
+		bodyInternalAnalysisIn.setBody(receiveAnalysis);
+		
+		bodyInternalMonitoringOut.setRecursive(bodyInternalAnalysisIn);
+		bodyInternalMonitoringOut.setBody(sendMonitoring);
+		
+		body.setBody(bodyInternalMonitoringOut);		
+		iotStyleProtocol.setBody(body);
+		
+		/*end Protocol*/
 		
 		IoTStyle.getDefinitions().add(sensor);
 		IoTStyle.getDefinitions().add(actuator);
@@ -330,6 +446,8 @@ public class StyleIoTBuilder extends ElementBuilder {
 		IoTStyle.getDefinitions().add(planning);
 		IoTStyle.getDefinitions().add(execution);
 		
+		IoTStyle.getDefinitions().add(iotStyleProtocol);
+		
 		IoTStyle.getInvariants().add(checkSensorCP);
 		IoTStyle.getInvariants().add(checkDataStoreCP);
 		IoTStyle.getInvariants().add(checkDeviceCP);
@@ -344,13 +462,15 @@ public class StyleIoTBuilder extends ElementBuilder {
 		IoTStyle.getInvariants().add(checkActuatorCommandCN);
 		IoTStyle.getInvariants().add(checkServiceCN);
 		IoTStyle.getInvariants().add(checkDeviceDataCN);
-		IoTStyle.getInvariants().add(ControllerMustBeEmbeddedInDevice);
-		IoTStyle.getInvariants().add(SensorMustBeConnectedToDeviceOrController);
-		IoTStyle.getInvariants().add(ActuatorMustBeConnectedToDeviceOrController);
-		IoTStyle.getInvariants().add(SensorAndActuatorDontCommunicate);
-		IoTStyle.getInvariants().add(SensorDataCNMustNotBeMultiplex);
-		IoTStyle.getInvariants().add(ActuatorCommandCNMustNotBeMultiplex);
-		IoTStyle.getInvariants().add(DeviceDataCNMustNotBeMultiplex);
+		IoTStyle.getInvariants().add(ConstraintC1);
+		IoTStyle.getInvariants().add(ConstraintC3);
+		IoTStyle.getInvariants().add(ConstraintC4);
+		IoTStyle.getInvariants().add(ConstraintC5);
+		IoTStyle.getInvariants().add(ConstraintC6);
+		IoTStyle.getInvariants().add(ConstraintC7);
+		IoTStyle.getInvariants().add(ConstraintC8);
+		IoTStyle.getInvariants().add(ConstraintC9);
+		IoTStyle.getInvariants().add(ConstraintC10);
 		
 		return IoTStyle;
 	}

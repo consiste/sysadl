@@ -9,6 +9,10 @@ import org.sysadl.Package;
 
 public class SysADLUtil {
 
+	public static void main(String[] args) {
+		System.out.println("apple".compareTo("banana"));
+		
+	}
 	public static Package upToPackage(EObject use) {
 	  EObject current = use;
 	  while (!(current instanceof Package)) {

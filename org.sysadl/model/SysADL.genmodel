@@ -104,6 +104,10 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Style/invariants"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Style/definitions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Style/archs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Style/functions"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//Function">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//Function/def"/>
     </genClasses>
     <genClasses ecoreClass="sysadl.ecore#//ExampleArchitecture"/>
     <genClasses ecoreClass="sysadl.ecore#//Invariant">
@@ -129,7 +133,30 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//AbstractPortUse/lowerBound"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//AbstractPortUse/upperBound"/>
     </genClasses>
-    <genClasses ecoreClass="sysadl.ecore#//AbstractActivityDef"/>
+    <genClasses ecoreClass="sysadl.ecore#//AbstractActivityDef">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractActivityDef/inParameters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractActivityDef/outParameters"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//AbstractProtocol">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractProtocol/body"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//AbstractProtocolBody">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//AbstractProtocolBody/recControl"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractProtocolBody/body"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractProtocolBody/recursive"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//AbstractProtocolBody/recType"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sysadl.ecore#//AbstractProtocolBodyInternal"/>
+    <genClasses ecoreClass="sysadl.ecore#//AbstractActionSend">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractActionSend/flowTo"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//AbstractActionReceive">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractActionReceive/flowTo"/>
+    </genClasses>
+    <genClasses ecoreClass="sysadl.ecore#//AbstractPin">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysadl.ecore#//AbstractPin/isFlow"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference sysadl.ecore#//AbstractPin/arrayIndex"/>
+    </genClasses>
     <genClasses ecoreClass="sysadl.ecore#//Model">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Model/packages"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sysadl.ecore#//Model/requirements"/>

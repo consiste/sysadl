@@ -9,14 +9,14 @@
    <extension point="org.eclipse.ui.newWizards">
       <!-- @generated SysADL -->
       <category
-            id="org.sysadl.wizards"
-            name="%_UI_SysADLCat_label"/>
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
       <wizard
-            category="org.sysadl.wizards"
-            class="org.sysadl.presentation.SysADLModelWizard"
-            icon="icons/full/obj16/SysADLModelFile.gif"
             id="org.sysadl.presentation.SysADLModelWizardID"
-            name="%_UI_SysADLModelWizard_label">
+            name="%_UI_SysADLModelWizard_label"
+            class="org.sysadl.presentation.SysADLModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/SysADLModelFile.gif">
          <description>%_UI_SysADLModelWizard_description</description>
          <selection class="org.eclipse.core.resources.IResource"/>
       </wizard>

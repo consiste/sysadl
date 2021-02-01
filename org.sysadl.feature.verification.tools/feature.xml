@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.sysadl.feature.verification.tools"
+      label="SysADL Verification Tools"
+      version="1.0.0">
+
+   <description url="http://www.example.com/description">
+      [Enter Feature Description here.]
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.eclipse.emf.ecore.xmi"/>
+      <import plugin="org.eclipse.ocl"/>
+      <import plugin="org.eclipse.ocl.ecore"/>
+      <import plugin="org.eclipse.acceleo.common" version="3.3.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.acceleo.model" version="3.3.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.acceleo.profiler" version="3.3.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.acceleo.engine" version="3.3.0" match="greaterOrEqual"/>
+      <import plugin="org.sysadl"/>
+      <import plugin="com.google.guava"/>
+      <import plugin="org.sysadl.grammar"/>
+      <import plugin="org.apache.log4j"/>
+      <import plugin="com.google.inject"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.emf" version="2.8.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.emf.common"/>
+      <import plugin="org.eclipse.emf.mwe.core"/>
+      <import plugin="org.sysadl.tradutor.csp.acceleo" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.acceleo.engine" version="3.7.8" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.swt"/>
+   </requires>
+
+   <plugin
+         id="org.sysadl.tradutor.csp.acceleo"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.sysadl.verification.csp"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.sysadl.verification.csp.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

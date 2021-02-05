@@ -207,7 +207,7 @@ public class PerformTransformation {
 			result = "{0 .. 5}";
 			break;
 		case "Real":
-			result = "{0 .. 5}";
+			result =  "{32 .. 41}";
 			break;
 		default:
 			break;

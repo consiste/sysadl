@@ -1324,7 +1324,7 @@ public class AuxiliarsQuery {
 		String result = "";
 		for (ActivityRelation flow : activity.getBody().getFlows()) {
 			if (flow.getSource() instanceof ActionUse && flow.getTarget() instanceof Pin ) {
-				result += "Actions_"+activity.getName()+" = "+"Actions_"+activity.getName()+"_Flows"+ "[| Sync_"+activity.getName()+"_Actions |] Action_" + activity.getName()+"_function\n";
+				result += "Actions_"+activity.getName()+" = "+"Actions_"+activity.getName()+"_Flows"+ "[| Sync_"+activity.getName()+"_Actions |] Action_" + activity.getName()+"_function" + "\\Sync_"+activity.getName()+"_Actions\n";
 				result += "Action_" + activity.getName()+"_function = "+"||| i : {1 .. "+activity.getBody().getActions().size()+"} @ Actions_"+activity.getName()+"_Func(i)\n";
 				return result;
 			}

@@ -447,11 +447,11 @@ not([pin.name/]_bool) & [getPortUseFromPinSpec(pin, aModel)/]?[pin.definition.na
 			[/if]
 
 			[if (spec.name.toString().startsWith('SPEC_S_'))]
-assert [getArchitectureName(aModel)/] ['[T='/] [spec.name/]_FULL
+--assert [getArchitectureName(aModel)/] ['[T='/] [spec.name/]_FULL
 
 			[elseif (spec.name.toString().startsWith('SPEC_L_'))]
 
-assert [spec.name/]_FULL:['[deadlock free[FD]]'/]
+--assert [spec.name/]_FULL:['[deadlock free[FD]]'/]
 			[/if]
 
 		[/let]
@@ -472,8 +472,8 @@ print subset([behaviorExe.oclAsType(ExecutableAllocation).source.name/]_s,[for (
 		[let compDef : ComponentDef = self]
 			[if (compDef.composite <> null)]
 				[if (isEmpty_Delegations(compDef.composite))]
-assert [compDef.name/]:['['/]deadlock free]
-assert [compDef.name/]:['['/]livelock free]
+--assert [compDef.name/]:['['/]deadlock free]
+--assert [compDef.name/]:['['/]livelock free]
 				[/if]
 			[/if]									
 		[/let]

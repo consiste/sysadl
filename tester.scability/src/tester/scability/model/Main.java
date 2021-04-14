@@ -9,8 +9,9 @@ public class Main {
 		MakeSysADLModelFile model = new MakeSysADLModelFile();
 		
 		model.makeFile();
-		model.executeByIndex(10);
-		model.executeByIndex(10);
+		for (int i = 10; i < 100; i = i+10) {
+			model.executeByIndex(i);
+		}
 	}
 
 	

@@ -24,3 +24,17 @@ Require-Bundle: org.eclipse.core.runtime,
 Eclipse-LazyStart: true
 Automatic-Module-Name: org.sysadl.translator.csp.acceleo
 Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: antlr4-runtime-4.8-1.jar,
+ commons-lang3-3.9.jar,
+ commons-text-1.8.jar,
+ fastutil-8.3.1.jar,
+ guava-28.2-jre.jar,
+ jgrapht-core-1.5.0.jar,
+ jgrapht-demo-1.5.0.jar,
+ jgrapht-ext-1.5.0.jar,
+ jgrapht-guava-1.5.0.jar,
+ jgrapht-io-1.5.0.jar,
+ jgrapht-opt-1.5.0.jar,
+ jgraphx-4.0.5.jar,
+ jheaps-0.13.jar,
+ .

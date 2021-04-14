@@ -122,3 +122,12 @@
 
 [query public getSyncAction(b : ActivityDef) : String = 
 		invoke('org.csp.translater.query.AuxiliarsQuery', 'getSyncAction(org.sysadl.ActivityDef)', Sequence{b}) /]
+
+[query public ExistCycle(b : Model) : Boolean = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'ExistCycle(org.sysadl.Model)', Sequence{b}) /]
+
+[query public getSequenceFromComponentConfigWithRename(comp : ComponentDef) : String = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'getSequenceFromComponentConfigWithRename(org.sysadl.ComponentDef)', Sequence{comp}) /]
+
+[query public verifyCycleComponent(comp : ComponentDef) : Boolean = 
+		invoke('org.csp.translater.query.AuxiliarsQuery', 'verifyCycleComponent(org.sysadl.ComponentDef)', Sequence{comp}) /]

@@ -1,7 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="lib" path="antlr4-runtime-4.8-1.jar"/>
+	<classpathentry exported="true" kind="lib" path="commons-lang3-3.9.jar"/>
+	<classpathentry exported="true" kind="lib" path="commons-text-1.8.jar"/>
+	<classpathentry exported="true" kind="lib" path="fastutil-8.3.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="guava-28.2-jre.jar"/>
+	<classpathentry exported="true" kind="lib" path="jgrapht-core-1.5.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="jgrapht-demo-1.5.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="jgrapht-ext-1.5.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="jgrapht-guava-1.5.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="jgrapht-io-1.5.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="jgrapht-opt-1.5.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="jgraphx-4.0.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="jheaps-0.13.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

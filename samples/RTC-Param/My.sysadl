@@ -11,8 +11,7 @@ package types {
   unit Fahrenheit {dimension = Temperature }
   value type temperature extends Real { dimension = Temperature }
   value type FahrenheitTemperature extends temperature { unit = Fahrenheit dimension = Temperature }
-  value type CelsiusTemperature extends temperature { unit = Celsius dimension = Temperature }
-  }
+  value type CelsiusTemperature extends temperature { unit = Celsius dimension = Temperature } }
   package Ports { import types ; port def FTemperatureOPT { flow out FahrenheitTemperature }
   port def PresenceIPT { flow in Boolean }
   port def PresenceOPT { flow out Boolean }
@@ -33,14 +32,21 @@ package types {
 	  ui : UserInterfaceCP {	 using ports : desired : CTemperatureOPT ; }
 	  a2 : CoolerCP {	 using ports : controllerC : CommandIPT ; }
 	  a1 : HeaterCP {	 using ports : controllerH : CommandIPT ; }
-	  rtc : RoomTemperatureControllerCP {	 using ports : detected : PresenceIPT ; localtemp1 : CTemperatureIPT ; localTemp2 : CTemperatureIPT ; userTemp : CTemperatureIPT ; heating : CommandOPT ; cooling : CommandOPT ; }
-	  connectors : c1 : FahrenheitToCelsiusCN bindings current1 = localtemp1 ; uc : CTemperatureCN bindings desired = userTemp ; cc2 : CommandCN bindings cooling = controllerC ; pc : PresenceCN bindings detectedS = detected ; c2 : FahrenheitToCelsiusCN bindings current2 = localTemp2 ; cc1 : CommandCN bindings heating = controllerH ; }
+	  rtc : RoomTemperatureControllerCP {	 using ports : detectedRTC : PresenceIPT ; localtemp1 : CTemperatureIPT ; localTemp2 : CTemperatureIPT ; userTempRTC : CTemperatureIPT ; heatingRTC : CommandOPT ; coolingRTC : CommandOPT ; }
+	  connectors : 
+	  c1 : FahrenheitToCelsiusCN bindings current1 = localtemp1 ; 
+	  uc : CTemperatureCN bindings desired = userTempRTC ; 
+	  cc2 : CommandCN bindings coolingRTC = controllerC ; 
+	  pc : PresenceCN bindings detectedS = detectedRTC ; 
+	  c2 : FahrenheitToCelsiusCN bindings current2 = localTemp2 ; 
+	  cc1 : CommandCN bindings heatingRTC = controllerH ; }
 	  }
 
 	component def RoomTemperatureControllerCP {	 ports : detectedRTC : PresenceIPT ; localtemp1 : CTemperatureIPT ; localTemp2 : CTemperatureIPT ; userTempRTC : CTemperatureIPT ; heatingRTC : CommandOPT ; coolingRTC : CommandOPT ; configuration {	 components : sm : SensorsMonitorCP {	 using ports : s1 : CTemperatureIPT ; s2 : CTemperatureIPT ; average : CTemperatureOPT ; }
 	  cm : CommanderCP {	 using ports : target2 : CTemperatureIPT ; average2 : CTemperatureIPT ; heating : CommandOPT ; cooling : CommandOPT ; }
 	  pc : PresenceCheckerCP {	 using ports : detected : PresenceIPT ; userTemp : CTemperatureIPT ; target : CTemperatureOPT ; }
-	  connectors : target : CTemperatureCN bindings target = target2 ; average : CTemperatureCN bindings average = average2 ; delegations : userTemp to userTempRTC detected to detectedRTC s1 to localtemp1 s2 to localTemp2 heating to heatingRTC cooling to coolingRTC }
+	  connectors : target : CTemperatureCN bindings target = target2 ; average : CTemperatureCN bindings average = average2 ; 
+	  delegations : userTemp to userTempRTC detected to detectedRTC s1 to localtemp1 s2 to localTemp2 heating to heatingRTC cooling to coolingRTC }
 	  } boundary
 	component def TemperatureSensorCP {	 ports : current : FTemperatureOPT ; } boundary
 	component def PresenceSensorCP {	 ports : detected : PresenceOPT ; } boundary
@@ -65,7 +71,7 @@ package types {
 	action def CommandCoolerAN ( cmds : Commands ) : Command { constraint : post-condition CommandCoolerEQ } 
 	constraint CompareTemperatureEQ ( target : CelsiusTemperature , average : CelsiusTemperature ) : ( cmds : Commands ) 
 	{ equation = average > target ? cmds == types.Commands.heater->Off && types.Commands.cooler->On : cmds == types.Commands.heater->On && types.Commands.cooler->Off } 
-	constraint FahrenheitToCelsiusEQ ( f : FahrenheitTemperature ) : ( c : CelsiusTemperature ) { equation = c == (5*(f - 32)/9)} 
+	constraint FahrenheitToCelsiusEQ ( f : FahrenheitTemperature ) : ( c : CelsiusTemperature ) { equation = c == (5*(f - 32)/9) } 
 	constraint CommandHeaterEQ ( cmds : Commands ) : ( c : Command ) { equation = c == cmds->heater } 
 	constraint CommandCoolerEQ ( cmds : Commands ) : ( c : Command ) {equation = c == cmds->cooler } 
 	action def FahrenheitToCelsiusAN ( current1 : FahrenheitTemperature ) : CelsiusTemperature { constraint : post-condition FahrenheitToCelsiusEQ } 	
@@ -73,12 +79,12 @@ package types {
 	constraint CheckPresenceToSetTemperatureEQ ( detected : Boolean , userTemp : CelsiusTemperature ) : ( target : CelsiusTemperature ) {equation = detected == true ? target == userTemp : target == 1 } 
 	executable def CommandCoolerEx(in cmds:Commands): out Command{return cmds->cooler ; }
 	executable def CommandHeaterEx(in cmds:Commands): out Command{return cmds->heater ; }
-	executable def FahrenheitToCelsiusEx(in f:FahrenheitTemperature): out CelsiusTemperature{return 5*(f - 32)/9 ; }
+	executable def FahrenheitToCelsiusEx(in f:FahrenheitTemperature): out CelsiusTemperature{return 5*(f-32)/9 ; }
 	executable def CalculateAverageTemperatureEx(in temp1:CelsiusTemperature,in temp2:CelsiusTemperature):out CelsiusTemperature{return (temp1 + temp2)/2 ; }
 	executable def CheckPresenceToSetTemperature(in presence:Boolean, in userTemp:CelsiusTemperature):out CelsiusTemperature{if(presence == true) return userTemp; else return 1; }
 	executable def CompareTemperatureEx(in target:CelsiusTemperature, in average:CelsiusTemperature):out Commands{let heater:Command = types.Command::Off; let cooler:Command = types.Command::Off; if(average > target) {heater = types.Command::Off; cooler = types.Command::On ; } else {heater = types.Command::On; cooler = types.Command::Off ;} } 
 	constraint SPEC01EQ ( cooler : Command , heater : Command ) : ( result : Boolean ) { equation = ~ cooler == types.Commands.heater->On && heater == types.Commands.heater->On  } 
-	action def SPEC_S_01 ( controllerC : Command , controllerH : Command ) : Boolean { constraint : post-condition SPEC01EQ delegate cooler to controllerC delegate heater to controllerC delegate SPEC_S_01 to result } 
+	action def SPEC_S_01 ( controllerC : Command , controllerH : Command ) : Boolean { constraint : post-condition SPEC01EQ delegate cooler to controllerC delegate heater to controllerC delegate SPEC_S_01 to result delegate controllerC to cooler delegate controllerH to heater } 
 	 
 	constraint SPEC02EQ ( detectedS : Boolean , current1 : CelsiusTemperature, current2 : CelsiusTemperature, controllerH : Command, controllerC : Command ) : ( result : Boolean ) { equation = (detectedS == false && (current1+current2)/2 > 1 implies (controllerC == types.Commands.cooler->On && controllerH == types.Command.heater->Off)) && (detectedS == false && (current1+current2)/2 < 1 implies (controllerC == types.Command.cooler->Off && controllerH == types.Command.heater->On)) && (detectedS == false && (current1+current2)/2 == 1 implies (controllerC == types.Command.cooler->Off && controllerH == types.Commands.heater->Off ))}   
 	    

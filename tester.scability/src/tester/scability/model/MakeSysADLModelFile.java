@@ -16,7 +16,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
-import org.sysadl.Model;
 import org.sysadl.verification.csp.ParserAnswerCSP;
 import org.sysadl.verification.csp.VerificationAnwserDialog;
 import org.sysadl.verification.transformation.PerformTransformation;
@@ -47,40 +46,36 @@ public class MakeSysADLModelFile {
 	
 	public void contentsModel(int index) {
 		this.index = index;
-		this.types = "package types {\r\n" + 
-				"  value type Int {}\r\n" + 
-				"  value type Boolean {}\r\n" + 
-				"  value type String {}\r\n" + 
-				"  value type Void {}\r\n" + 
-				"  value type Real {}\r\n" + 
-				"  enum Command {On , Off }\r\n" + 
-				"  datatype Commands {attributes : heater : Command ; cooler : Command ; }\r\n" + 
-				"  dimension Temperature unit Celsius {dimension = Temperature }\r\n" + 
-				"  unit Fahrenheit {dimension = Temperature }\r\n" + 
-				"  value type temperature extends Real { dimension = Temperature }\r\n" + 
-				"  value type FahrenheitTemperature extends temperature { unit = Fahrenheit dimension = Temperature }\r\n" + 
-				"  value type CelsiusTemperature extends temperature { unit = Celsius dimension = Temperature }\r\n" + 
-				"  }\n";
+		this.types = "package types {\r\n"
+				+ "  value type Int {}\r\n"
+				+ "  value type Boolean {}\r\n"
+				+ "  value type String {}\r\n"
+				+ "  value type Void {}\r\n"
+				+ "  \r\n"
+				+ "  enum Command {On , Off }\r\n"
+				+ "  datatype Commands {attributes : heater : Command ; cooler : Command ; }\r\n"
+				+ "   \r\n"
+				+ "  unit Fahrenheit {dimension = Temperature }\r\n"
+				+ "  value type temperature extends Real { dimension = Temperature }\r\n"
+				+ "  value type FahrenheitTemperature extends temperature { unit = Fahrenheit dimension = Temperature } value type temperatureCelsius extends Int { dimension = Temperature }\r\n"
+				+ "  value type Real { } dimension Temperature unit Celsius { dimension = Temperature } value type CelsiusTemperature extends temperatureCelsius { unit = Celsius dimension = Temperature } }\n";
 		
-		this.ports = "package Ports { import types ; port def FTemperatureOPT { flow out FahrenheitTemperature }\r\n" + 
-				"  port def PresenceIPT { flow in Boolean }\r\n" + 
-				"  port def PresenceOPT { flow out Boolean }\r\n" + 
-				"  port def CTemperatureIPT { flow in CelsiusTemperature }\r\n" + 
-				"  port def CommandIPT { flow in Command }\r\n" + 
-				"  port def CommandOPT { flow out Command }\r\n" + 
-				"  port def CTemperatureOPT { flow out CelsiusTemperature }\r\n" + 
-				"  }\n";
+		this.ports = "package Ports { import types ; port def FTemperatureOPT { flow out FahrenheitTemperature }\r\n"
+				+ "  port def PresenceIPT { flow in Boolean }\r\n"
+				+ "  port def PresenceOPT { flow out Boolean }\r\n"
+				+ "  port def CTemperatureIPT { flow in CelsiusTemperature }\r\n"
+				+ "  port def CommandIPT { flow in Command }\r\n"
+				+ "  port def CommandOPT { flow out Command }\r\n"
+				+ "  port def CTemperatureOPT { flow out CelsiusTemperature }\r\n"
+				+ "  }\n";
 		
-		this.connectors = "package Connectors { import types ; import Ports ; connector def FahrenheitToCelsiusCN { participants : ~ Ft : FTemperatureOPT ; ~ Ct : CTemperatureIPT ; flows : FahrenheitTemperature from Ft to Ct }\r\n" + 
-				"  connector def PresenceCN { participants : ~ pOut : PresenceOPT ; ~ pIn : PresenceIPT ; flows : Boolean from pOut to pIn }\r\n" + 
-				"  connector def CommandCN { participants : ~ commandOut : CommandOPT ; ~ commandIn : CommandIPT ; flows : Command from commandOut to commandIn }\r\n" + 
-				"  connector def CTemperatureCN { participants : ~ CtOut : CTemperatureOPT ; ~ ctIn : CTemperatureIPT ; flows : CelsiusTemperature from CtOut to ctIn }\r\n" + 
-				"  }\n";
+		this.connectors = "package Connectors { import types ; import Ports ; connector def FahrenheitToCelsiusCN { participants : ~ Ft : FTemperatureOPT ; ~ Ct : CTemperatureIPT ; flows : FahrenheitTemperature from Ft to Ct }\r\n"
+				+ "  connector def PresenceCN { participants : ~ pOut : PresenceOPT ; ~ pIn : PresenceIPT ; flows : Boolean from pOut to pIn }\r\n"
+				+ "  connector def CommandCN { participants : ~ commandOut : CommandOPT ; ~ commandIn : CommandIPT ; flows : Command from commandOut to commandIn }\r\n"
+				+ "  connector def CTemperatureCN { participants : ~ CtOut : CTemperatureOPT ; ~ ctIn : CTemperatureIPT ; flows : CelsiusTemperature from CtOut to ctIn }\r\n"
+				+ "  }\n";
 		
-		this.componentsImports = "package Components { \r\n" + 
-				"  	import Connectors ; \r\n" + 
-				"  	import types ; \r\n" + 
-				"  	import Ports ;\n";
+		this.componentsImports = "package Components { import Connectors ; import types ; import Ports ;\n";
 		
 		this.ComponentDefRTCSystemCFD = "component def RTCSystemCFD {	 \r\n" + 
 				"		configuration {";
@@ -119,26 +114,6 @@ public class MakeSysADLModelFile {
 							"					  heating"+(10+(index*10)) +" : CommandOPT ; \r\n" + 
 							"					  cooling"+(10+(index*10)) +" : CommandOPT ; }\r\n";
 		}
-//		if (index >= 100) {
-//			for (int i = index-90; i <= index; i = i +10) {
-//				this.ComponentsRTCSystemCFD_Componet +=
-//						"				s1"+i +": TemperatureSensorCP {	 using ports : current1"+i +" : FTemperatureOPT ; }\r\n" + 
-//								"	  			s2"+i +" : TemperatureSensorCP {	 using ports : current2"+i +" : FTemperatureOPT ; }\r\n" + 
-//								"	  			s3"+i +" : PresenceSensorCP {	 using ports : detectedS"+i +" : PresenceOPT ; }\r\n" + 
-//								"	  			ui"+i +" : UserInterfaceCP {	 using ports : desired"+i +" : CTemperatureOPT ; }\r\n" + 
-//								"	  			a2"+i +" : CoolerCP {	 using ports : controllerC"+i +" : CommandIPT ; }\r\n" + 
-//								"	  			a1"+i +" : HeaterCP {	 using ports : controllerH"+i +" : CommandIPT ; }\r\n" + 
-//								"	  			rtc"+i +" : RoomTemperatureControllerCP {	 \r\n" + 
-//								"					  using ports : \r\n" + 
-//								"					  detected"+i +" : PresenceIPT ; \r\n" + 
-//								"					  localtemp1"+i +" : CTemperatureIPT ; \r\n" + 
-//								"					  localTemp2"+i +" : CTemperatureIPT ; \r\n" + 
-//								"					  userTemp"+i +" : CTemperatureIPT ; \r\n" + 
-//								"					  heating"+i +" : CommandOPT ; \r\n" + 
-//								"					  cooling"+i +" : CommandOPT ; }\r\n";
-//			}
-//			
-//		}
 		
 		
 		if (index == 0) {
@@ -152,7 +127,7 @@ public class MakeSysADLModelFile {
 					"	  			cc1"+10 +" : CommandCN bindings heating"+10 +" = controllerH"+10 +" ;\n\n";		
 
 			
-		}else {//if(index <10) {
+		}else {
 			this.ComponentsRTCSystemCFD_Connectors +=
 					"	  			c1"+(10+(index*10)) +" : FahrenheitToCelsiusCN bindings current1"+(10+(index*10)) +" = localtemp1"+(10+(index*10)) +" ; \r\n" + 
 					"	  			uc"+(10+(index*10)) +" : CTemperatureCN bindings desired"+(10+(index*10)) +" = userTemp"+(10+(index*10)) +" ; \r\n" + 
@@ -160,18 +135,7 @@ public class MakeSysADLModelFile {
 					"	  			pc"+(10+(index*10)) +" : PresenceCN bindings detectedS"+(10+(index*10)) +" = detected"+(10+(index*10)) +" ; \r\n" + 
 					"	  			c2"+(10+(index*10)) +" : FahrenheitToCelsiusCN bindings current2"+(10+(index*10)) +" = localTemp2"+(10+(index*10)) +" ; \r\n" + 
 					"	  			cc1"+(10+(index*10)) +" : CommandCN bindings heating"+(10+(index*10)) +" = controllerH"+(10+(index*10)) +" ;\n\n";
-		}		
-//		if(index >= 100) {
-//			for (int i = index-90; i <= index; i = i+10) {
-//				this.ComponentsRTCSystemCFD_Connectors +=
-//						"	  			c1"+i +" : FahrenheitToCelsiusCN bindings current1"+i +" = localtemp1"+i +" ; \r\n" + 
-//						"	  			uc"+i +" : CTemperatureCN bindings desired"+i +" = userTemp"+i +" ; \r\n" + 
-//						"	  			cc2"+i +" : CommandCN bindings cooling"+i +" = controllerC"+i +" ; \r\n" + 
-//						"	  			pc"+i +" : PresenceCN bindings detectedS"+i +" = detected"+i +" ; \r\n" + 
-//						"	  			c2"+i +" : FahrenheitToCelsiusCN bindings current2"+i +" = localTemp2"+i +" ; \r\n" + 
-//						"	  			cc1"+i +" : CommandCN bindings heating"+i +" = controllerH"+i +" ;\n\n";
-//			}
-//		}			
+		}				
 		
 		
 		this.finish = "}}\n";
@@ -215,30 +179,37 @@ public class MakeSysADLModelFile {
 				"	component def SensorsMonitorCP { ports : s1 : CTemperatureIPT ; s2 : CTemperatureIPT ; average : CTemperatureOPT ; }\r\n" + 
 				"\n";
 		
-		this.behavior = "constraint CalculateAverageTemperatureEQ ( t1 : CelsiusTemperature , t2 : CelsiusTemperature ) : ( av : CelsiusTemperature ) {\r\n" + 
-				"		equation = av == (t1 + t2)/2\r\n" + 
-				"	} \r\n" + 
-				"	activity def CalculateAverageTemperatureAC ( s1 : CelsiusTemperature ) ( s2 : CelsiusTemperature ) : ( average : CelsiusTemperature ) { body { actions : CalcAvTemp : CalculateAverageTemperatureAN { using pins : s1 : CelsiusTemperature ; s2 : CelsiusTemperature ; } delegate s1 to s1 delegate s2 to s2 delegate average to CalcAvTemp } } action def CalculateAverageTemperatureAN ( t1 : CelsiusTemperature , t2 : CelsiusTemperature ) : CelsiusTemperature { constraint : post-condition CalculateAverageTemperatureEQ } \r\n" + 
-				"	activity def CheckPresenceToSetTemperatureAC ( detected : Boolean ) ( userTemp : CelsiusTemperature ) : ( target : CelsiusTemperature ) { body { actions : CheckPeresenceToSetTemperatureAN : CheckPeresenceToSetTemperatureAN { using pins : detected : Boolean ; userTemp : CelsiusTemperature ; } delegate detected to detected delegate userTemp to userTemp delegate target to CheckPeresenceToSetTemperatureAN } } \r\n" + 
-				"	activity def DecideCommandAC ( average2 : CelsiusTemperature ) ( target2 : CelsiusTemperature ) : ( cooling : Command , heating : Command ) { body { actions : ct : CompareTemperatureAN { using pins : average2 : CelsiusTemperature ; target2 : CelsiusTemperature ; } cmdH : CommandHeaterAN { using pins : cmdsH : Commands ; } cmdC : CommandCoolerAN { using pins : cmdsC : Commands ; } delegate average2 to average2 delegate target2 to target2 delegate heating to cmdH delegate cooling to cmdC flow from ct to cmdsH flow from ct to cmdsC } } \r\n" + 
-				"	activity def FahrenheitToCelsiusAC ( current1 : FahrenheitTemperature ) : ( loalTemp1 : CelsiusTemperature ) { body { actions : FtC : FahrenheitToCelsiusAN { using pins : current1 : FahrenheitTemperature ; } delegate loalTemp1 to FtC delegate current1 to current1 } } \r\n" + 
-				"	action def CompareTemperatureAN ( average2 : CelsiusTemperature , target2 : CelsiusTemperature ) : Commands { constraint : post-condition CompareTemperatureEQ } \r\n" + 
-				"	action def CommandHeaterAN ( cmds : Commands ) : Command { constraint : post-condition CommandHeaterEQ } \r\n" + 
-				"	action def CommandCoolerAN ( cmds : Commands ) : Command { constraint : post-condition CommandCoolerEQ } \r\n" + 
-				"	constraint CompareTemperatureEQ ( target : CelsiusTemperature , average : CelsiusTemperature ) : ( cmds : Commands ) { equation = average > target ? cmds == types.Commands.heater->Off && types.Commands.cooler->On : types.Commands.heater->On && cmds == types.Commands.cooler->Off } \r\n" + 
-				"	constraint FahrenheitToCelsiusEQ ( f : FahrenheitTemperature ) : ( c : CelsiusTemperature ) { equation = c == (5*(f - 32)/9)} \r\n" + 
-				"	constraint CommandHeaterEQ ( cmds : Commands ) : ( c : Command ) { equation = c == cmds->heater } \r\n" + 
-				"	constraint CommandCoolerEQ ( cmds : Commands ) : ( c : Command ) {equation = c == cmds->cooler } \r\n" + 
-				"	action def FahrenheitToCelsiusAN ( current1 : FahrenheitTemperature ) : CelsiusTemperature { constraint : post-condition FahrenheitToCelsiusEQ } 	\r\n" + 
-				"	action def CheckPeresenceToSetTemperatureAN ( detected : Boolean , userTemp : CelsiusTemperature ) : CelsiusTemperature { constraint : post-condition CheckPresenceToSetTemperatureEQ } \r\n" + 
-				"	constraint CheckPresenceToSetTemperatureEQ ( detected : Boolean , userTemp : CelsiusTemperature ) : ( target : CelsiusTemperature ) {equation = detected == true ? target == userTemp : target == 2 } \r\n" + 
-				"	executable def CommandCoolerEx(in cmds:Commands): out Command{return cmds->cooler ; }\r\n" + 
-				"	executable def CommandHeaterEx(in cmds:Commands): out Command{return cmds->heater ; }\r\n" + 
-				"	executable def FahrenheitToCelsiusEx(in f:FahrenheitTemperature): out CelsiusTemperature{return 5*(f - 32)/9 ; }\r\n" + 
-				"	executable def CalculateAverageTemperatureEx(in temp1:CelsiusTemperature,in temp2:CelsiusTemperature):out CelsiusTemperature{return (temp1 + temp2)/2 ; }\r\n" + 
-				"	executable def CheckPresenceToSetTemperature(in presence:Boolean, in userTemp:CelsiusTemperature):out CelsiusTemperature{if(presence == true) return userTemp; else return 2; }\r\n" + 
-				"	executable def CompareTemperatureEx(in target:CelsiusTemperature, in average:CelsiusTemperature):out Commands{let heater:Command = types.Command::Off; let cooler:Command = types.Command::Off; if(average > target) {heater = types.Command::Off; cooler = types.Command::On ; } else {heater = types.Command::On; cooler = types.Command::Off ;} } } \r\n" + 
-				"\n";
+		this.behavior = "constraint CalculateAverageTemperatureEQ ( t1 : CelsiusTemperature , t2 : CelsiusTemperature ) : ( av : CelsiusTemperature ) {\r\n"
+				+ "		equation = av == (t1 + t2)/2\r\n"
+				+ "	}"
+				+ "activity def CalculateAverageTemperatureAC ( s1 : CelsiusTemperature ) ( s2 : CelsiusTemperature ) : ( average : CelsiusTemperature ) { body { actions : CalcAvTemp : CalculateAverageTemperatureAN { using pins : s1 : CelsiusTemperature ; s2 : CelsiusTemperature ; } delegate s1 to s1 delegate s2 to s2 delegate average to CalcAvTemp } } action def CalculateAverageTemperatureAN ( t1 : CelsiusTemperature , t2 : CelsiusTemperature ) : CelsiusTemperature { constraint : post-condition CalculateAverageTemperatureEQ } \r\n"
+				+ "	activity def CheckPresenceToSetTemperatureAC ( detected : Boolean ) ( userTemp : CelsiusTemperature ) : ( target : CelsiusTemperature ) { body { actions : CheckPeresenceToSetTemperatureAN : CheckPeresenceToSetTemperatureAN { using pins : detected : Boolean ; userTemp : CelsiusTemperature ; } delegate detected to detected delegate userTemp to userTemp delegate target to CheckPeresenceToSetTemperatureAN } } \r\n"
+				+ "	activity def DecideCommandAC ( target2 : CelsiusTemperature ) ( average2 : CelsiusTemperature ) : ( cooling : Command , heating : Command ) { body { actions : ct : CompareTemperatureAN { using pins : target2 : CelsiusTemperature ; average2 : CelsiusTemperature ;  } cmdH : CommandHeaterAN { using pins : cmdsH : Commands ; } cmdC : CommandCoolerAN { using pins : cmdsC : Commands ; } delegate average2 to average2 delegate target2 to target2 delegate heating to cmdH delegate cooling to cmdC flow from ct to cmdsH flow from ct to cmdsC } } \r\n"
+				+ "	activity def FahrenheitToCelsiusAC ( current1 : FahrenheitTemperature ) : ( loalTemp1 : CelsiusTemperature ) { body { actions : FtC : FahrenheitToCelsiusAN { using pins : current1 : FahrenheitTemperature ; } delegate loalTemp1 to FtC delegate current1 to current1 } } \r\n"
+				+ "	action def CompareTemperatureAN ( target2 : CelsiusTemperature, average2 : CelsiusTemperature) : Commands { constraint : post-condition CompareTemperatureEQ } \r\n"
+				+ "	action def CommandHeaterAN ( cmds : Commands ) : Command { constraint : post-condition CommandHeaterEQ } \r\n"
+				+ "	action def CommandCoolerAN ( cmds : Commands ) : Command { constraint : post-condition CommandCoolerEQ } \r\n"
+				+ "	constraint CompareTemperatureEQ ( target : CelsiusTemperature , average : CelsiusTemperature ) : ( cmds : Commands ) \r\n"
+				+ "	{ equation = average > target ? cmds == types.Commands.heater->Off && types.Commands.cooler->On : cmds == types.Commands.heater->On && types.Commands.cooler->Off } \r\n"
+				+ "	constraint FahrenheitToCelsiusEQ ( f : FahrenheitTemperature ) : ( c : CelsiusTemperature ) { equation = c == (5*(f - 32)/9) } \r\n"
+				+ "	constraint CommandHeaterEQ ( cmds : Commands ) : ( c : Command ) { equation = c == cmds->heater } \r\n"
+				+ "	constraint CommandCoolerEQ ( cmds : Commands ) : ( c : Command ) {equation = c == cmds->cooler } \r\n"
+				+ "	action def FahrenheitToCelsiusAN ( current1 : FahrenheitTemperature ) : CelsiusTemperature { constraint : post-condition FahrenheitToCelsiusEQ } 	\r\n"
+				+ "	action def CheckPeresenceToSetTemperatureAN ( detected : Boolean , userTemp : CelsiusTemperature ) : CelsiusTemperature { constraint : post-condition CheckPresenceToSetTemperatureEQ } \r\n"
+				+ "	constraint CheckPresenceToSetTemperatureEQ ( detected : Boolean , userTemp : CelsiusTemperature ) : ( target : CelsiusTemperature ) {equation = detected == true ? target == userTemp : target == 1 } \r\n"
+				+ "	executable def CommandCoolerEx(in cmds:Commands): out Command{return cmds->cooler ; }\r\n"
+				+ "	executable def CommandHeaterEx(in cmds:Commands): out Command{return cmds->heater ; }\r\n"
+				+ "	executable def FahrenheitToCelsiusEx(in f:FahrenheitTemperature): out CelsiusTemperature{return 5*(f-32)/9 ; }\r\n"
+				+ "	executable def CalculateAverageTemperatureEx(in temp1:CelsiusTemperature,in temp2:CelsiusTemperature):out CelsiusTemperature{return (temp1 + temp2)/2 ; }\r\n"
+				+ "	executable def CheckPresenceToSetTemperature(in presence:Boolean, in userTemp:CelsiusTemperature):out CelsiusTemperature{if(presence == true) return userTemp; else return 1; }\r\n"
+				+ "	executable def CompareTemperatureEx(in target:CelsiusTemperature, in average:CelsiusTemperature):out Commands{let heater:Command = types.Command::Off; let cooler:Command = types.Command::Off; if(average > target) {heater = types.Command::Off; cooler = types.Command::On ; } else {heater = types.Command::On; cooler = types.Command::Off ;} } \r\n"
+				+ "	constraint SPEC01EQ ( cooler : Command , heater : Command ) : ( result : Boolean ) { equation = ~ (cooler == types.Commands.heater->On && heater == types.Commands.heater->On)  } \r\n"
+				+ "	action def SPEC_S_01 ( controllerC"+(10+(index*10)) +" : Command , controllerH"+(10+(index*10)) +" : Command ) : Boolean { constraint : post-condition SPEC01EQ delegate cooler to controllerC"+(10+(index*10)) +" delegate heater to controllerH"+(10+(index*10)) +" delegate SPEC_S_01 to result delegate controllerC to cooler delegate controllerH to heater } \r\n"
+				+ "	 \r\n"
+				+ "	constraint SPEC02EQ ( detectedS : Boolean , current1 : CelsiusTemperature, current2 : CelsiusTemperature, controllerH : Command, controllerC : Command ) : ( result : Boolean ) { equation = (detectedS == false && (((5*(current1 - 32)/9))+((5*(current2 - 32)/9)))/2 > 1 implies (controllerC == types.Commands.cooler->On && controllerH == types.Command.heater->Off)) && (detectedS == false && (((5*(current1 - 32)/9))+((5*(current2 - 32)/9)))/2 < 1 implies (controllerC == types.Command.cooler->Off && controllerH == types.Command.heater->On))}   \r\n"
+				+ "	    \r\n"
+				+ "	action def SPEC_L_02 ( detectedS"+(10+(index*10)) +" : Boolean , current1"+(10+(index*10)) +" : CelsiusTemperature, current2"+(10+(index*10)) +" : CelsiusTemperature, controllerH"+(10+(index*10)) +" : Command, controllerC"+(10+(index*10)) +" : Command ) : Boolean { constraint : post-condition SPEC02EQ delegate detectedS to detectedS"+(10+(index*10)) +" delegate current2 to current2"+(10+(index*10)) +" delegate controllerC to controllerC"+(10+(index*10)) +" delegate controllerH to controllerH"+(10+(index*10)) +" delegate current1 to current1"+(10+(index*10)) +" delegate SPEC_L_02 to result } \r\n"
+				+ "	 }\n";
 		
 		this.allocations = "allocations { \r\n" + 
 				"		activity FahrenheitToCelsiusAC to FahrenheitToCelsiusCN \r\n" + 

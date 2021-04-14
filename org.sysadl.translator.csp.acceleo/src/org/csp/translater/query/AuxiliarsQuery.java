@@ -4,16 +4,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.TimeoutException;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.ocl.ecore.OrderedSetType;
-import org.eclipse.ocl.ecore.SequenceType;
-import org.eclipse.ocl.ecore.impl.OrderedSetTypeImpl;
+import org.jgrapht.Graph;
+import org.jgrapht.alg.connectivity.BiconnectivityInspector;
+import org.jgrapht.alg.cycle.CycleDetector;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.SimpleDirectedGraph;
+import org.jgrapht.nio.dot.DOTExporter;
+import org.jgrapht.traverse.TopologicalOrderIterator;
 import org.sysadl.ActionDef;
 import org.sysadl.ActionUse;
 import org.sysadl.ActivityAllocation;
-import org.sysadl.ActivityBody;
 import org.sysadl.ActivityDef;
 import org.sysadl.ActivityFlow;
 import org.sysadl.ActivityRelation;
@@ -31,7 +33,6 @@ import org.sysadl.ConstraintUse;
 import org.sysadl.DataStore;
 import org.sysadl.DataTypeDef;
 import org.sysadl.Delegation;
-import org.sysadl.DimensionDef;
 import org.sysadl.ElementDef;
 import org.sysadl.Enumeration;
 import org.sysadl.Executable;
@@ -46,12 +47,10 @@ import org.sysadl.TypeDef;
 import org.sysadl.UnitDef;
 import org.sysadl.ValueTypeDef;
 import org.sysadl.grammar.util.SysADLGrammarUtil;
-import org.sysadl.impl.ActionDefImpl;
 import org.sysadl.impl.ActionUseImpl;
 import org.sysadl.impl.ActivityDelegationImpl;
 import org.sysadl.impl.EnumerationImpl;
 import org.sysadl.impl.PinImpl;
-import org.sysadl.impl.SimplePortDefImpl;
 
 public class AuxiliarsQuery {
 	
@@ -970,7 +969,7 @@ public class AuxiliarsQuery {
 		String result = "";
 		Object[] portUse = compUse.getPorts().toArray();
 		Object[] portDef = compUse.getDefinition().getPorts().toArray();
-		
+	
 		for (int i = 0; i < portDef.length; i++) {
 			if (i < portDef.length-1) {
 				result += ((PortUse) portDef[i]).getName().toString();
@@ -990,6 +989,59 @@ public class AuxiliarsQuery {
 				result += "_"+((PortUse) portUse[i]).getDefinition().getName().toString();
 				
 				
+			}
+			
+		}
+		
+		return result;
+	}
+	
+	public String getRenamePortsComponent(ComponentUse compUse, ComponentDef compDef) {
+		String result = "";
+		boolean d = false;
+		Object[] portUse = compUse.getPorts().toArray();
+		Object[] portDef = compUse.getDefinition().getPorts().toArray();
+		Object[] delegations = compDef.getComposite().getDelegations().toArray();
+		for (int i = 0; i < portDef.length; i++) {
+			if (i < portDef.length-1) {
+				result += ((PortUse) portDef[i]).getName().toString();
+				result += "_"+((PortUse) portDef[i]).getDefinition().getName().toString();
+				result += " <- ";
+				for (Object del : delegations) {
+					if (((Delegation)del).getSource().equals((PortUse) portUse[i])) {
+						d = true;
+						result += ((Delegation)del).getDestination().getName();
+						result += "_"+ ((Delegation)del).getDestination().getDefinition().getName();
+						result += ", ";	
+						break;
+					}
+				}
+				if (!d) {
+					result += compUse.getName()+"_";
+					result += ((PortUse) portUse[i]).getName().toString();
+					result += "_"+((PortUse) portUse[i]).getDefinition().getName().toString();
+					result += ", ";	
+				}				
+				d = false;
+			}
+			else {
+				result += ((PortUse) portDef[i]).getName().toString();
+				result += "_"+((PortUse) portDef[i]).getDefinition().getName().toString();
+				result += " <- ";
+				for (Object del : delegations) {
+					if (((Delegation)del).getSource().equals((PortUse) portUse[i])) {
+						d = true;
+						result += ((Delegation)del).getDestination().getName();
+						result += "_"+ ((Delegation)del).getDestination().getDefinition().getName();
+						break;
+					}
+				}
+				if (!d) {
+					result += compUse.getName()+"_";
+					result += ((PortUse) portUse[i]).getName().toString();
+					result += "_"+((PortUse) portUse[i]).getDefinition().getName().toString();
+				}
+				d = false;
 			}
 			
 		}
@@ -1322,16 +1374,35 @@ public class AuxiliarsQuery {
 	
 	public String getActionFuncProcess(ActivityDef activity) {
 		String result = "";
+		String name = "Actions_"+activity.getName()+" = ";
+		String actionPin_Pin = "";
+		boolean first = false;
 		for (ActivityRelation flow : activity.getBody().getFlows()) {
 			if (flow.getSource() instanceof ActionUse && flow.getTarget() instanceof Pin ) {
-				result += "Actions_"+activity.getName()+" = "+"Actions_"+activity.getName()+"_Flows"+ "[| Sync_"+activity.getName()+"_Actions |] Action_" + activity.getName()+"_function" + "\\Sync_"+activity.getName()+"_Actions\n";
-				result += "Action_" + activity.getName()+"_function = "+"||| i : {1 .. "+activity.getBody().getActions().size()+"} @ Actions_"+activity.getName()+"_Func(i)\n";
-				return result;
+				if (!first) {
+					first = true;
+					result += ((ActionUse)flow.getSource()).getName()+"_"+((ActionUse)flow.getSource()).getDefinition().getName();
+				}
+				result += "[ "+((ActionUse)flow.getSource()).getName()+"_"+ ((Pin)flow.getTarget()).getName() 
+						+" <-> " + ((Pin)flow.getTarget()).getName()+"_"+((Pin)flow.getTarget()).getDefinition().getName()+" ] ";
+				for (ActionUse actionUse : activity.getBody().getActions()) {
+					if (actionUse.getPinIn().contains(flow.getTarget())) {
+						result += actionUse.getName()+"_"+actionUse.getDefinition().getName() + ")\n";
+						String aux = "";
+						aux = "(" + result;
+						result = aux;
+					}
+				}				
+			}						
+		}
+		for (ActionUse actionUse : activity.getBody().getActions()) {
+			if(!result.contains(actionUse.getName()+"_"+actionUse.getDefinition().getName())) {
+				result += actionUse.getName()+"_"+actionUse.getDefinition().getName() +"\n";
 			}
-		}		
-		result += "Actions_"+activity.getName()+" = ||| i : {1 .. "+activity.getBody().getActions().size()+"} @ Actions_"+activity.getName()+"_Func(i)\n";
+		}
+		
 		return result;
-	}
+	}	
 	
 	public String getActionFlow(ActivityDef activity) {
 		String result = "";
@@ -1352,4 +1423,235 @@ public class AuxiliarsQuery {
 		}				
 		return result;
 	}
+	
+	
+	public Graph<ComponentUse, DefaultEdge> makeGraphFromComponent(ComponentDef comp){
+		ArrayList<ComponentUse> compUse = new ArrayList<ComponentUse>();
+		ArrayList<ConnectorUse> connUse = new ArrayList<ConnectorUse>();
+		ArrayList<Delegation> delegations = new ArrayList<Delegation>();
+		int sizeComponents = 0;				
+		SimpleDirectedGraph<ComponentUse , DefaultEdge> graph = new SimpleDirectedGraph<>(DefaultEdge.class);
+		if (comp.getComposite() != null) {
+			sizeComponents += comp.getComposite().getComponents().size();
+			compUse.addAll(comp.getComposite().getComponents());
+			for (ComponentUse compU : comp.getComposite().getComponents()) {
+				graph.addVertex(compU);				
+			}
+			connUse.addAll(comp.getComposite().getConnectors());
+			delegations.addAll(comp.getComposite().getDelegations());
+		}
+		for (int i =0; i < sizeComponents ; i++) {
+			for(int j = 0; j < sizeComponents; j++) {
+				ConnectorUse aux = ContainsConn(connUse, compUse.get(i), compUse.get(j));
+				if (aux != null) {									
+					graph.addEdge(compUse.get(i), compUse.get(j));									
+				}												
+			}
+		}
+		return graph;
+	}
+	
+	public Graph<String, DefaultEdge> makeGraphFromActivity(ActivityDef activity){
+		SimpleDirectedGraph<String , DefaultEdge> activityGraph = new SimpleDirectedGraph<>(DefaultEdge.class);
+		if (activity.getBody().getActions().size() > 1) {
+			for (ActionUse action : activity.getBody().getActions()) {
+				activityGraph.addVertex(action.getDefinition().getName());
+			}
+		}
+		else
+			activityGraph.addVertex(activity.getBody().getActions().get(0).getDefinition().getName());
+		for (ActivityRelation flow : activity.getBody().getFlows()) {
+			if (flow.getSource() instanceof ActionUse && flow.getTarget() instanceof Pin) {
+				activityGraph.addEdge(((ActionUse)flow.getSource()).getDefinition().getName(), getActionFromPin((Pin) flow.getTarget(), activity.getBody().getFlows()));
+			}
+		}
+		return activityGraph;
+	}
+	
+	public boolean verifyCycleActivity(ActivityDef activity) {
+		CycleDetector<String, DefaultEdge> detect = new CycleDetector<>(makeGraphFromActivity(activity));
+		if (detect.detectCycles()) 			
+			return true;		
+		else
+			return false;		
+	}
+	
+	public boolean verifyCycleComponent(ComponentDef comp) {
+		CycleDetector<ComponentUse, DefaultEdge> detect = new CycleDetector<>(makeGraphFromComponent(comp));
+		if (detect.detectCycles()) 			
+			return true;		
+		else
+			return false;		
+	}
+	
+	public String getSequenceFromComponentConfigWithRename(ComponentDef comp) {
+		String result = "";
+		Graph<ComponentUse, DefaultEdge> g = makeGraphFromComponent(comp);
+		SimpleDirectedGraph<ComponentUse,DefaultEdge> aux = new SimpleDirectedGraph<ComponentUse, DefaultEdge>(DefaultEdge.class);
+		for (ComponentUse v : g.vertexSet()) {
+			aux.addVertex(v);
+		}
+		for (DefaultEdge e : g.edgeSet()) {
+			aux.addEdge(g.getEdgeSource(e), g.getEdgeTarget(e));
+		}		
+		TopologicalOrderIterator<ComponentUse, DefaultEdge> seq = new TopologicalOrderIterator<>(aux);
+		while(seq.hasNext()) {
+			ComponentUse next = seq.next();
+			if (seq.hasNext() == false) { 
+				if (comp.getComposite() != null && isEmpty_Delegations(comp.getComposite()) == false) {
+					result += next.getDefinition().getName()+"[[ " + getRenamePortsComponent(next,comp)+" ]]\n\t\t\t\t\t\t";
+				}else
+					result += next.getDefinition().getName()+"[[ " + getRenamePortsComponent(next)+" ]]\n\t\t\t\t\t\t";
+			}
+			else {
+				if(comp.getComposite() != null && isEmpty_Delegations(comp.getComposite()) == false) {
+					result += next.getDefinition().getName()+"[[ " + getRenamePortsComponent(next,comp)+" ]];\n\t\t\t\t\t\t";
+				}else
+					result += next.getDefinition().getName()+"[[ " + getRenamePortsComponent(next)+" ]];\n\t\t\t\t\t\t";
+			}
+		}
+		return result;
+	}
+	
+	
+	public boolean ExistCycle(Model model) {		
+		ArrayList<ComponentUse> compUse = new ArrayList<ComponentUse>();
+		ArrayList<ConnectorUse> connUse = new ArrayList<ConnectorUse>();
+		ArrayList<Delegation> delegations = new ArrayList<Delegation>();
+		//ArrayList<ActivityDef>
+		int sizeComponents = 0;		
+		
+		SimpleDirectedGraph<ComponentUse , DefaultEdge> fullMo = new SimpleDirectedGraph<>(DefaultEdge.class);
+		SimpleDirectedGraph<ComponentUse, DefaultEdge> florestG = new SimpleDirectedGraph<>(DefaultEdge.class);
+		SimpleDirectedGraph<String , DefaultEdge> activityGraph = new SimpleDirectedGraph<>(DefaultEdge.class);
+		
+		for (Package pck : model.getPackages()) {
+			for (ElementDef elem : pck.getDefinitions()) {
+				if (elem instanceof ComponentDef) {
+					if (((ComponentDef)elem).getComposite() != null) {
+						sizeComponents += ((ComponentDef)elem).getComposite().getComponents().size();
+						compUse.addAll(((ComponentDef)elem).getComposite().getComponents());
+						for (ComponentUse comp : ((ComponentDef)elem).getComposite().getComponents()) {
+							fullMo.addVertex(comp);
+							florestG.addVertex(comp);
+						}
+						connUse.addAll(((ComponentDef)elem).getComposite().getConnectors());
+						delegations.addAll(((ComponentDef)elem).getComposite().getDelegations());
+					}
+				}
+				else if(elem instanceof ActivityDef) {					
+					if (((ActivityDef)elem).getBody().getActions().size() > 1) {
+						for (ActionUse action : ((ActivityDef)elem).getBody().getActions()) {
+							activityGraph.addVertex(action.getDefinition().getName());
+						}
+					}
+					else
+						activityGraph.addVertex(((ActivityDef)elem).getBody().getActions().get(0).getDefinition().getName());
+					for (ActivityRelation flow : ((ActivityDef)elem).getBody().getFlows()) {
+						if (flow.getSource() instanceof ActionUse && flow.getTarget() instanceof Pin) {
+							activityGraph.addEdge(((ActionUse)flow.getSource()).getDefinition().getName(), getActionFromPin((Pin) flow.getTarget(), ((ActivityDef)elem).getBody().getFlows()));
+						}
+					}
+				}
+			}
+		}		
+		for (int i =0; i < sizeComponents ; i++) {
+			for(int j = 0; j < sizeComponents; j++) {
+				ConnectorUse aux = ContainsConn(connUse, compUse.get(i), compUse.get(j));
+				if (aux != null) {									
+					florestG.addEdge(compUse.get(i), compUse.get(j));
+					PortUse portAux = HaveDelegation(aux, delegations);
+					PortUse portAuxOUT = HaveDelegationINV(aux, delegations);
+					if (portAux != null) {					
+						for (ComponentUse comp : compUse) {
+							if (comp.getPorts().contains(portAux)) {								
+								fullMo.addEdge(compUse.get(i), compUse.get(compUse.lastIndexOf(comp)));								
+							}
+						}
+					}
+					else if(portAuxOUT != null) {
+						for (ComponentUse comp : compUse) {
+							if (comp.getPorts().contains(portAuxOUT)) {								
+								fullMo.addEdge(compUse.get(compUse.lastIndexOf(comp)), compUse.get(j));								
+							}
+						}
+					}
+					else {						
+						fullMo.addEdge(compUse.get(i), compUse.get(j));
+					}
+				}												
+			}
+		}
+		CycleDetector<ComponentUse, DefaultEdge> detect = new CycleDetector<>(fullMo);
+		CycleDetector<ComponentUse, DefaultEdge> detect2 = new CycleDetector<>(florestG);
+		CycleDetector<String, DefaultEdge> activity = new CycleDetector<>(activityGraph);
+//		printGraph(fullMo);
+//		printGraph(florestG);
+//		printGraph(activityGraph);
+				
+		BiconnectivityInspector<ComponentUse, DefaultEdge> sc = new BiconnectivityInspector<>(florestG);	
+		for (Graph<ComponentUse, DefaultEdge> g : sc.getConnectedComponents()) {			
+			getSeqComponents(g);
+		}		
+		if (detect.detectCycles() && detect2.detectCycles() && activity.detectCycles()) 			
+			return true;		
+		else
+			return false;
+	}
+	
+	private void getSeqComponents(Graph<ComponentUse, DefaultEdge> g) {
+		SimpleDirectedGraph<ComponentUse,DefaultEdge> aux = new SimpleDirectedGraph<ComponentUse, DefaultEdge>(DefaultEdge.class);
+		for (ComponentUse v : g.vertexSet()) {
+			aux.addVertex(v);
+		}
+		for (DefaultEdge e : g.edgeSet()) {
+			aux.addEdge(g.getEdgeSource(e), g.getEdgeTarget(e));
+		}		
+		TopologicalOrderIterator<ComponentUse, DefaultEdge> seq = new TopologicalOrderIterator<>(aux);
+		while(seq.hasNext()) {
+			//System.out.println(seq.next());
+		}
+		return;
+	}
+	
+	private void printGraph(Graph<ComponentUse, DefaultEdge> g) {
+		DOTExporter<String, DefaultEdge> exporter =
+	            new DOTExporter<>(v -> v);
+//	        exporter.setVertexAttributeProvider((v) -> {
+//	            Map<String, Attribute> map = new LinkedHashMap<>();
+//	            map.put("label", DefaultAttribute.createAttribute(v.toString()));
+//	            return map;
+//	        });
+//	        Writer writer = new StringWriter();
+//	        exporter.exportGraph(g, writer);
+//	        System.out.println(writer.toString());
+	}
+	
+	private ConnectorUse ContainsConn(ArrayList<ConnectorUse> conns, ComponentUse source, ComponentUse target) {
+		for (ConnectorUse connectorUse : conns) {
+			if (source.getPorts().contains(((ConnectorBinding)connectorUse.getBindings().get(0)).getSource()) && 
+					target.getPorts().contains(((ConnectorBinding)connectorUse.getBindings().get(0)).getDestination())) {
+				return connectorUse;
+			}
+		}		
+		return null;
+	}	
+	
+	private PortUse HaveDelegation( ConnectorUse connector, ArrayList<Delegation> delegations) {		
+			for (Delegation del : delegations) {				
+				if (del.getDestination().getName().equals(((ConnectorBinding)connector.getBindings().get(0)).getDestination().getName())) {
+					return del.getSource();
+				}		
+		}		
+		return null;
+	}
+	
+	private PortUse HaveDelegationINV( ConnectorUse connector, ArrayList<Delegation> delegations) {		
+		for (Delegation del : delegations) {				
+			if (del.getDestination().getName().equals(((ConnectorBinding)connector.getBindings().get(0)).getSource().getName())) {
+				return del.getSource();
+			}		
+	}		
+	return null;
+}
 }

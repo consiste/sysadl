@@ -1,0 +1,402 @@
+Model SysADLArchitecture;
+package SysADL.types {
+
+	//////////////types//////////////
+	value type Int {}
+	value type Boolean {}
+	value type String {}
+	value type Real {}
+	value type Void {}
+	
+	enum NotificationToSupervisory {
+		departed, arrived, passed, traveling
+	}
+	enum NotificationFromArm {
+		loaded, unloaded
+	}
+	enum CommandToArm {
+		load, unload, idle
+	}
+	enum NotificationFromMotor {
+		started, stopped
+	}
+	enum CommandToMotor {
+		start, stop
+	}
+	
+	datatype Location{
+		attributes: 
+			location1 : String;
+	}
+	datatype VehicleData{
+		attributes: 
+			command : CommandToArm;
+			destination : Location;
+	}
+	datatype Status {
+		attributes: 
+			command : CommandToArm;
+			location1 : Location;
+			destination : Location;
+	}
+	
+	//////////////ports//////////////
+	port def inLocation {
+		flow in Location
+	}
+	port def outLocation {
+		flow out Location
+	}
+	port def inStatus {
+		flow in Status
+	}
+	port def outStatus {
+		flow out Status
+	}
+	port def inVehicleData {
+		flow in VehicleData
+	}
+	port def outVehicleData {
+		flow out VehicleData
+	}
+	port def inNotificationFromMotor {
+		flow in NotificationFromMotor
+	}
+	port def outNotificationFromMotor {
+		flow out NotificationFromMotor
+	}
+	port def inCommandToMotor {
+		flow in CommandToMotor
+	}
+	port def outCommandToMotor {
+		flow out CommandToMotor
+	}
+	port def inNotificationFromArm {
+		flow in NotificationFromArm
+	}
+	port def outNotificationFromArm {
+		flow out NotificationFromArm
+	}
+	port def inCommandToArm {
+		flow in CommandToArm
+	}
+	port def outCommandToArm {
+		flow out CommandToArm
+	}
+	port def inNotificationToSupervisory {
+		flow in NotificationToSupervisory
+	}
+	port def outNotificationToSupervisory {
+		flow out NotificationToSupervisory
+	}
+	port def IAGVSystemOPT { 
+		flow out NotificationToSupervisory
+	} //port def IAGVSystem
+	port def IAGVSystemIPT { 
+		flow in VehicleData
+	} //port def IAGVSystem
+	port def ISupervisorySystemOPT { 
+		flow out VehicleData
+	}  //port def ISupervisorySystem
+	port def ISupervisorySystemIPT { 
+		flow in NotificationToSupervisory
+	}  //port def ISupervisorySystem
+	
+	
+	//////////////connectors//////////////
+	
+	connector def notifySupervisory {
+		participants: 
+			~ nsIPT : inNotificationToSupervisory {}
+			~ nsOPT : outNotificationToSupervisory {}
+		flows: NotificationToSupervisory from nsOPT to nsIPT
+	}
+	connector def sendVehicleData {
+		participants: 
+			~ vdOPT : outVehicleData {}
+			~ vdIPT : inVehicleData {}
+		flows: VehicleData from vdOPT to vdIPT
+	}	
+	connector def notificationMotor {
+		participants: 
+			~ nmOPT : outNotificationFromMotor {}
+			~ nmIPT : inNotificationFromMotor {}
+		flows: NotificationFromMotor from nmOPT to nmIPT
+	}
+	connector def commandArm {
+		participants: 
+			~ caOPT : outCommandToArm {}
+			~ caIPT : inCommandToArm {}
+		flows: CommandToArm from caOPT to caIPT
+	}
+	connector def notificationArm {
+		participants:
+			~ naIPT : inNotificationFromArm {}
+			~ naOPT : outNotificationFromArm {}
+		flows: NotificationFromArm from naOPT to naIPT
+	}
+	connector def commandMotor {
+		participants: 
+			~ cmOPT : outCommandToMotor {}
+			~ cmIPT : inCommandToMotor {}
+		flows: CommandToMotor from cmOPT to cmIPT
+	}
+	connector def locationVehicle {
+		participants: 
+			~ lOPT : outLocation {}
+			~ lIPT : inLocation {}
+		flows: Location from lOPT to lIPT
+	}
+	connector def status {
+		participants: 
+			~ sOPT : outStatus {
+			}
+			~ sIPT : inStatus {
+			}
+		flows: Status from sOPT to sIPT
+	}
+	connector def interactionAGVAndSupervisory1 { //connector def interactionAGVAndSupervisory - ns
+		participants : 
+			~ outNotifications : outNotificationToSupervisory ; 
+			~ inNotifications : inNotificationToSupervisory ; 
+		flows : NotificationToSupervisory from outNotifications to inNotifications
+	} 
+	
+	connector def interactionAGVAndSupervisory2 { //connector def interactionAGVAndSupervisory - sVD
+		participants : 
+			~ outMoveToStation : outVehicleData ; 
+			~ inMoveToStation : inVehicleData ; 
+		flows : VehicleData from outMoveToStation to inMoveToStation
+	} 
+
+	
+	//////////////components//////////////
+	
+	boundary component def DisplaySystem {
+		ports: 
+			receiveStatus : inStatus {}
+	}
+	boundary component def SupervisorySystem {
+		ports: 
+			in_outData1 : inNotificationToSupervisory {}
+			in_outData2 : outVehicleData {}
+	}	
+	boundary component def RobotArm {
+		ports: 
+			start : inCommandToArm {}
+			started : outNotificationFromArm {}
+	}
+	boundary component def Motor {
+		ports: 
+		start_stop : inCommandToMotor {}
+		started_stopped : outNotificationFromMotor {}
+	}
+	boundary component def ArrivalSensor {
+		ports: 
+		arrivalDetected : outLocation {}
+	}	
+	component def VehicleTimer {
+		ports: 
+			AGVStatus : outStatus {}
+			location1 : inLocation {}
+			destination : inLocation {}
+			cmd : inCommandToArm {}
+	}
+	component def NotifierArm {
+		ports: 
+			arrivedStatus : outNotificationToSupervisory {}
+			loaded_unloaded : inNotificationFromArm {}
+	}
+	component def ControlArm {
+		ports: 
+			cmd : inCommandToArm {}
+			ack : inNotificationFromMotor {}
+			startArm : outCommandToArm {}
+	}
+	component def CheckStation {
+		ports: 
+			ack : inNotificationFromMotor {}
+			location1 : outLocation {}
+			destination : inLocation {}
+			stop : outCommandToMotor {}
+			arrivalDetected : inLocation {}
+			passed : outNotificationToSupervisory {}
+	}
+	component def NotifierMotor {
+		ports: 
+			inAck : inNotificationFromMotor {}
+			ack : outNotificationToSupervisory {}
+			outAck : outNotificationFromMotor {}
+	}
+	component def StartMoving {
+		ports: 
+			move : inVehicleData {}
+			cmd : outCommandToArm {}
+			destination : outLocation {}
+			start : outCommandToMotor {}
+	}
+	component def VehicleControl {
+		ports: 
+			sendStatus : outStatus {}
+			arrivalDetected : inLocation {}
+			startArm : outCommandToArm {}
+			startedArm : inNotificationFromArm {}
+			started_stopped : inNotificationFromMotor {}
+			start_stop : outCommandToMotor {}
+			outNotifications : outNotificationToSupervisory {}
+			inMoveToStation : inVehicleData {}
+		configuration {
+			components:
+			cs : CheckStation {
+				using ports: ack_cs : inNotificationFromMotor {
+				}
+				location1_cs : outLocation {
+				}
+				destination_cs : inLocation {
+				}
+				stop : outCommandToMotor {
+				}
+				arrivalDetected : inLocation {
+				}
+				passed : outNotificationToSupervisory {
+				}
+			}
+			ca : ControlArm {
+				using ports: cmd_ca : inCommandToArm {
+				}
+				ack_ca : inNotificationFromMotor {
+				}
+				startArm : outCommandToArm {
+				}
+			}
+			nm : NotifierMotor {
+				using ports: inAck : inNotificationFromMotor {
+				}
+				ack : outNotificationToSupervisory {
+				}
+				outAck : outNotificationFromMotor {
+				}
+			}
+			sm : StartMoving {
+				using ports: move : inVehicleData {
+				}
+				cmd_sm : outCommandToArm {
+				}
+				destination : outLocation {
+				}
+				start : outCommandToMotor {
+				}
+			}
+			na : NotifierArm {
+				using ports: arrivedStatus : outNotificationToSupervisory {
+				}
+				loaded_unloaded : inNotificationFromArm {
+				}
+			}
+			vt : VehicleTimer {
+				using ports: AGVStatus : outStatus {
+				}
+				location1_vt : inLocation {
+				}
+				destination_vt : inLocation {
+				}
+				cmd : inCommandToArm {
+				}
+			}
+			connectors:
+				destinationStation : locationVehicle bindings destination = destination_vt; 
+				destinationStation2 : locationVehicle bindings destination = destination_cs;
+				command : commandArm bindings cmd_sm = cmd;
+				command2 : commandArm bindings cmd_sm = cmd_ca;
+				currentLocation : locationVehicle bindings location1_cs = location1_vt;
+				sendNotificationMotor : notificationMotor bindings outAck = ack_ca;
+				sendNotificationMotor2 : notificationMotor bindings outAck = ack_cs;
+			delegations:
+				ack to outNotifications
+				arrivedStatus to outNotifications
+				move to inMoveToStation
+				passed to outNotifications
+				loaded_unloaded to startedArm
+				inAck to started_stopped
+				startArm to startArm 
+				AGVStatus to sendStatus 
+				start to start_stop 
+				stop to start_stop 
+				arrivalDetected to arrivalDetected 
+		}
+	}
+	component def IAGVSystemCP {
+		ports: 
+			sendStatus1 : outStatus {}
+			outNotifications1 : outNotificationToSupervisory {}
+			inMoveToStation1 : inVehicleData {}
+		configuration {
+			components:
+			m : Motor {
+				using ports: 
+					start_stop_in : inCommandToMotor {}
+					started_stopped_out : outNotificationFromMotor {}
+			}
+			as : ArrivalSensor {
+				using ports: 
+					arrivalDetected_out : outLocation {}
+			}
+			ra : RobotArm {
+				using ports: 
+					start : inCommandToArm {}
+					started : outNotificationFromArm {}
+			}
+			vc : VehicleControl {
+				using ports: 
+					sendStatus : outStatus {}
+					arrivalDetected_in : inLocation {}
+					startArm : outCommandToArm {}
+					startedArm : inNotificationFromArm {}
+					started_stopped_in : inNotificationFromMotor {}
+					start_stop_out : outCommandToMotor {}
+					outNotifications : outNotificationToSupervisory {}
+					inMoveToStation : inVehicleData {}
+			}
+			connectors:
+				arrived : locationVehicle bindings arrivalDetected_out = arrivalDetected_in; 
+				ackArm : notificationArm bindings started = startedArm; 
+				cmdArm : commandArm bindings startArm = start;
+				ackMotor : notificationMotor bindings started_stopped_out = started_stopped_in;
+				cmdMotor : commandMotor bindings start_stop_out = start_stop_in;
+			delegations:
+				sendStatus to sendStatus1 
+				outNotifications to outNotifications1
+				inMoveToStation to inMoveToStation1
+		}
+	}		
+	architecture def FactoryAutomationSystem {
+		ports:
+		configuration {
+			components:
+				ss : SupervisorySystem {
+					using ports: 
+						inNotifications : outNotificationToSupervisory {}
+						outMoveToStation : inVehicleData {}
+				}
+				agvs : IAGVSystemCP{
+					using ports: 
+						sendStatus : outStatus {}
+						outNotifications : outNotificationToSupervisory {}
+						inMoveToStation : inVehicleData {}
+				}
+				ds : DisplaySystem {
+					using ports: 
+						receiveStatus : inStatus {}
+				}
+			connectors:
+				dataExchange1 : interactionAGVAndSupervisory1 bindings outNotifications = inNotifications;
+				dataExchange2 : interactionAGVAndSupervisory2 bindings outMoveToStation = inMoveToStation;
+				updateStatus : status bindings sendStatus = receiveStatus;
+		}
+	}			
+}
+
+
+
+
+	

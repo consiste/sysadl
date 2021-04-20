@@ -1,0 +1,201 @@
+Model SysADLArchitecture ; 
+
+package SysADL.types { 
+	
+	//////////////types//////////////
+	value type Int { } 
+	value type Boolean { } 
+	value type String { } 
+	value type Void { } 
+	value type Real { }
+	
+	//////////////ports//////////////
+	port def RequestOPT { flow out String } 
+	port def RequestIPT { flow in String } 
+	port def ResponseOPT { flow out String } 
+	port def ResponseIPT { flow in String } 
+	port def SmartphoneOPT { flow out String } //port def SmartphoneCPT
+	port def SmartphoneIPT { flow in String  } //port def SmartphoneCPT
+	port def WristbandOPT { flow out String }  //port def WristbandCPT
+	port def WristbandIPT { flow in String  }  //port def WristbandCPT
+	port def DataIPT { flow in String } 
+	port def DataOPT { flow out String } 
+	port def TemperatureIPT { flow in Real } 
+	port def TemperatureOPT { flow out Real } 
+	port def AccelerometerIPT { flow in Real } 
+	port def AccelerometerOPT { flow out Real } 
+	port def HeartRateIPT { flow in Real } 
+	port def HeartRateOPT { flow out Real }
+	
+	
+	//////////////connectors//////////////
+	connector def RequestResponseCN1 { //connector def RequestResponseCN - rq
+		participants : 
+			~ respWout : ResponseOPT ; 
+			~ respSin : ResponseIPT ; 
+		flows : String from respWout to respSin
+	} 
+	
+	connector def RequestResponseCN2 { //connector def RequestResponseCN - rp
+		participants : 
+			~ reqSout : RequestOPT ; 
+			~ reqWin : RequestIPT ; 
+		flows : String from reqSout to reqWin
+	} 
+	 
+	connector def sendRequestCN { 
+		participants : 
+			~ req : RequestOPT ; 
+			~ reqI : RequestIPT ; 
+		flows : String from req to reqI
+	} 
+	connector def sendResponseCN { 
+		participants : 
+			~ resp : ResponseOPT ; 
+			~ reqi : ResponseIPT ; 
+		flows : String from resp to reqi
+	} 
+	connector def DataCN { 
+		participants : 
+			~ dOut : DataOPT ; 
+			~ dIn : DataIPT ; 
+		flows : String from dOut to dIn
+	} 
+	connector def AccelerationCN { 
+		participants : 
+			~ aOut : AccelerometerOPT ; 
+			~ aIn : AccelerometerIPT ; 
+		flows : Real from aOut to aIn
+	} 
+	connector def TemperatureCN { 
+		participants : 
+			~ tOut : TemperatureOPT ; 
+			~ tIn : TemperatureIPT ; 
+		flows : Real from tOut to tIn
+	} 
+	connector def HeartRateCN { 
+		participants : 
+			~ hrOut : HeartRateOPT ; 
+			~ hrIn : HeartRateIPT ; 
+		flows : Real from hrOut to hrIn
+	}
+	
+	
+	//////////////components//////////////
+
+	boundary component def AccelerometerCP {
+		ports : 
+			as : AccelerometerOPT ; 
+	} 
+	boundary component def TemperatureSensorCP { 
+		ports : 
+			ts : TemperatureOPT ;
+	}
+	boundary component def HeartRateSensorCP { 
+		ports : 
+			hrs : HeartRateOPT  ;
+	}
+	boundary component def DatabaseCP { 
+		ports : 
+			dIn : DataIPT ; 
+			dOut : DataOPT ;
+	} 
+	component def ApplicationCP { 
+		ports : 
+			rOut : RequestOPT ; 
+			rIn : ResponseIPT ; 
+			dOut : DataOPT ; 
+			dIn : DataIPT ;
+	}	
+	component def ControllerCP { 
+		ports : 
+			rIn : RequestIPT ; 
+			rOut : ResponseOPT ; 
+			a : AccelerometerIPT ; 
+			hs : HeartRateIPT ; 
+			t : TemperatureIPT ;
+	} 
+	
+	component def WristbandCP { 
+		ports : 
+			reqWin : RequestOPT ; 
+			respWout : ResponseOPT;
+		configuration { 
+			components : 
+				ControllerCP : ControllerCP { 
+					using ports : 
+						rIn : RequestIPT ; 
+						rOut : ResponseOPT ; 
+						a : AccelerometerIPT ; 
+						hs : HeartRateIPT ; 
+						t : TemperatureIPT ;
+				} 
+				a : AccelerometerCP { 
+					using ports : 
+						as : AccelerometerOPT ;
+				} 
+				t : TemperatureSensorCP { 
+					using ports : 
+						ts : TemperatureOPT ;
+				} 
+				hr : HeartRateSensorCP { 
+					using ports : 
+						hrs : HeartRateOPT ;
+				} 
+			connectors : 
+				sendHeartRate : HeartRateCN bindings hrs = hs ; 
+				sendTemperature : TemperatureCN bindings ts = t; 
+				sendAcceleration : AccelerationCN bindings as = a ;    
+			delegations : 
+				rIn to reqWin 
+				rOut to respWout
+		}
+	} 
+	
+	component def SmartphoneCP { 
+		ports : 
+			reqSout : RequestOPT;
+			respSin : ResponseIPT;
+		configuration { 
+			components : 
+				app : ApplicationCP { 
+					using ports : 
+						rOut : RequestOPT ; 
+						rIn : ResponseIPT ; 
+						dOut : DataOPT ; 
+						dIn : DataIPT ;
+				} 
+				db : DatabaseCP { 
+					using ports : 
+						dataIn : DataIPT ; 
+						dataOut : DataOPT ;
+				} 
+			connectors : 
+				sendData : DataCN bindings dataOut = dIn ; 
+				saveData : DataCN bindings dOut = dataIn ; 
+			delegations : 
+				rOut to reqSout 
+				rIn to respSin
+		} 
+	}
+	
+	architecture def WristbandARCH { 
+		ports:
+		configuration { 
+			components :
+				w : WristbandCP { 
+					using ports : 
+						reqWin : RequestIPT ; 
+						respWout : ResponseOPT;
+				} 
+				s : SmartphoneCP { 
+					using ports : 
+						reqSout : RequestOPT;
+						respSin : ResponseIPT;
+				} 
+		   	connectors : 
+		   		sendMeasurements1 : RequestResponseCN1 bindings respWout = respSin;
+		   		sendMeasurements2 : RequestResponseCN2 bindings reqSout = reqWin;
+	   } 
+	}
+} 

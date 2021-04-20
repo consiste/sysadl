@@ -1,0 +1,54 @@
+Model SysADLArchitecture;
+package SysADL.types {
+	value type Int {
+	}
+	value type Boolean {
+	}
+	value type String {
+	}
+	value type Real {
+	}
+	value type Void {
+	}
+}
+package PortsAGV {
+	import SysADL.types;
+
+	port def outPortaA {
+		flow out Int
+	}
+	
+	port def outPortaB {
+		flow out Int
+	}
+	
+}
+
+package ComponentsAGV {
+	import PortsAGV;
+	import SysADL.types;
+	architecture def MinimoARCH1 {
+		ports:
+		configuration {
+			components:
+			instA : CompA {
+				using ports: 
+					ca_aOut : outPortaA {}
+			}
+			instB : CompB {
+				using ports: 
+					cb_bOut : outPortaB {}
+			}
+		}
+	}
+
+	component def CompA {
+		ports: 
+			aOut : outPortaA{}
+	}
+	
+	boundary component def CompB {
+		ports: 
+			bOut : outPortaB{}
+	}
+}

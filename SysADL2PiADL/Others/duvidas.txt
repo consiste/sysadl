@@ -1,0 +1,435 @@
+# 1: Primitive Data Type - BaseType
+
+	- SysADL ValueType (Checar raciocínio)
+		- Primitive Types (Int, Boolean, String, Void, Real): São definidos automaticamente, mas não existe essa classe no metamodelo SYSADL. 
+		- Value Type (Definidos pelo usuário): Podem conter dimension e unit, se o usuário quiser, mas não são obrigatórios. 
+											   Mesma classe dos primitivos.
+		- Data Type: Conjunto de atributos que possuem Name e Definition(Algum ValueType definido). Estamos tratando como View PIADL  
+		- Enum: Definimos elementos da Enum que possuem Name e Enum (ValueType Enum ao qual fazem parte)
+	- dimension e unit são informações sem significado equivalente em PiADL
+	* PERGUNTAS: 
+		- Tem problema se os Value Type definidos pelo usuário (com dimension/unit ou não) figurarem como BaseTYpe em PiADL? SEM PROBLEMA!
+		- Faria sentido transformar um Value Type que tenha dimension e/ou unit em um DataType cujos atributos são dimension e/ou 
+	unit para não perder esse significado, ou não são relevantes no contexto de PiADL?  SALVAR COMO PROPRIEDADE!
+	* TRANSFORMAÇÃO:
+		- Tipos básicos são os primitivos e os definidos pelo usuário (com dimensio/unit ou não) (É um problema?) NAO
+		- Tipos básicos (primitivos e definidos) que são USADOS para definição de portas SysADL eles não aparecem como BaseType no início do arquivo, 
+		apenas quando o uso acontece (por enquanto em LabeledType), a mesma coisa está acontecendo com view 
+		- O ponto anterior é um problema? Talvez não porque as coisas em PiADL são definidas e usadas localmente. NÃO
+		- Transformação ainda não está tratando tipos generalização/especialização (com informação SuperType com valor não nulo). 
+		  Isso é necessário se dimension/unit forem guardadas.  TRANSFORMAR EM UMA VIEW
+		
+# 2: View
+	* PERGUNTA: 
+		- Uma View PiADL tem nome? Acho que sim, mas de onde vem? VIEWVALUE
+		
+		[x] PiADL::View {
+    		labt[] : PiADL::LabeledType (View)
+		}
+		
+		[x] PiADL::LabeledType {
+  			label : String
+  			type : ValueType
+		}
+		
+		[x] PiADL::ValueType::ConstructedType::View::
+		
+		[x] PiADL::ConstructedType(ValueType) {} // classe Abstrata
+
+		[x] PiADL::ValueType {} // classe Abstrata 
+	
+		- Em PiADL	
+			type FahrenheitTemperature is view[ 
+				dimension: Temperature,
+				unit: Fahrenheit
+			]
+
+	* TRANSFORMAÇÃO:
+		- Views não tem nome
+		- View não aparece como Type no início do arquivo, apenas quando o uso acontece (por enquanto em LabeledType, e alguem é definido pelo tipo)
+		- O ponto anterior é um problema? Talvez não porque as coisas em PiADL são definidas e usadas localmente.
+		
+		
+		- Em SysADL
+		
+			datatype VehicleData{
+				attributes: destination : Location;
+				command : CommandToArm;
+			}
+			
+		- Em PiADL
+		
+			type VehicleData is view[ 
+				attributes: destination : Location;
+				command : CommandToArm;
+			]
+		
+		
+		
+
+# 3: Enum
+
+	- No mapeamento inicial, na tabela, dissemos que SysADL Enum equivalia a PiADL Enum. Mas não encontrei Enum definida em PiADL;
+	
+	* PERGUNTA: 
+		- Um SysADL Enum poderia um PiADL Set?
+		
+			type Commands is set[String]
+				//c add "On"
+				//c add "Off"
+			type CommandH is Commands
+		- O comando add só pode acontecer em behavior? Ou poderia ocorrer na definição de tipos? SOMENTE EM BEHAVIOR
+		- SUGESTÃO: INCLUIR ENUM EM PIADL
+	
+	* TRANSFORMAÇÃO:
+		- Não iniciada
+		
+# 4: Connector 
+	- No mapeamento inicial, na tabela, dissemos que SysADL Connector equivalia a PiADL Connector.
+	- Em SysADL nós temos Connector Simples e o Connector Composto. 
+	- Tanto Connector Simples quanto o Composto podem ter uma Configuration. Confere?
+	- Um Connector Composto é necessário quando liga uma Porta Composta. Confere?
+	- Connector composto TEM que ter uma Configuration, nem que seja para informar como as portas se ligam. Confere?
+	- Um Connector PiADL tem a mesma estrutura de um componente PiADL, não cheguei lá, mas imagino que há essa diferença 
+	  por razões semanticas, para impedir que dois componentes se conectem diretamente sem que haja um conector. 
+	
+	* PERGUNTAS: 
+		- Todo Connector SysADL deve mesmo ser um Connector PiADL?
+		 
+		- Um Connector Simples e sem Configuration poderia ser transformado dessa forma em PiADL?
+		
+			- Em SysADL
+	    		connector def notifySupervisoryCN {
+					participants: 
+						~ nsIPT : inNotificationToSupervisory {}
+						~ nsOPT : outNotificationToSupervisory {}
+						flows: NotificationToSupervisory from nsOPT to nsIPT
+				}
+    		
+    		- Em PiADL (Transformação parcial de Flow)
+    			
+    			connection nsIPT is in (NotificationToSupervisory)
+  				connection nsOPT is out (NotificationToSupervisory)
+  
+    	
+    		- Na transformação hipotética
+    		
+		    	connector notifySupervisoryCN is abstraction(){
+					
+					type NotificationToSupervisory is String //No exemplo original é um Enum 
+					
+					connection nsIPT is in (NotificationToSupervisory)
+		  			connection nsOPT is out (NotificationToSupervisory)
+					
+					protocol is{
+						(via nsIPT receive NotificationToSupervisory
+						 via nsOPT send NotificationToSupervisory)*
+					}
+					
+					behavior is{
+						unobservable
+					}
+				}
+    	
+   
+   - Um Connector Composto e com a Configuration mínima poderia ser transformado dessa forma em PiADL? NÃO
+		
+			- Em SysADL
+				port def SmartphoneCPT { ports : reqSout : RequestOPT ; respSin : ResponseIPT ; } 
+				port def WristbandCPT { ports : reqWin : RequestIPT ; respWout : ResponseOPT ; } 
+	    		connector def RequestResponseCN { 
+	    			participants : 
+	    				~ w : WristbandCPT ; 
+	    				~ sp : SmartphoneCPT ; 
+					configuration { 
+						connectors : 
+							rq : sendRequestCN bindings reqSout = reqWin ; 
+							rp : sendResponseCN bindings respWout = respSin ;
+					}
+				} 
+    		
+    		- Em PiADL (Transformação parcial de Flow)
+    			
+    			connection respSin is in (Response)// SmartphoneCPT in
+  				connection reqSout is out (Request)// SmartphoneCPT out
+  				connection reqWin is in (Request)// WristbandCPT in
+  				connection respWout is out (Response)// WristbandCPT out
+  
+    	
+    		- Na transformação hipotética
+    		
+		    	connector RequestResponseCN is abstraction(){
+					
+					type Response is String 
+					type Request is String 
+					
+					connection respSin is in (Response)// SmartphoneCPT in
+	  				connection reqSout is out (Request)// SmartphoneCPT out
+	  				connection reqWin is in (Request)// WristbandCPT in
+	  				connection respWout is out (Response)// WristbandCPT out
+					
+					protocol is{
+						(via reqWin receive Request
+						 via respWout send Response
+						 via reqSout send Request
+						 via respSin receive Response)*
+					}
+					
+					behavior is{
+						unobservable
+					}
+				} 	
+ - A hipótese acima vale para Connector Composto com Configuração além da mínima, e se a configuração se transformar em behavior??
+ 
+ * TRANSFORMAÇÃO:
+		- Iniciada a partir do Flow2ConnectionDeclaration 	
+    	- Acredito que está tendo um problema ao armazenar 'in' como direction da ConnectionDeclaration porque é uma palavra reservada;
+		
+	
+
+****** Anotações
+
+1.
+Status é um tipo construido, deveria ser definido inteiramente no escopo desse connection Declaration? Ou não? Só no componente/connector qeu estiver dentro?
+<piADL:ConnectionDeclaration name="sIPT">
+    <type xsi:type="piADL:BaseType" type="Status"/>
+  </piADL:ConnectionDeclaration>
+  <piADL:ConnectionDeclaration name="sOPT" direction="out">
+    <type xsi:type="piADL:BaseType" type="Status"/>
+  </piADL:ConnectionDeclaration>
+	 
+2.  acho que rule TypeDef2BaseType deveria ser mais generica TypeDef2ValueType e dentro da regra checar se é BaseType ou ConstructedType
+	- Será que usar herança de regras nesse caso? 
+	
+-------------------------------------------------------------------------------------------------------------------------------------------------
+# Reunião 13/05
+
+# 1: View
+	* PERGUNTA: 
+		
+		- Em SysADL
+		
+			datatype VehicleData{
+				attributes: destination : Location;
+				command : CommandToArm;
+			}
+			
+		- Em PiADL
+		
+			type VehicleData is view[ 
+				attributes: destination : Location;
+				command : CommandToArm;
+			]
+	
+		- Então posso ter...?
+		
+			vD1 is VehicleData
+			vD2 is  VehicleData
+			connection CvD is in (VehicleData)
+		
+		- Através de viewValue
+
+# 2: Enum tem valor default (0)? 
+
+	  <connections name="req" direction="out">
+        <type xsi:type="piADL:BaseType" type="String"/>
+      </connections>
+      <connections name="reqI"> // in, enum valor 0
+        <type xsi:type="piADL:BaseType" type="String"/>
+      </connections>
+      <protDecl>
+        <protocol connectionName="reqI" action=" receive ">
+          <type xsi:type="piADL:BaseType" type="String"/>
+        </protocol>
+        <protocol connectionName="req"> // send, enum valor 0
+          <type xsi:type="piADL:BaseType" type="String"/>
+        </protocol>
+      </protDecl>
+
+# 3: Behavior Unobservable
+
+[?] PiADL::Connector {
+    name: EString (ArchitecturalElement)
+    parameters[] : Parameter (ArchitecturalElement)
+    typeDecl[] : TypeDeclaration (ArchitecturalElement)
+    connections[] : ConnectionDeclaration (ArchitecturalElement)
+    protDecl : ProtocolDeclaration (ArchitecturalElement)
+    ?behavior : BehaviorDeclaration (ArchitecturalElement)  
+ }  
+ 
+  PiADL::BehaviorDeclaration {
+   body[]: BehaviorClause  (BehaviorDeclaration)
+ }  
+  
+  PiADL::BehaviorClause (Abstrata)
+  	- VariableDeclaration
+	- Choice
+  	- Composition
+  	- Decomposition
+  	- Recurse
+  	- Prefix (No Metamodelo não encontro SilentPrefix)
+  	
+  	Prefix:
+		InputPrefix | OutputPrefix | ConditionalPrefix | {Prefix} SilentPrefix
+	;
+
+	InputPrefix:
+		'via' connectionName=ID 'receive' parameter=Parameter
+	;
+	
+	OutputPrefix:
+		'via' connectionName=ID 'send' value=AbstractExpression
+	;
+	
+	SilentPrefix:
+		'unobservable'
+	;
+  	
+  	
+  	
+  	- Statement (Classe Unobservable sem atributos.)
+  	
+  	Statement:
+	  ExplicitProjection
+	| VariableAssignment	
+	| FunctionDeclaration
+	| FunctionCall
+	| IfThenElse
+	| While
+	| For
+	| Return
+	| {Unobservable} Unobservable
+	;
+	
+	
+  
+  
+  
+
+# Problemas:
+- os Datatype/view não estão sendo definidas dentro do Connector. Falta o typeDecl[] : TypeDeclaration (ArchitecturalElement)
+- Conector composto com uso de behavior Compose? Pensar nisso
+
+
+
+- Um Connector Composto e com a Configuration mínima poderia ser transformado dessa forma em PiADL? 
+		
+			- Em SysADL
+				port def IAGVSystem {
+					ports: 
+						inMoveToStation : inVehicleData {}
+						outNotifications : outNotificationToSupervisory {}
+				}
+				port def ISupervisorySystem {
+					ports: 
+						outMoveToStation : outVehicleData {}
+						inNotifications : inNotificationToSupervisory {}
+				}
+				
+				connector def notifySupervisory {
+					participants: 
+						~ nsIPT : inNotificationToSupervisory {}
+						~ nsOPT : outNotificationToSupervisory {}
+					flows: 
+						NotificationToSupervisory from nsOPT to nsIPT
+				}
+				
+				connector def sendVehicleData {
+					participants: 
+						~ vdOPT : outVehicleData {}
+						~ vdIPT : inVehicleData {}
+					flows: 
+						VehicleData from vdOPT to vdIPT
+				}
+					    		
+	    		connector def interactionAGVAndSupervisory {
+					participants: 
+						~ iagvs : IAGVSystem {}
+						~ iss : ISupervisorySystem {}
+					configuration {
+						connectors:
+							nS : notifySupervisory bindings outNotifications = inNotifications; 
+							sVD : sendVehicleData bindings outMoveToStation = inMoveToStation;
+					}
+				}
+    	
+    		- Na transformação hipotética
+    		
+				connector notifySupervisory is abstraction(){
+					
+					type NotificationToSupervisory is Any  
+					
+					connection nsIPT is in (NotificationToSupervisory)
+		  			connection nsOPT is out (NotificationToSupervisory)
+					
+					protocol is{
+						(via nsIPT receive NotificationToSupervisory
+						 via nsOPT send NotificationToSupervisory)*
+					}
+					
+					behavior is{
+						unobservable
+					}
+				}
+				
+		    	connector sendVehicleData is abstraction(){
+					
+					type VehicleData is view[ 
+						attributes: destination : Location;
+						command : CommandToArm;
+					]
+					
+					connection vdIPT is in (VehicleData)
+	  				connection vdOPT is out (VehicleData)
+					
+					protocol is{
+						(via vdIPT receive VehicleData
+						 via vdOPT send VehicleData)*
+					}
+					
+					behavior is{
+						unobservable
+					}
+				} 	
+
+
+				connector def interactionAGVAndSupervisory {
+					participants: 
+						~ iagvs : IAGVSystem {}
+						~ iss : ISupervisorySystem {}
+					configuration {
+						connectors:
+							nS : notifySupervisory bindings outNotifications = inNotifications; 
+							sVD : sendVehicleData bindings outMoveToStation = inMoveToStation;
+					}
+				}
+
+				connector interactionAGVAndSupervisory is abstraction(){
+				-- Semanticamente falando, não há a instanciação e uso de 2 conectores simples 
+					
+					type NotificationToSupervisory is Any  
+					type VehicleData is view[ 
+						attributes: destination : Location;
+						command : CommandToArm;
+					]
+					
+					connection vdIPT is in (VehicleData)
+		  			connection nsOPT is out (NotificationToSupervisory)
+					connection nsIPT is in (NotificationToSupervisory)
+		  			connection vdOPT is out (VehicleData)
+				
+					protocol is{
+						(via vdIPT receive VehicleData
+						 via vdOPT send VehicleData
+						 via nsIPT receive NotificationToSupervisory
+						 via nsOPT send NotificationToSupervisory)*
+					}
+					
+					behavior is{
+						unobservable
+					}
+				} 	
+	
+
+
+	 

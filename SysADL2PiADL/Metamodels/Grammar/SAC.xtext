@@ -1,0 +1,94 @@
+
+//SysADL
+
+			ArchitectureDef returns ArchitectureDef: 
+				'architecture' 'def' name=ID 
+					'ports' ':' ports+=PortUse*
+					(composite=Configuration)
+				'}';
+	
+	
+			
+			Configuration returns Configuration:
+				{Configuration}
+				'configuration'
+				'{'
+					('components' ':' components+=ComponentUse*)?
+					('connectors' ':' connectors+=ConnectorUse*)?
+					('delegations' ':' delegations+=Delegation*)?
+				'}';
+	
+	
+			
+			ComponentUse returns ComponentUse:
+				name=ID ':' definition=[ComponentDef|QualifiedName]
+				('{'
+					
+					('using' 'ports' ':' ports+=PortUse*)?
+					
+				'}' | ';');
+	
+			
+			ConnectorUse returns ConnectorUse:
+				name=ID ':' definition=[ConnectorDef|QualifiedName] 
+				('bindings' bindings+=ConnectorBinding 
+				( "," bindings+=ConnectorBinding)*)? 
+				('{'
+					'ports' ':' ports+=PortUse_Reverse*
+					properties+=Property*
+				'}' | ';');
+		
+			
+			ConnectorBinding returns ConnectorBinding:
+						source=[PortUse|QualifiedName] '=' 
+						destination=[PortUse|QualifiedName];
+		
+			
+			Delegation returns Delegation:
+				source=[PortUse|QualifiedName] 'to' 
+				destination=[PortUse|QualifiedName];
+				
+
+	
+//PiADL				
+				
+		Architecture:
+			'architecture' name=ID 'is' 
+			('abstraction()')
+			'{'
+				'behavior' 'is' '{'
+					compose=Composition
+				'}'
+			'}'
+		;
+		
+		Composition:
+			'compose' '{'
+				clause+=(BehaviorClause |
+						 ElementInstantiation)+
+				(('and' | 'and') 
+				clause+=(BehaviorClause | 
+						 ElementInstantiation)+)+	
+			('}' | '}') 
+			
+				uc=UnificationClause?
+		;
+		
+		ElementInstantiation:
+			elementName=ID 'is' 
+			elementType=ID 
+		;
+		
+		Unification:
+			fromc=ConnectionAccess 'unifies' 
+			toc=ConnectionAccess
+		;
+		
+		ConnectionAccess:	
+			elementName=(ID | 'self') '::' 
+			connectionName=ID
+		;
+	
+	
+	
+	

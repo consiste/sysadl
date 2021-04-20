@@ -1,0 +1,173 @@
+
+grammar fr.irisa.archware.PiADL with org.eclipse.xtext.common.Terminals
+
+generate piADL "http://www.irisa.fr/archware/PiADL"
+
+
+/* ========================================================================= */
+/* @version Camila's Thesis                                                  */
+/* ------------------------------------------------------------------------- */
+
+ArchitectureDescription: //ok
+	archElements+=ArchitecturalElement*
+	archs+=Architecture+
+	cbehavior=BehaviorDeclaration
+;
+
+ArchitecturalElement:
+	Component | Connector
+;
+
+Connector://ok
+	'connector' name=ID 'is' 
+	'abstraction()' '{'
+		typeDecl+=TypeDeclaration*
+		connections+=ConnectionDeclaration*
+		protDecl=ProtocolDeclaration?
+		behavior=BehaviorDeclaration
+	'}'
+;
+
+Component://ok
+	'component' name=ID 'is' 
+	'abstraction()' '{'
+		typeDecl+=TypeDeclaration*
+		connections+=ConnectionDeclaration*
+		protDecl=ProtocolDeclaration?
+		behavior=BehaviorDeclaration
+	'}'
+;
+
+Architecture://ok
+	'architecture' name=ID 'is' 
+	'abstraction()' '{'
+		'behavior' 'is' '{'
+			compose=Composition
+		'}'
+	'}'
+;
+
+TypeDeclaration:
+	'type' name=ID 'is' type=ValueType
+;
+
+ConnectionDeclaration:
+	'connection' name=ID 'is' direction=ConnectionMode '(' type=ValueType ')'
+;
+
+ProtocolDeclaration:
+	'protocol' 'is' '{'
+		'('
+		protocol+=ProtocolAction* 
+		')' '*'
+	'}'
+;
+
+ProtocolAction:
+	'('* 'via' connectionName=ID action=Action type=ValueType ')'*
+;
+
+
+enum Action:
+	send=' send ' | receive=' receive '
+;
+
+
+enum ConnectionMode:
+	in='in' | out='out'
+;
+
+BehaviorDeclaration:
+	{BehaviorDeclaration}
+	'behavior' 'is' '{'
+		body+=BehaviorClause*
+	'}'
+;
+
+BehaviorClause:
+	  VariableDeclaration
+	| ConnectionDeclaration
+	| Prefix
+	| Choice
+	| Composition
+	| Decomposition
+	| Recurse
+	| Statement
+	| {Inaction} Inaction
+;
+
+Composition:
+	'compose' '{'
+		clause+=(BehaviorClause | ElementInstantiation)+
+		(('and' | 'and') clause+=(BehaviorClause | ElementInstantiation)+)+	
+	('}' | '}') uc=UnificationClause?
+;
+
+UnificationClause:
+	{UnificationClause}
+	'where' '{'
+		(unifications+=Unification)*
+	'}'
+;
+
+ElementInstantiation:
+	elementName=ID 'is' elementType=ID 
+	'(' (parameterName+=ID (',' parameterName+=ID)*)? ')'
+;
+
+Unification:
+	fromc=ConnectionAccess 'unifies' toc=ConnectionAccess
+;
+
+ConnectionAccess:
+	elementName=(ID | 'self') '::' connectionName=ID
+;
+
+Unobservable:
+	'unobservable'
+;
+
+
+ValueType:
+	BaseType | ConstructedType | {TypeRef} idt=ID
+;
+
+BaseType: 
+	NaturalType | IntegerType | RealType | BooleanType | StringType | AnyType 
+;
+
+NaturalType:
+	{NaturalType} type='Natural'
+;
+
+IntegerType:
+	{IntegerType} type='Integer'
+;
+
+RealType:
+	{RealType} type='Real'
+;
+
+BooleanType:
+	{BooleanType} type='Boolean'
+;
+
+StringType:
+	{StringType} type='String'
+;
+
+AnyType:
+	{AnyType} type='Any'
+;
+
+ConstructedType:
+	Tuple | View | Set | Sequence
+;
+
+View:
+	'view''[' labt+=LabeledType (',' labt+=LabeledType)* ']'
+;
+
+LabeledType:
+	label=ID ':' type=ValueType
+;

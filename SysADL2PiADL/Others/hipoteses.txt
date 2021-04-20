@@ -1,0 +1,105 @@
+- Um Connector Composto e com a Configuration mínima poderia ser transformado dessa forma em PiADL? 
+		
+			- Em SysADL
+				port def IAGVSystem {
+					ports: 
+						inMoveToStation : inVehicleData {}
+						outNotifications : outNotificationToSupervisory {}
+				}
+				port def ISupervisorySystem {
+					ports: 
+						outMoveToStation : outVehicleData {}
+						inNotifications : inNotificationToSupervisory {}
+				}
+				
+				connector def notifySupervisory {
+					participants: 
+						~ nsIPT : inNotificationToSupervisory {}
+						~ nsOPT : outNotificationToSupervisory {}
+					flows: 
+						NotificationToSupervisory from nsOPT to nsIPT
+				}
+				
+				connector def sendVehicleData {
+					participants: 
+						~ vdOPT : outVehicleData {}
+						~ vdIPT : inVehicleData {}
+					flows: 
+						VehicleData from vdOPT to vdIPT
+				}
+					    		
+	    		connector def interactionAGVAndSupervisory {
+					participants: 
+						~ iagvs : IAGVSystem {}
+						~ iss : ISupervisorySystem {}
+					configuration {
+						connectors:
+							nS : notifySupervisory bindings outNotifications = inNotifications; 
+							sVD : sendVehicleData bindings outMoveToStation = inMoveToStation;
+					}
+				}
+    	
+    		- Na transformação hipotética
+    		
+				connector notifySupervisory is abstraction(){
+					
+					type NotificationToSupervisory is Any  
+					
+					connection nsIPT is in (NotificationToSupervisory)
+		  			connection nsOPT is out (NotificationToSupervisory)
+					
+					protocol is{
+						(via nsIPT receive NotificationToSupervisory
+						 via nsOPT send NotificationToSupervisory)*
+					}
+					
+					behavior is{
+						unobservable
+					}
+				}
+				
+		    	connector sendVehicleData is abstraction(){
+					
+					type VehicleData is view[ 
+						attributes: destination : Location;
+						command : CommandToArm;
+					]
+					
+					connection vdIPT is in (VehicleData)
+	  				connection vdOPT is out (VehicleData)
+					
+					protocol is{
+						(via vdIPT receive VehicleData
+						 via vdOPT send VehicleData)*
+					}
+					
+					behavior is{
+						unobservable
+					}
+				} 	
+
+				connector interactionAGVAndSupervisory is abstraction(){
+				-- Semanticamente falando, não há a instanciação e uso de 2 conectores simples, mas na prática funciona da mesma forma. E ai? 
+					
+					type NotificationToSupervisory is Any  
+					type VehicleData is view[ 
+						attributes: destination : Location;
+						command : CommandToArm;
+					]
+					
+					connection vdIPT is in (VehicleData)
+		  			connection nsOPT is out (NotificationToSupervisory)
+					connection nsIPT is in (NotificationToSupervisory)
+		  			connection vdOPT is out (VehicleData)
+				
+					protocol is{
+						(via vdIPT receive VehicleData
+						 via vdOPT send VehicleData
+						 via nsIPT receive NotificationToSupervisory
+						 via nsOPT send NotificationToSupervisory)*
+					}
+					
+					behavior is{
+						unobservable
+					}
+				} 	

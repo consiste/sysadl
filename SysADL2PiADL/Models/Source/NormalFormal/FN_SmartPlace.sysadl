@@ -1,0 +1,689 @@
+Model SysADLArchitecture;
+package SysADL.types {
+	
+	//////////////types//////////////
+	
+	value type Int {}
+	value type Boolean {
+	}
+	value type String {
+	}
+	value type Void {
+	}
+	value type Real {
+	}
+
+	enum InfraredCode {
+		increase, decrease, turn_on, turn_off
+	}
+	enum TypeSensor {
+		temperature, humidity, presence
+	}
+	
+	datatype FrameList {}
+	datatype AirConditioner {
+		attributes:   
+			id : String;
+			room : String;
+	}
+	datatype Schedule {
+		attributes: 
+			timestamp : Int;
+	}
+	datatype Room {
+		attributes: 
+			id : String;
+			building : String;
+	}
+	datatype Location {
+		attributes: 
+			latitude : Real;
+			longitude : Real;
+	}
+	datatype DataSensor {
+		attributes: 
+			id : String;
+			^value : String;
+			typeSensor : TypeSensor;
+	}	
+	datatype Sensor {
+		attributes:  
+			id : String;
+			room : String;
+			type_sensor : TypeSensor;
+	}
+	datatype Building {
+		attributes: 
+			id : String; 
+			location : Location;
+	}
+	datatype UpdateDB {
+		attributes: 
+			idAirCond : String; 
+			actionTemp : InfraredCode;
+			currentTime : Schedule;
+	}
+	datatype Measurement {
+		attributes: 
+			^value : String;
+			schedule : Schedule;
+			sensor : Sensor;
+	}
+	datatype Intervention {
+		attributes: 
+			icAirCond : InfraredCode; 
+			airCond : AirConditioner;
+			schedule : Schedule;
+	}
+	datatype RestFulRaspeberry {
+		attributes: 
+			ip : String;
+			^port : String;
+			path : String;
+			m : Measurement;
+			i : Intervention;
+	}
+	datatype ContextInformation {
+		attributes: 
+			air_conditioner : AirConditioner;
+			room : Room;
+			sensor : Sensor; 
+			building : Building;
+	}	
+	
+	//////////////Ports//////////////
+
+	port def ValueOPT {
+		flow out Int
+	}
+	port def ValueIPT {
+		flow in Int
+	}	
+	port def ReservationResponseIPT {
+		flow in Boolean
+	}
+	port def ReservationResponseOPT {
+		flow out Boolean
+	}
+	port def RequestOPT {
+		flow out String
+	}
+	port def RequestIPT {
+		flow in String
+	}
+	port def InfraredSignalIPT {
+		flow in Void
+	}
+	port def InfraredSignalOPT {
+		flow out Void
+	}
+	port def ContextInformationOPT {
+		flow out ContextInformation
+	}
+	port def ContextInformationIPT {
+		flow in ContextInformation
+	}
+	port def UndefinedOPT {
+		flow out Void
+	}
+	port def UndefinedIPT {
+		flow in Void
+	}	
+	port def CommandIPT {
+		flow in InfraredCode
+	}
+	port def CommandOPT {
+		flow out InfraredCode
+	}
+	port def RestfulRaspberryIPT {
+		flow in RestFulRaspeberry
+	}
+	port def RestfulRaspberryOPT {
+		flow out RestFulRaspeberry
+	}
+	port def DataBaseRespOPT {
+		flow out String
+	}
+	port def DataBaseRespIPT {
+		flow in String
+	}
+	port def ScheduleOPT {
+		flow out Schedule
+	}
+	port def ScheduleIPT {
+		flow in Schedule
+	}
+	port def UpdateIPT {
+		flow in UpdateDB
+	}
+	port def UpdateOPT {
+		flow out UpdateDB
+	}
+	port def FrameListIPT {
+		flow in FrameList
+	}
+	port def FrameListOPT {
+		flow out FrameList
+	}
+	port def DataBaseO2IIPT {
+		flow in String
+	}
+	port def DataBaseO2IOPT {
+		flow out String
+	}
+	port def DataBaseI2OIPT {
+		flow in String
+	}
+	port def DataBaseI2OOPT {
+		flow out String
+	}
+	port def ReservationInformationO2IIPT {
+		flow in Boolean
+	}
+	port def ReservationInformationO2IOPT {
+		flow out String
+	}
+	port def ReservationInformationI2OIPT {
+		flow in String
+	}
+	port def ReservationInformationI2OOPT {
+		flow out Boolean
+	}
+	port def ContextO2IIPT {
+		flow in ContextInformation
+	}
+	port def ContextO2IOPT {
+		flow out String
+	}
+	port def ContextI2OIPT {
+		flow in String
+	}
+	port def ContextI2OOPT {
+		flow out ContextInformation
+	}
+	
+//	port def DataBaseO2I {
+//		ports: 
+//		reqODB : RequestOPT {
+//		}
+//		respIDB : DataBaseRespIPT {
+//		}
+//	}
+
+//	port def DataBaseI2O {
+//		ports: reqIDB : RequestIPT {
+//		}
+//		respODB : DataBaseRespOPT {
+//		}
+//	}
+
+//	port def ReservationInformationO2I {
+//		ports: reqORI : RequestOPT {
+//		}
+//		respIRI : ReservationResponseIPT {
+//		}
+//	}
+
+//	port def ReservationInformationI2O {
+//		ports: reqIRI : RequestIPT {
+//		}
+//		respORI : ReservationResponseOPT {
+//		}
+//	}	
+
+//	port def ContextO2I {
+//		ports: reqOC : RequestOPT {
+//		}
+//		respIC : ContextInformationIPT {
+//		}
+//	}
+
+//	port def ContextI2O {
+//		ports: reqIC : RequestIPT {
+//		}
+//		respOC : ContextInformationOPT {
+//		}
+//	}
+
+
+	//////////////Connectors//////////////
+
+	connector def UndefinedCN {
+		participants: 
+			~ undO : UndefinedOPT {}
+			~ undI : UndefinedIPT {}
+		flows: Void from undO to undI
+	}
+	connector def SendValueCN {
+		participants: 
+		~ vO : ValueOPT {}
+		~ vI : ValueIPT {}
+		flows: Int from vO to vI
+	}
+	connector def InfraCodeCN {
+		participants: 
+			~ cmdI : CommandIPT {}
+			~ cmdO : CommandOPT {}
+		flows: InfraredCode from cmdO to cmdI
+	}
+	connector def CmdRestfulCN {
+		participants: 
+			~ restI : RestfulRaspberryIPT {}
+			~ restO : RestfulRaspberryOPT {}
+		flows: RestFulRaspeberry from restO to restI
+	}
+	connector def SendReservationInfoCN {
+		participants: 
+			~ rrRespI : ValueIPT {}
+			~ rRespO : ValueOPT {}
+		flows: Boolean from rRespO to rrRespI
+	}
+	connector def RequestCN {
+		participants: 
+			~ rReqO : RequestOPT {}
+			~ rReqI : RequestIPT {}
+		flows: String from rReqO to rReqI
+	}
+	connector def SendContextCN {
+		participants: 
+			~ ciI : ContextInformationIPT {}
+			~ ciO : ContextInformationOPT {}
+		flows: ContextInformation from ciO to ciI
+	}
+	connector def InfraredSignalCN {
+		participants: 
+			~ isI : InfraredSignalIPT {}
+			~ isO : InfraredSignalOPT {}
+		flows: Void from isO to isI
+	}
+	connector def SendPostgreSQLInfoCN {
+		participants: 
+			~ psqlO : DataBaseRespOPT {}
+			~ psqlI : DataBaseRespIPT {}
+		flows: String from psqlO to psqlI
+	}
+	connector def ScheduleCN {
+		participants: 
+			~ dO : ScheduleOPT {}
+			~ dI : ScheduleIPT {}
+		flows: Schedule from dO to dI
+	}
+	connector def FrameListCN {
+		participants: 
+			~ fI : FrameListIPT {}
+			~ fO : FrameListOPT {}
+		flows: FrameList from fO to fI
+	}
+	connector def ContextCN1 {
+		participants: 
+			~ reqOC : RequestOPT {}
+			~ reqIC : RequestIPT {}
+		flows: String from reqOC to reqIC
+	}
+	connector def ContextCN2 {
+		participants: 
+			~ respIC : ContextInformationIPT {}
+			~ respOC : ContextInformationOPT {}
+		flows: ContextInformation from respOC to respIC
+	}
+	connector def ReservationCN1 {
+		participants: 
+			~ reqORI : RequestOPT {}
+			~ reqIRI : RequestIPT {}
+		flows: String from reqORI to reqIRI
+	}
+	connector def ReservationCN2 {
+		participants: 
+			~ respORI : ReservationResponseOPT {}
+			~ respIRI : ReservationResponseIPT {}
+		flows: ContextInformation from respORI to respIRI
+	}
+	connector def QueryDataBaseCN1 {
+		participants: 
+			~ reqODB : RequestOPT {}
+			~ reqIDB : RequestIPT {}
+		flows: String from reqODB to reqIDB
+	}
+	connector def QueryDataBaseCN2 {
+		participants: 
+			~ respODB : DataBaseRespOPT {}
+			~ respIDB : DataBaseRespOPT {}
+		flows: String from respODB to respIDB
+	}
+
+//	connector def ContextCN {
+//		participants: ~ cO : ContextO2I {
+//		}
+//		~ cI : ContextI2O {
+//		}
+//		configuration {
+//			connectors:
+//				req : RequestCN bindings reqOC = reqIC;
+//				resp : SendContextCN bindings respOC = respIC;
+//		}
+//	}
+
+//	connector def ReservationCN {
+//		participants: 
+//			~ riI : ReservationInformationI2O {}
+//			~ riO : ReservationInformationO2I {}
+//		configuration {
+//			connectors:
+//				rri : RequestCN bindings reqORI = reqIRI;
+//				sri : SendReservationInfoCN bindings respORI = respIRI;
+//		}
+//	}
+
+//connector def QueryDataBaseCN {
+//		participants: ~ qI : DataBaseI2O {
+//		}
+//		~ qO : DataBaseO2I {
+//		}
+//		configuration {
+//			connectors:
+//			req : RequestCN bindings reqODB = reqIDB;
+//			resp : SendPostgreSQLInfoCN bindings respODB = respIDB;
+//		}
+//	}
+
+	//////////////Components//////////////
+
+	boundary component def RoomReservationSystem {
+		ports: 
+			ri : ReservationInformationI2OIPT {}
+			ro: ReservationInformationI2OOPT {}
+	}
+	boundary component def OrionContextBroker {
+		ports: 
+			ci : ContextInformationIPT {}
+			ctxi : ContextI2OIPT {}
+			ctxo : ContextI2OOPT {}
+	}
+	boundary component def DB_PostgreSQL {
+		ports: 
+			dbi : DataBaseI2OIPT {}
+			dbo : DataBaseI2OOPT {}
+			u : UpdateIPT {}
+	}	
+	boundary component def PresenceSensor {
+		ports: 
+			presence : ValueOPT {}
+	}
+
+	boundary component def TemperatureAndHumiditySensor {
+		ports: 
+			temperature : ValueOPT {}
+	}
+	boundary component def Fotosensor {
+		ports: 
+			u : UndefinedOPT {}
+			is : InfraredSignalIPT {}
+	}
+	boundary component def AirConditionerController {
+		ports: 
+			u : UndefinedIPT {}
+	}
+	boundary component def Led {
+		ports: 
+			c : CommandIPT {}
+			is : InfraredSignalOPT {}
+	}
+	boundary component def Camera {
+		ports: 
+			f : FrameListOPT {}
+	}
+	boundary component def CamMonitor {
+		ports: 
+			f : FrameListIPT {}
+			numPeople : ValueOPT {}
+	}
+	boundary component def DB_SQLite {
+		ports: 
+			ri : ReservationInformationI2OIPT {}
+			ro: ReservationInformationI2OOPT {}
+			rresp : ReservationResponseIPT {}
+	}
+	boundary component def GraphicsGenerator {
+		ports:
+			dbi : DataBaseO2IIPT {}
+			dbo : DataBaseO2IOPT {}
+			ctxi : ContextO2IIPT {}
+			ctxo : ContextO2IOPT {}
+	}
+	component def ReportGenerator {
+		ports: 
+			a : ContextInformationIPT {}
+	}
+	component def TemperatureController {
+		ports: 
+			presence : ValueIPT {}
+			rrasp : RestfulRaspberryOPT {}
+			ri : ReservationInformationI2OIPT {}
+			ro: ReservationInformationI2OOPT {}
+			temperature : ValueIPT {}
+			numPeople : ValueIPT {}
+			c : CommandOPT {}
+	}
+	component def SetTemperature {
+		ports: 
+			presence : ValueIPT {}
+			rrasp : RestfulRaspberryOPT {}
+			c : CommandOPT {}
+			checkLastPresI : DataBaseO2IIPT {}
+			checkLastPresO : DataBaseO2IOPT {}
+			lastPresence : ScheduleOPT {}
+			temperature : ValueIPT {}
+			numPeople : ValueIPT {}
+			pres : ScheduleOPT {}
+	}
+	component def HistoricController {
+		ports: 
+			rr : RestfulRaspberryIPT {}
+			u : UpdateOPT {}
+			ctxI : ContextO2IIPT {}
+			ctxO : ContextO2IOPT {}
+	}
+	component def RegistrationController {
+		ports: ci : ContextInformationOPT {
+		}
+		regUi : ContextInformationIPT {
+		}
+	}	
+	component def Raspberry {
+		ports: 
+			c : CommandOPT {}
+			ri : ReservationInformationO2IIPT {}
+			ro : ReservationInformationO2IOPT {}
+			f : FrameListIPT {}
+			temperature : ValueIPT {}
+			presence : ValueIPT {}
+			rr : RestfulRaspberryOPT {}	
+		configuration {
+			components:
+				cm : CamMonitor {
+					using ports: fCm : FrameListIPT {
+					}
+					numPeopleCm : ValueOPT {
+					}
+				}
+				
+				tc : TemperatureController {
+					using ports: 
+						presenceTc : ValueIPT {}
+						rraspTc : RestfulRaspberryOPT {}
+						riTcI : ReservationInformationO2IIPT {}
+						riTcO : ReservationInformationO2IOPT {}
+						temperatureTc : ValueIPT {}
+						numPeopleTc : ValueIPT {}
+						cTc : CommandOPT {}
+				}
+				sqlite : DB_SQLite {
+					using ports: 
+						ri : ReservationInformationI2OIPT {}
+						ro : ReservationInformationI2OOPT {}
+						rresp : ReservationResponseIPT {}
+				}	
+			connectors:
+				 countPeople : SendValueCN bindings numPeopleCm = numPeopleTc;
+				 rn1 : ReservationCN1 bindings riTcO = ri;
+				 rn2 : ReservationCN2 bindings ro = riTcI;				 
+			delegations:
+				fCm to f 
+				presenceTc to presence
+				temperatureTc to temperature
+				cTc to c 
+				rraspTc to rr 
+				riTcI to ri
+				riTcO to ro
+				rresp to ri
+		}
+	}
+	component def AirConditionerCP {
+		ports: 
+			is : InfraredSignalIPT {}
+		configuration {
+			components:
+				f : Fotosensor {
+					using ports: 
+						uF : UndefinedOPT {}
+						isF : InfraredSignalIPT {}
+				}
+				acc : AirConditionerController {
+					using ports: 
+						uAcc : UndefinedIPT {}
+				}
+			connectors:
+				u : UndefinedCN bindings uF = uAcc;
+			delegations:
+				isF to is
+		}
+	}
+	component def SmartPlaceWeb {
+		ports: 
+			co : ContextInformationOPT {}
+			rr : RestfulRaspberryIPT {}
+			dbi : DataBaseO2IIPT {}
+			dbo : DataBaseO2IOPT {}
+			u : UpdateOPT {}
+			ctxi : ContextO2IIPT {}
+			ctxo : ContextO2IOPT {}
+		configuration {
+			components:			
+				rc : RegistrationController {
+					using ports: 
+						ciRc : ContextInformationOPT {}
+						regUi : ContextInformationIPT {}
+				}
+				rg : ReportGenerator {
+					using ports: 
+						ai : ContextO2IIPT {}
+						ao : ContextO2IOPT {}
+				}
+				gg : GraphicsGenerator {
+					using ports: 
+						dbGgi : DataBaseO2IIPT {}
+						dbGgo : DataBaseO2IOPT {}
+						ctxGgi : ContextO2IIPT {}
+						ctxGgo : ContextO2IOPT {}
+				}
+				hc : HistoricController {
+					using ports: 
+						rrHc : RestfulRaspberryIPT {}
+						uHc : UpdateOPT {}
+						ctxHci : ContextO2IIPT {}
+						ctxHco : ContextO2IOPT {}
+			}
+			delegations:
+				ciRc to co
+				ai to ctxi
+				ao to ctxo
+				ctxGgi to ctxi
+				ctxGgo to ctxo 
+				ctxHci to ctxi 
+				ctxHco to ctxo 
+				uHc to u 
+				dbGgi to dbi 
+				dbGgo to dbo
+				rrHc to rr
+		}
+	}	
+	architecture def SmartPlace {
+		ports:
+		configuration {
+			components:
+				spw : SmartPlaceWeb {
+					using ports: 
+						coSpw : ContextInformationOPT {}
+						rrSpw : RestfulRaspberryIPT {}
+						dbSpwi : DataBaseO2IIPT {}
+						dbSpwo : DataBaseO2IOPT {}
+						uSpw : UpdateOPT {}
+						ctxSpwi : ContextO2IIPT {}
+						ctxSpwo : ContextO2IOPT {}
+				}
+				rrs : RoomReservationSystem {
+					using ports: 
+						riRrsi : ReservationInformationI2OIPT {}
+						riRrso : ReservationInformationI2OOPT {}
+				}
+				ocb : OrionContextBroker {
+					using ports: 
+						ci : ContextInformationIPT {}
+						ctxi : ContextI2OIPT {}
+						ctxo : ContextI2OOPT {}
+				}
+				ths : TemperatureAndHumiditySensor {
+					using ports: 
+						temperatureThs : ValueOPT {}
+				}
+				ps : PresenceSensor {
+					using ports: 
+						presencePs : ValueOPT {}
+				}
+				psql : DB_PostgreSQL {
+					using ports: 
+						dbi : DataBaseI2OIPT {}
+						dbo : DataBaseI2OOPT {}
+						u : UpdateIPT {}
+				}
+				ac : AirConditionerCP {
+					using ports: 
+						isAc : InfraredSignalIPT {}
+				}
+				Led : Led {
+					using ports: 
+						cLed : CommandIPT {}
+						isLed : InfraredSignalOPT {}
+				}
+				Raspberry : Raspberry {
+					using ports: 
+						c : CommandOPT {}
+						rii : ReservationInformationO2IIPT {}
+						rio : ReservationInformationO2IOPT {}
+						f : FrameListIPT {}
+						temperature : ValueIPT {}
+						presence : ValueIPT {}
+						rr : RestfulRaspberryOPT {}
+				}
+				Camera : Camera {
+					using ports: 
+						fCam : FrameListOPT {}
+				}
+				connectors: 
+					qdb1 : QueryDataBaseCN1 bindings dbSpwo = dbi;
+					qdb2 : QueryDataBaseCN2 bindings dbo = dbSpwi;
+					spsqli : SendPostgreSQLInfoCN bindings uSpw = u;
+					ci1 : SendContextCN bindings coSpw = ci;
+					c1 :	ContextCN1 bindings ctxo = ctxSpwi;
+					c2 :	ContextCN2 bindings ctxSpwo = ctxi;
+					cr : CmdRestfulCN bindings rr = rrSpw;
+					sendPresence : SendValueCN bindings presencePs = presence;
+					fl : FrameListCN bindings fCam = f;
+					sendTempHumi : SendValueCN bindings	temperatureThs = temperature;
+					rn1 : ReservationCN1 bindings rio = riRrsi;
+					rn2 : ReservationCN2 bindings riRrso = rii;
+					ic : InfraCodeCN bindings c = cLed;
+					is : InfraredSignalCN bindings isLed = isAc;
+			}
+		}	
+}

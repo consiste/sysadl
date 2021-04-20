@@ -1,0 +1,2203 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<piADL:ArchitectureDescription xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:piADL="http://www.irisa.fr/archware/PiADL">
+  <archElements xsi:type="piADL:Connector" name="UndefinedCN">
+    <connections name="undO" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="Void"/>
+    </connections>
+    <connections name="undI">
+      <type xsi:type="piADL:TypeRef" idt="Void"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="undO">
+        <type xsi:type="piADL:TypeRef" idt="Void"/>
+      </protocol>
+      <protocol connectionName="undI" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="Void"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Connector" name="SendValueCN">
+    <connections name="vO" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="Int"/>
+    </connections>
+    <connections name="vI">
+      <type xsi:type="piADL:TypeRef" idt="Int"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="vO">
+        <type xsi:type="piADL:TypeRef" idt="Int"/>
+      </protocol>
+      <protocol connectionName="vI" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="Int"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Connector" name="InfraCodeCN">
+    <typeDecl name="InfraredCode">
+      <type xsi:type="piADL:AnyType"/>
+    </typeDecl>
+    <connections name="cmdI">
+      <type xsi:type="piADL:TypeRef" idt="InfraredCode"/>
+    </connections>
+    <connections name="cmdO" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="InfraredCode"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="cmdI" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="InfraredCode"/>
+      </protocol>
+      <protocol connectionName="cmdO">
+        <type xsi:type="piADL:TypeRef" idt="InfraredCode"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Connector" name="CmdRestfulCN">
+    <typeDecl name="TypeSensor">
+      <type xsi:type="piADL:AnyType"/>
+    </typeDecl>
+    <typeDecl name="Schedule">
+      <type xsi:type="piADL:View">
+        <labt label="timestamp">
+          <type xsi:type="piADL:TypeRef" idt="Int"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Sensor">
+      <type xsi:type="piADL:View">
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="type_sensor">
+          <type xsi:type="piADL:TypeRef" idt="TypeSensor"/>
+        </labt>
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="InfraredCode">
+      <type xsi:type="piADL:AnyType"/>
+    </typeDecl>
+    <typeDecl name="AirConditioner">
+      <type xsi:type="piADL:View">
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Intervention">
+      <type xsi:type="piADL:View">
+        <labt label="icAirCond">
+          <type xsi:type="piADL:TypeRef" idt="InfraredCode"/>
+        </labt>
+        <labt label="airCond">
+          <type xsi:type="piADL:TypeRef" idt="AirConditioner"/>
+        </labt>
+        <labt label="schedule">
+          <type xsi:type="piADL:TypeRef" idt="Schedule"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Measurement">
+      <type xsi:type="piADL:View">
+        <labt label="value">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="schedule">
+          <type xsi:type="piADL:TypeRef" idt="Schedule"/>
+        </labt>
+        <labt label="sensor">
+          <type xsi:type="piADL:TypeRef" idt="Sensor"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="RestFulRaspeberry">
+      <type xsi:type="piADL:View">
+        <labt label="ip">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="port">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="path">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="i">
+          <type xsi:type="piADL:TypeRef" idt="Intervention"/>
+        </labt>
+        <labt label="m">
+          <type xsi:type="piADL:TypeRef" idt="Measurement"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <connections name="restI">
+      <type xsi:type="piADL:TypeRef" idt="RestFulRaspeberry"/>
+    </connections>
+    <connections name="restO" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="RestFulRaspeberry"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="restI" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="RestFulRaspeberry"/>
+      </protocol>
+      <protocol connectionName="restO">
+        <type xsi:type="piADL:TypeRef" idt="RestFulRaspeberry"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Connector" name="SendReservationInfoCN">
+    <connections name="rrRespI">
+      <type xsi:type="piADL:TypeRef" idt="Int"/>
+    </connections>
+    <connections name="rRespO" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="Int"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="rrRespI" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="Int"/>
+      </protocol>
+      <protocol connectionName="rRespO">
+        <type xsi:type="piADL:TypeRef" idt="Int"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Connector" name="RequestCN">
+    <connections name="rReqO" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <connections name="rReqI">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="rReqO">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+      <protocol connectionName="rReqI" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Connector" name="SendContextCN">
+    <typeDecl name="Location">
+      <type xsi:type="piADL:View">
+        <labt label="latitude">
+          <type xsi:type="piADL:TypeRef" idt="Real"/>
+        </labt>
+        <labt label="longitude">
+          <type xsi:type="piADL:TypeRef" idt="Real"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="TypeSensor">
+      <type xsi:type="piADL:AnyType"/>
+    </typeDecl>
+    <typeDecl name="Sensor">
+      <type xsi:type="piADL:View">
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="type_sensor">
+          <type xsi:type="piADL:TypeRef" idt="TypeSensor"/>
+        </labt>
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="AirConditioner">
+      <type xsi:type="piADL:View">
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Room">
+      <type xsi:type="piADL:View">
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="building">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Building">
+      <type xsi:type="piADL:View">
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="location">
+          <type xsi:type="piADL:TypeRef" idt="Location"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="ContextInformation">
+      <type xsi:type="piADL:View">
+        <labt label="sensor">
+          <type xsi:type="piADL:TypeRef" idt="Sensor"/>
+        </labt>
+        <labt label="air_conditioner">
+          <type xsi:type="piADL:TypeRef" idt="AirConditioner"/>
+        </labt>
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="Room"/>
+        </labt>
+        <labt label="building">
+          <type xsi:type="piADL:TypeRef" idt="Building"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <connections name="ciI">
+      <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+    </connections>
+    <connections name="ciO" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="ciI" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+      </protocol>
+      <protocol connectionName="ciO">
+        <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Connector" name="InfraredSignalCN">
+    <connections name="isI">
+      <type xsi:type="piADL:TypeRef" idt="Void"/>
+    </connections>
+    <connections name="isO" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="Void"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="isI" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="Void"/>
+      </protocol>
+      <protocol connectionName="isO">
+        <type xsi:type="piADL:TypeRef" idt="Void"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Connector" name="ReservationCN">
+    <connections name="reqIRI">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <connections name="respORI" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="Boolean"/>
+    </connections>
+    <connections name="reqORI" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <connections name="respIRI">
+      <type xsi:type="piADL:TypeRef" idt="Boolean"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="reqIRI" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+      <protocol connectionName="respORI">
+        <type xsi:type="piADL:TypeRef" idt="Boolean"/>
+      </protocol>
+      <protocol connectionName="reqORI">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+      <protocol connectionName="respIRI" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="Boolean"/>
+      </protocol>
+    </protDecl>
+    <behavior>
+      <body xsi:type="piADL:Composition">
+        <clause xsi:type="piADL:ElementInstantiation" elementName="rri" elementType="RequestCN"/>
+        <clause xsi:type="piADL:ElementInstantiation" elementName="sri" elementType="SendReservationInfoCN"/>
+        <uc>
+          <unifications>
+            <fromc elementName="self" connectionName="reqORI"/>
+            <toc elementName="rri" connectionName="rReqO"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="rri" connectionName="rReqI"/>
+            <toc elementName="self" connectionName="reqIRI"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="self" connectionName="respORI"/>
+            <toc elementName="sri" connectionName="rRespO"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="sri" connectionName="rrRespI"/>
+            <toc elementName="self" connectionName="respIRI"/>
+          </unifications>
+        </uc>
+      </body>
+    </behavior>
+  </archElements>
+  <archElements xsi:type="piADL:Connector" name="QueryDataBaseCN">
+    <connections name="reqIDB">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <connections name="respODB" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <connections name="reqODB" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <connections name="respIDB">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="reqIDB" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+      <protocol connectionName="respODB">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+      <protocol connectionName="reqODB">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+      <protocol connectionName="respIDB" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+    </protDecl>
+    <behavior>
+      <body xsi:type="piADL:Composition">
+        <clause xsi:type="piADL:ElementInstantiation" elementName="req" elementType="RequestCN"/>
+        <clause xsi:type="piADL:ElementInstantiation" elementName="resp" elementType="SendPostgreSQLInfoCN"/>
+        <uc>
+          <unifications>
+            <fromc elementName="self" connectionName="reqODB"/>
+            <toc elementName="req" connectionName="rReqO"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="req" connectionName="rReqI"/>
+            <toc elementName="self" connectionName="reqIDB"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="self" connectionName="respODB"/>
+            <toc elementName="resp" connectionName="psqlO"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="resp" connectionName="psqlI"/>
+            <toc elementName="self" connectionName="respIDB"/>
+          </unifications>
+        </uc>
+      </body>
+    </behavior>
+  </archElements>
+  <archElements xsi:type="piADL:Connector" name="SendPostgreSQLInfoCN">
+    <connections name="psqlO" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <connections name="psqlI">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="psqlO">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+      <protocol connectionName="psqlI" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Connector" name="ScheduleCN">
+    <typeDecl name="Schedule">
+      <type xsi:type="piADL:View">
+        <labt label="timestamp">
+          <type xsi:type="piADL:TypeRef" idt="Int"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <connections name="dO" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="Schedule"/>
+    </connections>
+    <connections name="dI">
+      <type xsi:type="piADL:TypeRef" idt="Schedule"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="dO">
+        <type xsi:type="piADL:TypeRef" idt="Schedule"/>
+      </protocol>
+      <protocol connectionName="dI" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="Schedule"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Connector" name="FrameListCN">
+    <typeDecl name="FrameList">
+      <type xsi:type="piADL:View">
+        <labt>
+          <type xsi:type="piADL:TypeRef"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <connections name="fI">
+      <type xsi:type="piADL:TypeRef" idt="FrameList"/>
+    </connections>
+    <connections name="fO" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="FrameList"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="fI" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="FrameList"/>
+      </protocol>
+      <protocol connectionName="fO">
+        <type xsi:type="piADL:TypeRef" idt="FrameList"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Connector" name="ContextCN">
+    <typeDecl name="Location">
+      <type xsi:type="piADL:View">
+        <labt label="latitude">
+          <type xsi:type="piADL:TypeRef" idt="Real"/>
+        </labt>
+        <labt label="longitude">
+          <type xsi:type="piADL:TypeRef" idt="Real"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="TypeSensor">
+      <type xsi:type="piADL:AnyType"/>
+    </typeDecl>
+    <typeDecl name="Sensor">
+      <type xsi:type="piADL:View">
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="type_sensor">
+          <type xsi:type="piADL:TypeRef" idt="TypeSensor"/>
+        </labt>
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="AirConditioner">
+      <type xsi:type="piADL:View">
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Room">
+      <type xsi:type="piADL:View">
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="building">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Building">
+      <type xsi:type="piADL:View">
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="location">
+          <type xsi:type="piADL:TypeRef" idt="Location"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="ContextInformation">
+      <type xsi:type="piADL:View">
+        <labt label="sensor">
+          <type xsi:type="piADL:TypeRef" idt="Sensor"/>
+        </labt>
+        <labt label="air_conditioner">
+          <type xsi:type="piADL:TypeRef" idt="AirConditioner"/>
+        </labt>
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="Room"/>
+        </labt>
+        <labt label="building">
+          <type xsi:type="piADL:TypeRef" idt="Building"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <connections name="reqOC" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <connections name="respIC">
+      <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+    </connections>
+    <connections name="reqIC">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <connections name="respOC" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="reqOC">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+      <protocol connectionName="respIC" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+      </protocol>
+      <protocol connectionName="reqIC" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+      <protocol connectionName="respOC">
+        <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+      </protocol>
+    </protDecl>
+    <behavior>
+      <body xsi:type="piADL:Composition">
+        <clause xsi:type="piADL:ElementInstantiation" elementName="req" elementType="RequestCN"/>
+        <clause xsi:type="piADL:ElementInstantiation" elementName="resp" elementType="SendContextCN"/>
+        <uc>
+          <unifications>
+            <fromc elementName="self" connectionName="reqOC"/>
+            <toc elementName="req" connectionName="rReqO"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="req" connectionName="rReqI"/>
+            <toc elementName="self" connectionName="reqIC"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="self" connectionName="respOC"/>
+            <toc elementName="resp" connectionName="ciO"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="resp" connectionName="ciI"/>
+            <toc elementName="self" connectionName="respIC"/>
+          </unifications>
+        </uc>
+      </body>
+    </behavior>
+  </archElements>
+  <archElements xsi:type="piADL:Component" name="boundary RoomReservationSystem">
+    <connections name="reqIRI">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <connections name="respORI" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="Boolean"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="reqIRI" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+      <protocol connectionName="respORI">
+        <type xsi:type="piADL:TypeRef" idt="Boolean"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Component" name="boundary OrionContextBroker">
+    <typeDecl name="Location">
+      <type xsi:type="piADL:View">
+        <labt label="latitude">
+          <type xsi:type="piADL:TypeRef" idt="Real"/>
+        </labt>
+        <labt label="longitude">
+          <type xsi:type="piADL:TypeRef" idt="Real"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="TypeSensor">
+      <type xsi:type="piADL:AnyType"/>
+    </typeDecl>
+    <typeDecl name="Sensor">
+      <type xsi:type="piADL:View">
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="type_sensor">
+          <type xsi:type="piADL:TypeRef" idt="TypeSensor"/>
+        </labt>
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="AirConditioner">
+      <type xsi:type="piADL:View">
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Room">
+      <type xsi:type="piADL:View">
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="building">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Building">
+      <type xsi:type="piADL:View">
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="location">
+          <type xsi:type="piADL:TypeRef" idt="Location"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="ContextInformation">
+      <type xsi:type="piADL:View">
+        <labt label="sensor">
+          <type xsi:type="piADL:TypeRef" idt="Sensor"/>
+        </labt>
+        <labt label="air_conditioner">
+          <type xsi:type="piADL:TypeRef" idt="AirConditioner"/>
+        </labt>
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="Room"/>
+        </labt>
+        <labt label="building">
+          <type xsi:type="piADL:TypeRef" idt="Building"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <connections name="ci">
+      <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+    </connections>
+    <connections name="reqIC">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <connections name="respOC" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="ci" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+      </protocol>
+      <protocol connectionName="reqIC" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+      <protocol connectionName="respOC">
+        <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Component" name="boundary DB_PostgreSQL">
+    <typeDecl name="Schedule">
+      <type xsi:type="piADL:View">
+        <labt label="timestamp">
+          <type xsi:type="piADL:TypeRef" idt="Int"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="InfraredCode">
+      <type xsi:type="piADL:AnyType"/>
+    </typeDecl>
+    <typeDecl name="UpdateDB">
+      <type xsi:type="piADL:View">
+        <labt label="idAirCond">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="currentTime">
+          <type xsi:type="piADL:TypeRef" idt="Schedule"/>
+        </labt>
+        <labt label="actionTemp">
+          <type xsi:type="piADL:TypeRef" idt="InfraredCode"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <connections name="reqIDB">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <connections name="respODB" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <connections name="u">
+      <type xsi:type="piADL:TypeRef" idt="UpdateDB"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="reqIDB" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+      <protocol connectionName="respODB">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+      <protocol connectionName="u" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="UpdateDB"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Component" name="Raspberry">
+    <typeDecl name="InfraredCode">
+      <type xsi:type="piADL:AnyType"/>
+    </typeDecl>
+    <typeDecl name="FrameList">
+      <type xsi:type="piADL:View">
+        <labt>
+          <type xsi:type="piADL:TypeRef"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="TypeSensor">
+      <type xsi:type="piADL:AnyType"/>
+    </typeDecl>
+    <typeDecl name="Schedule">
+      <type xsi:type="piADL:View">
+        <labt label="timestamp">
+          <type xsi:type="piADL:TypeRef" idt="Int"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Sensor">
+      <type xsi:type="piADL:View">
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="type_sensor">
+          <type xsi:type="piADL:TypeRef" idt="TypeSensor"/>
+        </labt>
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="AirConditioner">
+      <type xsi:type="piADL:View">
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Intervention">
+      <type xsi:type="piADL:View">
+        <labt label="icAirCond">
+          <type xsi:type="piADL:TypeRef" idt="InfraredCode"/>
+        </labt>
+        <labt label="airCond">
+          <type xsi:type="piADL:TypeRef" idt="AirConditioner"/>
+        </labt>
+        <labt label="schedule">
+          <type xsi:type="piADL:TypeRef" idt="Schedule"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Measurement">
+      <type xsi:type="piADL:View">
+        <labt label="value">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="schedule">
+          <type xsi:type="piADL:TypeRef" idt="Schedule"/>
+        </labt>
+        <labt label="sensor">
+          <type xsi:type="piADL:TypeRef" idt="Sensor"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="RestFulRaspeberry">
+      <type xsi:type="piADL:View">
+        <labt label="ip">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="port">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="path">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="i">
+          <type xsi:type="piADL:TypeRef" idt="Intervention"/>
+        </labt>
+        <labt label="m">
+          <type xsi:type="piADL:TypeRef" idt="Measurement"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <connections name="c" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="InfraredCode"/>
+    </connections>
+    <connections name="reqORI" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <connections name="respIRI">
+      <type xsi:type="piADL:TypeRef" idt="Boolean"/>
+    </connections>
+    <connections name="f">
+      <type xsi:type="piADL:TypeRef" idt="FrameList"/>
+    </connections>
+    <connections name="temperature">
+      <type xsi:type="piADL:TypeRef" idt="Int"/>
+    </connections>
+    <connections name="presence">
+      <type xsi:type="piADL:TypeRef" idt="Int"/>
+    </connections>
+    <connections name="rr" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="RestFulRaspeberry"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="c">
+        <type xsi:type="piADL:TypeRef" idt="InfraredCode"/>
+      </protocol>
+      <protocol connectionName="reqORI">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+      <protocol connectionName="respIRI" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="Boolean"/>
+      </protocol>
+      <protocol connectionName="f" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="FrameList"/>
+      </protocol>
+      <protocol connectionName="temperature" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="Int"/>
+      </protocol>
+      <protocol connectionName="presence" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="Int"/>
+      </protocol>
+      <protocol connectionName="rr">
+        <type xsi:type="piADL:TypeRef" idt="RestFulRaspeberry"/>
+      </protocol>
+    </protDecl>
+    <behavior>
+      <body xsi:type="piADL:Composition">
+        <clause xsi:type="piADL:ElementInstantiation" elementName="cm" elementType="CamMonitor"/>
+        <clause xsi:type="piADL:ElementInstantiation" elementName="tc" elementType="TemperatureController"/>
+        <clause xsi:type="piADL:ElementInstantiation" elementName="sqlite" elementType="DB_SQLite"/>
+        <clause xsi:type="piADL:ElementInstantiation" elementName="countPeople" elementType="SendValueCN"/>
+        <clause xsi:type="piADL:ElementInstantiation" elementName="rn" elementType="ReservationCN"/>
+        <uc>
+          <unifications>
+            <fromc elementName="cm" connectionName="numPeopleCm"/>
+            <toc elementName="countPeople" connectionName="vO"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="countPeople" connectionName="vI"/>
+            <toc elementName="tc" connectionName="numPeopleTc"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="tc" connectionName="reqORI"/>
+            <toc elementName="rn" connectionName="reqORI"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="rn" connectionName="respIRI"/>
+            <toc elementName="tc" connectionName="respIRI"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="rn" connectionName="reqIRI"/>
+            <toc elementName="sqlite" connectionName="reqIRI"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="sqlite" connectionName="respORI"/>
+            <toc elementName="rn" connectionName="respORI"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="self" connectionName="f"/>
+            <toc elementName="cm" connectionName="fCm"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="self" connectionName="presence"/>
+            <toc elementName="tc" connectionName="presenceTc"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="self" connectionName="temperature"/>
+            <toc elementName="tc" connectionName="temperatureTc"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="tc" connectionName="cTc"/>
+            <toc elementName="self" connectionName="c"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="tc" connectionName="rraspTc"/>
+            <toc elementName="self" connectionName="rr"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="tc" connectionName="reqORI"/>
+            <toc elementName="self" connectionName="reqORI"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="self" connectionName="respIRI"/>
+            <toc elementName="tc" connectionName="respIRI"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="self" connectionName="respIRI"/>
+            <toc elementName="sqlite" connectionName="rresp"/>
+          </unifications>
+        </uc>
+      </body>
+    </behavior>
+  </archElements>
+  <archElements xsi:type="piADL:Component" name="boundary PresenceSensor">
+    <connections name="presence" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="Int"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="presence">
+        <type xsi:type="piADL:TypeRef" idt="Int"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Component" name="AirConditioner">
+    <connections name="is">
+      <type xsi:type="piADL:TypeRef" idt="Void"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="is" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="Void"/>
+      </protocol>
+    </protDecl>
+    <behavior>
+      <body xsi:type="piADL:Composition">
+        <clause xsi:type="piADL:ElementInstantiation" elementName="f" elementType="Fotosensor"/>
+        <clause xsi:type="piADL:ElementInstantiation" elementName="acc" elementType="AirConditionerController"/>
+        <clause xsi:type="piADL:ElementInstantiation" elementName="u" elementType="UndefinedCN"/>
+        <uc>
+          <unifications>
+            <fromc elementName="f" connectionName="uF"/>
+            <toc elementName="u" connectionName="undO"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="u" connectionName="undI"/>
+            <toc elementName="acc" connectionName="uAcc"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="self" connectionName="is"/>
+            <toc elementName="f" connectionName="isF"/>
+          </unifications>
+        </uc>
+      </body>
+    </behavior>
+  </archElements>
+  <archElements xsi:type="piADL:Component" name="boundary TemperatureAndHumiditySensor">
+    <connections name="temperature" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="Int"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="temperature">
+        <type xsi:type="piADL:TypeRef" idt="Int"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Component" name="boundary Fotosensor">
+    <connections name="u" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="Void"/>
+    </connections>
+    <connections name="is">
+      <type xsi:type="piADL:TypeRef" idt="Void"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="u">
+        <type xsi:type="piADL:TypeRef" idt="Void"/>
+      </protocol>
+      <protocol connectionName="is" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="Void"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Component" name="boundary AirConditionerController">
+    <connections name="u">
+      <type xsi:type="piADL:TypeRef" idt="Void"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="u" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="Void"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Component" name="boundary Led">
+    <typeDecl name="InfraredCode">
+      <type xsi:type="piADL:AnyType"/>
+    </typeDecl>
+    <connections name="c">
+      <type xsi:type="piADL:TypeRef" idt="InfraredCode"/>
+    </connections>
+    <connections name="is" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="Void"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="c" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="InfraredCode"/>
+      </protocol>
+      <protocol connectionName="is">
+        <type xsi:type="piADL:TypeRef" idt="Void"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Component" name="SmartPlaceWeb">
+    <typeDecl name="Location">
+      <type xsi:type="piADL:View">
+        <labt label="latitude">
+          <type xsi:type="piADL:TypeRef" idt="Real"/>
+        </labt>
+        <labt label="longitude">
+          <type xsi:type="piADL:TypeRef" idt="Real"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="TypeSensor">
+      <type xsi:type="piADL:AnyType"/>
+    </typeDecl>
+    <typeDecl name="Sensor">
+      <type xsi:type="piADL:View">
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="type_sensor">
+          <type xsi:type="piADL:TypeRef" idt="TypeSensor"/>
+        </labt>
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="AirConditioner">
+      <type xsi:type="piADL:View">
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Room">
+      <type xsi:type="piADL:View">
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="building">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Building">
+      <type xsi:type="piADL:View">
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="location">
+          <type xsi:type="piADL:TypeRef" idt="Location"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="ContextInformation">
+      <type xsi:type="piADL:View">
+        <labt label="sensor">
+          <type xsi:type="piADL:TypeRef" idt="Sensor"/>
+        </labt>
+        <labt label="air_conditioner">
+          <type xsi:type="piADL:TypeRef" idt="AirConditioner"/>
+        </labt>
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="Room"/>
+        </labt>
+        <labt label="building">
+          <type xsi:type="piADL:TypeRef" idt="Building"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Schedule">
+      <type xsi:type="piADL:View">
+        <labt label="timestamp">
+          <type xsi:type="piADL:TypeRef" idt="Int"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="InfraredCode">
+      <type xsi:type="piADL:AnyType"/>
+    </typeDecl>
+    <typeDecl name="Intervention">
+      <type xsi:type="piADL:View">
+        <labt label="icAirCond">
+          <type xsi:type="piADL:TypeRef" idt="InfraredCode"/>
+        </labt>
+        <labt label="airCond">
+          <type xsi:type="piADL:TypeRef" idt="AirConditioner"/>
+        </labt>
+        <labt label="schedule">
+          <type xsi:type="piADL:TypeRef" idt="Schedule"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Measurement">
+      <type xsi:type="piADL:View">
+        <labt label="value">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="schedule">
+          <type xsi:type="piADL:TypeRef" idt="Schedule"/>
+        </labt>
+        <labt label="sensor">
+          <type xsi:type="piADL:TypeRef" idt="Sensor"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="RestFulRaspeberry">
+      <type xsi:type="piADL:View">
+        <labt label="ip">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="port">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="path">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="i">
+          <type xsi:type="piADL:TypeRef" idt="Intervention"/>
+        </labt>
+        <labt label="m">
+          <type xsi:type="piADL:TypeRef" idt="Measurement"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="UpdateDB">
+      <type xsi:type="piADL:View">
+        <labt label="idAirCond">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="currentTime">
+          <type xsi:type="piADL:TypeRef" idt="Schedule"/>
+        </labt>
+        <labt label="actionTemp">
+          <type xsi:type="piADL:TypeRef" idt="InfraredCode"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <connections name="co" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+    </connections>
+    <connections name="rr">
+      <type xsi:type="piADL:TypeRef" idt="RestFulRaspeberry"/>
+    </connections>
+    <connections name="reqODB" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <connections name="respIDB">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <connections name="u" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="UpdateDB"/>
+    </connections>
+    <connections name="reqOC" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <connections name="respIC">
+      <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="co">
+        <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+      </protocol>
+      <protocol connectionName="rr" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="RestFulRaspeberry"/>
+      </protocol>
+      <protocol connectionName="reqODB">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+      <protocol connectionName="respIDB" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+      <protocol connectionName="u">
+        <type xsi:type="piADL:TypeRef" idt="UpdateDB"/>
+      </protocol>
+      <protocol connectionName="reqOC">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+      <protocol connectionName="respIC" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+      </protocol>
+    </protDecl>
+    <behavior>
+      <body xsi:type="piADL:Composition">
+        <clause xsi:type="piADL:ElementInstantiation" elementName="rc" elementType="RegistrationController"/>
+        <clause xsi:type="piADL:ElementInstantiation" elementName="rg" elementType="ReportGenerator"/>
+        <clause xsi:type="piADL:ElementInstantiation" elementName="gg" elementType="GraphicsGenerator"/>
+        <clause xsi:type="piADL:ElementInstantiation" elementName="hc" elementType="HistoricController"/>
+        <uc>
+          <unifications>
+            <fromc elementName="rc" connectionName="ciRc"/>
+            <toc elementName="self" connectionName="co"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="rg" connectionName="reqOC"/>
+            <toc elementName="self" connectionName="reqOC"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="self" connectionName="respIC"/>
+            <toc elementName="rg" connectionName="respIC"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="gg" connectionName="reqOC"/>
+            <toc elementName="self" connectionName="reqOC"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="self" connectionName="respIC"/>
+            <toc elementName="gg" connectionName="respIC"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="hc" connectionName="reqOC"/>
+            <toc elementName="self" connectionName="reqOC"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="self" connectionName="respIC"/>
+            <toc elementName="hc" connectionName="respIC"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="hc" connectionName="uHc"/>
+            <toc elementName="self" connectionName="u"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="gg" connectionName="reqODB"/>
+            <toc elementName="self" connectionName="reqODB"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="self" connectionName="respIDB"/>
+            <toc elementName="gg" connectionName="respIDB"/>
+          </unifications>
+          <unifications>
+            <fromc elementName="self" connectionName="rr"/>
+            <toc elementName="hc" connectionName="rrHc"/>
+          </unifications>
+        </uc>
+      </body>
+    </behavior>
+  </archElements>
+  <archElements xsi:type="piADL:Component" name="ReportGenerator">
+    <typeDecl name="Location">
+      <type xsi:type="piADL:View">
+        <labt label="latitude">
+          <type xsi:type="piADL:TypeRef" idt="Real"/>
+        </labt>
+        <labt label="longitude">
+          <type xsi:type="piADL:TypeRef" idt="Real"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="TypeSensor">
+      <type xsi:type="piADL:AnyType"/>
+    </typeDecl>
+    <typeDecl name="Sensor">
+      <type xsi:type="piADL:View">
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="type_sensor">
+          <type xsi:type="piADL:TypeRef" idt="TypeSensor"/>
+        </labt>
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="AirConditioner">
+      <type xsi:type="piADL:View">
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Room">
+      <type xsi:type="piADL:View">
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="building">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Building">
+      <type xsi:type="piADL:View">
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="location">
+          <type xsi:type="piADL:TypeRef" idt="Location"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="ContextInformation">
+      <type xsi:type="piADL:View">
+        <labt label="sensor">
+          <type xsi:type="piADL:TypeRef" idt="Sensor"/>
+        </labt>
+        <labt label="air_conditioner">
+          <type xsi:type="piADL:TypeRef" idt="AirConditioner"/>
+        </labt>
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="Room"/>
+        </labt>
+        <labt label="building">
+          <type xsi:type="piADL:TypeRef" idt="Building"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <connections name="a">
+      <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="a" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Component" name="TemperatureController">
+    <typeDecl name="TypeSensor">
+      <type xsi:type="piADL:AnyType"/>
+    </typeDecl>
+    <typeDecl name="Schedule">
+      <type xsi:type="piADL:View">
+        <labt label="timestamp">
+          <type xsi:type="piADL:TypeRef" idt="Int"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Sensor">
+      <type xsi:type="piADL:View">
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="type_sensor">
+          <type xsi:type="piADL:TypeRef" idt="TypeSensor"/>
+        </labt>
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="InfraredCode">
+      <type xsi:type="piADL:AnyType"/>
+    </typeDecl>
+    <typeDecl name="AirConditioner">
+      <type xsi:type="piADL:View">
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Intervention">
+      <type xsi:type="piADL:View">
+        <labt label="icAirCond">
+          <type xsi:type="piADL:TypeRef" idt="InfraredCode"/>
+        </labt>
+        <labt label="airCond">
+          <type xsi:type="piADL:TypeRef" idt="AirConditioner"/>
+        </labt>
+        <labt label="schedule">
+          <type xsi:type="piADL:TypeRef" idt="Schedule"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Measurement">
+      <type xsi:type="piADL:View">
+        <labt label="value">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="schedule">
+          <type xsi:type="piADL:TypeRef" idt="Schedule"/>
+        </labt>
+        <labt label="sensor">
+          <type xsi:type="piADL:TypeRef" idt="Sensor"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="RestFulRaspeberry">
+      <type xsi:type="piADL:View">
+        <labt label="ip">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="port">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="path">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="i">
+          <type xsi:type="piADL:TypeRef" idt="Intervention"/>
+        </labt>
+        <labt label="m">
+          <type xsi:type="piADL:TypeRef" idt="Measurement"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <connections name="presence">
+      <type xsi:type="piADL:TypeRef" idt="Int"/>
+    </connections>
+    <connections name="rrasp" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="RestFulRaspeberry"/>
+    </connections>
+    <connections name="reqORI" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <connections name="respIRI">
+      <type xsi:type="piADL:TypeRef" idt="Boolean"/>
+    </connections>
+    <connections name="temperature">
+      <type xsi:type="piADL:TypeRef" idt="Int"/>
+    </connections>
+    <connections name="numPeople">
+      <type xsi:type="piADL:TypeRef" idt="Int"/>
+    </connections>
+    <connections name="c" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="InfraredCode"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="presence" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="Int"/>
+      </protocol>
+      <protocol connectionName="rrasp">
+        <type xsi:type="piADL:TypeRef" idt="RestFulRaspeberry"/>
+      </protocol>
+      <protocol connectionName="reqORI">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+      <protocol connectionName="respIRI" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="Boolean"/>
+      </protocol>
+      <protocol connectionName="temperature" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="Int"/>
+      </protocol>
+      <protocol connectionName="numPeople" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="Int"/>
+      </protocol>
+      <protocol connectionName="c">
+        <type xsi:type="piADL:TypeRef" idt="InfraredCode"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Component" name="SetTemperature">
+    <typeDecl name="TypeSensor">
+      <type xsi:type="piADL:AnyType"/>
+    </typeDecl>
+    <typeDecl name="Schedule">
+      <type xsi:type="piADL:View">
+        <labt label="timestamp">
+          <type xsi:type="piADL:TypeRef" idt="Int"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Sensor">
+      <type xsi:type="piADL:View">
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="type_sensor">
+          <type xsi:type="piADL:TypeRef" idt="TypeSensor"/>
+        </labt>
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="InfraredCode">
+      <type xsi:type="piADL:AnyType"/>
+    </typeDecl>
+    <typeDecl name="AirConditioner">
+      <type xsi:type="piADL:View">
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Intervention">
+      <type xsi:type="piADL:View">
+        <labt label="icAirCond">
+          <type xsi:type="piADL:TypeRef" idt="InfraredCode"/>
+        </labt>
+        <labt label="airCond">
+          <type xsi:type="piADL:TypeRef" idt="AirConditioner"/>
+        </labt>
+        <labt label="schedule">
+          <type xsi:type="piADL:TypeRef" idt="Schedule"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Measurement">
+      <type xsi:type="piADL:View">
+        <labt label="value">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="schedule">
+          <type xsi:type="piADL:TypeRef" idt="Schedule"/>
+        </labt>
+        <labt label="sensor">
+          <type xsi:type="piADL:TypeRef" idt="Sensor"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="RestFulRaspeberry">
+      <type xsi:type="piADL:View">
+        <labt label="ip">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="port">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="path">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="i">
+          <type xsi:type="piADL:TypeRef" idt="Intervention"/>
+        </labt>
+        <labt label="m">
+          <type xsi:type="piADL:TypeRef" idt="Measurement"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <connections name="presence">
+      <type xsi:type="piADL:TypeRef" idt="Int"/>
+    </connections>
+    <connections name="rrasp" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="RestFulRaspeberry"/>
+    </connections>
+    <connections name="c" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="InfraredCode"/>
+    </connections>
+    <connections name="reqODB" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <connections name="respIDB">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <connections name="lastPresence" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="Schedule"/>
+    </connections>
+    <connections name="temperature">
+      <type xsi:type="piADL:TypeRef" idt="Int"/>
+    </connections>
+    <connections name="numPeople">
+      <type xsi:type="piADL:TypeRef" idt="Int"/>
+    </connections>
+    <connections name="pres" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="Schedule"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="presence" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="Int"/>
+      </protocol>
+      <protocol connectionName="rrasp">
+        <type xsi:type="piADL:TypeRef" idt="RestFulRaspeberry"/>
+      </protocol>
+      <protocol connectionName="c">
+        <type xsi:type="piADL:TypeRef" idt="InfraredCode"/>
+      </protocol>
+      <protocol connectionName="reqODB">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+      <protocol connectionName="respIDB" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+      <protocol connectionName="lastPresence">
+        <type xsi:type="piADL:TypeRef" idt="Schedule"/>
+      </protocol>
+      <protocol connectionName="temperature" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="Int"/>
+      </protocol>
+      <protocol connectionName="numPeople" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="Int"/>
+      </protocol>
+      <protocol connectionName="pres">
+        <type xsi:type="piADL:TypeRef" idt="Schedule"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Component" name="boundary Camera">
+    <typeDecl name="FrameList">
+      <type xsi:type="piADL:View">
+        <labt>
+          <type xsi:type="piADL:TypeRef"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <connections name="f" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="FrameList"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="f">
+        <type xsi:type="piADL:TypeRef" idt="FrameList"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Component" name="boundary CamMonitor">
+    <typeDecl name="FrameList">
+      <type xsi:type="piADL:View">
+        <labt>
+          <type xsi:type="piADL:TypeRef"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <connections name="f">
+      <type xsi:type="piADL:TypeRef" idt="FrameList"/>
+    </connections>
+    <connections name="numPeople" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="Int"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="f" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="FrameList"/>
+      </protocol>
+      <protocol connectionName="numPeople">
+        <type xsi:type="piADL:TypeRef" idt="Int"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Component" name="boundary DB_SQLite">
+    <connections name="reqIRI">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <connections name="respORI" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="Boolean"/>
+    </connections>
+    <connections name="rresp">
+      <type xsi:type="piADL:TypeRef" idt="Boolean"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="reqIRI" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+      <protocol connectionName="respORI">
+        <type xsi:type="piADL:TypeRef" idt="Boolean"/>
+      </protocol>
+      <protocol connectionName="rresp" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="Boolean"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Component" name="HistoricController">
+    <typeDecl name="TypeSensor">
+      <type xsi:type="piADL:AnyType"/>
+    </typeDecl>
+    <typeDecl name="Schedule">
+      <type xsi:type="piADL:View">
+        <labt label="timestamp">
+          <type xsi:type="piADL:TypeRef" idt="Int"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Sensor">
+      <type xsi:type="piADL:View">
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="type_sensor">
+          <type xsi:type="piADL:TypeRef" idt="TypeSensor"/>
+        </labt>
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="InfraredCode">
+      <type xsi:type="piADL:AnyType"/>
+    </typeDecl>
+    <typeDecl name="AirConditioner">
+      <type xsi:type="piADL:View">
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Intervention">
+      <type xsi:type="piADL:View">
+        <labt label="icAirCond">
+          <type xsi:type="piADL:TypeRef" idt="InfraredCode"/>
+        </labt>
+        <labt label="airCond">
+          <type xsi:type="piADL:TypeRef" idt="AirConditioner"/>
+        </labt>
+        <labt label="schedule">
+          <type xsi:type="piADL:TypeRef" idt="Schedule"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Measurement">
+      <type xsi:type="piADL:View">
+        <labt label="value">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="schedule">
+          <type xsi:type="piADL:TypeRef" idt="Schedule"/>
+        </labt>
+        <labt label="sensor">
+          <type xsi:type="piADL:TypeRef" idt="Sensor"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="RestFulRaspeberry">
+      <type xsi:type="piADL:View">
+        <labt label="ip">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="port">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="path">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="i">
+          <type xsi:type="piADL:TypeRef" idt="Intervention"/>
+        </labt>
+        <labt label="m">
+          <type xsi:type="piADL:TypeRef" idt="Measurement"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="UpdateDB">
+      <type xsi:type="piADL:View">
+        <labt label="idAirCond">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="currentTime">
+          <type xsi:type="piADL:TypeRef" idt="Schedule"/>
+        </labt>
+        <labt label="actionTemp">
+          <type xsi:type="piADL:TypeRef" idt="InfraredCode"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Location">
+      <type xsi:type="piADL:View">
+        <labt label="latitude">
+          <type xsi:type="piADL:TypeRef" idt="Real"/>
+        </labt>
+        <labt label="longitude">
+          <type xsi:type="piADL:TypeRef" idt="Real"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Room">
+      <type xsi:type="piADL:View">
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="building">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Building">
+      <type xsi:type="piADL:View">
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="location">
+          <type xsi:type="piADL:TypeRef" idt="Location"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="ContextInformation">
+      <type xsi:type="piADL:View">
+        <labt label="sensor">
+          <type xsi:type="piADL:TypeRef" idt="Sensor"/>
+        </labt>
+        <labt label="air_conditioner">
+          <type xsi:type="piADL:TypeRef" idt="AirConditioner"/>
+        </labt>
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="Room"/>
+        </labt>
+        <labt label="building">
+          <type xsi:type="piADL:TypeRef" idt="Building"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <connections name="rr">
+      <type xsi:type="piADL:TypeRef" idt="RestFulRaspeberry"/>
+    </connections>
+    <connections name="u" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="UpdateDB"/>
+    </connections>
+    <connections name="reqOC" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <connections name="respIC">
+      <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="rr" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="RestFulRaspeberry"/>
+      </protocol>
+      <protocol connectionName="u">
+        <type xsi:type="piADL:TypeRef" idt="UpdateDB"/>
+      </protocol>
+      <protocol connectionName="reqOC">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+      <protocol connectionName="respIC" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Component" name="boundary GraphicsGenerator">
+    <typeDecl name="Location">
+      <type xsi:type="piADL:View">
+        <labt label="latitude">
+          <type xsi:type="piADL:TypeRef" idt="Real"/>
+        </labt>
+        <labt label="longitude">
+          <type xsi:type="piADL:TypeRef" idt="Real"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="TypeSensor">
+      <type xsi:type="piADL:AnyType"/>
+    </typeDecl>
+    <typeDecl name="Sensor">
+      <type xsi:type="piADL:View">
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="type_sensor">
+          <type xsi:type="piADL:TypeRef" idt="TypeSensor"/>
+        </labt>
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="AirConditioner">
+      <type xsi:type="piADL:View">
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Room">
+      <type xsi:type="piADL:View">
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="building">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Building">
+      <type xsi:type="piADL:View">
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="location">
+          <type xsi:type="piADL:TypeRef" idt="Location"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="ContextInformation">
+      <type xsi:type="piADL:View">
+        <labt label="sensor">
+          <type xsi:type="piADL:TypeRef" idt="Sensor"/>
+        </labt>
+        <labt label="air_conditioner">
+          <type xsi:type="piADL:TypeRef" idt="AirConditioner"/>
+        </labt>
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="Room"/>
+        </labt>
+        <labt label="building">
+          <type xsi:type="piADL:TypeRef" idt="Building"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <connections name="reqODB" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <connections name="respIDB">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <connections name="reqOC" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="String"/>
+    </connections>
+    <connections name="respIC">
+      <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="reqODB">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+      <protocol connectionName="respIDB" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+      <protocol connectionName="reqOC">
+        <type xsi:type="piADL:TypeRef" idt="String"/>
+      </protocol>
+      <protocol connectionName="respIC" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Component" name="RegistrationController">
+    <typeDecl name="Location">
+      <type xsi:type="piADL:View">
+        <labt label="latitude">
+          <type xsi:type="piADL:TypeRef" idt="Real"/>
+        </labt>
+        <labt label="longitude">
+          <type xsi:type="piADL:TypeRef" idt="Real"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="TypeSensor">
+      <type xsi:type="piADL:AnyType"/>
+    </typeDecl>
+    <typeDecl name="Sensor">
+      <type xsi:type="piADL:View">
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="type_sensor">
+          <type xsi:type="piADL:TypeRef" idt="TypeSensor"/>
+        </labt>
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="AirConditioner">
+      <type xsi:type="piADL:View">
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Room">
+      <type xsi:type="piADL:View">
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="building">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="Building">
+      <type xsi:type="piADL:View">
+        <labt label="id">
+          <type xsi:type="piADL:TypeRef" idt="String"/>
+        </labt>
+        <labt label="location">
+          <type xsi:type="piADL:TypeRef" idt="Location"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <typeDecl name="ContextInformation">
+      <type xsi:type="piADL:View">
+        <labt label="sensor">
+          <type xsi:type="piADL:TypeRef" idt="Sensor"/>
+        </labt>
+        <labt label="air_conditioner">
+          <type xsi:type="piADL:TypeRef" idt="AirConditioner"/>
+        </labt>
+        <labt label="room">
+          <type xsi:type="piADL:TypeRef" idt="Room"/>
+        </labt>
+        <labt label="building">
+          <type xsi:type="piADL:TypeRef" idt="Building"/>
+        </labt>
+      </type>
+    </typeDecl>
+    <connections name="ci" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+    </connections>
+    <connections name="regUi">
+      <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="ci">
+        <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+      </protocol>
+      <protocol connectionName="regUi" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="ContextInformation"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archs name="SmartPlace">
+    <compose>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="spw" elementType="SmartPlaceWeb"/>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="rrs" elementType="RoomReservationSystem"/>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="ocb" elementType="OrionContextBroker"/>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="ths" elementType="TemperatureAndHumiditySensor"/>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="ps" elementType="PresenceSensor"/>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="psql" elementType="DB_PostgreSQL"/>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="ac" elementType="AirConditioner"/>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="Led" elementType="Led"/>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="Raspberry" elementType="Raspberry"/>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="Camera" elementType="Camera"/>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="qdb" elementType="QueryDataBaseCN"/>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="spsqli" elementType="SendPostgreSQLInfoCN"/>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="ci1" elementType="SendContextCN"/>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="c" elementType="ContextCN"/>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="cr" elementType="CmdRestfulCN"/>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="sendPresence" elementType="SendValueCN"/>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="fl" elementType="FrameListCN"/>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="sendTempHumi" elementType="SendValueCN"/>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="rn" elementType="ReservationCN"/>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="ic" elementType="InfraCodeCN"/>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="is" elementType="InfraredSignalCN"/>
+      <uc>
+        <unifications>
+          <fromc elementName="spw" connectionName="reqODB"/>
+          <toc elementName="qdb" connectionName="reqODB"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="qdb" connectionName="respIDB"/>
+          <toc elementName="spw" connectionName="respIDB"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="qdb" connectionName="reqIDB"/>
+          <toc elementName="psql" connectionName="reqIDB"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="psql" connectionName="respODB"/>
+          <toc elementName="qdb" connectionName="respODB"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="spw" connectionName="uSpw"/>
+          <toc elementName="spsqli" connectionName="psqlO"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="spsqli" connectionName="psqlI"/>
+          <toc elementName="psql" connectionName="u"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="spw" connectionName="coSpw"/>
+          <toc elementName="ci1" connectionName="ciO"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="ci1" connectionName="ciI"/>
+          <toc elementName="ocb" connectionName="ci"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="c" connectionName="reqIC"/>
+          <toc elementName="ocb" connectionName="reqIC"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="ocb" connectionName="respOC"/>
+          <toc elementName="c" connectionName="respOC"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="spw" connectionName="reqOC"/>
+          <toc elementName="c" connectionName="reqOC"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="c" connectionName="respIC"/>
+          <toc elementName="spw" connectionName="respIC"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="Raspberry" connectionName="rr"/>
+          <toc elementName="cr" connectionName="restO"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="cr" connectionName="restI"/>
+          <toc elementName="spw" connectionName="rrSpw"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="ps" connectionName="presencePs"/>
+          <toc elementName="sendPresence" connectionName="vO"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="sendPresence" connectionName="vI"/>
+          <toc elementName="Raspberry" connectionName="presence"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="Camera" connectionName="fCam"/>
+          <toc elementName="fl" connectionName="fO"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="fl" connectionName="fI"/>
+          <toc elementName="Raspberry" connectionName="f"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="ths" connectionName="temperatureThs"/>
+          <toc elementName="sendTempHumi" connectionName="vO"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="sendTempHumi" connectionName="vI"/>
+          <toc elementName="Raspberry" connectionName="temperature"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="Raspberry" connectionName="reqORI"/>
+          <toc elementName="rn" connectionName="reqORI"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="rn" connectionName="respIRI"/>
+          <toc elementName="Raspberry" connectionName="respIRI"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="rn" connectionName="reqIRI"/>
+          <toc elementName="rrs" connectionName="reqIRI"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="rrs" connectionName="respORI"/>
+          <toc elementName="rn" connectionName="respORI"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="Raspberry" connectionName="c"/>
+          <toc elementName="ic" connectionName="cmdO"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="ic" connectionName="cmdI"/>
+          <toc elementName="Led" connectionName="cLed"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="Led" connectionName="isLed"/>
+          <toc elementName="is" connectionName="isO"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="is" connectionName="isI"/>
+          <toc elementName="ac" connectionName="isAc"/>
+        </unifications>
+      </uc>
+    </compose>
+  </archs>
+  <cbehavior/>
+</piADL:ArchitectureDescription>

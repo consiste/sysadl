@@ -1,0 +1,885 @@
+/* 
+ * @author Eduardo Silva and Lidiane Santos
+*/
+grammar org.sysadl.SysADL with org.eclipse.xtext.common.Terminals
+
+import "http://org.sysadl" 
+//import "platform:/resource/SysADL_Sintax/model/sysADL_Sintax.ecore"
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+/*
+ * Common Elements
+ */
+Model returns Model:
+	{Model}
+	'Model' name=ID ';'
+		('using' involvedElements+=[ElementDef|QualifiedName] ';')*
+		(properties+=Property
+		| packages+=Package
+		| requirements+=Requirement
+		| styles+=Style)*
+	(allocation=AllocationTable)?;
+
+/**
+ * Style support
+ */
+Style returns Style:
+ 	{Style}
+	'style' name=QualifiedName '{'
+		( invariants+=Invariant
+		| definitions+=AbstractDef)*
+	'}'
+ 	;
+
+Invariant returns Invariant:
+   'invariant' name=ID ('=' expr=EString)?;
+   
+ AbstractDef returns AbstractDef:
+    AbstractComponentDef | AbstractConnectorDef | AbstractActivityDef;
+    
+AbstractActivityDef returns AbstractActivityDef:
+	{AbstractActivityDef}
+	'abstract' 'activity' 'def'
+	name=ID ;
+
+AbstractComponentDef returns AbstractComponentDef:
+   {AbstractComponentDef}
+	'abstract' 'component' 'def' name=ID ('[' lowerBound=EInt ',' upperBound=EInt ']')?
+	'{'
+		('ports' ':' ports+=AbstractPortUse*)?
+		('compose' '{' composition+=[AbstractComponentDef|QualifiedName] (',' composition+=[AbstractComponentDef|QualifiedName])* '}')?//fazer escopo
+	'}' ;
+
+AbstractPortUse returns AbstractPortUse:
+	name=ID ':' flowProperty=FlowProperty 'any' ('[' lowerBound=EInt ',' upperBound=EInt ']')?;
+
+   
+ AbstractConnectorDef returns AbstractConnectorDef:
+	'abstract' 'connector' 'def' name=ID
+	'{'
+		('participants' ':' ports+=AbstractPortUse_Reverse*)?
+		('flows' ':' flows+=AbstractFlow*)?
+	'}';
+
+AbstractFlow returns AbstractFlow:
+	'flow' source=[AbstractPortUse|ID] 'to' target=[AbstractPortUse|ID];	
+
+AbstractPortUse_Reverse returns AbstractPortUse:
+	'~' name=ID ':' flowProperty=FlowProperty 'any';
+
+ /**
+  * Core elements
+  */
+ElementDef returns ElementDef:
+	DataTypeDef | DimensionDef | UnitDef | ValueTypeDef | Enumeration | ComponentDef | ConnectorDef | CompositePortDef | SimplePortDef | ActionDef | ActivityDef | Protocol | ConstraintDef | Executable;
+
+TypeDef returns TypeDef:
+	DataTypeDef | ValueTypeDef | Enumeration;
+
+TypeUse returns TypeUse:
+	TypeUse_Impl;
+
+NamedElement returns NamedElement:
+	Package | Model | DataTypeDef | DimensionDef | TypeUse_Impl | UnitDef | ValueTypeDef | Enumeration | ArchitectureDef | ComponentUse | ConnectorDef | ConnectorUse | CompositePortDef | SimplePortDef | PortUse | ActionDef | ActionUse | ActivityDef | DataStore | DataBuffer | Protocol | ConstraintDef | Executable | Requirement;
+
+
+StructuralDef returns StructuralDef:
+	ComponentDef | ConnectorDef | CompositePortDef | SimplePortDef;
+
+DataDef returns DataDef:
+	DataTypeDef | DimensionDef | UnitDef | ValueTypeDef | Enumeration;
+
+ComponentDef returns ComponentDef:
+	(isBoundary?='boundary')? 'component' 'def' name=ID 
+	('styles' appliedStyle+=[Style|QualifiedName] ( "," appliedStyle+=[Style|QualifiedName])* )?
+	('implements' abstractComponent=[AbstractComponentDef|QualifiedName])?
+	'{'
+		('ports' ':' ports+=PortUse*)?
+		(properties+=Property
+		| structuralDefs+=StructuralDef
+		| dataDefs+=DataDef)*
+		
+		(composite=Configuration)?
+	'}' 
+	;
+
+ArchitectureDef returns ArchitectureDef:
+	// alternatively, a component might be an architecture 
+	'architecture' 'def' name=ID 
+	('styles' appliedStyle+=[Style|QualifiedName] ( "," appliedStyle+=[Style|QualifiedName])* )?
+	'{'
+		'ports' ':' ports+=PortUse*
+		properties+=Property*
+		(composite=Configuration)
+	'}'
+	
+;
+
+
+PortDef returns PortDef:
+	CompositePortDef | SimplePortDef;
+
+Pin returns Pin:
+	{Pin}
+	name=ID ':' (isFlow?='flow')? definition=[TypeDef|QualifiedName] (arrayIndex=Index)?
+	//('{' properties+=Property* '}' )?
+	;
+
+BehaviorDef returns BehaviorDef:
+	ActivityDef | Protocol | ConstraintDef | ActionDef;
+
+
+ActivityFlowable returns ActivityFlowable:
+	ActionUse | ActivitySwitch | DataStore | DataBuffer;
+
+
+ActionUse returns ActionUse:
+	{ActionUse}
+	name=ID ':' definition=[ActionDef|QualifiedName] ('{'
+		('using' 'pins' ':' (pinIn+=Pin ';')* )?
+		properties+=Property*
+	'}' | ';');
+
+ActivityRelation returns ActivityRelation:
+	ActivityDelegation | ActivityFlow;
+
+DataObject returns DataObject:
+	DataStore | DataBuffer;
+
+
+
+EString returns ecore::EString:
+	STRING | ID;
+
+Property returns Property:
+	{Property}
+	'property' name=ID (':' type=[TypeDef|QualifiedName])? ('=' value=Expression)? ';'
+;
+
+Package returns Package:
+	{Package}
+	'package' name=QualifiedName 
+	('uses' appliedStyle+=[Style|QualifiedName] ( "," appliedStyle+=[Style|QualifiedName])* )? '{'
+		('import' imports+=[Package|QualifiedName] ';')*
+		('using' importedDefinitions+=[ElementDef|QualifiedName] ';')*
+		(properties+=Property
+		| definitions+=ElementDef
+		| definitions+=ArchitectureDef)*
+	'}';
+
+ReqNumber:
+	INT ('.' INT)*
+;
+
+Requirement returns Requirement:
+	'Requirement' name=ID '(' id=ReqNumber ')'
+	'{'
+		('text' '=' text=EString)?
+		('satisfied' 'by' satisfiedBy+=[ElementDef|QualifiedName] ( "," satisfiedBy+=[ElementDef|QualifiedName])* ';')?
+		('derive' derive+=[Requirement|QualifiedName] ( "," derive+=[Requirement|QualifiedName])* ';' )?
+		(properties+=Property
+		| composition+=Requirement)*
+	'}';
+
+DataTypeDef returns DataTypeDef:
+	{DataTypeDef}
+	'datatype'
+	name=ID ('extends' superType=[DataTypeDef|QualifiedName])?
+	'{'
+		('attributes' ':' attributes+=TypeUse*)?
+		properties+=Property*
+	'}';
+
+ValueTypeDef returns ValueTypeDef:
+	{ValueTypeDef}
+	'value' 'type'
+	name=ID ('extends' superType=[ValueTypeDef|QualifiedName])?
+	'{'
+		('unit' '=' unit=[UnitDef|QualifiedName])?
+		('dimension' '=' dimension=[DimensionDef|QualifiedName])?
+		properties+=Property* 
+	'}';
+
+Enumeration returns Enumeration:
+	'enum'
+	name=ID
+	('{'
+		properties+=Property*
+		literals+=EnumLiteralValue ("," literals+=EnumLiteralValue)*
+	'}');
+
+TypeUse_Impl returns TypeUse:
+	name=ID ':' definition=[TypeDef|QualifiedName] (arrayIndex=Index)?
+		('{' properties+=Property* '}' | ';' )
+	;
+
+
+EnumLiteralValue returns EnumLiteralValue:
+ 	name=ID;
+
+DimensionDef returns DimensionDef:
+	{DimensionDef}
+	'dimension'
+	name=ID
+	('{'
+		(properties+=Property ( "," properties+=Property)*)?
+	'}')?;
+
+UnitDef returns UnitDef:
+	{UnitDef}
+	'unit'
+	name=ID
+	('{'
+		('dimension' '=' dimension=[DimensionDef|QualifiedName])?
+		(properties+=Property ( "," properties+=Property)* '}' )?
+	'}')?;
+
+
+ComponentUse returns ComponentUse:
+	name=ID ':' definition=[ComponentDef|QualifiedName] ('[' lowerBound=EInt ',' upperBound=EInt ']')?
+	('{'
+		
+		('using' 'ports' ':' ports+=PortUse*)?
+		properties+=Property*
+		
+	'}' | ';');
+
+ConnectorDef returns ConnectorDef:
+	'connector' 'def' name=ID  ('implements' abstractConnector=[AbstractConnectorDef|QualifiedName])?
+	'{'
+		('participants' ':' ports+=PortUse_Reverse*)?
+		(composite=Configuration)?
+		('flows' ':' flows+=Flow*)?
+
+		(properties+=Property
+		| structuralDefs+=StructuralDef
+		| dataDefs+=DataDef)*
+	'}';
+
+ConnectorUse returns ConnectorUse:
+	name=ID ':' definition=[ConnectorDef|QualifiedName] ('[' lowerBound=EInt ',' upperBound=EInt ']')? ('bindings' bindings+=ConnectorBinding ( "," bindings+=ConnectorBinding)* )? 
+	('{'
+		'ports' ':' ports+=PortUse_Reverse*
+		properties+=Property*
+	'}' | ';');
+
+CompositePortDef returns CompositePortDef:
+	'port' 'def' name=ID
+	'{'
+		'ports' ':' ports+=PortUse*
+		(properties+=Property
+		| structuralDefs+=StructuralDef
+		| dataDefs+=DataDef)*
+	'}';
+
+SimplePortDef returns SimplePortDef:
+	'port' 'def' name=ID
+	'{'
+		'flow' flowProperties=FlowProperty flowType=[TypeDef|QualifiedName] (arrayIndex=Index)?
+		(properties+=Property
+		| structuralDefs+=StructuralDef
+		| dataDefs+=DataDef)*
+	'}';
+
+PortUse returns PortUse:
+	name=ID ':' definition=[PortDef|QualifiedName] ('concrete' abstractPort=[AbstractPortUse|QualifiedName])? ('[' lowerBound=EInt ',' upperBound=EInt ']')?
+	('{'
+		properties+=Property*
+	'}' | ';');
+
+PortUse_Reverse returns PortUse:
+	'~' name=ID ':' definition=[PortDef|QualifiedName] ('concrete' abstractPort=[AbstractPortUse|QualifiedName])? ('[' lowerBound=EInt ',' upperBound=EInt ']')?
+	('{'
+		properties+=Property*
+	'}' | ';');
+
+ActionDef returns ActionDef:
+	{ActionDef}
+	'action' 'def'
+	name=ID '(' inParameters+=Pin ( "," inParameters+=Pin)* ')' ':' returnType=[TypeDef|QualifiedName]
+	'{'
+		(properties+=Property
+		| behaviorDefs+=BehaviorDef
+		| dataDefs+=DataDef)* 
+		('constraint' ':' constraints+=ConstraintUse*)?
+		delegations+=ActivityDelegation*
+	'}';
+
+ActivityDef returns ActivityDef:
+	{ActivityDef}
+	'activity' 'def'
+	name=ID ('implements' abstractActivity+=[AbstractActivityDef|QualifiedName] (',' abstractActivity+=[AbstractActivityDef|QualifiedName])*)? 
+	('(' inParameters+=Pin (',' inParameters+=Pin)* ')')* (':' '('outParameters+=Pin (',' outParameters+=Pin)* ')')?
+	'{'
+		(properties+=Property
+		| behaviorDefs+=BehaviorDef
+		| dataDefs+=DataDef)* 
+		('constraint' ':' constraints+=ConstraintUse*)?
+		delegations+=ActivityDelegation*
+		(body=ActivityBody)?
+	'}';
+
+DataStore returns DataStore:
+	'datastore'
+	name=ID ':' type=[TypeDef|QualifiedName] (arrayIndex=Index)?
+	('{'
+		
+		properties+=Property*
+		('initial' 'value' '=' initValue=Expression ';')?
+	'}')?;
+
+DataBuffer returns DataBuffer:
+	'databuffer'
+	name=ID ':' type=[TypeDef|QualifiedName] (arrayIndex=Index)?
+	'{'
+		properties+=Property*
+		('initial' 'value' '=' initValue=Expression ';')?
+	'}';
+
+Protocol returns Protocol: // TODO review
+	'protocol'
+	name=ID ('(' inParameters+=Pin (',' inParameters+=Pin)* ')') (':' outParameters+=Pin (',' outParameters+=Pin)*)?
+	'{'
+		(properties+=Property
+		behaviorDefs+=BehaviorDef
+		dataDefs+=DataDef)*
+		//constraints+=ConstraintUse
+		('delegations' ':' delegations+=ActivityDelegation*)?
+		body=ProtocolBody
+	'}';
+
+
+ConstraintDef returns ConstraintDef:
+	{ConstraintDef}
+	'constraint'
+	name=ID ('(' ( inParameters+=Pin (',' inParameters+=Pin)* )? ')') (':' '(' outParameters+=Pin (',' outParameters+=Pin)* ')')? 
+	'{'
+		(properties+=Property
+		| behaviorDefs+=BehaviorDef
+		| dataDefs+=DataDef)*
+		('equation' '=' equation=Expression)?
+	'}';
+
+
+/*
+ * Executable Viewpoint 
+ */
+TypeUse_NoSemicolon returns TypeUse:
+	name=ID ':' definition=[TypeDef|QualifiedName] (arrayIndex=Index)?
+			('{' properties+=Property* '}')?
+;
+
+Executable returns Executable:
+	'executable' 'def' name=ID '(' ('in' params+=TypeUse_NoSemicolon (',' 'in' params+=TypeUse_NoSemicolon)*)? ')' ':' 'out' returnType=[TypeDef|QualifiedName]
+	'{'
+		properties+=Property* 
+		body+=NonBlockStatement+
+	'}'
+	;
+
+/**
+ * Executable[STATEMENTS]
+ */
+Statement returns Statement:
+	//AssignmentExpression ';' | BlockStatement | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | IfBlockStatement | SwitchStatement
+	NonBlockStatement | BlockStatement
+;
+
+// Same as above, but block statement is not allowed
+NonBlockStatement returns Statement: //TODO substituir AssignmentExpression por Expression e tratar o erro em Expression
+	AssignmentExpression ';' | VariableDecl | ReturnStatement | WhileStatement | DoStatement | ForStatement | IfBlockStatement | SwitchStatement
+;
+
+BlockStatement returns BlockStatement:
+	{BlockStatement}
+	'{'
+		body+=Statement+
+	'}';
+
+//Assignment returns Assignment:
+//	var=[TypeUse|EString] '=' value=Expression
+//;
+
+VariableDecl returns VariableDecl:
+	'let' name=ID ':' definition=[TypeDef|QualifiedName] (arrayIndex=Index)? ('=' value=Expression)? ';'
+	// TODO must add the following line: got a left-reduction conflict
+	//|  definition=[TypeDef|QualifiedName] name=ID '=' (value=Expression)?
+; 
+
+IfBlockStatement returns IfBlockStatement:
+	main_if=IfStatement
+	//('or' paralel_ifs+=IfStatement)* // TODO need to fix it, we need some mechanism to determine the order of the if statements if combining parallel and sequential 
+	(=>else=ElseStatement)?
+;
+
+IfStatement returns IfStatement:
+	'if' '('condition=Expression')' body=Statement;
+
+ElseStatement returns ElseStatement:
+	'else' body=Statement
+;
+
+ReturnStatement returns ReturnStatement:
+	'return' value=Expression ';'
+;
+
+WhileStatement returns WhileStatement:
+	'while' '(' condition=Expression ')' body=Statement
+;
+
+DoStatement returns DoStatement:
+	'do' body=Statement 'while' '(' condition=Expression ')'
+;
+
+ForStatement returns ForStatement:
+	'for' '(' control=ForControl ')' body=Statement
+;
+
+ForControl returns ForControl:
+	vars+=ForVar (',' vars+=ForVar) 
+;
+
+ForVar returns ForVar:
+ 	var=VariableDecl 'in' expr=Expression
+	//| var=VariableDecl ':' expr=Expression // TODO add variable this, got a left-reduction problem
+;
+
+SwitchStatement returns SwitchStatement:
+	'switch' '(' expr=Expression ')' '{' clauses+=SwitchClause* clauses+=DefaultSwitchClause '}'
+;
+
+SwitchClause returns SwitchClause:
+	'case' value=Expression ':' body=Statement
+;
+
+DefaultSwitchClause returns DefaultSwitchClause:
+	'default' ':' body=Statement
+;
+
+/**
+ * Executable[EXPRESSIONS]
+ * Expressions are divided into 6 groups of expressions
+ */
+Expression returns Expression:
+	ConditionalExpression | =>AssignmentExpression   
+;
+
+/**
+ * Basic, simplest expressions
+ */
+PrimaryExpression returns Expression:
+	NameExpression | NonNameExpression// | InstanceCreationExpression
+;
+
+NameExpression returns NameExpression:
+	cite=[NamedElement|QualifiedName]
+;
+
+NonNameExpression returns Expression:
+	LiteralExpression 
+	| ThisExpression 
+	| ParenthesizedExpression 
+	//| PropertyAccessExpression // FIXME left-recursion problem 
+	| DataTypeAccessExpression
+	//| InvocationExpression
+	| InstanceCreationExpression 
+	//| LinkOperationExpression 
+	//| ClassExtentExpression 
+	| SequenceConstructionExpression 
+	| SequenceAccessExpression
+;
+
+InstanceCreationExpression returns InstanceCreationExpression:
+	'new' type=[TypeDef|QualifiedName] (index=Index)? 
+;
+
+SequenceConstructionExpression returns SequenceConstructionExpression:
+	'{' elements=SequenceElements '}'
+;
+
+SequenceElements returns SequenceElements:
+	SequenceExpressionList | SequenceRange
+;
+
+SequenceExpressionList returns SequenceExpressionList:
+	{SequenceExpressionList}
+ 	( element+=LiteralExpression (',' element+=LiteralExpression)* (',')? )?
+;
+
+SequenceRange returns SequenceRange:
+	rangeLower=NaturalLiteralExpression '..' rangeUpper=NaturalLiteralExpression
+;
+
+SequenceAccessExpression returns SequenceAccessExpression:
+	primary=NameExpression index=NonEmptyIndex
+;
+
+DataTypeAccessExpression returns DataTypeAccessExpression:
+	datatype=[TypeUse|QualifiedName] '->' attr=[TypeUse|ID] (index=NonEmptyIndex)?
+;
+
+LiteralExpression returns LiteralExpression:
+	BooleanLiteralExpression 
+	| NaturalLiteralExpression  
+	| StringLiteralExpression
+	| EnumValueLiteralExpression
+	| NullLiteralExpression
+; 
+	
+NullLiteralExpression returns NullLiteralExpression:
+	{NullLiteralExpression}
+	'null'
+;
+
+EnumValueLiteralExpression returns EnumValueLiteralExpression:
+	_enum=[Enumeration|QualifiedName] '::' enumValue=[EnumLiteralValue|ID];
+
+BooleanLiteralExpression returns BooleanLiteralExpression:
+	isTrue=EBoolean;
+
+NaturalLiteralExpression returns NaturalLiteralExpression:
+	int_value=INT;
+
+StringLiteralExpression returns StringLiteralExpression:
+	str_value=STRING;
+
+ThisExpression returns ThisExpression:
+	{ThisExpression}
+	'this'
+;
+
+ParenthesizedExpression returns Expression:
+	'(' Expression ')'
+;
+
+PropertyAccessExpression returns PropertyAccessExpression:
+	// Access a property for the Executable, corresponding Action, corresponding Activity or corresponding Component	
+	// prop=[Property|QualifiedName] |
+	featureRef=FeatureReference
+;
+
+FeatureReference returns FeatureReference:
+	//target=FeatureTargetExpression "." field=[NamedElement|ID]
+	(feature=[NamedElement|QualifiedName] | expr=NonNameExpression) '->' field=[NamedElement|ID]
+; 
+
+/**
+ * Increment and decrement expressions
+ */
+IncrementOrDecrementExpression returns IncrementOrDecrementExpression:
+	PostfixExpression | PrefixExpression
+;
+
+PostfixExpression returns IncrementOrDecrementExpression:
+	operand=LeftHandSide operator=AffixOperator
+;
+
+PrefixExpression returns IncrementOrDecrementExpression:
+	operator=AffixOperator operand=LeftHandSide
+;
+
+enum AffixOperator returns AffixOperator:
+	incr = "++" | decr = "--"
+;
+
+/**
+ * Unary expressions
+ */
+UnaryExpression returns Expression:
+	BooleanUnaryExpression | ToStringExpression | ToIntExpression | BitStringUnaryExpression | 
+	IsolationExpression | =>IncrementOrDecrementExpression | PrimaryExpression //| CastExpression | NumericUnaryExpression
+;
+
+ToStringExpression returns UnaryExpression:
+	operator="toString" "(" op=UnaryExpression ")"
+;
+ToIntExpression returns UnaryExpression:
+	operator="toInt" "(" op=StringLiteralExpression ")"
+;
+
+BooleanUnaryExpression returns BooleanUnaryExpression:
+	operator="!" op=UnaryExpression
+;
+
+BitStringUnaryExpression returns BitStringUnaryExpression:
+	operator="~" op=UnaryExpression
+;
+
+IsolationExpression returns IsolationExpression:
+	operator='$' op=UnaryExpression
+;
+
+//NumericUnaryExpression returns NumericUnaryExpression: //descobrir para que serve
+//	operator='+'|'-' op=UnaryExpression
+//;
+
+//CastExpression returns CastExpression:
+//	"(" typeName=[TypeDef|QualifiedName] ")" op=NonNumericUnaryExpression
+//; // NonNumericUnaryExpression 'as' typeName=[TypeDef|QualifiedName] // Xtend alternative
+//
+//NonNumericUnaryExpression returns Expression:
+//	PrimaryExpression | PostfixExpression | BooleanUnaryExpression | 
+//	BitStringUnaryExpression | CastExpression | IsolationExpression
+//;
+
+/**
+ * Binary Expressions
+ */
+
+/* ARITHMETIC EXPRESSIONS */
+
+MultiplicativeExpression returns MultiplicativeExpression:
+	op1=UnaryExpression ({MultiplicativeExpression.op1=current} operator=MultiplicativeOperator op2=UnaryExpression)*
+;
+
+enum MultiplicativeOperator returns MultiplicativeOperator:
+	star = "*" | slash = "/" | rem = "%"
+;
+
+AdditiveExpression returns AdditiveExpression:
+	op1=MultiplicativeExpression ({AdditiveExpression.op1=current} operator=AdditiveOperator op2=MultiplicativeExpression)*
+;
+
+enum AdditiveOperator returns AdditiveOperator:
+	plus = "+" | minus = "-"
+;
+
+ShiftExpression returns ShiftExpression:
+	op1=AdditiveExpression ({ShiftExpression.op1=current} operator=ShiftOperator op2=AdditiveExpression)*
+;
+
+enum ShiftOperator returns ShiftOperator:
+	lshift = "<<" | rshift = ">>" | urshift = ">>>"
+;
+
+RelationalExpression returns RelationalExpression:
+	op1=ShiftExpression ({RelationalExpression.op1=current} operator=RelationalOperator op2=ShiftExpression)*
+;
+
+enum RelationalOperator returns RelationalOperator:
+	less = "<" | greater = ">" | less_equal = "<=" | greater_equal = ">="
+;
+
+ClassificationExpression returns ClassificationExpression:
+	op=RelationalExpression (operator=("instanceof" | "hastype") typeName=[TypeDef|QualifiedName])?
+;
+
+EqualityExpression returns EqualityExpression:
+	op1=ClassificationExpression ({EqualityExpression.op1=current} operator=EqualityOperator op2=ClassificationExpression)*
+;
+
+enum EqualityOperator returns EqualityOperator:
+	equal = "==" | different = "!="
+;
+
+/* LOGICAL EXPRESSIONS */
+AndExpression returns LogicalExpression:
+	op1=EqualityExpression ({LogicalExpression.op1=current} operator="&" op2=EqualityExpression)*
+;
+
+ExclusiveOrExpression returns LogicalExpression:
+	op1=AndExpression ({LogicalExpression.op1=current} operator="^" op2=AndExpression)*
+;
+
+InclusiveOrExpression returns LogicalExpression:
+	op1=ExclusiveOrExpression ({LogicalExpression.op1=current} operator="|" op2=ExclusiveOrExpression)*
+;
+
+/* CONDITIONAL LOGICAL EXPRESSIONS */
+
+ConditionalAndExpression returns ConditionalLogicalExpression:
+	op1=InclusiveOrExpression ({ConditionalLogicalExpression.op1=current} operator="&&" op2=InclusiveOrExpression)*
+;
+
+ConditionalOrExpression returns ConditionalLogicalExpression:
+	 op1=ConditionalAndExpression ({ConditionalLogicalExpression.op1=current} operator="||" op2=ConditionalAndExpression)*
+;
+
+ConditionalImpliesExpression returns ConditionalLogicalExpression:
+	op1=ConditionalOrExpression ({ConditionalLogicalExpression.op1=current} operator="implies" op2=ConditionalOrExpression)*
+;
+
+/**
+ * Conditional (ternary operation) expressions
+ */
+ConditionalExpression returns ConditionalTestExpression:
+	//ConditionalOrExpression	| ConditionalTestExpression
+	op1=ConditionalImpliesExpression ({ConditionalTestExpression.op1=current} "?" op2=Expression ":" op3=ConditionalImpliesExpression)*
+;
+
+//ConditionalTestExpression returns ConditionalTestExpression:
+//	=>op1=ConditionalOrExpression "?" op2=Expression ":" op3=ConditionalExpression
+//;
+
+/**
+ * Assignment expressions
+ */
+AssignmentExpression returns AssignmentExpression: 
+	lhs=LeftHandSide operator=AssignmentOperator v=Expression
+;
+
+enum AssignmentOperator returns AssignmentOperator:
+	equal = "=" | plusEqual = "+=" | minusEqual = "-=" | starEqual = "*=" | 
+	modEqual = "%=" | divEqual = "/=" | andEqual = "&=" | orEqual = "|=" | powerEqual = "^=" | 
+	shiftLeftEqual = "<<=" | shiftRightEqual = ">>=" | shiftRightDoubledEqual = ">>>="
+;
+
+LeftHandSide returns LeftHandSide:
+	target=NameExpression (index=NonEmptyIndex)? | feature=DataTypeAccessExpression |
+	feature=EnumValueLiteralExpression | "(" LeftHandSide ")"
+;
+
+Index returns ArrayIndex:
+	{ArrayIndex}
+	("[" expression+=Expression? "]")+
+;
+
+NonEmptyIndex returns ArrayIndex:
+	("[" expression+=Expression "]")+
+;
+
+/**
+ * Name reference and naming rules
+ */
+TypeName:
+	QualifiedName
+	| 'any' // TODO check this, will have impact on diagrams
+;
+ 
+QualifiedName:
+	//ColonQualifiedName
+	DotQualifiedName
+	| ID
+;
+
+/*
+ * Removed [Eduardo] 
+ ColonQualifiedName:
+	ID '::' QualifiedName 
+;*/
+
+DotQualifiedName:
+	ID ('.' ID)+
+;
+
+/**
+ * Other stuff
+ */
+
+EInt returns ecore::EInt:
+	'-'? INT;
+
+Configuration returns Configuration:
+	{Configuration}
+	'configuration'
+	'{'
+		('components' ':' components+=ComponentUse*)?
+		('connectors' ':' connectors+=ConnectorUse*)?
+		('delegations' ':' delegations+=Delegation*)?
+	'}';
+
+		Delegation returns Delegation:
+			source=[PortUse|QualifiedName] 'to' destination=[PortUse|QualifiedName]
+			;
+
+Flow returns Flow:
+	type=[TypeDef|QualifiedName] 'from' source=[PortUse|QualifiedName] 'to' destination=[PortUse|QualifiedName]
+	;
+
+		ConnectorBinding returns ConnectorBinding:
+			source=[PortUse|QualifiedName] '=' destination=[PortUse|QualifiedName];
+
+enum FlowProperty returns FlowProperty:
+	in = 'in' | out = 'out' | inout='inout';
+
+ConstraintUse returns ConstraintUse:
+	{ConstraintUse}
+	kind=ConstraintKind	(definition=[ConstraintDef|QualifiedName])
+	;
+
+ActivityDelegation returns ActivityDelegation:
+	'delegate' source=[ActivityFlowable|QualifiedName] 'to' (target=[ActivityFlowable|QualifiedName] | targetSwitch=ActivitySwitch)
+;
+
+enum ConstraintKind returns ConstraintKind:
+				preCondition = 'pre-condition' | postCondition = 'post-condition' | invariant = 'invariant';
+
+ActivitySwitch returns ActivitySwitch:
+	{ActivitySwitch}
+	'switch'
+	'{'
+		(cases+=ActivitySwitchCase ( "," cases+=ActivitySwitchCase)*)?
+	'}';
+
+ActivitySwitchCase returns ActivitySwitchCase:
+	{ActivitySwitchCase}
+	'case' (condition=Expression) ':' (target=[ActivityFlowable|QualifiedName])
+	;
+
+
+ActivityBody returns ActivityBody:
+	{ActivityBody}
+	'body'
+	'{'
+		('actions' ':' actions+=ActionUse*)?
+		flows+=ActivityRelation*
+		dataObjects+=DataObject*
+	'}';
+
+
+ProtocolBody returns ProtocolBody:
+	{ProtocolBody}
+	recControl=ProtocolControl body=ProtocolBodyInternal (recType=ProtocolAlternativeType recursive=ProtocolBody)?
+;
+
+enum ProtocolAlternativeType returns ProtocolAlternativeType:
+	complimentary = ';' | alternative = '|'
+;
+
+enum ProtocolControl returns ProtocolControl:
+	always = 'always' | several = 'several' | once = 'once' | perhaps = 'perhaps';
+
+
+ProtocolBodyInternal returns ProtocolBodyInternal:
+	'(' ProtocolBody ')' | ActionSend | ActionReceive;
+
+ActionSend returns ActionSend:
+	'send' expression=Expression	'via' flowTo=[Pin|QualifiedName]
+;
+
+ActionReceive returns ActionReceive:
+	'receive' var=TypeUse 'from' flowTo=[Pin|QualifiedName]
+;
+
+ActivityFlow returns ActivityFlow:
+	'flow'
+	'from' source=[ActivityFlowable|QualifiedName]
+	'to' (target=[ActivityFlowable|QualifiedName] | targetSwitch=ActivitySwitch)
+;
+
+
+AllocationTable returns AllocationTable:
+	{AllocationTable}
+	'allocations' '{'
+		allocs+=Allocation*
+	'}'
+;
+
+Allocation returns Allocation:
+	ExecutableAllocation | ActivityAllocation;
+
+ExecutableAllocation returns ExecutableAllocation:
+	{ExecutableAllocation}
+	'executable' (source=[Executable|QualifiedName] | 'null') 'to' (target=[ActionDef|QualifiedName] | 'null')
+; 
+
+ActivityAllocation returns ActivityAllocation:
+	{ActivityAllocation}
+	'activity' (source=[ActivityDef|QualifiedName] | 'null') 'to' (target=[StructuralDef|QualifiedName] | 'null')
+;
+
+EBoolean returns ecore::EBoolean:
+	'true' | 'false';
+
+EFloat returns ecore::EFloat:
+	'-'? INT? '.' INT (('E'|'e') '-'? INT)?;

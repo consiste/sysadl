@@ -1,0 +1,160 @@
+* Transformaçao de Conector Composto
+
+
+- Em SysADL
+
+	port def inVehicleData {
+		flow in VehicleData
+	}
+	port def outVehicleData {
+		flow out VehicleData
+	}
+	port def inNotificationToSupervisory {
+		flow in NotificationToSupervisory
+	}
+	port def outNotificationToSupervisory {
+		flow out NotificationToSupervisory
+	}
+
+	port def IAGVSystem {
+		ports: 
+			inMoveToStation : inVehicleData {}
+			outNotifications : outNotificationToSupervisory {}
+	}
+	port def ISupervisorySystem {
+		ports: 
+			outMoveToStation : outVehicleData {}
+			inNotifications : inNotificationToSupervisory {}
+	}
+	
+	connector def notifySupervisory {
+		participants: ~ nsIPT : inNotificationToSupervisory {
+		}
+		~ nsOPT : outNotificationToSupervisory {
+		}
+		flows: NotificationToSupervisory from nsOPT to nsIPT
+	}
+	
+	connector def sendVehicleData {
+		participants: ~ vdOPT : outVehicleData {
+		}
+		~ vdIPT : inVehicleData {
+		}
+		flows: VehicleData from vdOPT to vdIPT
+	}
+	
+	connector def interactionAGVAndSupervisory {
+		participants: ~ iagvs : IAGVSystem {
+		}
+		~ iss : ISupervisorySystem {
+		}
+		configuration {
+			connectors:
+			nS : notifySupervisory bindings outNotifications = inNotifications; 
+			sVD : sendVehicleData bindings outMoveToStation = inMoveToStation;
+		}
+	}
+	
+	- Em PiADL
+	
+				connector notifySupervisory is abstraction(){
+					
+					type NotificationToSupervisory is Any  
+					
+					connection nsIPT is in (NotificationToSupervisory)
+		  			connection nsOPT is out (NotificationToSupervisory)
+					
+					protocol is{
+						(via nsIPT receive NotificationToSupervisory
+						 via nsOPT send NotificationToSupervisory)*
+					}
+					
+					behavior is{
+						unobservable
+					}
+				}
+				
+		    	connector sendVehicleData is abstraction(){
+					
+					type VehicleData is view[ 
+						attributes: destination : Location;
+						command : CommandToArm;
+					]
+					
+					connection vdIPT is in (VehicleData)
+	  				connection vdOPT is out (VehicleData)
+					
+					protocol is{
+						(via vdIPT receive VehicleData
+						 via vdOPT send VehicleData)*
+					}
+					
+					behavior is{
+						unobservable
+					}
+				} 	
+				
+				connector interactionAGVAndSupervisory(){
+					
+					type NotificationToSupervisory is Any  
+					type CommandToArm is Any
+					
+					type Location is view[ 
+						attributes: 
+							location : String;
+					]
+					
+					type VehicleData is view[ 
+						attributes: 
+							destination : Location;
+							command : CommandToArm;
+					]  
+					
+					connection inMoveToStation is in (VehicleData)
+		  			connection outNotifications is out (NotificationToSupervisory)
+		  			connection outMoveToStation is out (VehicleData)
+		  			connection inNotifications is in (NotificationToSupervisory)
+		  			 
+					protocol is{
+						(via inMoveToStation receive VehicleData
+						 via outNotifications send NotificationToSupervisory
+						 via outMoveToStation send VehicleData
+						 via inNotifications send NotificationToSupervisory)*
+					}
+					
+					behavior is{
+						compose{
+								sVD is sendVehicleData()
+						   and  ns is notifySupervisory()
+						} where {						
+							interactionAGVAndSupervisory::outMoveToStation unifies sVD::vdOPT -- Pode incluir os connections do módulo?
+							sVD::vdOPT  unifies sVD::vdIPT --definir essa linha, nao seria redefinir o que teoricamente o conector já faz?
+							sVD::vdIPT unifies interactionAGVAndSupervisory::inMoveToStation 
+							
+							interactionAGVAndSupervisory::outNotifications unifies ns::nsOPT
+							ns::nsOPT  unifies ns::nsIPT
+							ns::nsIPT unifies interactionAGVAndSupervisory::inNotifications 
+							
+						 -- OBS: não há registro do nome da porta composta neste tipo de arranjo, essa informação é perdida!
+						}
+						
+					}
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+	
+			
+			
+			
+			
+			
+			
+			
+				
+				

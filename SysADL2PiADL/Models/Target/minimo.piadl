@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<piADL:ArchitectureDescription xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:piADL="http://www.irisa.fr/archware/PiADL">
+  <archElements xsi:type="piADL:Component" name="CompA">
+    <connections name="aOut" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="Int"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="aOut">
+        <type xsi:type="piADL:TypeRef" idt="Int"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Component" name="boundary CompB">
+    <connections name="bOut" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="Int"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="bOut">
+        <type xsi:type="piADL:TypeRef" idt="Int"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archs name="MinimoARCH1">
+    <compose>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="instA" elementType="CompA"/>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="instB" elementType="CompB"/>
+      <uc/>
+    </compose>
+  </archs>
+  <cbehavior/>
+</piADL:ArchitectureDescription>

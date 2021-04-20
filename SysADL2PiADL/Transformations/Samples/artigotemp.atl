@@ -1,0 +1,35 @@
+lazy rule lazyComponentDef2Component {
+	from
+		sSC: SYSADL!ComponentDef (not sSC.oclIsTypeOf(SYSADL!ArchitectureDef))
+	to
+		pC: PIADL!Component (
+			name <- (if (sSC.isBoundary = false) then sSC.name else 'boundary ' + sSC.name endif).debug('Component: '),
+			typeDecl <- typeDeclarations -> iterate(typedecl; typedecls:OrderedSet(PIADL!TypeDeclaration) = OrderedSet{} | 
+				typedecls.including(thisModule.lazyTuple2TypeDeclaration(typedecl))),
+			connections <- sSC.ports -> iterate(con; cons:Sequence(PIADL!ConnectionDeclaration) = Sequence{} | cons.including(
+				if (con.definition.oclIsTypeOf(SYSADL!CompositePortDef))then
+							con.definition.ports -> iterate(port; ports:Sequence(PIADL!ConnectionDeclaration) = Sequence{} |
+									ports.including(thisModule.lazyCompositePortUse2ConnectionDeclaration(port)))
+				else
+					thisModule.lazySimplePortUse2ConnectionDeclaration(con)
+				endif)),
+			protDecl <- thisModule.lazyComponent2ProtocolDeclaration(sSC),
+			behavior <- if (sSC.isBoundary = true or sSC.composite.oclIsUndefined()) then
+							thisModule.lazyUnobservable2BehaviorDeclaration(PIADL!Unobservable)
+						else
+							thisModule.lazyComponentDefConfiguration2CompositionBehaviorDeclaration(sSC)
+						endif
+			)
+}
+
+
+
+
+
+
+
+
+
+
+		
+		

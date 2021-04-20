@@ -1,0 +1,98 @@
+-- @path MKAOS=/Kaos/model/mkaos.ecore
+-- @path SOSADL=/org.archware.sosadl.SosADL/model/generated/SosADL.ecore
+
+module mkaos2sosadl;
+create OUT : SOSADL from IN : MKAOS;
+
+--  quick way to identify all the outputs of a capability
+helper context MKAOS!OperationalCapability def : output() : Sequence(MKAOS!Object) = self.output.union(self.produces);
+helper context MKAOS!CommunicationalCapability def : output() : Sequence(MKAOS!Object) = self.output.union(self.produces);
+
+-- quick way to identify all the inputs from a capability
+helper context MKAOS!OperationalCapability def : input() : Sequence(MKAOS!Object) =
+	self.refImmediateComposite().oclAsType(MKAOS!mKAOS).consistsOf()->select(p | p.oclIsKindOf(MKAOS!Entity) and p.oclAsType(MKAOS!Entity).inputs.contains(self));
+helper context MKAOS!CommunicationalCapability def : input() : Sequence(MKAOS!Object) =
+	self.refImmediateComposite().oclAsType(MKAOS!mKAOS).consistsOf()->select(p | p.oclIsKindOf(MKAOS!Entity) and p.oclAsType(MKAOS!Entity).inputs.contains(self));
+
+-- functions for isolate constituent systems, entities and capabilities
+helper context MKAOS!mKAOS def : entities(): Sequence(MKAOS!Entity) =
+	self.consistsOf->select(p | p.oclIsTypeOf(MKAOS!Entity));
+helper context MKAOS!mKAOS def : constituent(): Sequence(MKAOS!ConstituentSystem) =
+	self.consistsOf->select(p | p.oclIsTypeOf(MKAOS!ConstituentSystem));
+helper context MKAOS!mKAOS def : capabilities(): Sequence(MKAOS!CommunicationalCapability) =
+	self.consistsOf->select(p | p.oclIsTypeOf(MKAOS!CommunicationalCapability));
+
+rule ProduceSos {
+	from
+		missions : MKAOS!mKAOS
+	to 
+		eblock : SOSADL!EntityBlock(
+				datatypes <- missions.entities(),
+				systems <- missions.constituent(),
+				mediators <- missions.capabilities(),
+				architectures <- arch 
+			),
+		sos : SOSADL!SoS (
+			name <- 'GeneratedSoS',
+			decls <- eblock
+		),
+		arch : SOSADL!ArchitectureDecl(
+			behavior <-  archb
+		),
+		archb : SOSADL!ArchBehaviorDecl(
+			constituents <- missions.constituent()--, -- possible?
+			--bindings <- 
+				--let s : Sequence(SOSADL!Binding) in
+					--s
+		)
+		
+}
+
+rule DataTypesFromEntities {
+	from 
+		entity : MKAOS!Entity
+	to
+		dtype : SOSADL!DataTypeDecl(name <- entity.name)
+}
+
+rule ProduceConstituentSystem {
+	from
+		mkaos_cs : MKAOS!ConstituentSystem
+	to 
+		sos_cs : SOSADL!SystemDecl (
+			name <- mkaos_cs.name,
+			-- gates will be produced from operational capabilities
+			gates <- mkaos_cs.capableOf)
+}
+
+rule ProduceGateFromCapability {
+	from
+		mkaos_operationalCapability : MKAOS!OperationalCapability
+	to 
+		output_gate : SOSADL!GateDecl (
+			name <- mkaos_operationalCapability.name,
+			-- both input and outputs connections
+			connections <-
+				let allConnections : Sequence(SOSADL!Connection) =  
+					mkaos_operationalCapability.output().union(mkaos_operationalCapability.input()) in
+						allConnections->iterate(i; p : SOSADL!Connection = allConnections->first() |
+							-- check if input or output and set the value 
+							if (mkaos_operationalCapability.input()->includes(i)) then 
+								i.refSetValue('mode', 'ModeTypeIn')
+							else 
+								i.refSetValue('mode', 'ModeTypeOut')
+							endif
+						)
+		)
+}
+
+rule ProduceInputConnectionFromEntity {
+	from 
+		mkaos_entity : MKAOS!Entity
+	to
+		sos_connection : SOSADL!Connection (
+			valueType <- mkaos_entity,
+			mode <- 'ModeTypeIn',
+			name <- 'i0'
+		)
+}

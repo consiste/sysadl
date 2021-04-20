@@ -1,0 +1,257 @@
+[x] SysADL::Property {
+  name : String
+  type : NamedElement
+  value : Expression
+}
+
+[x] SysADL::NamedElement {
+  name : String
+  property[] : Property
+}
+
+[x] SysADL::TypeDef {
+  name : String (NamedElement)
+  property[] : Property (NamedElement)
+}
+
+[x] SysADL::Expression {}  // classe abstrata - [TODO] Identificar as classes concretas.
+
+[x] SysADL::ArrayIndex {
+  expression[] : Expression (ArrayIndex)
+}
+
+[x] SysADL::TypeUse {
+    name : String (NamedElement)
+    property[] : Property (NamedElement)
+    definition : TypeDef (TypeUse)
+    arrayIndex : ArrayIndex (TypeUse)
+}
+
+[x] SysADL::DatatypeDef {
+    name : String (NamedElement)
+    property[] : Property (NamedElement)
+    attributes[] : SysADL::TypeUse (DatatypeDef)
+    supertype : SysADL::DatatypeDef (DatatypeDef)
+}
+
+--------------------------------------------------------------------------------------------
+
+[x] SysADL::ConnectorDef{
+    name : String (NamedElement)
+    property[] : Property (NamedElement)
+    structuralDesf[] : StructuralDef (StructuralDef)
+    dataDefs[] : DataDef (StructuralDef)
+    invariants [] : Invariant (StructuralDef)
+    ports[] : PortUse (ConnectorDef)
+    flows [] : Flow (ConnectorDef)
+    composite: Configuration (ConnectorDef)
+    --abstractConnector: AbstractConnectorDef (ConnectorDef)
+  
+}
+
+[x] SysADL::StructuralDef{
+ 	  name : String (NamedElement)
+    property[] : Property (NamedElement)
+    structuralDesf[] : StructuralDef (StructuralDef)
+    dataDefs[] : DataDef (StructuralDef)
+    invariants [] : Invariant (StructuralDef)
+}
+
+[x] SysADL::DataDef {
+ 	  name : String (NamedElement)
+    property[] : Property (NamedElement)
+}
+
+[x] SysADL::Invariant {
+ 	  name : String (NamedElement)
+    property[] : Property (NamedElement)
+    expr : Estring (Invariant)
+}
+
+[x] SysADL::PortUse{
+ 	  name : String (NamedElement)
+    property[] : Property (NamedElement)
+    definition: PortDef (PorUse)
+    --abstractPort : AbstractPortUse (PorUse)
+    lowerBound : EInt (StructuralUse)
+    upperBound : EInt (StructuralUse)
+     
+}
+
+[x] SysADL::StructuralUse{
+ 	 name : String (NamedElement)
+    property[] : Property (NamedElement)
+    lowerBound : EInt (StructuralUse)
+    upperBound : EInt (StructuralUse)     
+}
+
+[x] SysADL::PortDef{ // Classe Abstrata
+ 	  name : String (NamedElement)
+    property[] : Property (NamedElement)
+    structuralDesf[] : StructuralDef (StructuralDef)
+    dataDefs[] : DataDef (StructuralDef)
+    invariants [] : Invariant (StructuralDef)
+}
+
+[] SysADL::SimplePortDef (PortDef) {
+  
+}
+
+[] SysADL::CompositePortDef (PortDef){
+  
+}
+
+
+[x] SysADL::Flow{
+	source: PortUse (RelationUse)
+	destination: PortUse (RelationUse)
+	type : TypeDef (Flow)
+}
+
+[x] SysADL::RelationUse{
+	source: PortUse (RelationUse)
+	destination: PortUse (RelationUse)
+}
+
+[x] SysADL::Configuration{
+	components[] : ComponentUse (Configuration)
+	connectors[] : ComponentUse (Configuration)
+	delegations[] : Delegation (Configuration)
+
+}
+
+[x] SysADL::ComponentUse{
+ 	  name : String (NamedElement)
+    property[] : Property (NamedElement)
+    lowerBound : EInt (StructuralUse)
+    upperBound : EInt (StructuralUse)    
+    definition : ComponentDef (ComponentUse)
+    ports[] : PortUse (ComponentUse)
+}
+
+[x] SysADL:: ComponentDef{
+ 	  name : String (NamedElement)
+    property[] : Property (NamedElement)
+    structuralDesf[] : StructuralDef (StructuralDef)
+    dataDefs[] : DataDef (StructuralDef)
+    invariants [] : Invariant (StructuralDef)
+    ports[] : PortUse (ComponentDef)
+    composite : Configuration (ComponentDef)
+    isBoundary : EBoolean (ComponentDef)
+    --abtractComponent : AbstractConnectorDef (ComponentDef)
+    --appliedStyle[] : Style (ComponentDef)
+}
+
+[x] SysADL::Delegation{
+	 source: PortUse (RelationUse)
+	 destination: PortUse (RelationUse)
+}
+
+/******************************************************************/
+
+[x] PiADL::BaseType(ValueType) { // tipo base para os tipos primitivos
+  type: String
+}
+
+[x] PiADL::ConstructedType(ValueType) {} // classe Abstrata
+
+[x] PiADL::ValueType {} // classe Abstrata 
+
+[x] PiADL::LabeledType {
+  label : String
+  type : ValueType
+}
+
+[x] PiADL::View {
+    labt[] : PiADL::LabeledType (View)
+}
+
+---------------
+[?] PiADL::Connector {
+    name: EString (ArchitecturalElement)
+    parameters[] : Parameter (ArchitecturalElement)
+    typeDecl[] : TypeDeclaration (ArchitecturalElement)
+    connections[] : ConnectionDeclaration (ArchitecturalElement)
+    ?protDecl : ProtocolDeclaration (ArchitecturalElement)
+    ?behavior : BehaviorDeclaration (ArchitecturalElement) 
+}
+
+[x]PiADL::ArchitecturalElement{
+    name : EString (ArchitecturalElement)
+    parameters[] : Parameter (ArchitecturalElement)
+    typeDecl[] : TypeDeclaration (ArchitecturalElement)
+    connections[] : ConnectionDeclaration (ArchitecturalElement)
+    protDecl : ProtocolDeclaration (ArchitecturalElement)
+    behavior : BehaviorDeclaration (ArchitecturalElement) 
+}
+
+[x] PiADL::Parameter{
+	name : EString (Parameter)
+	type : ValueType (Parameter)
+}
+
+[x] PiADL::TypeDeclaration{
+	name : EString (TypeDeclaration)
+	type : ValueType (TypeDeclaration)
+}
+
+[x] PiADL::ConnectionDeclaration{
+	name : EString (ConnectionDeclaration)
+	direction : ConnectionMode (ConnectionDeclaration) 
+	type : ValueType ((ConnectionDeclaration))
+}
+
+[x] PiADL::ConnectionMode{ //ENUM 
+	in : 0
+	out : 1
+}
+
+[x] PiADL::ProtocolDeclaration{
+	protocol: ProtocolAction (ProtocolDeclaration)
+}
+
+[x] PiADL::ProtocolAction{
+	connectionName: EString
+	action: Action
+	type: ValueType
+
+}
+
+[x] PiADL:: Action{ //ENUM
+	send:0
+	receive:1
+}
+
+/******************************* Mapping PIADL::View <- SYSADL::DatatypeDef ***********************************/
+
+mapping PiADL::View from SysADL::DatatypeDef {
+  rule [1] PiADL::View.labt[i].label <- SysADL::DatatypeDef.attributes[i].name
+  rule [2] (if PiADL::View.labt[i].type is BaseType)  
+    PiADL::View.labt[i].type.type <- SysADL::DatatypeDef.attributes[i].definition.name
+  rule [3] (if PiADL::View.labt[i].type is ConstructedType)
+    PiADL::View.labt[i].type.type <- SysADL::DatatypeDef.attributes[i].definition.name
+}
+
+
+/******************************* Mapping PIADL::Connector <- SYSADL::ConnectorDef ***********************************/
+mapping PiADL::Connector from SysADL::ConnectorDef {
+  rule [1] PIADL::Connector.name <- SYSADL::ConnectorDef.name
+  rule [2] PIADL::Connector.parameters[i] <- !?!??! // Não observado em exemplos.
+  rule [3] PIADL::Connector.typeDecl[i] <- Bag(SYSADL::ConnectorDef.ports[i].definition. // Gerado a partir dos tipos das portas nas 'connections'
+  rule [4] PIADL::Connector.connections[i] <- SYSADL::ConnectorDef.flows[i]
+
+/***************************** Mapping PIADL::ConnectionDeclaration (in) <- SYSADL::Flow ***********************************/
+mapping Mapping PIADL::ConnectionDeclaration <- SYSADL::Flow
+  rule [1] PIADL::ConnectionDeclaration.name <- SYSADL::Flow.source.name 
+  rule [2] PIADL::ConnectionDeclaration.type <- SYSADL::Flow.type
+  rule [3] PIADL::ConnectionDeclaration.direction <- 'in'
+
+/***************************** Mapping PIADL::ConnectionDeclaration (in) <- SYSADL::Flow ***********************************/
+mapping Mapping PIADL::ConnectionDeclaration <- SYSADL::Flow
+  rule [1] PIADL::ConnectionDeclaration.name <- SYSADL::Flow.source.name 
+  rule [2] PIADL::ConnectionDeclaration.type <- SYSADL::Flow.type
+  rule [2] PIADL::ConnectionDeclaration.direction <- 'out'
+  
+  
+
+  

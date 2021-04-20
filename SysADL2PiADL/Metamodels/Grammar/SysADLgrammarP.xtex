@@ -1,0 +1,162 @@
+grammar org.sysadl.SysADL with org.eclipse.xtext.common.Terminals
+
+import "http://org.sysadl" 
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+
+/* ========================================================================= */
+/* @version Camila's Thesis                                                  */
+/* ------------------------------------------------------------------------- */
+
+
+Model returns Model: //ok
+	'Model' name=ID ';'
+	 	packages+=Package
+	;
+
+Package returns Package: //ok
+	'package' name=QualifiedName '{'
+		('import' imports+= QualifiedName ';')*
+		(definitions+=ElementDef | definitions+=ArchitectureDef)*
+	'}';
+	
+
+ElementDef returns ElementDef: //ok
+	DataTypeDef | ValueTypeDef | Enumeration | ComponentDef | ConnectorDef | CompositePortDef | SimplePortDef;
+	
+
+
+DataTypeDef returns DataTypeDef://ok
+	'datatype'
+	name=ID
+	'{'
+		('attributes' ':' attributes+=TypeUse+)?
+	'}';
+
+ValueTypeDef returns ValueTypeDef: //ok
+	'value' 'type'
+	name=ID 
+	'{'
+		('unit' '=' unit=[UnitDef])?
+		('dimension' '=' dimension=[DimensionDef])?
+	'}';
+
+Enumeration returns Enumeration: //ok
+	'enum'
+	name=ID
+	('{'
+		literals+=EnumLiteralValue ("," literals+=EnumLiteralValue)*
+	'}');
+
+ArchitectureDef returns ArchitectureDef: //ok
+	'architecture' 'def' name=ID 
+	'{'
+		'ports' ':' ports+=PortUse*
+		(composite=Configuration)
+	'}'
+	
+;
+
+ComponentDef returns ComponentDef: //ok
+	(isBoundary?='boundary')? 'component' 'def' name=ID 
+	'{'
+		('ports' ':' ports+=PortUse*)?
+		(composite=Configuration)?
+	'}' 
+	;
+
+ConnectorDef returns ConnectorDef: //ok!
+	'connector' 'def' name=ID  
+	'{'
+		('participants' ':' ports+=PortUse_Reverse*)?
+		(composite=Configuration)?
+		('flows' ':' flows+=Flow*)?
+	'}';
+
+PortDef returns PortDef: //ok
+	CompositePortDef | SimplePortDef;
+	
+CompositePortDef returns CompositePortDef: //ok
+	'port' 'def' name=ID
+	'{'
+		'ports' ':' ports+=PortUse*
+	'}';
+
+SimplePortDef returns SimplePortDef: //ok
+	'port' 'def' name=ID
+	'{'
+		'flow' flowProperties=FlowProperty flowType=[TypeDef]
+	'}';
+
+TypeUse returns TypeUse://ok
+	name=ID ':' definition=[TypeDef] 
+		('{' '}' | ';' )
+	;
+
+TypeDef returns TypeDef: //ok
+	DataTypeDef | ValueTypeDef | Enumeration;
+
+PortUse returns PortUse://ok
+	name=ID ':' definition=[PortDef] 
+	('{' '}' | ';');
+
+PortUse_Reverse returns PortUse://ok
+	'~' name=ID ':' definition=[PortDef] 
+	('{' '}' | ';');
+
+Flow returns Flow: //ok
+	type=[TypeDef] 'from' source=[PortUse] 'to' destination=[PortUse]
+	;
+
+enum FlowProperty returns FlowProperty: //ok
+	in = 'in' | out = 'out' | inout='inout';
+
+Configuration returns Configuration: //ok
+	'configuration'
+	'{'
+		('components' ':' components+=ComponentUse*)?
+		('connectors' ':' connectors+=ConnectorUse*)?
+		('delegations' ':' delegations+=Delegation*)?
+	'}';
+
+ComponentUse returns ComponentUse://ok
+	name=ID ':' definition=[ComponentDef]
+	('{'
+		('using' 'ports' ':' ports+=PortUse*)?
+	'}' | ';');
+
+ConnectorUse returns ConnectorUse://ok
+	name=ID ':' definition=[ConnectorDef] 
+	('{'
+		'ports' ':' ports+=PortUse_Reverse*
+	'}' | ';');
+
+Delegation returns Delegation://ok
+	source=[PortUse] 'to' destination=[PortUse]
+;
+
+EnumLiteralValue returns EnumLiteralValue://ok
+ 	name=ID;
+
+DimensionDef returns DimensionDef://ok
+	'dimension'
+	name=ID
+	('{' '}')?;
+
+UnitDef returns UnitDef://ok
+	'unit'
+	name=ID
+	('{'
+		('dimension' '=' dimension=[DimensionDef])?
+	'}')?;
+
+QualifiedName:
+	DotQualifiedName
+	| ID
+;
+
+DotQualifiedName:
+	ID ('.' ID)+
+;
+
+

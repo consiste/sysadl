@@ -1,0 +1,44 @@
+
+
+				connector interactionAGVAndSupervisory(){
+					
+					type NotificationToSupervisory is Any  
+					type CommandToArm is Any
+					
+					type Location is view[ 
+						attributes: 
+							location : String;
+					]
+					
+					type VehicleData is view[ 
+						attributes: 
+							destination : Location;
+							command : CommandToArm;
+					]  
+					
+					connection inMoveToStation is in (VehicleData)
+		  			connection outNotifications is out (NotificationToSupervisory)
+		  			connection outMoveToStation is out (VehicleData)
+		  			connection inNotifications is in (NotificationToSupervisory)
+		  			 
+					protocol is{
+						(via inMoveToStation receive VehicleData
+						 via outNotifications send NotificationToSupervisory
+						 via outMoveToStation send VehicleData
+						 via inNotifications send NotificationToSupervisory)*
+					}
+					
+					behavior is{
+						compose{
+								sVD is sendVehicleData()
+						   and  ns is notifySupervisory()
+						} where {						
+							self::outMoveToStation unifies sVD::vdOPT	
+							sVD::vdIPT unifies self::inMoveToStation 
+							self::outNotifications unifies ns::nsOPT
+							ns::nsIPT unifies self::inNotifications 
+						}
+						
+					}
+				}
+

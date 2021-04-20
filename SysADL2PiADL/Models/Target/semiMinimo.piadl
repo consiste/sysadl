@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<piADL:ArchitectureDescription xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:piADL="http://www.irisa.fr/archware/PiADL">
+  <archElements xsi:type="piADL:Connector" name="PortaA2PortaB">
+    <connections name="pABIPT">
+      <type xsi:type="piADL:TypeRef" idt="Int"/>
+    </connections>
+    <connections name="pABOPT" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="Int"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="pABIPT" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="Int"/>
+      </protocol>
+      <protocol connectionName="pABOPT">
+        <type xsi:type="piADL:TypeRef" idt="Int"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Connector" name="PortaB2PortaA">
+    <connections name="pBAIPT">
+      <type xsi:type="piADL:TypeRef" idt="Int"/>
+    </connections>
+    <connections name="pBAOPT" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="Int"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="pBAIPT" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="Int"/>
+      </protocol>
+      <protocol connectionName="pBAOPT">
+        <type xsi:type="piADL:TypeRef" idt="Int"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Component" name="CompA">
+    <connections name="bIn">
+      <type xsi:type="piADL:TypeRef" idt="Int"/>
+    </connections>
+    <connections name="aOut" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="Int"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="bIn" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="Int"/>
+      </protocol>
+      <protocol connectionName="aOut">
+        <type xsi:type="piADL:TypeRef" idt="Int"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archElements xsi:type="piADL:Component" name="boundary CompB">
+    <connections name="aIn">
+      <type xsi:type="piADL:TypeRef" idt="Int"/>
+    </connections>
+    <connections name="bOut" direction="out">
+      <type xsi:type="piADL:TypeRef" idt="Int"/>
+    </connections>
+    <protDecl>
+      <protocol connectionName="aIn" action=" receive ">
+        <type xsi:type="piADL:TypeRef" idt="Int"/>
+      </protocol>
+      <protocol connectionName="bOut">
+        <type xsi:type="piADL:TypeRef" idt="Int"/>
+      </protocol>
+    </protDecl>
+    <behavior/>
+  </archElements>
+  <archs name="MinimoARCH1">
+    <compose>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="instA" elementType="CompA"/>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="instB" elementType="CompB"/>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="conAB" elementType="PortaA2PortaB"/>
+      <clause xsi:type="piADL:ElementInstantiation" elementName="conBA" elementType="PortaB2PortaA"/>
+      <uc>
+        <unifications>
+          <fromc elementName="instA" connectionName="ca_aOut"/>
+          <toc elementName="conAB" connectionName="pABOPT"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="conAB" connectionName="pABIPT"/>
+          <toc elementName="instB" connectionName="cb_aIn"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="instB" connectionName="cb_bOut"/>
+          <toc elementName="conBA" connectionName="pBAOPT"/>
+        </unifications>
+        <unifications>
+          <fromc elementName="conBA" connectionName="pBAIPT"/>
+          <toc elementName="instA" connectionName="ca_bIn"/>
+        </unifications>
+      </uc>
+    </compose>
+  </archs>
+  <cbehavior/>
+</piADL:ArchitectureDescription>

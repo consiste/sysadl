@@ -1,0 +1,93 @@
+Model SysADLArchitecture;
+package SysADL.types {
+	value type Int {
+	}
+	value type Boolean {
+	}
+	value type String {
+	}
+	value type Real {
+	}
+	value type Void {
+	}
+}
+package PortsAGV {
+	import SysADL.types;
+	port def inPortaA {
+		flow in Int
+	}
+	
+	port def outPortaA {
+		flow out Int
+	}
+	
+	port def inPortaB {
+		flow in Int
+	}
+	
+	port def outPortaB {
+		flow out Int
+	}
+	
+}
+
+package ConnectorsAGV {
+	import PortsAGV;
+	
+	connector def PortaA2PortaB {
+		participants: 
+			~ pABIPT : inPortaB {
+			}
+			~ pABOPT : outPortaA {
+		}
+		flows: Int from pABOPT to pABIPT
+	}
+	
+	connector def PortaB2PortaA {
+		participants: 
+			~ pBAIPT : inPortaA {
+			}
+			~ pBAOPT : outPortaB {
+		}
+		flows: Int from pBAOPT to pBAIPT
+	}	
+	
+	
+}
+
+package ComponentsAGV {
+	import PortsAGV;
+	import ConnectorsAGV;
+	import SysADL.types;
+	architecture def MinimoARCH1 {
+		ports:
+		configuration {
+			components:
+			instA : CompA {
+				using ports: 
+					ca_bIn : inPortaB {}
+					ca_aOut : inPortaA {}
+			}
+			instB : CompB {
+				using ports: 
+					cb_aIn : inPortaA {}
+					cb_bOut : inPortaB {}
+			}
+			connectors:
+			conAB : PortaA2PortaB bindings ca_aOut = cb_aIn;
+			conBA : PortaB2PortaA bindings cb_bOut = ca_bIn;
+		}
+	}
+
+	component def CompA {
+		ports: 
+			bIn : inPortaB {}
+			aOut : outPortaA{}
+	}
+	
+	boundary component def CompB {
+		ports: 
+			aIn : inPortaA {}
+			bOut : outPortaB{}
+	}
+}

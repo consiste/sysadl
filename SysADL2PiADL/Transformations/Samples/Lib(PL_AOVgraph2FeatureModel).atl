@@ -1,0 +1,424 @@
+library LibPLAOVgraph2FeatureModel;
+
+helper context OclAny def: isDescendentsIsFeatureNo(retorno_recursivo: Boolean) : Boolean =
+	if self.refImmediateComposite().oclIsTypeOf(PL_AOVgraph!Goal_Model) or self.refImmediateComposite().oclIsTypeOf(PL_AOVgraph!Element) then
+		self.refImmediateComposite().element->iterate(child; retorno: Boolean = retorno_recursivo |
+		if child=self then
+			if self.refImmediateComposite().oclIsTypeOf(PL_AOVgraph!Element) then
+				if self.refImmediateComposite().isFeature()=false then
+					true
+				else
+					self.refImmediateComposite().isDescendentsIsFeatureNo(retorno)
+				endif
+			else
+				retorno
+			endif
+		else
+			retorno
+		endif
+		)
+	else
+		false
+	endif;
+
+helper context OclAny def: isFeature() : Boolean =
+	if self.oclIsTypeOf(PL_AOVgraph!Goal_Model) or self.oclIsTypeOf(PL_AOVgraph!Element) then
+		self.property->iterate(property; retorno: Boolean = true | 
+		if property.oclIsTypeOf(PL_AOVgraph!IsFeature) then
+			if property.label=#no then
+				false
+			else
+				true --tem isFeature como yes
+			endif
+		else
+			if retorno=false then
+				false
+			else
+				true --nao tem isFeature
+			endif
+		endif 
+		)
+	else
+		true
+	endif;
+	
+helper context PL_AOVgraph!Goal_Model def: getAllCorrelation() : Sequence(PL_AOVgraph!Correlation) =
+	self.relationship->iterate(relation; relationships: Sequence(PL_AOVgraph!Correlation) = Sequence{} |
+	if relation.oclIsTypeOf(PL_AOVgraph!Correlation) then
+		relationships.append(relation)
+	else
+		relationships
+	endif
+	);
+
+helper context PL_AOVgraph!Element def: getCorrelation(setCorrelations:Sequence(PL_AOVgraph!Correlation)) : Sequence(PL_AOVgraph!Correlation) =
+	setCorrelations->iterate(correlation; correlations: Sequence(PL_AOVgraph!Correlation) = Sequence{} |
+	if correlation.source.name=self.name then
+		correlations.append(correlation)
+	else
+		correlations
+	endif
+	);
+
+helper context PL_AOVgraph!Goal_Model def: getAllCrosscutting() : Sequence(PL_AOVgraph!Crosscutting) =
+	self.relationship->iterate(relation; relationships: Sequence(PL_AOVgraph!Crosscutting) = Sequence{} |
+	if relation.oclIsTypeOf(PL_AOVgraph!Crosscutting) then
+		relationships.append(relation)
+	else
+		relationships
+	endif
+	);
+
+helper context PL_AOVgraph!Element def: isPointcut(crosscuttings:Sequence(PL_AOVgraph!Crosscutting), flag:String) : Set(PL_AOVgraph!Element) =
+	crosscuttings->iterate(cross; elementsAdviceIntertype: Set(PL_AOVgraph!Element) = Set{} |
+		cross.pointcut->iterate(pointcut; elements: Set(PL_AOVgraph!Element) = elementsAdviceIntertype |
+			pointcut.operand->iterate(operand; e: Set(PL_AOVgraph!Element) = elements |
+				if operand.primitive=#include then
+					if flag='advice' then
+						if operand.joinpointPointcut=self then
+							cross.advice->iterate(advice; elementsAdvice: Set(PL_AOVgraph!Element) = e |
+								if advice.type=#around then
+									elementsAdvice.union(pointcut.compareElementsAdviceIntertypePointcut(advice.idPointcut, advice.joinpointAdvice))
+								else
+									elementsAdvice
+								endif
+							)
+						else
+							if self.isFatherPointcut_BeforeAfter(cross)=true then
+								cross.advice->iterate(advice; elementsAdvice: Set(PL_AOVgraph!Element) = e |
+									elementsAdvice.union(pointcut.compareElementsAdviceIntertypePointcut(advice.idPointcut, advice.joinpointAdvice))
+								)
+							else
+								e
+							endif
+						endif
+					else
+						if operand.joinpointPointcut=self then
+							cross.intertype->iterate(intertype; elementsIntertype: Set(PL_AOVgraph!Element) = e |
+								elementsIntertype.union(pointcut.compareElementsAdviceIntertypePointcut(intertype.idPointcut, intertype.newElement))
+							)
+						else
+							e
+						endif
+					endif
+				else
+					e
+				endif
+			)
+		)
+	);
+
+helper context PL_AOVgraph!Element def : isFatherPointcut_BeforeAfter(cross:PL_AOVgraph!Crosscutting) : Boolean = 
+	self.element->iterate(child; retorno: Boolean = false |
+		if retorno=false then
+			child.teste1(cross)
+		else
+			retorno
+		endif
+	);
+
+helper context PL_AOVgraph!Element def: teste1(cross:PL_AOVgraph!Crosscutting) : Boolean =
+	cross.pointcut->iterate(pointcut; elements: Boolean = false |
+		pointcut.operand->iterate(operand; e: Boolean = elements |
+			if operand.joinpointPointcut=self then
+				cross.advice->iterate(advice; elementsAdvice: Boolean = e |
+					if advice.type<>#around and pointcut.compareElementsAdviceIntertypePointcut(advice.idPointcut, advice.joinpointAdvice)->notEmpty() then
+						true
+					else
+						elementsAdvice
+					endif
+				)
+			else
+				e
+			endif
+		)
+	);
+
+helper context PL_AOVgraph!Pointcut def: compareElementsAdviceIntertypePointcut(pointcuts:Sequence(PL_AOVgraph!Pointcut), elements: Sequence(PL_AOVgraph!Element)) : Sequence(PL_AOVgraph!Element) =
+	pointcuts->iterate(pointcut; elementsAdviceIntertype: Sequence(PL_AOVgraph!Element) = Sequence{} |
+		if pointcut=self then
+			elementsAdviceIntertype.union(elements)
+		else
+			elementsAdviceIntertype
+		endif
+	);
+
+helper context PL_AOVgraph!Element def: isPointcutIntertypeAttribute(crosscuttings:Sequence(PL_AOVgraph!Crosscutting)): Sequence(PL_AOVgraph!Attribute) =
+	crosscuttings->iterate(cross; elementsIntertypeAttribute: Sequence(PL_AOVgraph!Attribute) = Sequence{} |
+		cross.pointcut->iterate(pointcut; p: Sequence(PL_AOVgraph!Attribute) = elementsIntertypeAttribute |
+			pointcut.operand->iterate(operand; e: Sequence(PL_AOVgraph!Attribute) = p |
+				if operand.primitive=#include and operand.joinpointPointcut=self then
+					cross.intertype->iterate(intertype; elementsIntertype: Sequence(PL_AOVgraph!Attribute) = e |
+						elementsIntertype.union(pointcut.compareElementsIntertypeAttributePointcut(intertype.idPointcut, intertype.newAttribute))
+					)
+				else
+					e
+				endif
+			)
+		)
+	);
+
+helper context PL_AOVgraph!Pointcut def: compareElementsIntertypeAttributePointcut(pointcuts:Sequence(PL_AOVgraph!Pointcut), attributes: Sequence(PL_AOVgraph!Attribute)) : Sequence(PL_AOVgraph!Attribute) =
+	pointcuts->iterate(pointcut; elementsIntertypeAttribute: Sequence(PL_AOVgraph!Attribute) = Sequence{} |
+		if pointcut=self then
+			elementsIntertypeAttribute.union(attributes)
+		else
+			elementsIntertypeAttribute
+		endif
+	);
+
+helper context PL_AOVgraph!Element def : annotationAdviceBefore_After(pointcut: PL_AOVgraph!Element, crosscuttings:Sequence(PL_AOVgraph!Crosscutting)) : Sequence(String) = 
+	crosscuttings->iterate(cross; retorno: Sequence(String) = Sequence{} |
+		cross.advice->iterate(advice; ad: Sequence(String) = retorno |
+			if advice.type=#before or advice.type=#after then
+				advice.idPointcut->iterate(p; typeAdvice: Sequence(String) = ad |
+					if pointcut.exist(p.operand->collect(op | op.joinpointPointcut.refImmediateComposite()))=true then
+						advice.joinpointAdvice->iterate(joinpoint; type: Sequence(String) = typeAdvice |
+							if joinpoint.name=self.name then
+								type.append(advice.type)
+							else
+								type
+							endif
+						)
+					else
+						typeAdvice
+					endif
+				)
+			else
+				ad
+			endif
+		)
+	);
+
+helper context PL_AOVgraph!Element def : annotationAdviceBefore_After_Substitute(pointcut: PL_AOVgraph!Element, crosscuttings:Sequence(PL_AOVgraph!Crosscutting)) : String = 
+	crosscuttings->iterate(cross; retorno: String = '' |
+		cross.advice->iterate(advice; ad: String = retorno |
+			if advice.type=#before or advice.type=#after then
+				advice.idPointcut->iterate(p; typeAdvice: String = ad |
+					if pointcut.exist(p.operand->collect(op | op.joinpointPointcut.refImmediateComposite()))=true then
+						'; advice: '+advice.type
+					else
+						typeAdvice
+					endif
+				)
+			else
+				ad
+			endif
+		)
+	);
+
+helper context PL_AOVgraph!Element def : isOperandSubstitute(t:Sequence(PL_AOVgraph!Element),crosscuttings:Sequence(PL_AOVgraph!Crosscutting)) : OrderedSet(String) =
+	t->iterate(iterator; retorno: OrderedSet(String) = OrderedSet{} |
+		crosscuttings->iterate(cross; elementsAdviceIntertype: OrderedSet(String) = retorno |
+			cross.pointcut->iterate(pointcut; elements: OrderedSet(String) = elementsAdviceIntertype |
+				pointcut.operand->iterate(operand; e: OrderedSet(String) = elements |
+					if operand.primitive=#substitute then
+						if operand.joinpointPointcut=self then
+							if e=OrderedSet{} then
+								if self.teste(self.getAdvicesSubstitute(pointcut, cross.advice, #around, #around).union(self.getIntertypesSubstitute(pointcut, cross.intertype)))<>'' then
+									e.append(self.teste(self.getAdvicesSubstitute(pointcut, cross.advice, #around, #around).union(self.getIntertypesSubstitute(pointcut, cross.intertype))))
+								else
+									e
+								endif
+							else
+								retorno.append(self.teste(self.teste(e).split(', ').asOrderedSet().union(self.getAdvicesSubstitute(pointcut, cross.advice, #around, #around)).union(self.getIntertypesSubstitute(pointcut, cross.intertype))))
+							endif
+						else
+							if self.isFatherPointcut_BeforeAfter(cross)=true then
+								if e=OrderedSet{} then
+									if self.teste(self.getAdvicesSubstitute(pointcut, cross.advice, #before, #after).union(self.getIntertypesSubstitute(pointcut, cross.intertype)))<>'' then
+										e.append(self.teste(self.getAdvicesSubstitute(pointcut, cross.advice, #before, #after).union(self.getIntertypesSubstitute(pointcut, cross.intertype))))
+									else
+										e
+									endif
+								else
+									retorno.append(self.teste(self.teste(e).split(', ').asOrderedSet().union(self.getAdvicesSubstitute(pointcut, cross.advice, #before, #after)).union(self.getIntertypesSubstitute(pointcut, cross.intertype))))
+								endif
+							else
+								e
+							endif
+						endif
+					else
+						e
+					endif
+				)
+			)
+		)
+	);
+
+helper context PL_AOVgraph!Element def : teste(entrada:OrderedSet(String)) : String = 
+	entrada->iterate(iterator; retorno: String = '' |
+		if retorno='' then
+			retorno+iterator
+		else
+			retorno+', '+iterator
+		endif
+	);
+
+helper context PL_AOVgraph!Element def : getAdvicesSubstitute(pointcut:PL_AOVgraph!Pointcut, advices:Sequence(PL_AOVgraph!Advice), adviceCategory:String, adviceCategory1:String) : OrderedSet(String) = 
+	advices->iterate(advice; elementsAdvice: OrderedSet(String) = OrderedSet{} |
+		if advice.type=adviceCategory or advice.type=adviceCategory1 then
+			advice.idPointcut->iterate(p; elements: OrderedSet(String) = elementsAdvice |
+				if pointcut=p then
+					elements.union(advice.joinpointAdvice->collect(e | e.name))
+				else
+					elements
+				endif
+			)
+		else
+			elementsAdvice
+		endif
+	);
+
+helper context PL_AOVgraph!Element def : getIntertypesSubstitute(pointcut:PL_AOVgraph!Pointcut, intertypes:Sequence(PL_AOVgraph!IntertypeDeclaration)) : OrderedSet(String) = 
+	intertypes->iterate(intertype; elementsIntertype: OrderedSet(String) = OrderedSet{} |
+		intertype.idPointcut->iterate(p; elements: OrderedSet(String) = elementsIntertype |
+			if pointcut=p then
+				elements.union(intertype.newElement->collect(e | e.name).union(intertype.newAttribute->collect(e | e.value)))
+			else
+				elements
+			endif
+		)
+	);
+
+helper context PL_AOVgraph!Element def: returnIntertypes(): Sequence(PL_AOVgraph!Element) =
+	self.returnGoalModel().getAllCrosscutting()->iterate(cross; retorno: Sequence(PL_AOVgraph!Element) = Sequence{} |
+		cross.intertype->iterate(intertype; r: Sequence(PL_AOVgraph!Element) = retorno |
+			r.union(intertype.newElement)
+		)
+	);
+
+helper context OclAny def: returnGoalModel() : PL_AOVgraph!Goal_Model =
+	if self.refImmediateComposite().oclIsTypeOf(PL_AOVgraph!Goal_Model) then
+		self.refImmediateComposite()
+	else
+		self.refImmediateComposite().returnGoalModel()
+	endif
+	;
+
+helper context PL_AOVgraph!Element def: isSourceCrosscuttingIntertypeElement(crosscuttings:Sequence(PL_AOVgraph!Crosscutting)): Sequence(PL_AOVgraph!Element) =
+	crosscuttings->iterate(cross; retorno: Sequence(PL_AOVgraph!Element) = Sequence{} |
+		if cross.intertype->notEmpty() then
+			if cross.source=self then
+				cross.intertype->iterate(intertype; r: Sequence(PL_AOVgraph!Element) = retorno |
+					if intertype.newElement->notEmpty() then
+						r.union(intertype.newElement)
+					else
+						r
+					endif
+				)
+			else
+				retorno
+			endif
+		else
+			retorno
+		endif
+	);
+
+helper context PL_AOVgraph!Element def: isSourceCrosscuttingIntertypeAttribute(crosscuttings:Sequence(PL_AOVgraph!Crosscutting)): Sequence(PL_AOVgraph!Attribute) =
+	crosscuttings->iterate(cross; retorno: Sequence(PL_AOVgraph!Attribute) = Sequence{} |
+		if cross.intertype->notEmpty() then
+			if cross.source=self then
+				cross.intertype->iterate(intertypes; r: Sequence(PL_AOVgraph!Attribute) = retorno |
+					if intertypes.newAttribute->notEmpty() then
+						r.union(intertypes.newAttribute)
+					else
+						r
+					endif
+				)
+			else
+				retorno
+			endif
+		else
+			retorno
+		endif
+	);
+
+helper context PL_AOVgraph!Element def: isDescendetIntertype(elementsIntertypes:Sequence(PL_AOVgraph!Element), retorno_recursivo: Boolean): Boolean =
+	elementsIntertypes->iterate(elementIntertype; retorno: Boolean = retorno_recursivo |
+		if elementIntertype.name=self.name then
+			true
+		else
+			self.isDescendetIntertype(elementIntertype.element, retorno)
+		endif
+	);
+
+helper context PL_AOVgraph!Element def: returnPointcut(crosscuttings:Sequence(PL_AOVgraph!Crosscutting), source:PL_AOVgraph!Element) : PL_AOVgraph!Element =
+	crosscuttings->iterate(cross; retorno: PL_AOVgraph!Element = source |
+		cross.pointcut->iterate(pointcut; p: PL_AOVgraph!Element = retorno |
+			pointcut.operand->iterate(operand; op: PL_AOVgraph!Element = p |
+				if operand.joinpointPointcut=self or self.isFatherPointcut_BeforeAfter(cross)=true then
+					self
+				else
+					op
+				endif
+			)
+		)
+	);
+
+helper context PL_AOVgraph!Element def: isGrouped() : Boolean =
+	self.relationship->iterate(relation; retorno: Boolean = false |
+	if relation.oclIsTypeOf(PL_AOVgraph!Contribution) then
+		if relation.label.toString()='xor' or relation.label.toString()='inc_or' then
+			true
+		else
+			false
+		endif
+	else
+		if retorno=true then
+			true
+		else
+			false
+		endif
+	endif
+	);
+
+helper context PL_AOVgraph!Element def: isGroupedProperty(): Boolean = 
+	if self.refImmediateComposite().oclIsTypeOf(PL_AOVgraph!Goal_Model) or self.refImmediateComposite().oclIsTypeOf(PL_AOVgraph!Element) then
+		self.testFather(self.refImmediateComposite())
+	else
+		false
+	endif;
+
+helper context PL_AOVgraph!Element def: testFather(father: PL_AOVgraph!Element): Boolean =
+	father.property->iterate(property; retorno: Boolean = false |
+	if property.oclIsTypeOf(PL_AOVgraph!GroupFeature) then
+		if self.exist(property.source.asSequence())=true then
+			true
+		else
+			if retorno=true then
+				true
+			else
+				false
+			endif
+		endif
+	else
+		if retorno=true then
+			true
+		else
+			false
+		endif
+	endif
+	);
+
+helper context PL_AOVgraph!Element def: exist(elementsNoFeature: Sequence(PL_AOVgraph!Element)) : Boolean =
+	elementsNoFeature->iterate(element; retorno: Boolean = false |
+	if element=self then
+		true
+	else
+		if retorno=true then
+			true
+		else
+			false
+		endif
+	endif
+	);
+
+helper context PL_AOVgraph!Element def: hasCardinality(): Boolean =
+	self.property->iterate(property; retorno: Boolean = false |
+	if (property.oclIsTypeOf(PL_AOVgraph!Cardinality)) then
+		true
+	else
+		retorno
+	endif
+	);

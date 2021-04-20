@@ -1,0 +1,99 @@
+Model SysADLArchitecture ; 
+
+package SysADL.types { value type Int { } value type Boolean { } value type String { } value type Void { } value type Real { } } 
+
+package Ports{
+	import SysADL.types ; 
+	port def RequestOPT { flow out String } 
+	port def RequestIPT { flow in String } 
+	port def ResponseOPT { flow out String } 
+	port def ResponseIPT { flow in String } 
+	port def SmartphoneCPT { ports : reqSout : RequestOPT ; respSin : ResponseIPT ; } 
+	port def WristbandCPT { ports : reqWin : RequestIPT ; respWout : ResponseOPT ; } 
+	port def DataIPT { flow in String } 
+	port def DataOPT { flow out String } 
+	port def TemperatureIPT { flow in Real } 
+	port def TemperatureOPT { flow out Real } 
+	port def AccelerometerIPT { flow in Real } 
+	port def AccelerometerOPT { flow out Real } 
+	port def HeartRateIPT { flow in Real } 
+	port def HeartRateOPT { flow out Real }
+}
+
+package Connectors { 
+	import Ports ; 
+	connector def RequestResponseCN { participants : ~ w : WristbandCPT ; ~ sp : SmartphoneCPT ; 
+		configuration { 
+			connectors : rq : sendRequestCN bindings reqSout = reqWin ; rp : sendResponseCN bindings respWout = respSin ;
+		}
+	} 
+	connector def sendRequestCN { 
+		participants : ~ req : RequestOPT ; ~ reqI : RequestIPT ; flows : String from req to reqI
+	} 
+	connector def sendResponseCN { 
+		participants : ~ resp : ResponseOPT ; ~ reqi : ResponseIPT ; flows : String from resp to reqi
+	} 
+	connector def DataCN { 
+		participants : ~ dOut : DataOPT ; ~ dIn : DataIPT ; flows : String from dOut to dIn
+	} 
+	connector def AccelerationCN { 
+		participants : ~ aOut : AccelerometerOPT ; ~ aIn : AccelerometerIPT ; flows : Real from aOut to aIn
+	} 
+	connector def TemperatureCN { 
+		participants : ~ tOut : TemperatureOPT ; ~ tIn : TemperatureIPT ; flows : Real from tOut to tIn
+	} 
+	connector def HeartRateCN { 
+		participants : ~ hrOut : HeartRateOPT ; ~ hrIn : HeartRateIPT ; flows : Real from hrOut to hrIn
+	} 
+}
+
+package Components { 
+	import Ports ; import Connectors ; import SysADL.types ; 
+	boundary component def AccelerometerCP { ports : as : AccelerometerOPT ; } 
+	boundary component def TemperatureSensorCP { ports : ts : TemperatureOPT ; }
+	component def WristbandCP { 
+		ports : aw : WristbandCPT ; 
+		configuration { 
+			components : ControllerCP : ControllerCP { using ports : rIn : RequestIPT ; rOut : ResponseOPT ; a : AccelerometerIPT ; hs : HeartRateIPT ; t : TemperatureIPT ; } 
+			a : AccelerometerCP { using ports : as : AccelerometerOPT ; } 
+			t : TemperatureSensorCP { using ports : ts : TemperatureOPT ; } 
+			hr : HeartRateSensorCP { using ports : hrs : HeartRateOPT ; } 
+			connectors : sendHeartRate : HeartRateCN bindings hrs = hs ; 
+			sendTemperature : TemperatureCN bindings ts = t; 
+			sendAcceleration : AccelerationCN bindings as = a ;    
+			delegations : rIn to reqWin rOut to respWout
+		}
+	} 
+	boundary component def HeartRateSensorCP { 
+		ports : hrs : HeartRateOPT  ;
+	}
+	component def SmartphoneCP { 
+		ports : sp : SmartphoneCPT ; 
+		configuration { 
+			components : app : ApplicationCP { using ports : rOut : RequestOPT ; rIn : ResponseIPT ; dOut : DataOPT ; dIn : DataIPT ; } 
+			db : DatabaseCP { using ports : dataIn : DataIPT ; dataOut : DataOPT ; } 
+			connectors : sendData : DataCN bindings dataOut = dIn ; saveData : DataCN bindings dOut = dataIn ; 
+			delegations : rOut to reqSout rIn to respSin
+		} 
+	}
+	component def ApplicationCP { 
+		ports : rOut : RequestOPT ; rIn : ResponseIPT ; dOut : DataOPT ; dIn : DataIPT ;
+	}
+	architecture def WristbandARCH { 
+		ports:
+		configuration { 
+			components : w : WristbandCP { using ports : aw : WristbandCPT ; } s : SmartphoneCP { using ports : sp : SmartphoneCPT ; } 
+		   	connectors : sendMeasurements : RequestResponseCN bindings aw = sp;
+	   } 
+	}
+	component def ControllerCP { 
+		ports : rIn : RequestIPT ; rOut : ResponseOPT ; a : AccelerometerIPT ; hs : HeartRateIPT ; t : TemperatureIPT ;
+	} 
+	boundary component def DatabaseCP { 
+		ports : dIn : DataIPT ; dOut : DataOPT ;
+	} 
+	activity def SensingAC : ( meassurement : Real ) {  } 
+	activity def ApplicationAC ( response : String ) { body { } } 
+	activity def ControllerAC ( request : String ) ( accelerometer : Real ) ( temperature : Real ) ( heartRate : Real ) : ( response : String ) { body { } } }
+
+	allocations { activity SensingAC to AccelerometerCP activity SensingAC to TemperatureSensorCP activity SensingAC to HeartRateSensorCP  activity ControllerAC to ControllerCP activity ApplicationAC to ApplicationCP }

@@ -1,0 +1,644 @@
+module PL_AOVgraph2FeatureModel;
+create OUT : FeatureModel from IN : PL_AOVgraph;
+
+uses LibPLAOVgraph2FeatureModel;
+
+helper def : correlations : Sequence(PL_AOVgraph!Correlation) = Sequence{}; -- variável global "correlations" com todas as correlações a partir de Goal_Model
+helper def : crosscuttings : Sequence(PL_AOVgraph!Crosscutting) = Sequence{}; -- variável global "crosscuttings" com todos os crosscuttings a partir de Goal_Model
+helper def : pointcut : PL_AOVgraph!Element = PL_AOVgraph!Element;
+helper def : advice_intertype : PL_AOVgraph!Element = PL_AOVgraph!Element; 
+
+rule Aspect_Oriented_Model2FeatureModel {
+	from
+		model: PL_AOVgraph!Aspect_Oriented_Model
+	to
+		out: FeatureModel!FeatureModel(containsRoot <- model.goalmodel)
+}
+
+rule GoalModel2RootFeature { --regra 1 (root)
+	from
+		model: PL_AOVgraph!Goal_Model(not model.oclIsTypeOf(PL_AOVgraph!Element))
+	to
+		out: FeatureModel!RootFeature(
+			name <- model.name,
+			containsFeature <- model.element --regra 2 (hierarquia)
+			--annotation <- model.getCorrelationRoot() --regra 7 (correlação)
+			)
+	do {
+		thisModule.correlations <- model.getAllCorrelation(); --regra 7 (correlação)
+		thisModule.crosscuttings <- model.getAllCrosscutting(); --regra 8 (crosscutting)
+	}		
+}
+
+rule Element2Feature {
+	from
+		model: PL_AOVgraph!Element(
+			(model.refImmediateComposite().oclIsTypeOf(PL_AOVgraph!Goal_Model) or model.refImmediateComposite().oclIsTypeOf(PL_AOVgraph!Element))
+			--and (model.isDescendetIntertype(model.returnIntertypes(), false)=false)
+			and (model.type=#task or model.type=#goal or model.type=#softgoal)
+			and (model.isFeature()=true and model.isDescendentsIsFeatureNo(false)=false) --regra 9 (isFeature)
+			and (model.isGrouped()=false and model.isGroupedProperty()=false)
+			) 
+	to
+		out: FeatureModel!Feature(
+			name <- model.name,
+			containsFeature <- model.element, --regra 2 (hierarquia)
+			containsRelation <- model.relationship,
+			containsRelation <- model.property,
+			annotation <- model.getCorrelation(thisModule.correlations), --regra 7 (correlação)
+			annotation <- thisModule.TypeElement2Annotation(model.type.toString()) --regra 10 (tipo do elemento)
+			)
+	do{ --regra 8 (crosscutting)
+		thisModule.pointcut <- model.returnPointcut(thisModule.crosscuttings, thisModule.pointcut);
+		out.containsFeature <- model.isPointcut(thisModule.crosscuttings, 'advice') ->
+							collect(advice_intertype | 
+							if advice_intertype.isFeature()=true and advice_intertype.isDescendentsIsFeatureNo(false)=false then
+								if advice_intertype.isGrouped()=false and advice_intertype.isGroupedProperty()=false then
+									thisModule.Advice2Reference(advice_intertype)
+								else
+									thisModule.Advice2GroupedReference(advice_intertype)
+								endif
+							else
+								advice_intertype
+							endif
+							);
+		out.containsFeature <- model.isPointcut(thisModule.crosscuttings, 'intertype') ->
+							collect(intertype |
+							if intertype.isFeature()=true and intertype.isDescendentsIsFeatureNo(false)=false then
+								if intertype.isGrouped()=false and intertype.isGroupedProperty()=false then
+									thisModule.Intertype2Reference(intertype)
+								else
+									thisModule.Intertype2GroupedReference(intertype)
+								endif
+							else
+								intertype
+							endif
+							);
+		out.containsFeature <- model.isPointcutIntertypeAttribute(thisModule.crosscuttings) ->
+							collect(intertype |	thisModule.IntertypeAttribute2ReferenceFeature(intertype));
+		thisModule.pointcut <- model;
+		out.containsFeature <- model.isSourceCrosscuttingIntertypeElement(thisModule.crosscuttings) ->
+							collect(intertype |
+							if intertype.isFeature()=true and intertype.isDescendentsIsFeatureNo(false)=false then
+								if intertype.isGrouped()=false and intertype.isGroupedProperty()=false then
+									thisModule.Intertype2Feature(intertype)
+								else
+									thisModule.Intertype2GroupedFeature(intertype)
+								endif
+							else
+								intertype
+							endif
+							);
+		out.containsFeature <- model.isSourceCrosscuttingIntertypeAttribute(thisModule.crosscuttings) ->
+							collect(attribute |	thisModule.IntertypeAttribute2Feature(attribute));
+		out.annotation <- model.isOperandSubstitute(Sequence{model},thisModule.crosscuttings) -> collect(iterator |
+						thisModule.TypeElement2Annotation('substitute: '+iterator+model.annotationAdviceBefore_After_Substitute(thisModule.pointcut, thisModule.crosscuttings)) --regra substitute
+						);
+	}
+}
+
+rule ElementReference2ReferenceFeature { --regra 6 (referência)
+	from
+		model: PL_AOVgraph!Element(
+			(model.type=#task_ref or model.type=#goal_ref or model.type=#softgoal_ref)
+			and (model.isFeature()=true and model.isDescendentsIsFeatureNo(false)=false) --regra 9 (isFeature)
+			and (model.isGrouped()=false and model.isGroupedProperty()=false)
+			) 
+	to
+		out: FeatureModel!ReferenceFeature(
+			name <- model.name,
+			containsFeature <- model.element, --regra 2 (hierarquia)
+			containsRelation <- model.relationship,
+			containsRelation <- model.property,
+			annotation <- thisModule.TypeElement2Annotation(model.type.toString()) --regra 10 (tipo do elemento)
+			)
+}
+
+rule Element2GroupedFeature {
+	from
+		model: PL_AOVgraph!Element(
+			(model.refImmediateComposite().oclIsTypeOf(PL_AOVgraph!Goal_Model) or model.refImmediateComposite().oclIsTypeOf(PL_AOVgraph!Element))
+			and (model.type=#task or model.type=#goal or model.type=#softgoal)
+			and (model.isFeature()=true and model.isDescendentsIsFeatureNo(false)=false) --regra 9 (isFeature)
+			and (model.isGrouped()=true or model.isGroupedProperty()=true)
+			) 
+	to
+		out: FeatureModel!GroupedFeature(
+			name <- model.name,
+			containsFeature <- model.element, --regra 2 (hierarquia)
+			containsRelation <- model.relationship,
+			containsRelation <- model.property,
+			annotation <- model.getCorrelation(thisModule.correlations), --regra 7 (correlação)
+			annotation <- thisModule.TypeElement2Annotation(model.type.toString()) --regra 10 (tipo do elemento)
+			)
+	do{ --regra 8 (crosscutting)
+		thisModule.pointcut <- model.returnPointcut(thisModule.crosscuttings, thisModule.pointcut);
+		out.containsFeature <- model.isPointcut(thisModule.crosscuttings, 'advice') ->
+							collect(advice | 
+							if advice.isFeature()=true and advice.isDescendentsIsFeatureNo(false)=false then
+								if advice.isGrouped()=false and advice.isGroupedProperty()=false then
+									thisModule.Advice2Reference(advice)
+								else
+									thisModule.Advice2GroupedReference(advice)
+								endif
+							else
+								advice
+							endif
+							);
+		out.containsFeature <- model.isPointcut(thisModule.crosscuttings, 'intertype') ->
+							collect(intertype |
+							if intertype.isFeature()=true and intertype.isDescendentsIsFeatureNo(false)=false then
+								if intertype.isGrouped()=false and intertype.isGroupedProperty()=false then
+									thisModule.Intertype2Reference(intertype)
+								else
+									thisModule.Intertype2GroupedReference(intertype)
+								endif
+							else
+								intertype
+							endif
+							);
+		out.containsFeature <- model.isPointcutIntertypeAttribute(thisModule.crosscuttings) ->
+							collect(intertype |	thisModule.IntertypeAttribute2ReferenceFeature(intertype));
+		thisModule.pointcut <- model;
+		out.containsFeature <- model.isSourceCrosscuttingIntertypeElement(thisModule.crosscuttings) ->
+							collect(source |
+							if source.isFeature()=true and source.isDescendentsIsFeatureNo(false)=false then
+								if source.isGrouped()=false and source.isGroupedProperty()=false then
+									thisModule.Intertype2Feature(source)
+								else
+									thisModule.Intertype2GroupedFeature(source)
+								endif
+							else
+								source
+							endif
+							);
+		out.containsFeature <- model.isSourceCrosscuttingIntertypeAttribute(thisModule.crosscuttings) ->
+							collect(attribute |	thisModule.IntertypeAttribute2Feature(attribute));
+		out.annotation <- model.isOperandSubstitute(Sequence{model},thisModule.crosscuttings) -> collect(iterator |
+						thisModule.TypeElement2Annotation('substitute: '+iterator+model.annotationAdviceBefore_After_Substitute(thisModule.pointcut, thisModule.crosscuttings)) --regra substitute
+						);
+	}
+}
+
+rule ElementReference2GroupedReference {
+	from
+		model: PL_AOVgraph!Element(
+			(model.type=#task_ref or model.type=#goal_ref or model.type=#softgoal_ref)
+			and (model.isFeature()=true and model.isDescendentsIsFeatureNo(false)=false) --regra 9 (isFeature)
+			and (model.isGrouped()=true or model.isGroupedProperty()=true)
+			) 
+	to
+		out: FeatureModel!GroupedReference(
+			name <- model.name,
+			containsFeature <- model.element, --regra 2 (hierarquia)
+			containsRelation <- model.relationship,
+			containsRelation <- model.property,
+			annotation <- thisModule.TypeElement2Annotation(model.type.toString()) --regra 10 (tipo do elemento)
+			)
+}
+
+lazy rule Advice2Reference { --regra 8 (crosscutting)
+	from
+		element: PL_AOVgraph!Element
+	to
+		out: FeatureModel!ReferenceFeature (
+			name <- element.name,
+			annotation <- thisModule.TypeElement2Annotation(element.type.toString()+'_ref') --regra 10 (tipo do elemento)
+			)
+	do{
+		thisModule.advice_intertype <- out;
+		out.containsRelation <- element.relationship ->
+								collect(relationship |
+								if relationship.oclIsTypeOf(PL_AOVgraph!Contribution) then
+									if relationship.label.toString()='and' then
+										thisModule.ContributionAndAdvice2Mandatory(relationship)
+									else
+										if relationship.label.toString()='or' then
+											thisModule.ContributionOrAdvice2Optional(relationship)
+										else
+											if relationship.label.toString()='xor' then
+												thisModule.ContributionXorAdvice2Alternative(relationship)
+											else
+												if relationship.label.toString()='inc_or' then
+													thisModule.ContributionInc_OrAdvice2Inclusive_Or(relationship)
+												else
+													relationship
+												endif
+											endif
+										endif
+									endif
+								else
+									relationship
+								endif
+								);
+		out.containsRelation <- element.property ->
+								collect(property |
+								if property.oclIsTypeOf(PL_AOVgraph!Cardinality) then
+									if property.cardinalityMin<>'0' then
+										thisModule.CardinalityAdvice2MandatoryCardinality(property)
+									else
+										thisModule.CardinalityAdvice2OptionalCardinality(property)
+									endif
+								else
+									property
+								endif
+								);
+		out.annotation <- element.annotationAdviceBefore_After(thisModule.pointcut, thisModule.crosscuttings) -> collect(iterator |
+						thisModule.TypeElement2Annotation('advice: '+iterator) --regra advices before e after
+						);
+	}
+}
+
+lazy rule Advice2GroupedReference { --regra 8 (crosscutting)
+	from
+		element: PL_AOVgraph!Element
+	to
+		out: FeatureModel!GroupedReference (
+			name <- element.name,
+			annotation <- thisModule.TypeElement2Annotation(element.type.toString()+'_ref') --regra 10 (tipo do elemento)
+			)
+	do{
+		thisModule.advice_intertype <- out;
+		out.containsRelation <- element.relationship ->
+								collect(relationship |
+								if relationship.oclIsTypeOf(PL_AOVgraph!Contribution) then
+									if relationship.label.toString()='and' then
+										thisModule.ContributionAndAdvice2Mandatory(relationship)
+									else
+										if relationship.label.toString()='or' then
+											thisModule.ContributionOrAdvice2Optional(relationship)
+										else
+											if relationship.label.toString()='xor' then
+												thisModule.ContributionXorAdvice2Alternative(relationship)
+											else
+												if relationship.label.toString()='inc_or' then
+													thisModule.ContributionInc_OrAdvice2Inclusive_Or(relationship)
+												else
+													relationship
+												endif
+											endif
+										endif
+									endif
+								else
+									relationship
+								endif
+								);
+		out.containsRelation <- element.property ->
+								collect(property |
+								if property.oclIsTypeOf(PL_AOVgraph!Cardinality) then
+									if property.cardinalityMin<>'0' then
+										thisModule.CardinalityAdvice2MandatoryCardinality(property)
+									else
+										thisModule.CardinalityAdvice2OptionalCardinality(property)
+									endif
+								else
+									property
+								endif
+								);
+		out.annotation <- element.annotationAdviceBefore_After(thisModule.pointcut, thisModule.crosscuttings) -> collect(iterator |
+						thisModule.TypeElement2Annotation('advice: '+iterator) --regra advices before e after
+						);
+	}
+}
+
+lazy rule Intertype2Reference { --regra 8 (crosscutting)
+	from
+		model: PL_AOVgraph!Element
+	to
+		out: FeatureModel!ReferenceFeature (
+			name <- model.name,
+			annotation <- model.getCorrelation(thisModule.correlations), --regra 7 (correlação)
+			annotation <- thisModule.TypeElement2Annotation(model.type.toString()+'_ref') --regra 10 (tipo do elemento)
+		)
+	do {
+		thisModule.advice_intertype <- out;
+		out.containsRelation <- model.relationship ->
+								collect(relationship |
+								if relationship.oclIsTypeOf(PL_AOVgraph!Contribution) then
+									if relationship.label.toString()='and' then
+										thisModule.ContributionAndAdvice2Mandatory(relationship)
+									else
+										if relationship.label.toString()='or' then
+											thisModule.ContributionOrAdvice2Optional(relationship)
+										else
+											if relationship.label.toString()='xor' then
+												thisModule.ContributionXorAdvice2Alternative(relationship)
+											else
+												if relationship.label.toString()='inc_or' then
+													thisModule.ContributionInc_OrAdvice2Inclusive_Or(relationship)
+												else
+													relationship
+												endif
+											endif
+										endif
+									endif
+								else
+									relationship
+								endif
+								);
+		out.containsRelation <- model.property ->
+								collect(property |
+								if property.oclIsTypeOf(PL_AOVgraph!Cardinality) then
+									if property.cardinalityMin<>'0' then
+										thisModule.CardinalityAdvice2MandatoryCardinality(property)
+									else
+										thisModule.CardinalityAdvice2OptionalCardinality(property)
+									endif
+								else
+									property
+								endif
+								);
+	}
+}
+
+lazy rule Intertype2GroupedReference { --regra 8 (crosscutting)
+	from
+		model: PL_AOVgraph!Element
+	to
+		out: FeatureModel!GroupedReference (
+			name <- model.name,
+			annotation <- model.getCorrelation(thisModule.correlations), --regra 7 (correlação)
+			annotation <- thisModule.TypeElement2Annotation(model.type.toString()+'_ref') --regra 10 (tipo do elemento)	
+		)
+	do {
+		thisModule.advice_intertype <- out;
+		out.containsRelation <- model.relationship ->
+								collect(relationship |
+								if relationship.oclIsTypeOf(PL_AOVgraph!Contribution) then
+									if relationship.label.toString()='and' then
+										thisModule.ContributionAndAdvice2Mandatory(relationship)
+									else
+										if relationship.label.toString()='or' then
+											thisModule.ContributionOrAdvice2Optional(relationship)
+										else
+											if relationship.label.toString()='xor' then
+												thisModule.ContributionXorAdvice2Alternative(relationship)
+											else
+												if relationship.label.toString()='inc_or' then
+													thisModule.ContributionInc_OrAdvice2Inclusive_Or(relationship)
+												else
+													relationship
+												endif
+											endif
+										endif
+									endif
+								else
+									relationship
+								endif
+								);
+		out.containsRelation <- model.property ->
+								collect(property |
+								if property.oclIsTypeOf(PL_AOVgraph!Cardinality) then
+									if property.cardinalityMin<>'0' then
+										thisModule.CardinalityAdvice2MandatoryCardinality(property)
+									else
+										thisModule.CardinalityAdvice2OptionalCardinality(property)
+									endif
+								else
+									property
+								endif
+								);
+	}	
+}
+
+lazy rule Intertype2Feature { --regra 8 (crosscutting)
+	from
+		model: PL_AOVgraph!Element
+	to
+		out: FeatureModel!Feature (
+			name <- model.name,
+			containsFeature <- model.element, --regra 2 (hierarquia)
+			annotation <- model.getCorrelation(thisModule.correlations), --regra 7 (correlação)
+			annotation <- thisModule.TypeElement2Annotation('Intertype Declaration (element: '+model.type.toString()+')') --regra 10 (tipo do elemento)
+		)
+	do {
+		thisModule.advice_intertype <- out;
+		out.containsRelation <- model.relationship ->
+								collect(relationship |
+								if relationship.oclIsTypeOf(PL_AOVgraph!Contribution) then
+									if relationship.label.toString()='and' then
+										thisModule.ContributionAndAdvice2Mandatory(relationship)
+									else
+										if relationship.label.toString()='or' then
+											thisModule.ContributionOrAdvice2Optional(relationship)
+										else
+											if relationship.label.toString()='xor' then
+												thisModule.ContributionXorAdvice2Alternative(relationship)
+											else
+												if relationship.label.toString()='inc_or' then
+													thisModule.ContributionInc_OrAdvice2Inclusive_Or(relationship)
+												else
+													relationship
+												endif
+											endif
+										endif
+									endif
+								else
+									relationship
+								endif
+								);
+		out.containsRelation <- model.property ->
+								collect(property |
+								if property.oclIsTypeOf(PL_AOVgraph!Cardinality) then
+									if property.cardinalityMin<>'0' then
+										thisModule.CardinalityAdvice2MandatoryCardinality(property)
+									else
+										thisModule.CardinalityAdvice2OptionalCardinality(property)
+									endif
+								else
+									if property.oclIsTypeOf(PL_AOVgraph!GroupFeature) then
+										thisModule.GroupFeatureIntertype2GroupCardinality(property)
+									else
+										property
+									endif
+								endif
+								);
+	}
+}
+
+lazy rule Intertype2GroupedFeature { --regra 8 (crosscutting)
+	from
+		model: PL_AOVgraph!Element
+	to
+		out: FeatureModel!GroupedFeature (
+			name <- model.name,
+			containsFeature <- model.element, --regra 2 (hierarquia)
+			annotation <- model.getCorrelation(thisModule.correlations), --regra 7 (correlação)
+			annotation <- thisModule.TypeElement2Annotation('Intertype Declaration (element: '+model.type.toString()+')') --regra 10 (tipo do elemento)
+		)
+	do {
+		thisModule.advice_intertype <- out;
+		out.containsRelation <- model.relationship ->
+								collect(relationship |
+								if relationship.oclIsTypeOf(PL_AOVgraph!Contribution) then
+									if relationship.label.toString()='and' then
+										thisModule.ContributionAndAdvice2Mandatory(relationship)
+									else
+										if relationship.label.toString()='or' then
+											thisModule.ContributionOrAdvice2Optional(relationship)
+										else
+											if relationship.label.toString()='xor' then
+												thisModule.ContributionXorAdvice2Alternative(relationship)
+											else
+												if relationship.label.toString()='inc_or' then
+													thisModule.ContributionInc_OrAdvice2Inclusive_Or(relationship)
+												else
+													relationship
+												endif
+											endif
+										endif
+									endif
+								else
+									relationship
+								endif
+								);
+		out.containsRelation <- model.property ->
+								collect(property |
+								if property.oclIsTypeOf(PL_AOVgraph!Cardinality) then
+									if property.cardinalityMin<>'0' then
+										thisModule.CardinalityAdvice2MandatoryCardinality(property)
+									else
+										thisModule.CardinalityAdvice2OptionalCardinality(property)
+									endif
+								else
+									if property.oclIsTypeOf(PL_AOVgraph!GroupFeature) then
+										thisModule.GroupFeatureIntertype2GroupCardinality(property)
+									else
+										property
+									endif
+								endif
+								);
+	}	
+}
+
+lazy rule IntertypeAttribute2Feature { --regra 8 (crosscutting)
+	from
+		model: PL_AOVgraph!Attribute
+	to
+		out: FeatureModel!Feature (
+			name <- model.value,
+			annotation <- thisModule.TypeElement2Annotation('Intertype Declaration (attribute: '+model.type.toString()+')')
+		)
+}
+
+lazy rule IntertypeAttribute2ReferenceFeature { --regra 8 (crosscutting)
+	from
+		model: PL_AOVgraph!Attribute
+	to
+		out: FeatureModel!ReferenceFeature (
+			name <- model.value
+			--annotation <- thisModule.TypeElement2Annotation('Intertype Declaration (attribute: '+model.type.toString()+')')
+		)
+}
+
+lazy rule ContributionAndAdvice2Mandatory {
+	from
+		model: PL_AOVgraph!Contribution
+	to
+		out: FeatureModel!Mandatory(source <- thisModule.pointcut, target <- thisModule.advice_intertype)
+}
+
+lazy rule ContributionOrAdvice2Optional {
+	from
+		model: PL_AOVgraph!Contribution
+	to
+		out: FeatureModel!Optional(source <- thisModule.pointcut, target <- thisModule.advice_intertype)
+}
+
+lazy rule ContributionXorAdvice2Alternative {
+	from
+		model: PL_AOVgraph!Contribution
+	to
+		out: FeatureModel!Alternative(source <- thisModule.pointcut, target <- thisModule.advice_intertype)
+}
+
+lazy rule ContributionInc_OrAdvice2Inclusive_Or {
+	from
+		model: PL_AOVgraph!Contribution
+	to
+		out: FeatureModel!Inclusive_Or(source <- thisModule.pointcut, target <- thisModule.advice_intertype)
+}
+
+lazy rule CardinalityAdvice2MandatoryCardinality{
+	from
+		model: PL_AOVgraph!Cardinality
+	to
+		out: FeatureModel!Mandatory (source <- thisModule.pointcut, target <- thisModule.advice_intertype, cardinalityMin <- model.cardinalityMin, cardinalityMax <- model.cardinalityMax)
+}
+
+lazy rule CardinalityAdvice2OptionalCardinality{
+	from
+		model: PL_AOVgraph!Cardinality
+	to
+		out: FeatureModel!Optional (source <- thisModule.pointcut, target <- thisModule.advice_intertype, cardinalityMin <- model.cardinalityMin, cardinalityMax <- model.cardinalityMax)
+}
+
+lazy rule GroupFeatureIntertype2GroupCardinality{
+	from
+		model: PL_AOVgraph!GroupFeature
+	to
+		out: FeatureModel!GroupCardinality (source <- thisModule.advice_intertype, target <- model.source, cardinalityMin <- model.cardinalityGroupMin, cardinalityMax <- model.cardinalityGroupMax)
+}
+
+lazy rule TypeElement2Annotation { --regra 10 (tipo do elemento)
+	from
+		model: ecore!EObject
+	to
+		out: FeatureModel!Annotation(description <- model)
+}
+
+rule Correlation2Annotation{ --regra 7 (correlação)
+	from
+		model: PL_AOVgraph!Correlation (model.source.isFeature()=true and model.target.isFeature()=true and model.source.isDescendentsIsFeatureNo(false)=false and model.target.isDescendentsIsFeatureNo(false)=false) --regra 9 (isFeature))
+	to
+		out: FeatureModel!Annotation(description <- model.label.toString()+': '+model.target.name)
+}
+
+rule ContributionAnd2Mandatory{ --regra 3 (contribuição)
+	from
+		model: PL_AOVgraph!Contribution(model.refImmediateComposite().isDescendetIntertype(model.refImmediateComposite().returnIntertypes(), false)=false and model.refImmediateComposite().exist(model.refImmediateComposite().returnIntertypes())=false and model.label.toString()='and' and model.refImmediateComposite().hasCardinality()=false and model.refImmediateComposite().isFeature()=true and model.refImmediateComposite().isDescendentsIsFeatureNo(false)=false)
+	to
+		out: FeatureModel!Mandatory(source <- model.refImmediateComposite().refImmediateComposite(), target <- model.refImmediateComposite())
+}
+
+rule ContributionOr2Optional{ --regra 3 (contribuição)
+	from
+		model: PL_AOVgraph!Contribution(model.refImmediateComposite().isDescendetIntertype(model.refImmediateComposite().returnIntertypes(), false)=false and model.refImmediateComposite().exist(model.refImmediateComposite().returnIntertypes())=false and model.label.toString()='or' and model.refImmediateComposite().hasCardinality()=false and model.refImmediateComposite().isFeature()=true and model.refImmediateComposite().isDescendentsIsFeatureNo(false)=false)
+	to
+		out: FeatureModel!Optional(source <- model.refImmediateComposite().refImmediateComposite(), target <- model.refImmediateComposite())
+}
+
+rule ContributionXor2Alternative{ --regra 3 (contribuição)
+	from
+		model: PL_AOVgraph!Contribution(model.refImmediateComposite().isDescendetIntertype(model.refImmediateComposite().returnIntertypes(), false)=false and model.refImmediateComposite().exist(model.refImmediateComposite().returnIntertypes())=false and model.label.toString()='xor' and model.refImmediateComposite().isFeature()=true and model.refImmediateComposite().isDescendentsIsFeatureNo(false)=false)
+	to
+		out: FeatureModel!Alternative(source <- model.refImmediateComposite().refImmediateComposite(), target <- model.refImmediateComposite())
+}
+
+rule ContributionInc_Or2Inclusive_Or{ --regra 3 (contribuição)
+	from
+		model: PL_AOVgraph!Contribution(model.refImmediateComposite().isDescendetIntertype(model.refImmediateComposite().returnIntertypes(), false)=false and model.refImmediateComposite().exist(model.refImmediateComposite().returnIntertypes())=false and model.label.toString()='inc_or' and model.refImmediateComposite().isFeature()=true and model.refImmediateComposite().isDescendentsIsFeatureNo(false)=false)
+	to
+		out: FeatureModel!Inclusive_Or(source <- model.refImmediateComposite().refImmediateComposite(), target <- model.refImmediateComposite())
+}
+
+rule Cardinality2MandatoryCardinality{ --regra 4 (feature com cardinalidade)
+	from
+		model: PL_AOVgraph!Cardinality (model.refImmediateComposite().isDescendetIntertype(model.refImmediateComposite().returnIntertypes(), false)=false and model.refImmediateComposite().exist(model.refImmediateComposite().returnIntertypes())=false and model.cardinalityMin<>'0' and model.refImmediateComposite().isFeature()=true and model.refImmediateComposite().isDescendentsIsFeatureNo(false)=false)
+	to
+		out: FeatureModel!Mandatory (source <- model.refImmediateComposite().refImmediateComposite(), target <- model.refImmediateComposite(), cardinalityMin <- model.cardinalityMin, cardinalityMax <- model.cardinalityMax)
+}
+
+rule Cardinality2OptionalCardinality{ --regra 4 (feature com cardinalidade)
+	from
+		model: PL_AOVgraph!Cardinality (model.refImmediateComposite().isDescendetIntertype(model.refImmediateComposite().returnIntertypes(), false)=false and model.refImmediateComposite().exist(model.refImmediateComposite().returnIntertypes())=false and model.cardinalityMin='0' and model.refImmediateComposite().isFeature()=true and model.refImmediateComposite().isDescendentsIsFeatureNo(false)=false)
+	to
+		out: FeatureModel!Optional (source <- model.refImmediateComposite().refImmediateComposite(), target <- model.refImmediateComposite(), cardinalityMin <- model.cardinalityMin, cardinalityMax <- model.cardinalityMax)
+}
+
+rule GroupFeature2GroupCardinality { --regra 5 (grupos)
+	from
+		model: PL_AOVgraph!GroupFeature (model.refImmediateComposite().isDescendetIntertype(model.refImmediateComposite().returnIntertypes(), false)=false and model.refImmediateComposite().exist(model.refImmediateComposite().returnIntertypes())=false and model.refImmediateComposite().refImmediateComposite().isFeature()=true and model.refImmediateComposite().refImmediateComposite().isDescendentsIsFeatureNo(false)=false)
+	to
+		out: FeatureModel!GroupCardinality (source <- model.refImmediateComposite(), target <- model.source, cardinalityMin <- model.cardinalityGroupMin, cardinalityMax <- model.cardinalityGroupMax)
+}

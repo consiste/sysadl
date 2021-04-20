@@ -1,0 +1,825 @@
+Model SysADLArchitecture;
+package SysADL.types {
+	value type Int {
+	}
+	value type Boolean {
+	}
+	value type String {
+	}
+	value type Void {
+	}
+	value type Real {
+	}
+
+	enum InfraredCode {
+		increase, decrease, turn_on, turn_off
+	}
+	datatype DataSensor {
+		attributes: id : String;
+		^value : String;
+		typeSensor : TypeSensor;
+	}
+	datatype RestFulRaspeberry {
+		attributes: ip : String;
+		^port : String;
+		path : String;
+		i : Intervention;
+		m : Measurement;
+	}
+	datatype Sensor {
+		attributes:  room : String;
+		type_sensor : TypeSensor;
+		id : String;
+	}
+	datatype Measurement {
+		attributes: ^value : String;
+		schedule : Schedule;
+		sensor : Sensor;
+	}
+	datatype Schedule {
+		attributes: timestamp : Int;
+	}
+	datatype Location {
+		attributes: latitude : Real;
+		longitude : Real;
+	}
+	datatype Building {
+		attributes: id : String; 
+		location : Location;
+	}
+	datatype Room {
+		attributes: id : String;
+		building : String;
+	}
+	datatype AirConditioner {
+		attributes:   room : String;
+		id : String;
+	}
+	datatype ContextInformation {
+		attributes: sensor : Sensor; 
+		air_conditioner : AirConditioner;
+		room : Room;
+		building : Building;
+	}
+	enum TypeSensor {
+		temperature, humidity, presence
+	}
+datatype UpdateDB {
+		attributes: idAirCond : String; 
+		currentTime : Schedule;
+		actionTemp : InfraredCode;
+	}
+	datatype FrameList {
+	}
+datatype Intervention {
+		attributes: icAirCond : InfraredCode; 
+		airCond : AirConditioner;
+		schedule : Schedule;
+	}
+}
+package SmartPlacePorts {
+	import SysADL.types;
+	port def ValueOPT {
+		flow out Int
+	}
+	port def ValueIPT {
+		flow in Int
+	}	
+	port def ReservationResponseIPT {
+		flow in Boolean
+	}
+	port def ReservationResponseOPT {
+		flow out Boolean
+	}
+	port def RequestOPT {
+		flow out String
+	}
+	port def RequestIPT {
+		flow in String
+	}
+	port def InfraredSignalIPT {
+		flow in Void
+	}
+	port def InfraredSignalOPT {
+		flow out Void
+	}
+	port def ContextInformationOPT {
+		flow out ContextInformation
+	}
+	port def ContextInformationIPT {
+		flow in ContextInformation
+	}
+	port def UndefinedOPT {
+		flow out Void
+	}
+	port def UndefinedIPT {
+		flow in Void
+	}	
+	port def CommandIPT {
+		flow in InfraredCode
+	}
+	port def CommandOPT {
+		flow out InfraredCode
+	}
+	port def RestfulRaspberryIPT {
+		flow in RestFulRaspeberry
+	}
+	port def RestfulRaspberryOPT {
+		flow out RestFulRaspeberry
+	}
+port def DataBaseRespOPT {
+		flow out String
+	}
+	port def DataBaseRespIPT {
+		flow in String
+	}
+port def ScheduleOPT {
+		flow out Schedule
+	}
+	port def ScheduleIPT {
+		flow in Schedule
+	}
+port def UpdateIPT {
+		flow in UpdateDB
+	}
+	port def UpdateOPT {
+		flow out UpdateDB
+	}
+port def FrameListIPT {
+		flow in FrameList
+	}
+	port def FrameListOPT {
+		flow out FrameList
+	}
+	port def DataBaseO2I {
+		ports: reqODB : RequestOPT {
+		}
+		respIDB : DataBaseRespIPT {
+		}
+	}
+	port def DataBaseI2O {
+		ports: reqIDB : RequestIPT {
+		}
+		respODB : DataBaseRespOPT {
+		}
+	}
+	port def ReservationInformationO2I {
+		ports: reqORI : RequestOPT {
+		}
+		respIRI : ReservationResponseIPT {
+		}
+	}
+	port def ReservationInformationI2O {
+		ports: reqIRI : RequestIPT {
+		}
+		respORI : ReservationResponseOPT {
+		}
+	}	
+port def ContextO2I {
+		ports: reqOC : RequestOPT {
+		}
+		respIC : ContextInformationIPT {
+		}
+	}
+	port def ContextI2O {
+		ports: reqIC : RequestIPT {
+		}
+		respOC : ContextInformationOPT {
+		}
+	}
+}
+package SmartPlaceConnectors {
+	import SmartPlacePorts;
+	
+	connector def UndefinedCN {
+		participants: ~ undO : UndefinedOPT {
+		}
+		~ undI : UndefinedIPT {
+		}
+		flows: Void from undO to undI
+	}
+	connector def SendValueCN {
+		participants: ~ vO : ValueOPT {
+		}
+		~ vI : ValueIPT {
+		}
+		flows: Int from vO to vI
+	}
+
+	connector def InfraCodeCN {
+		participants: ~ cmdI : CommandIPT {
+		}
+		~ cmdO : CommandOPT {
+		}
+		flows: InfraredCode from cmdO to cmdI
+	}
+	
+	
+	connector def CmdRestfulCN {
+		participants: ~ restI : RestfulRaspberryIPT {
+		}
+		~ restO : RestfulRaspberryOPT {
+		}
+		flows: RestFulRaspeberry from restO to restI
+	}
+	connector def SendReservationInfoCN {
+		participants: ~ rrRespI : ValueIPT {
+		}
+		~ rRespO : ValueOPT {
+		}
+		flows: Boolean from rRespO to rrRespI
+	}
+	connector def RequestCN {
+		participants: ~ rReqO : RequestOPT {
+		}
+		~ rReqI : RequestIPT {
+		}
+		flows: String from rReqO to rReqI
+	}
+	connector def SendContextCN {
+		participants: ~ ciI : ContextInformationIPT {
+		}
+		~ ciO : ContextInformationOPT {
+		}
+		flows: ContextInformation from ciO to ciI
+	}
+	connector def InfraredSignalCN {
+		participants: ~ isI : InfraredSignalIPT {
+		}
+		~ isO : InfraredSignalOPT {
+		}
+		flows: Void from isO to isI
+	}
+	
+	connector def ReservationCN {
+		participants: ~ riI : ReservationInformationI2O {
+		}
+		~ riO : ReservationInformationO2I {
+		}
+		configuration {
+			connectors:
+			rri : RequestCN bindings reqORI = reqIRI;
+			sri : SendReservationInfoCN bindings respORI = respIRI;
+		}
+	}
+	
+	connector def QueryDataBaseCN {
+		participants: ~ qI : DataBaseI2O {
+		}
+		~ qO : DataBaseO2I {
+		}
+		configuration {
+			connectors:
+			req : RequestCN bindings reqODB = reqIDB;
+			resp : SendPostgreSQLInfoCN bindings respODB = respIDB;
+		}
+	}
+	connector def SendPostgreSQLInfoCN {
+		participants: ~ psqlO : DataBaseRespOPT {
+		}
+		~ psqlI : DataBaseRespIPT {
+		}
+		flows: String from psqlO to psqlI
+	}
+connector def ScheduleCN {
+		participants: ~ dO : ScheduleOPT {
+		}
+		~ dI : ScheduleIPT {
+		}
+		flows: Schedule from dO to dI
+	}
+connector def FrameListCN {
+		participants: ~ fI : FrameListIPT {
+		}
+		~ fO : FrameListOPT {
+		}
+		flows: FrameList from fO to fI
+	}
+connector def ContextCN {
+		participants: ~ cO : ContextO2I {
+		}
+		~ cI : ContextI2O {
+		}
+		configuration {
+		connectors:
+			req : RequestCN bindings reqOC = reqIC;
+			resp : SendContextCN bindings respOC = respIC;
+		}
+	}
+}
+package SmartPlaceComponents {
+	import SmartPlaceConnectors;
+	import SmartPlacePorts;
+	import SysADL.types;
+	architecture def SmartPlace {
+	ports:
+	configuration {
+		components:
+			spw : SmartPlaceWeb {
+				using ports: coSpw : ContextInformationOPT {
+				}
+				rrSpw : RestfulRaspberryIPT {
+				}
+				dbSpw : DataBaseO2I {
+				}
+				uSpw : UpdateOPT {
+				}
+				ctxSpw : ContextO2I {
+				}
+			}
+			rrs : RoomReservationSystem {
+				using ports: riRrs : ReservationInformationI2O {
+				}
+			}
+			ocb : OrionContextBroker {
+				using ports: ci : ContextInformationIPT {
+				}
+				ctx : ContextI2O {
+				}
+			}
+			ths : TemperatureAndHumiditySensor {
+				using ports: temperatureThs : ValueOPT {
+				}
+			}
+			ps : PresenceSensor {
+				using ports: presencePs : ValueOPT {
+				}
+			}
+			psql : DB_PostgreSQL {
+				using ports: db : DataBaseI2O {
+				}
+				u : UpdateIPT {
+				}
+			}
+			ac : AirConditioner {
+				using ports: isAc : InfraredSignalIPT {
+				}
+			}
+			Led : Led {
+				using ports: cLed : CommandIPT {
+				}
+				isLed : InfraredSignalOPT {
+				}
+			}
+			Raspberry : Raspberry {
+				using ports: c : CommandOPT {
+				}
+				ri : ReservationInformationO2I {
+				}
+				f : FrameListIPT {
+				}
+				temperature : ValueIPT {
+				}
+				presence : ValueIPT {
+				}
+				rr : RestfulRaspberryOPT {
+				}
+			}
+			Camera : Camera {
+				using ports: fCam : FrameListOPT {
+				}
+			}
+			connectors: qdb :
+			QueryDataBaseCN bindings dbSpw = db;
+			spsqli : SendPostgreSQLInfoCN bindings uSpw = u;
+			ci1 : SendContextCN bindings coSpw = ci;
+			c :	ContextCN bindings ctx = ctxSpw;
+			cr : CmdRestfulCN bindings rr = rrSpw;
+			sendPresence : SendValueCN bindings presencePs = presence;
+			fl : FrameListCN bindings fCam = f;
+			sendTempHumi : SendValueCN bindings	temperatureThs = temperature;
+			rn : ReservationCN bindings ri = riRrs;
+			ic : InfraCodeCN bindings c = cLed;
+			is : InfraredSignalCN bindings isLed = isAc;
+		}
+	}
+	boundary component def RoomReservationSystem {
+		ports: ri : ReservationInformationI2O {
+		}
+	}
+	boundary component def OrionContextBroker {
+		ports: ci : ContextInformationIPT {
+		}
+		ctx : ContextI2O {
+		}
+	}
+	boundary component def DB_PostgreSQL {
+		ports: db : DataBaseI2O {
+		}
+	u : UpdateIPT {
+		}
+	}
+	component def Raspberry {
+		ports: c : CommandOPT {
+		}
+		ri : ReservationInformationO2I {
+		}
+		f : FrameListIPT {
+		}
+		temperature : ValueIPT {
+		}
+		presence : ValueIPT {
+		}
+		rr : RestfulRaspberryOPT {
+		}
+		
+	configuration {
+		components:
+			cm : CamMonitor {
+				using ports: fCm : FrameListIPT {
+				}
+				numPeopleCm : ValueOPT {
+				}
+			}
+			
+			tc : TemperatureController {
+				using ports: presenceTc : ValueIPT {
+				}
+				rraspTc : RestfulRaspberryOPT {
+				}
+				riTc : ReservationInformationO2I {
+				}
+				temperatureTc : ValueIPT {
+				}
+				numPeopleTc : ValueIPT {
+				}
+				cTc : CommandOPT {
+				}
+			}
+			sqlite : DB_SQLite {
+				using ports: ri : ReservationInformationI2O {
+				}
+				rresp : ReservationResponseIPT {
+				}
+			}
+			connectors:
+			 countPeople : SendValueCN bindings numPeopleCm = numPeopleTc;
+			 rn : ReservationCN bindings riTc = ri;
+			delegations:
+			fCm to f 
+			presenceTc to presence
+			temperatureTc to temperature
+			cTc to c 
+			rraspTc to rr 
+			riTc to ri
+			rresp to respIRI
+		}
+	}
+	boundary component def PresenceSensor {
+		ports: presence : ValueOPT {
+		}
+	}
+	component def AirConditioner {
+		ports: is : InfraredSignalIPT {
+		}
+	configuration {
+		components:
+			f : Fotosensor {
+				using ports: uF : UndefinedOPT {
+				}
+				isF : InfraredSignalIPT {
+				}
+			}
+			acc : AirConditionerController {
+				using ports: uAcc : UndefinedIPT {
+				}
+			}
+			connectors:
+			u : UndefinedCN bindings uF = uAcc;
+			delegations:
+			isF to is
+		}
+	}
+	
+	boundary component def TemperatureAndHumiditySensor {
+		ports: temperature : ValueOPT {
+		}
+	}
+	boundary component def Fotosensor {
+		ports: u : UndefinedOPT {
+		}
+		is : InfraredSignalIPT {
+		}
+	}
+	boundary component def AirConditionerController {
+		ports: u : UndefinedIPT {
+		}
+	}
+	
+	boundary component def Led {
+		ports: c : CommandIPT {
+		}
+		is : InfraredSignalOPT {
+		}
+	}
+	
+	component def SmartPlaceWeb {
+		ports: co : ContextInformationOPT {
+		}
+		rr : RestfulRaspberryIPT {
+		}
+		db : DataBaseO2I {
+		}
+		u : UpdateOPT {
+		}
+		ctx : ContextO2I {
+		}
+		configuration {
+			components:			
+			rc : RegistrationController {
+				using ports: ciRc : ContextInformationOPT {
+				}
+				regUi : ContextInformationIPT {
+				}
+			}
+			rg : ReportGenerator {
+				using ports: a : ContextO2I {
+				}
+			}
+			gg : GraphicsGenerator {
+				using ports: dbGg : DataBaseO2I {
+				}
+				ctxGg : ContextO2I {
+				}
+			}
+			hc : HistoricController {
+				using ports: rrHc : RestfulRaspberryIPT {
+				}
+				uHc : UpdateOPT {
+				}
+				ctxHc : ContextO2I {
+				}
+			}
+			delegations:
+			ciRc to co
+			a to ctx
+			ctxGg to ctx 
+			ctxHc to ctx 
+			uHc to u 
+			dbGg to db 
+			rrHc to rr
+		}
+	}
+	component def ReportGenerator {
+		ports: a : ContextInformationIPT {
+		}
+	}
+	component def TemperatureController {
+		ports: presence : ValueIPT {
+		}
+		rrasp : RestfulRaspberryOPT {
+		}		
+		ri : ReservationInformationO2I {
+		}
+		temperature : ValueIPT {
+		}
+		numPeople : ValueIPT {
+		}
+	c : CommandOPT {
+		}
+	
+	}
+	component def SetTemperature {
+		ports: presence : ValueIPT {
+		}
+		rrasp : RestfulRaspberryOPT {
+		}
+		c : CommandOPT {
+		}
+		checkLastPres : DataBaseO2I {
+		}
+		lastPresence : ScheduleOPT {
+		}
+	temperature : ValueIPT {
+		}
+		numPeople : ValueIPT {
+		}
+	pres : ScheduleOPT {
+		}
+	}
+	activity def RaspberryControllerAC (restful : RestFulRaspeberry) :
+		(signal : InfraredCode) {
+		body {
+			actions : rc : RaspberryControllerAN {
+				using pins: restfulRc : RestFulRaspeberry;
+			}
+			delegate signal to rc 
+			delegate restful to restfulRc
+		}
+	}
+	action def RaspberryControllerAN ( restful : RestFulRaspeberry )
+	: InfraredCode {
+		constraint: post-condition RaspberryControllerEQ
+	}
+	constraint RaspberryControllerEQ (restful : RestFulRaspeberry) :
+		(signal : InfraredCode) {
+		equation = 'a'
+	}
+	activity def TemperatureControllerAC (presence : Int, temperature : Int
+		, numPeople : Int, reservation : Boolean ) : (
+	restful : RestFulRaspeberry, cmd :
+			InfraredCode, query_reservation : String) {
+		body {
+			actions : 	
+			slp : SaveLastPresenceAN {
+				using pins: presenceSlp : Int; 
+				numPeopleSlp : Int;
+				currentTime : Schedule;
+			}
+			turnon : TurnOnAN {
+				using pins: reservationTon : Boolean; 
+				presenceTon : Int;
+				numPeopleTon : Int;
+			}
+			flow from slp to LastPresence
+			delegate  presence to presenceSlp
+			delegate  numPeople to numPeopleSlp
+			delegate reservation to reservationTon
+			delegate numPeople to numPeopleTon
+			delegate presence to presenceTon
+			delegate cmd to turnon
+			
+			databuffer LastPresence : SysADL.types.Schedule {
+				 
+			}
+			databuffer LastChangeTemp : SysADL.types.Schedule {
+				 
+			}
+		}
+	}
+	action def PresenceLast15MinAN ( respPres15 : String ) :
+	Boolean {
+	}
+	action def ChangeTempAN ( lastAdjustTemp : Schedule, currentTime :
+	Schedule ) : Boolean {
+	constraint: post-condition TurnOnEQ
+	}
+	constraint SaveLastPresenceEQ (presence : Int, numPeople :
+	Int, currentTime : Schedule ) : ( lastPresence : Schedule) {
+		equation = presence == 1 || numPeople > 0 ? lastPresence == currentTime : lastPresence == null
+	}
+	constraint TurnOnEQ (presence : Int, numPeople : Int,
+	reservation : Boolean ) : ( ic : InfraredCode) {
+		equation = reservation == true && (presence == 1 ||  numPeople > 0) ? ic == InfraredCode::turn_on : ic == InfraredCode::turn_off
+	}
+	action def IncreaseDecreaseTempAN ( lastPresence : Boolean,
+	lastAdjustTemp : Boolean, temp : DataSensor ) :
+	RestFulRaspeberry {
+		constraint: post-condition TurnOffEQ
+	}
+	constraint TurnOffEQ (presence : Int, numPeople : Int,
+			lastPresence : Schedule, currentTime : Schedule ) :
+	( ic : InfraredCode) {
+		equation = presence == 0 && numPeople == 0 && (currentTime - lastPresence > 15) ? ic == InfraredCode::turn_off : ic == InfraredCode::turn_on
+	}
+action def UpdateDataBaseAN ( restful : RestFulRaspeberry,
+	currentTime : Schedule ) : UpdateDB {
+		constraint: post-condition UpdateDataBaseEQ
+	}
+	constraint UpdateDataBaseEQ (currentTime : Schedule, restful : RestFulRaspeberry) :
+		(u : UpdateDB) {
+		equation = 'a'
+	}
+//	activity def TurnOnTurnOff_ControllerAC {
+//		body {
+//		}
+//	}
+	activity def UpdateContextSensorsAC (dataSensor : DataSensor, currentTime : Schedule) :
+		(infoCtx : ContextInformation) {
+		body {
+			actions : ucs : UpdateContextSensorsAN {
+				using pins: dataSensor : DataSensor;
+				currentTime : Schedule;
+			}
+			delegate infoCtx to ucs 
+			delegate currentTime to currentTime
+			delegate dataSensor to dataSensor
+		}
+	}
+	constraint UpdateContextSensorsEQ (dataSensor : DataSensor, currentTime : Schedule) :
+		(infoCtx : ContextInformation) {
+		equation = 'a'
+	}
+	action def UpdateContextSensorsAN ( dataSensor : DataSensor, currentTime :
+	Schedule ) : ContextInformation {
+		constraint: post-condition UpdateContextSensorsEQ
+	}
+boundary component def Camera {
+		ports: f : FrameListOPT {
+		}
+	}
+	boundary component def CamMonitor {
+		ports: f : FrameListIPT {
+		}
+		numPeople : ValueOPT {
+		}
+	}
+	boundary component def DB_SQLite {
+		ports: ri : ReservationInformationI2O {
+		}
+	rresp : ReservationResponseIPT {
+		}
+	}
+	component def HistoricController {
+		ports: rr : RestfulRaspberryIPT {
+		}
+		u : UpdateOPT {
+		}
+		ctx : ContextO2I {
+		}
+	}
+	boundary component def GraphicsGenerator {
+		ports: db : DataBaseO2I {
+		}
+	ctx : ContextO2I {
+		}
+	}
+	component def RegistrationController {
+		ports: ci : ContextInformationOPT {
+		}
+		regUi : ContextInformationIPT {
+		}
+	}
+action def SaveLastPresenceAN ( presence : Int, numPeople :
+	Int, currentTime : Schedule ) :
+	Schedule {
+		constraint: post-condition SaveLastPresenceEQ
+	}
+	action def TurnOnAN ( presence : Int , numPeople :
+	Int, reservation : Boolean ) :
+	InfraredCode {
+	constraint: post-condition TurnOnEQ
+	}
+action def TurnOffAN ( presence : Int, numPeople :
+	Int, lastPresence : Schedule , currentTime :
+	Schedule ) : InfraredCode {
+	}
+}
+Requirement SmartPlace ( 0.0 ) {
+	text =
+	"The system must control the air conditioners automatically in order to optimize their energy consumption and use."
+Requirement AirConditioningControl ( 2.0 ) {
+	text =
+	"The system must control the air conditioners by turning the power on, off, reducing or raising the temperature as needed."
+Requirement TurnOn_TurnOff_AirConditioning ( 2.1 ) {
+			text = "The system must decide when to turn the air conditioner on or off."
+			Requirement TurnOnAirConditioning ( 2.2 ) {
+				text =
+				"Air conditioners must be turned on automatically whenever there is at least one person in the room and the appliances are turned off."
+			}
+			Requirement TurnOffAirConditioning ( 2.4 ) {
+				text =
+				"Air conditioners should be automatically switched off when there are no people in the room in the last 15 minutes, when there is no reserve for that room within the next 15 minutes and if the temperature is found to be lower than or equal to the temperature default - 4."
+			}
+		}
+		Requirement SendInfraredSignal ( 2.9 ) {
+			text =
+			"The on, off and set temperature commands should be converted to infrared code and sent to air conditioners."
+		}
+		Requirement ControlTemperature ( 2.6 ) {
+			text =
+			"If any presence has been recorded in the last 15 minutes and the last temperature change occurred in a time greater than 10 minutes, the system must decide the temperature."
+			Requirement DecreaseTemperature ( 2.7 ) {
+				text =
+				"If the current temperature is greater than or equal to the default temperature + 2, a command will be sent to decrease the temperature."
+			}
+			Requirement IncreaseTemperature ( 2.8 ) {
+				text =
+				"If the current temperature is less than or equal to the default temperature - 2, a command will be sent to increase the temperature."
+			}
+		}
+	}
+	Requirement PersistData ( 3.0 ) {
+	text =
+	"The system shall record the measurements/changes temperature and presence data, associating these data with the measurement place, date, time, and identifier of the sensors and air conditioners."
+}
+	Requirement MaintainingContextScience ( 4.0 ) {
+	text =
+	"The system must save context information from sensors, air conditioners, rooms and buildings so that they can be used by other applications."
+}
+	Requirement AcquireSensorData ( 1.0 ) {
+	text =
+	"Send every 5 minutes the room temperature to the raspberry-pi, and whenever movement is detected, send this information to the raspberry-pi"
+}
+}
+Requirement DetectPresence ( 1.1 ) {
+	text =
+	"The system should automatically detect whether or not people are in the environment"
+	derive SmartPlace.AcquireSensorData;
+}
+Requirement DetectTemperature ( 1.2 ) {
+	text = "The system must automatically detect the ambient temperature." derive
+	SmartPlace.AcquireSensorData;
+}
+Requirement CheckAirConditioningStatus ( 2.3 ) {
+	text =
+	"The system must detect whether the air conditioners are switched on or off."
+	derive
+	SmartPlace.AirConditioningControl.TurnOn_TurnOff_AirConditioning.TurnOnAirConditioning;
+}
+Requirement CheckRoomReservation ( 2.5 ) {
+	text =
+	"The system should consult the Reservation Manager to check if there is a reservation for a particular room within the next 15 minutes."
+	derive
+	SmartPlace.AirConditioningControl.TurnOn_TurnOff_AirConditioning.TurnOffAirConditioning;
+}

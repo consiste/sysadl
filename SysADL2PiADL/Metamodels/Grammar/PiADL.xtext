@@ -1,0 +1,410 @@
+grammar fr.irisa.archware.PiADL with org.eclipse.xtext.common.Terminals
+
+generate piADL "http://www.irisa.fr/archware/PiADL"
+
+
+/* ========================================================================= */
+/* MAIN GRAMMAR                                                              */
+/* ------------------------------------------------------------------------- */
+
+ArchitectureDescription: //Architecture
+	archElements+=ArchitecturalElement*
+	archs+=Architecture+
+	cbehavior=BehaviorDeclaration
+;
+
+ArchitecturalElement:
+	Component | Connector
+;
+
+Component:
+	'component' name=ID 'is' 
+	('abstraction()' | 'abstraction('
+	(parameters+=Parameter (',' parameters+=Parameter)*)? ')') '{'
+		typeDecl+=TypeDeclaration*
+		connections+=ConnectionDeclaration*
+		protDecl=ProtocolDeclaration?
+		behavior=BehaviorDeclaration
+	'}'
+;
+
+Connector:
+	'connector' name=ID 'is' 
+	('abstraction()' | 'abstraction('
+	(parameters+=Parameter (',' parameters+=Parameter)*)? ')') '{'
+		typeDecl+=TypeDeclaration*
+		connections+=ConnectionDeclaration*
+		protDecl=ProtocolDeclaration?
+		behavior=BehaviorDeclaration
+	'}'
+;
+
+TypeDeclaration:
+	'type' name=ID 'is' type=ValueType
+;
+
+ConnectionDeclaration:
+	'connection' name=ID 'is' direction=ConnectionMode '(' type=ValueType ')'
+;
+
+enum ConnectionMode:
+	in='in' | out='out'
+;
+
+ProtocolDeclaration:
+	{ProtocolDeclaration}
+	'protocol' 'is' '{'
+		'('
+		protocol+=ProtocolAction* ('|' protocol+=ProtocolAction)* 
+		protocol+=ProtocolAction*
+		')' ('*'|'+')
+	'}'
+;
+
+ProtocolAction:
+	'('* 'via' connectionName=ID action=Action type=ValueType ')'*
+;
+
+enum Action:
+	send=' send ' | receive=' receive '
+;
+
+BehaviorDeclaration:
+	{BehaviorDeclaration}
+	'behavior' 'is' '{'
+		body+=BehaviorClause*
+	'}'
+;
+
+BehaviorClause:
+	  VariableDeclaration
+	| ConnectionDeclaration
+	| Prefix
+	| Choice
+	| Composition
+	| Decomposition
+	| Recurse
+	| Statement
+	| {Inaction} Inaction
+;
+
+VariableDeclaration:
+	varname=ID 'is' type=ValueType
+;
+
+Prefix:
+	InputPrefix | OutputPrefix | ConditionalPrefix | {Prefix} SilentPrefix
+;
+
+InputPrefix:
+	'via' connectionName=ID 'receive' parameter=Parameter
+;
+
+OutputPrefix:
+	'via' connectionName=ID 'send' value=AbstractExpression
+;
+
+SilentPrefix:
+	'unobservable'
+;
+
+Parameter:
+	name=ID ':' type=ValueType
+;
+
+ConditionalPrefix:
+	'if' cond=AbstractExpression 'then' '{'
+		prefixes+=Prefix*
+	'}'
+;
+
+Choice:
+	'choose' '{'
+		clause+=BehaviorClause+
+		('or' clause+=BehaviorClause+)+
+	'}'
+;
+
+Composition:
+	'compose' '{'
+		clause+=(BehaviorClause | ElementInstantiation)+
+		(('and' | 'and') clause+=(BehaviorClause | ElementInstantiation)+)+	
+	('}' | '}') uc=UnificationClause?
+;
+
+UnificationClause:
+	{UnificationClause}
+	'where' '{'
+		(unifications+=Unification)*
+	'}'
+;
+
+Decomposition:
+	'decompose' arch=ID
+;
+
+Recurse:
+	{Recurse}
+	'behavior'
+	'(' (parameter+=AbstractExpression (',' parameter+=AbstractExpression)*)? ')' 
+;
+
+Inaction:
+	'done'
+;
+
+Statement:
+	  ExplicitProjection
+	| VariableAssignment	
+	| FunctionDeclaration
+	| FunctionCall
+	| IfThenElse
+	| While
+	| For
+	| Return
+	| {Unobservable} Unobservable
+;
+
+ExplicitProjection:
+	'project' pname=ID 'as' parameters+=Parameter (',' parameters+=Parameter)*
+;
+
+VariableAssignment:
+	varname=ID '=' expression=(AbstractExpression | Decomposition)
+;
+
+FunctionDeclaration:
+	functionName=ID 'is' 'function' '(' 
+	(parameters+=Parameter (',' parameters+=Parameter)*)? ')'
+	(':' returnType=ValueType)? '{'
+		block+=BehaviorClause*
+	'}'
+;
+
+FunctionCall:
+	functionName=ID '(' (params+=AbstractExpression (',' params+=AbstractExpression)*)? ')'
+;
+
+Return:
+	'return' expr=AbstractExpression
+;
+
+IfThenElse:
+	'if' expression=AbstractExpression 'then' '{'
+		ifBlock+=BehaviorClause*
+	('}' | '}') (elseif+=ElseIf)*
+	(elseSt=Else)?
+;
+
+ElseIf:
+	'else' 'if' expression=AbstractExpression 'then' '{'
+		elseIfBlock+=BehaviorClause*
+	('}' | '}')
+;
+
+Else:
+	{Else}
+	'else' '{' 
+		elseBlock+=BehaviorClause* 
+	'}'
+;
+
+While:
+	'while' expression=AbstractExpression 'do' '{'
+		block+=BehaviorClause*
+	'}'
+;
+
+For:
+	'for' '(' startExpr=VariableAssignment ';' 
+	stopExpr=LogicalExpression ';' 
+	stepExpr=VariableAssignment ')' 'do' '{'
+		block+=BehaviorClause*
+	'}'
+;
+
+Unobservable:
+	'unobservable'
+;
+
+Architecture:
+	'architecture' name=ID 'is' 
+	('abstraction()' | 'abstraction(' 
+	(parameters+=Parameter (',' parameters+=Parameter)*)? ')') '{'
+		'behavior' 'is' '{'
+			compose=Composition
+		'}'
+	'}'
+;
+
+ElementInstantiation:
+	elementName=ID 'is' elementType=ID 
+	'(' (parameterName+=ID (',' parameterName+=ID)*)? ')'
+;
+
+Unification:
+	fromc=ConnectionAccess 'unifies' toc=ConnectionAccess
+;
+
+ConnectionAccess:
+	elementName=(ID | 'self') '::' connectionName=ID
+;
+
+ValueType:
+	BaseType | ConstructedType | {TypeRef} idt=ID
+;
+
+BaseType: 
+	NaturalType | IntegerType | RealType | BooleanType | StringType | AnyType 
+;
+
+NaturalType:
+	{NaturalType} type='Natural'
+;
+
+IntegerType:
+	{IntegerType} type='Integer'
+;
+
+RealType:
+	{RealType} type='Real'
+;
+
+BooleanType:
+	{BooleanType} type='Boolean'
+;
+
+StringType:
+	{StringType} type='String'
+;
+
+AnyType:
+	{AnyType} type='Any'
+;
+
+ConstructedType:
+	Tuple | View | Set | Sequence
+;
+
+Tuple:
+	'tuple''[' types+=ValueType (',' types+=ValueType)* ']'
+;
+
+View:
+	'view''[' labt+=LabeledType (',' labt+=LabeledType)* ']'
+;
+
+LabeledType:
+	label=ID ':' type=ValueType
+;
+
+Set:
+	'set''[' type=ValueType ']'
+;
+
+Sequence:
+	'sequence''[' type=ValueType ']'
+;
+
+
+/* ========================================================================= */
+/* EXPRESSION GRAMMAR                                                        */
+/* ------------------------------------------------------------------------- */
+
+AbstractExpression:
+	Expression | ConstructedValue
+;
+
+Expression:
+	LogicalExpression
+;
+
+LogicalExpression returns Expression:
+	EqualityExpression 
+	({LogicalExpression.left=current} op=('||' | '&&') right=EqualityExpression)*
+;
+
+EqualityExpression returns Expression:
+	RelationalExpression 
+	({EqualityExpression.left=current} op=('==' | '!=') right=RelationalExpression)*
+;
+
+RelationalExpression returns Expression:
+	ArithmeticExpression
+	({RelationalExpression.left=current} op=('>=' | '<=' | '>' | '<') 
+		right=ArithmeticExpression)*
+;
+
+ArithmeticExpression returns Expression:
+	Term 
+	(({SumOperation.left=current} op='+' | {MinusOperation.left=current} op='-') 
+	right=Term)*
+;
+
+Term returns Expression:
+	Factor 
+	({Term.left=current} op=('*' | '/' | 'mod') right=Factor)*
+;
+
+Factor returns Expression:
+	  '(' Expression ')' 
+	| UnaryExpression 
+	| AtomicElement
+;
+
+UnaryExpression returns Expression:
+	{NegationExpression} => '!' expression=AtomicElement
+;
+
+AtomicElement returns Expression:
+	LiteralElement | {VariableRef} variable=ID
+;
+
+LiteralElement returns Expression:
+	IntegerLiteral | RealLiteral | StringLiteral | BooleanLiteral
+;
+
+IntegerLiteral returns Expression:
+	{IntegerLiteral} value=INT
+;
+
+RealLiteral returns Expression:
+	{RealLiteral} value=REAL
+;
+
+StringLiteral returns Expression:
+	{StringLiteral} value=STRING
+;
+
+BooleanLiteral returns Expression:
+	{BooleanLiteral} value=('true' | 'false')
+;
+
+terminal REAL:
+	INT '.' INT
+;
+
+ConstructedValue:
+	FunctionCall | TupleValue | ViewValue | SetValue | SequenceValue | SequenceAccess
+;
+
+TupleValue:
+	'tuple''[' exp+=AbstractExpression (',' exp+=AbstractExpression)* ']'
+;
+
+ViewValue:
+	'view''[' lbl+=ID ':' exp+=AbstractExpression 
+	(',' lbl+=ID ':' exp+=AbstractExpression)* ']'
+;
+
+SetValue:
+	'set''[' exp+=AbstractExpression (',' exp+=AbstractExpression)* ']'
+;
+
+SequenceValue:
+	'sequence''[' exp+=AbstractExpression (',' exp+=AbstractExpression)* ']'
+;
+
+SequenceAccess:
+	seq=ID'['idx=INT']'
+;

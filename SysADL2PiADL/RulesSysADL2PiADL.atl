@@ -1,0 +1,1422 @@
+-- @nsURI SYSADL=http://org.sysadl
+-- @path PIADL=/SysADL2PiADL/Metamodels/PiADL.ecore
+
+
+module RulesSysADL2PiADL;
+create OUT: PIADL from IN: SYSADL;
+
+-- #### Helpers #### --
+
+-- verifica se o tipo é básico (String, Real, Boolean, Int e Void), embora SysADL não
+		-- tenha essa definição
+helper context SYSADL!TypeDef def: isBasicType(): Boolean =
+	if (self.name = 'String' or self.name = 'Real' or self.name = 'Boolean' or self.name
+			= 'Int' or self.name = 'Void') then
+		true
+	else
+		false
+	endif;
+
+-- variavel global 'dependencesDecls' com mapeamento entre TypeDef e as suas dependências
+helper def: dependencesDecls: Map(String, OrderedSet(PiADL!TypeDeclaration)) =
+	SYSADL!TypeDef.allInstances() -> iterate(typeDef; tpDecls: Map(String,
+			Sequence(PIADL!TypeDeclaration)) = Map{} | if (not typeDef.isBasicType()) then
+			tpDecls.including(typeDef.name, typeDef.populateDependences().
+					including(typeDef.name))
+		else
+			tpDecls.including(typeDef.name, OrderedSet{})
+		endif);
+
+-- variavel global tpDecls com mapeamento TypeDef e atributos
+helper def: typeDecls: Map(String, Sequence(PiADL!TypeDeclaration)) =
+	SYSADL!TypeDef.allInstances() -> iterate(typeDef; tpDecls: Map(String,
+			Sequence(PIADL!TypeDeclaration)) = Map{} | if typeDef.
+			oclIsTypeOf(SYSADL!DataTypeDef) then
+			tpDecls.including(typeDef.name, typeDef.getAllTypeDeclaration())
+		else
+			if typeDef.oclIsTypeOf(SYSADL!Enumeration) or (typeDef.
+					oclIsTypeOf(SYSADL!ValueTypeDef) and not typeDef.isBasicType()) then
+				tpDecls.including(typeDef.name, Sequence{PIADL!AnyType})
+			else
+				if typeDef.oclIsTypeOf(SYSADL!ValueTypeDef) then
+					tpDecls.including(typeDef.name, Sequence{typeDef.getSuperType()})
+				else
+					tpDecls
+				endif
+			endif
+		endif);
+
+-- retorna o mapeamento dos nomes dos SYSADL!DataTypeDef com os respectivos
+-- PiADL!TypeDeclaration
+helper context SYSADL!TypeDef def: getAllTypeDecls(): Map(String,
+		Sequence(PIADL!TypeDeclaration)) =
+	self.definitions -> iterate(definition; typeDecls: Map(String,
+			Sequence(PIADL!TypeDeclaration)) = thisModule.typeDecls | if self.
+			oclIsTypeOf(SYSADL!DataTypeDef) then
+			thisModule.typeDecls.including(self.name, self.getAllTypeDeclaration())
+		else
+			if self.oclIsTypeOf(SYSADL!Enumeration) or self.
+					oclIsTypeOf(SYSADL!ValueTypeDef) then
+				-- por hora Value Type que nao sao basicos ficarao como AnyType
+				thisModule.typeDecls.including(self.name, Sequence{PIADL!AnyType})
+			else
+				if self.oclIsTypeOf(SYSADL!ValueTypeDef) then
+					thisModule.typeDecls.including(self.name, Sequence{self.
+							getSuperType()})
+				else
+					thisModule.typeDecls
+				endif
+			endif
+		endif);
+
+-- retorna a lista de PiADL!TypeDeclaration a partir do SYSADL!DataTypeDef
+helper context SYSADL!DataTypeDef def: getAllTypeDeclaration():
+		Sequence(PIADL!TypeDeclaration) =
+	self.attributes -> iterate(att; typedecls: Sequence(PIADL!TypeDeclaration) =
+			Sequence{} | typedecls.append(att.getTypeDeclarationFromTypeUse()));
+
+-- retorna a lista de PiADL!TypeDeclaration a partir do SYSADL!DataTypeDef
+helper context SYSADL!TypeUse def: getTypeDeclarationFromTypeUse(): PIADL!TypeDeclaration
+		=
+	let  typeDec: PIADL!TypeDeclaration = Tuple{fieldName = self.name, fieldType = self.
+			definition.name}
+		in
+			typeDec;
+
+-- converte os ValueTypeDef (tipos basicos de SYSADL) em TypeDeclaration(PIADL) respectivo
+helper context SYSADL!ValueTypeDef def: getSuperType(): PIADL!TypeDeclaration =
+	if self.name = 'String' then
+		PIADL!StringType
+	else
+		if self.name = 'Real' then
+			PIADL!RealType
+		else
+			if self.name = 'Boolean' then
+				PIADL!BooleanType
+			else
+				if self.name = 'Int' then
+					PIADL!IntegerType
+				else
+					PIADL!NaturalType -- Void em SysADL
+					
+				endif
+			endif
+		endif
+	endif;
+
+-- retorna o mapeamento dos nomes dos SYSADL!DataTypeDef com as respectivas dependências
+-- PiADL!TypeDeclaration
+helper context SYSADL!TypeDef def: populateDependences(): OrderedSet(String) =
+	let dependencesDecls: OrderedSet(String) =
+		OrderedSet{}
+	in
+		if self.oclIsTypeOf(SYSADL!DataTypeDef) then
+			self.getAllDependencesDecls()
+		else
+			dependencesDecls
+		endif;
+
+-- retorna a lista de PiADL!TypeDeclaration a partir do SYSADL!DataTypeDef
+helper context SYSADL!DataTypeDef def: getAllDependencesDecls(): OrderedSet(String) =
+	self.attributes -> iterate(att; dependencesDecls: OrderedSet(String) = OrderedSet{} |
+			let type: String =
+			att.definition.name
+		in
+			if type = 'String' or type = 'Int' or type = 'Real' or type = 'Void' then
+				dependencesDecls
+			else
+				if att.definition.oclIsTypeOf(SYSADL!Enumeration) or att.definition.
+						oclIsTypeOf(SYSADL!ValueTypeDef) then
+					dependencesDecls.including(att.definition.name)
+				else
+					att.definition.getAllDependencesDecls() -> union(dependencesDecls.
+							including(att.definition.name))
+				endif
+			endif);
+
+--  preenche nome e tipo para usar na declaração de tipos
+helper def: setTypeDeclarations(dependences: OrderedSet(String)):
+		OrderedSet(TupleType(name: String, type: OrderedSet(TupleType(fieldName: String,
+		fieldType: String)))) =
+	dependences -> iterate(dependence; typedecls: OrderedSet(PIADL!TypeDeclaration) =
+			OrderedSet{} | typedecls.including(Tuple{name = dependence, type = let
+			fields: OrderedSet(TupleType(fieldName: String, fieldType: String)) =
+						OrderedSet{}
+					in
+						let typeElem: String =
+							thisModule.typeDecls.get(dependence) -> first()
+						in
+							if (typeElem.oclIsUndefined() or typeElem = PIADL!AnyType)
+									then
+								fields.including(Tuple{fieldName = typeElem, fieldType =
+										typeElem})
+							else
+								if (typeElem.fieldType = 'PIADL!RealType' or typeElem.
+										fieldType = 'PIADL!IntegerType' or typeElem.
+										fieldType = 'PIADL!BooleanType' or typeElem.
+										fieldType = 'PIADL!StringType' or typeElem.
+										fieldType = 'PIADL!NaturalType') then
+									--void
+									fields.including(Tuple{fieldName = typeElem,
+											fieldType = typeElem})
+								else
+									fields.union(thisModule.typeDecls.get(dependence).asSequence())
+								endif
+							endif}));
+
+-- preenche informações usadas para criar unification a partir de porta source do binding
+-- de porta composta
+helper context SYSADL!ConnectorBinding def: getSourceUnificationCompositePort(port:
+		SYSADL!PortUSe): TupleType(portName: String, compName: String, conName: String,
+		flow: String) =
+	let gUC:TupleType(portName: String, compName: String, conName: String, flow: String)
+			= 
+			Tuple{portName = port.name, compName = self.source.eContainer().name, conName
+					= self.eContainer().name, flow = port.definition.flowProperties}
+		in gUC;
+
+-- preenche informações usadas para criar unification a partir de porta destination do
+-- binding de porta composta
+helper context SYSADL!ConnectorBinding def: getDestinationUnificationCompositePort(port:
+		SYSADL!PortUSe): TupleType(portName: String, compName: String, conName: String,
+		flow: String) =
+	let gUC:TupleType(portName: String, compName: String, conName: String, flow: String)
+			= 
+			Tuple{portName = port.name, compName = self.destination.eContainer().name,
+					conName = self.eContainer().name, flow = port.definition.
+					flowProperties}
+		in gUC;
+
+-- preenche informações usadas para criar unification a partir de porta source de
+-- delegation de porta composta
+helper context SYSADL!Delegation def: getUnificationSourceDelegationCompositePort(port:
+		SYSADL!PortUSe): TupleType(portName: String, compUseName: String, flow: String) =
+	let gUD:TupleType(portName: String, compUseName: String, flow: String) = 
+			Tuple{portName = port.name, compUseName = self.source.eContainer().name, flow
+					= port.definition.flowProperties}
+		in gUD;
+
+-- preenche informações usadas para criar unification a partir de porta destination de
+-- delegation de porta composta
+helper context SYSADL!Delegation def:
+		getUnificationDestinationDelegationCompositePort(port: SYSADL!PortUSe):
+		TupleType(portName: String, compUseName: String, flow: String) =
+	let gUD:TupleType(portName: String, compUseName: String, flow: String) = 
+			Tuple{portName = port.name, compUseName = self.destination.eContainer().name,
+					flow = port.definition.flowProperties}
+		in gUD;
+		
+		
+		
+-- WIP
+--Tuple 	String(Component Nome) -> ActivityDef
+--Tuple 	String(ActivityDef Nome) -> Ordered Set (ActionDef)
+--Tuple 	String(ActionDef Nome) -> Ordered Set (ContraintDef)
+
+-- variavel global XXXXX com mapeamento ActivityDef
+helper def: actityDefs: Map(String, SysADL!ActivityDef) =
+	SYSADL!TypeDef.allInstances() -> iterate(typeDef; tpDecls: Map(String,
+			Sequence(PIADL!TypeDeclaration)) = Map{} | if typeDef.
+			oclIsTypeOf(SYSADL!DataTypeDef) then
+			tpDecls.including(typeDef.name, typeDef.getAllTypeDeclaration())
+		else
+			if typeDef.oclIsTypeOf(SYSADL!Enumeration) or (typeDef.
+					oclIsTypeOf(SYSADL!ValueTypeDef) and not typeDef.isBasicType()) then
+				tpDecls.including(typeDef.name, Sequence{PIADL!AnyType})
+			else
+				if typeDef.oclIsTypeOf(SYSADL!ValueTypeDef) then
+					tpDecls.including(typeDef.name, Sequence{typeDef.getSuperType()})
+				else
+					tpDecls
+				endif
+			endif
+		endif);		
+		
+
+
+-- #### Rules ####--
+-- #### Architecture Description #### --
+--  Transforma Model SysADL em ArchitectureDescription PiADL
+rule Model2ArchitectureDescription {
+	from
+		sM: SYSADL!Model
+	using {
+		conDefs: OrderedSet(SYSADL!ConnectorDef) = SYSADL!ConnectorDef.allInstances();
+		compDefsAll: OrderedSet(SYSADL!ComponentDef) = SYSADL!ComponentDef.allInstances();
+		compDefs: OrderedSet(SYSADL!ComponentDef) = compDefsAll -> select(c | not c.
+				oclIsTypeOf(SYSADL!ArchitectureDef));
+		archDefs: OrderedSet(SYSADL!ArchitectureDef) = SYSADL!ArchitectureDef.
+				allInstances();
+		-- WIP (Como tornar visivel em thisModule.lazyComponentDef2Component(comp)?????)
+		--ActDefs: OrderedSet(SYSADL!ActivityDef) = SYSADL!ActivityDef.allInstances().debug();
+		--AnDefs: OrderedSet(SYSADL!ActionDef) = SYSADL!ActionDef.allInstances().debug();
+		--ConstDefs: OrderedSet(SYSADL!ConstraintDef) = SYSADL!ConstraintDef.allInstances().debug();
+	}
+	to
+		pArch: PIADL!ArchitectureDescription (
+			archElements <- conDefs -> iterate(con; cons:
+					OrderedSet(PIADL!ArchitecturalElement) = OrderedSet{} | cons.
+					including(thisModule.lazyConnectorDef2Connector(con))).union(compDefs
+					-> iterate(comp; comps: OrderedSet(PIADL!ElementInstantiation) =
+					OrderedSet{} | comps.including(thisModule.
+					lazyComponentDef2Component(comp)))),
+			archs <- archDefs -> iterate(arc; arcs: OrderedSet(PIADL!Architecture) =
+					OrderedSet{} | arcs.including(thisModule.
+					lazyArchitectureDef2Architecture(arc))),
+			cbehavior <- thisModule.
+					lazyUnobservable2BehaviorDeclaration(PIADL!Unobservable)
+		)
+}
+
+-- #### Architectural Elements #### --
+--Transforma ConnectorDef SysADL em Connector PiADL
+lazy rule lazyConnectorDef2Connector {
+	from
+		sCD: SYSADL!ConnectorDef
+	using {
+		typeUsed: OrderedSet(String) = sCD.ports -> iterate(port; types:
+				OrderedSet(String) = OrderedSet{} | if (port.definition.
+				oclIsTypeOf(SYSADL!CompositePortDef)) then
+				types.union(port.definition.ports -> iterate(pUse; typesPU:
+						OrderedSet(String) = OrderedSet{} | typesPU.including(pUse.
+						definition.flowType.name)))
+			else
+				types.including(port.definition.flowType.name)
+			endif);
+		dependences: OrderedSet(String) = typeUsed -> iterate(tUse; dUses:
+				OrderedSet(String) = OrderedSet{} | dUses.including(thisModule.
+				dependencesDecls.get(tUse)));
+		typeDeclarations: OrderedSet(TupleType(name: String, type:
+				OrderedSet(TupleType(fieldName: String, fieldType: String)))) =
+				dependences -> iterate(dependence; dUses: OrderedSet(TupleType(name:
+				String, type: OrderedSet(TupleType(fieldName: String, fieldType:
+				String)))) = OrderedSet{} | dUses.union(thisModule.
+				setTypeDeclarations(dependence)));
+	}
+	to
+		pC: PIADL!Connector (
+			name <- sCD.name.debug('Connector: '),
+			typeDecl <- typeDeclarations -> iterate(typedecl; typedecls:
+					OrderedSet(PIADL!TypeDeclaration) = OrderedSet{} | typedecls.
+					including(thisModule.lazyTuple2TypeDeclaration(typedecl))),
+			connections <- sCD.ports -> iterate(con; cons:
+					Sequence(PIADL!ConnectionDeclaration) = Sequence{} | cons.
+					including(if (con.definition.oclIsTypeOf(SYSADL!CompositePortDef))
+					then
+							con.definition.ports -> iterate(port; ports:
+									Sequence(PIADL!ConnectionDeclaration) = Sequence{} |
+									ports.including(thisModule.lazyCompositePortUse2ConnectionDeclaration(port)))
+						else
+							thisModule.lazySimplePortUse2ConnectionDeclaration(con)
+						endif)),
+			protDecl <- thisModule.lazyConnectorPortDef2ProtocolDeclaration(sCD),
+			behavior <- if (sCD.composite.oclIsUndefined()) then
+					thisModule.lazyUnobservable2BehaviorDeclaration(PIADL!Unobservable)
+				else
+					thisModule.lazyConnectorConfiguration2CompositionBehaviorDeclaration(sCD)
+				endif
+		)
+}
+
+-- Transforma ComponentDef SysADL(exceto os ArchitectureDef) em Component PiADL
+lazy rule lazyComponentDef2Component {
+	from
+		sSC: SYSADL!ComponentDef (
+			not sSC.oclIsTypeOf(SYSADL!ArchitectureDef)
+		)
+	using {
+		typeUsed: OrderedSet(String) = sSC.ports -> iterate(port; types:
+				OrderedSet(String) = OrderedSet{} | if (port.definition.
+				oclIsTypeOf(SYSADL!CompositePortDef)) then
+				types.union(port.definition.ports -> iterate(pUse; typesPU:
+						OrderedSet(String) = OrderedSet{} | typesPU.including(pUse.
+						definition.flowType.name)))
+			else
+				types.including(port.definition.flowType.name)
+			endif);
+		dependences: OrderedSet(String) = typeUsed -> iterate(tUse; dUses:
+				OrderedSet(String) = OrderedSet{} | dUses.including(thisModule.
+				dependencesDecls.get(tUse)));
+		typeDeclarations: OrderedSet(TupleType(name: String, type:
+				OrderedSet(TupleType(fieldName: String, fieldType: String)))) =
+				dependences -> iterate(dependence; dUses: OrderedSet(TupleType(name:
+				String, type: OrderedSet(TupleType(fieldName: String, fieldType:
+				String)))) = OrderedSet{} | dUses.union(thisModule.
+				setTypeDeclarations(dependence)));
+	}
+	to
+		pC: PIADL!Component (
+			name <- (if (sSC.isBoundary = false) then
+						sSC.name
+					else
+						'boundary ' + sSC.name
+					endif).debug('Component: '),
+			typeDecl <- typeDeclarations -> iterate(typedecl; typedecls:
+					OrderedSet(PIADL!TypeDeclaration) = OrderedSet{} | typedecls.
+					including(thisModule.lazyTuple2TypeDeclaration(typedecl))),
+			connections <- sSC.ports -> iterate(con; cons:
+					Sequence(PIADL!ConnectionDeclaration) = Sequence{} | cons.
+					including(if (con.definition.oclIsTypeOf(SYSADL!CompositePortDef))
+					then
+							con.definition.ports -> iterate(port; ports:
+									Sequence(PIADL!ConnectionDeclaration) = Sequence{} |
+									ports.including(thisModule.lazyCompositePortUse2ConnectionDeclaration(port)))
+						else
+							thisModule.lazySimplePortUse2ConnectionDeclaration(con)
+						endif)),
+			protDecl <- thisModule.lazyComponent2ProtocolDeclaration(sSC),
+			
+			behavior <- if (sSC.isBoundary = true) then --desmembrar aqui
+					thisModule.lazyUnobservable2BehaviorDeclaration(PIADL!Unobservable)
+				else
+					if (sSC.composite.oclIsUndefined()) then
+						--WIP
+						thisModule.lazyComponentDef2BehaviorDeclaration(sSC)
+					else
+						thisModule.lazyComponentDefConfiguration2CompositionBehaviorDeclaration(sSC)
+					endif
+				endif
+		)
+}
+
+-- #### Regras para TypeDeclaration #### --
+-- Transforma Tupla como informações de tipos a serem declarados em TypeDeclaration
+-- (PiADL)
+lazy rule lazyTuple2TypeDeclaration {
+	from
+		tuple: Ecore!EObjec
+	to
+		typedecl: PIADL!TypeDeclaration (
+			name <- tuple.name,
+			type <- if (tuple.type.asSequence() -> first().fieldName = PIADL!AnyType) then
+					thisModule.lazyTuple2AnyType(tuple.type.asSequence() -> first().
+							fieldType)
+				else
+					if (tuple.type.asSequence() -> first().fieldName = PIADL!RealType)
+							then
+						thisModule.lazyTuple2RealType(tuple.type.asSequence() -> first().
+								fieldType)
+					else
+						if (tuple.type.asSequence() -> first().fieldName =
+								PIADL!IntegerType) then
+							thisModule.lazyTuple2IntegerType(tuple.type.asSequence() ->
+									first().fieldType)
+						else
+							if (tuple.type.asSequence() -> first().fieldName =
+									PIADL!BooleanType) then
+								thisModule.lazyTuple2BooleanType(tuple.type.asSequence()
+										-> first().fieldType)
+							else
+								if (tuple.type.asSequence() -> first().fieldName =
+										PIADL!StringType) then
+									thisModule.lazyTuple2StringType(tuple.type.
+											asSequence() -> first().fieldType)
+								else
+									if (tuple.type.asSequence() -> first().fieldName =
+											PIADL!NaturalType) then
+										--void SYSADL
+										thisModule.lazyTuple2NaturalType(tuple.type.
+												asSequence() -> first().fieldType)
+									else
+										thisModule.lazyTuple2View(tuple.type)
+									endif
+								endif
+							endif
+						endif
+					endif
+				endif
+		)
+}
+
+-- Criando o tipo Enumeration ou Value Type (não "primitivo") correspondente a AnyType em
+-- PIADL
+lazy rule lazyTuple2AnyType {
+	from
+		tuple: Ecore!EObject
+	to
+		valuetype: PIADL!AnyType
+}
+
+-- Criando o tipo Real correspondente a RealType em PIADL
+lazy rule lazyTuple2RealType {
+	from
+		tuple: Ecore!EObject
+	to
+		valuetype: PIADL!RealType
+}
+
+-- Criando o tipo Int correspondente a IntegerType em PIADL
+lazy rule lazyTuple2IntegerType {
+	from
+		tuple: Ecore!EObject
+	to
+		valuetype: PIADL!IntegerType
+}
+
+-- Criando o tipo Boolean correspondente a BooleanType em PIADL
+lazy rule lazyTuple2BooleanType {
+	from
+		tuple: Ecore!EObject
+	to
+		valuetype: PIADL!BooleanType
+}
+
+-- Criando o tipo String correspondente a StringType em PIADL
+lazy rule lazyTuple2StringType {
+	from
+		tuple: Ecore!EObject
+	to
+		valuetype: PIADL!StringType
+}
+
+-- Criando o tipo void a NaturalType em PIADL
+lazy rule lazyTuple2NaturalType {
+	from
+		tuple: Ecore!EObject
+	to
+		valuetype: PIADL!NaturalType
+}
+
+-- Criando o tipo DataTypeDefType correspondente a view em PIADL
+lazy rule lazyTuple2View {
+	from
+		tupleSet: Ecore!EObject
+	to
+		vt: PIADL!View (
+		)
+	do{
+			vt.labt <- tupleSet -> iterate(tuple; labeleds:
+					Sequence(PIADL!LabeledType) = Sequence{} | labeleds.
+					append(thisModule.lazyTuple2Labeled(tuple)));	
+		}
+}
+
+--Transforma Tuple em LabeledType(PiADL) para a transformação dos atributos da view
+lazy rule lazyTuple2Labeled {
+	from
+		tuple: Ecore!EObject
+	to
+		pL: PIADL!LabeledType (
+			label <- tuple.fieldName,
+			type <- if(tuple.fieldType = PIADL!AnyType)then
+						PIADL!AnyType
+					else
+						if (tuple.fieldType = PIADL!RealType)then
+							PIADL!RealType
+						else
+							if (tuple.fieldType =  PIADL!IntegerType)then
+								PIADL!IntegerType
+							else
+								if (tuple.fieldType =  PIADL!BooleanType)then
+									PIADL!BooleanType
+								else
+									if (tuple.fieldType =  PIADL!StringType)then
+										PIADL!StringType
+									else
+										if (tuple.fieldType =  PIADL!NaturalType)then
+												--void SYSADL
+											PIADL!NaturalType
+										else
+											thisModule.lazyString2TypeRef(tuple.fieldType)
+										endif
+									endif
+								endif
+							endif
+						endif
+					endif
+		)
+}
+
+--Atribui valor ao tipo referência de labeled de uma view
+lazy rule lazyString2TypeRef {
+	from
+		str: Ecore!EObject
+	to
+		pL: PIADL!TypeRef (
+			idt <- str
+		)
+}
+
+-- #### Regras para ConnectionDeclaration #### --
+-- Cria ConnectionDeclaration(PiADL) a partir de SimplePortUse(SysADL)
+lazy rule lazySimplePortUse2ConnectionDeclaration {
+	from
+		sSPU: SYSADL!PortUse (
+			not sSPU.definition.oclIsTypeOf(SYSADL!CompositePortDef)
+		)
+	to
+		pCD: PIADL!ConnectionDeclaration (
+			name <- sSPU.name,
+			direction <- sSPU.definition.flowProperties,
+			type <- thisModule.lazyString2TypeRef(sSPU.definition.flowType.name)
+		)
+}
+
+-- Cria ConnectionDeclaration(PiADL) a partir de CompositePortUse(SysADL)
+lazy rule lazyCompositePortUse2ConnectionDeclaration {
+	from
+		sPU: SYSADL!PortUse --(sCPU.definition.oclIsTypeOf(SYSADL!CompositePortDef))
+	
+	to
+		pCD: PIADL!ConnectionDeclaration (
+			name <- sPU.name,
+			direction <- sPU.definition.flowProperties,
+			type <- thisModule.lazyString2TypeRef(sPU.definition.flowType.name)
+		)
+}
+
+-- #### Regras para ProtocolDeclaration #### --
+-- Cria um ProtocolDeclaration(PiADL) a partir das portas de um ConnectorDef(SysADL)
+lazy rule lazyConnectorPortDef2ProtocolDeclaration {
+	from
+		sC: SYSADL!ConnectorDef
+	to
+		pPD: PIADL!ProtocolDeclaration (
+			protocol <- sC.ports -> iterate(prot; prots: Sequence(PIADL!ProtocolAction) =
+					Sequence{} | prots.including(if (prot.definition.
+					oclIsTypeOf(SYSADL!CompositePortDef)) then
+							prot.definition.ports -> iterate(port; ports:
+									Sequence(PIADL!ProtocolAction) = Sequence{} | ports.
+									including(thisModule.lazyCompositePortUse2ProtocolAction(port)))
+						else
+							prots.including(thisModule.lazySimplePortUse2ProtocolAction(prot))
+						endif))
+		)
+}
+
+-- Cria um ProtocolDeclaration(PiADL) a partir das portas de um ComponentDef(SysADL)
+lazy rule lazyComponent2ProtocolDeclaration {
+	from
+		sSC: SYSADL!ComponentDef
+	to
+		pPD: PIADL!ProtocolDeclaration (
+			protocol <- sSC.ports -> iterate(prot; protDec:
+					Sequence(PIADL!ProtocolDeclaration) = Sequence{} | protDec.
+					including(if (prot.definition.oclIsTypeOf(SYSADL!CompositePortDef))
+					then
+							prot.definition.ports -> iterate(port; ports:
+									Sequence(PIADL!ProtocolAction) = Sequence{} | ports.
+									including(thisModule.lazyCompositePortUse2ProtocolAction(port)))
+						else
+							thisModule.lazySimplePortUse2ProtocolAction(prot)
+						endif))
+		)
+}
+
+-- Cria um ProtocolAction de Connection a partir de SimplePortUse
+lazy rule lazySimplePortUse2ProtocolAction {
+	from
+		sSPU: SYSADL!PortUse (
+			not sSPU.definition.oclIsTypeOf(SYSADL!CompositePortDef)
+		)
+	to
+		pPD: PIADL!ProtocolAction (
+			connectionName <- sSPU.name,
+			action <- if(sSPU.definition.flowProperties = #out) then #send else #receive
+					endif,
+			type <- thisModule.lazyString2TypeRef(sSPU.definition.flowType.name)
+		)
+}
+
+-- Cria um ProtocolAction de Connection a partir de CompositePortUse
+lazy rule lazyCompositePortUse2ProtocolAction {
+	from
+		sPU: SYSADL!PortUse
+	to
+		pPD: PIADL!ProtocolAction (
+			connectionName <- sPU.name,
+			action <- if(sPU.definition.flowProperties = #out)then #send else #receive
+					endif,
+			type <- thisModule.lazyString2TypeRef(sPU.definition.flowType.name)
+		)
+}
+
+-- #### Regras para BehaviorDeclaration #### --
+-- Cria um behavior Unobservable
+lazy rule lazyUnobservable2BehaviorDeclaration {
+	from
+		sU: PIADL!Unobservable
+	to
+		pBD: PIADL!BehaviorDeclaration (
+			body <- (let b : Sequence(PIADL!BehaviorClause) = Sequence{} in b)
+		)
+}
+
+-- Cria um BehaviorDeclaration para usar em conectores compostos
+lazy rule lazyConnectorConfiguration2CompositionBehaviorDeclaration {
+	from
+		sCDC: SYSADL!ConnectorDef
+	to
+		pBD: PIADL!BehaviorDeclaration (
+			body <- thisModule.
+					lazyConnectorDefConfiguration2CompositionBehaviorClause(sCDC)
+		)
+}
+
+-- Cria um CompositionBehaviorClause, para usar em conectores que compostos
+lazy rule lazyConnectorDefConfiguration2CompositionBehaviorClause {
+	from
+		sCDC: SYSADL!ConnectorDef
+	to
+		pC: PIADL!Composition (
+			clause <- sCDC.composite.connectors -> iterate(con; cons:
+					OrderedSet(PIADL!ElementInstantiation) = OrderedSet{} | cons.
+					including(thisModule.lazyConnectorUse2ElementInstantiation(con))),
+			uc <- thisModule.lazyConnectorDefConfiguration2UnificationClause(sCDC)
+		)
+}
+
+--WIP
+-- Cria um BehaviorDeclaration para usar em componentes não fronteira e não-compostos a partir da Activity
+lazy rule lazyComponentDef2BehaviorDeclaration {
+	from
+		sCD: SYSADL!ComponentDef
+	using {		
+		activityDef: SYSADL!ActivityDef = SYSADL!ActivityDef.allInstances() -> select(a | a.name.substring(1, a.name.size()-2) = sCD.name) -> first();	
+	}
+	to
+		pBD: PIADL!BehaviorDeclaration (
+			
+			body <- activityDef.body.actions -> iterate(action; actions:
+					OrderedSet(PIADL!BehaviorClause) = OrderedSet{} | actions.
+					including(thisModule.lazyActionUse2FunctionDeclaration(action)))
+		)
+}
+
+--WIP
+-- Criar FunctionDeclarations a partir de uma Action
+lazy rule lazyActionUse2FunctionDeclaration {
+	from
+		sAU: SYSADL!ActionUse
+	using {		
+		actionDef: SYSADL!ActionDef = SYSADL!ActionDef.allInstances() -> select(a | a.name = sAU.definition.name) -> first();
+		constraintsDefPosC: Sequence(SYSADL!ConstraintDef) = actionDef.constraints -> 
+			iterate(contUse; resultConst: Sequence(SYSADL!ConstraintDef) = Sequence {} | 
+				resultConst.union(SYSADL!ConstraintDef.allInstances() -> iterate (contDef; contDefs: Sequence(SYSADL!ConstraintDef) = Sequence{}|
+						if ((contDef.name = contUse.definition.name) and (contUse.kind = #postCondition)) then
+							contDefs.including(contDef)
+						else
+							contDefs
+						endif
+					))
+			);
+	}
+	to
+		pFD: PIADL!FunctionDeclaration (
+			functionName <- sAU.definition.name.debug(),
+			parameters <- sAU.pinIn -> iterate(pin; parameters:
+					OrderedSet(PIADL!Parameter) = OrderedSet{} | parameters.
+					including(thisModule.lazyPin2Parameter(pin))),
+			returnType <- thisModule.lazyString2TypeRef(actionDef.returnType.name),
+			block <- constraintsDefPosC-> iterate(posc; equations: Sequence(PIADL!BehaviorClause) = Sequence{}|
+				equations.including(thisModule.lazyExpression2BehaviorClause(posc.equation))
+			)
+		)
+}
+
+
+--WIP
+-- Transforma Equation em Return
+lazy rule lazyExpression2BehaviorClause {
+	from
+		sE: SYSADL!Expression
+	using{
+		exp: SYSADL!Expression = sE.debug('expressao: ');	
+	}
+	to
+		pR: PIADL!Return (	
+			expr <- if(sE.oclIsTypeOf(SYSADL!ConditionalTestExpression))then
+						thisModule.lazyConditionalTestExpression2IfThenElse(sE)
+					else
+						if(sE.oclIsTypeOf(SYSADL!ConditionalLogicalExpression))then
+							thisModule.lazyConditionalLogicalExpression2IfThenElse(sE)
+						else
+							if(sE.oclIsTypeOf(SYSADL!LogicalExpression))then
+								thisModule.lazyLogicalExpression2LogicalExpression(sE)
+							else 
+								if(sE.oclIsTypeOf(SYSADL!EqualityExpression))then
+									thisModule.lazyEqualityExpression2LogicalExpression(sE)
+								else
+									if(sE.oclIsUndefined()=false)then
+										thisModule.lazyExpression2StringLiteral(sE.v)
+									else
+										PIADL!Expression -- OclUndefined
+									endif
+								endif
+							endif
+						endif
+					endif
+		)
+}
+
+--WIP
+-- Transforma Equality Expression em Logical Expression 
+lazy rule lazyEqualityExpression2LogicalExpression {
+	from
+		sE: SYSADL!EqualityExpression
+	to
+		pITE: PIADL!LogicalExpression (	
+			op <- '=',
+			left <- thisModule.lazyExpression2BehaviorClause(sE.op1),
+			right <- thisModule.lazyExpression2BehaviorClause(sE.op2)
+			--elseSt <- thisModule.lazyExpression2BehaviorClause(sE.op3)
+		)
+}
+
+--WIP
+-- Transforma Logical Expression em Logical Expression 
+lazy rule lazyLogicalExpression2LogicalExpression {
+	from
+		sE: SYSADL!LogicalExpression
+	to
+		pITE: PIADL!LogicalExpression (	
+			op <- sE.operator,
+			left <- thisModule.lazyExpression2BehaviorClause(sE.op1),
+			right <- thisModule.lazyExpression2BehaviorClause(sE.op2)
+			--elseSt <- thisModule.lazyExpression2BehaviorClause(sE.op3)
+		)
+}
+
+--WIP
+-- Transforma Conditional Logical Expression em IfThenElse
+lazy rule lazyConditionalLogicalExpression2IfThenElse {
+	from
+		sE: SYSADL!ConditionalTestExpression
+	to
+		pITE: PIADL!IfThenElse (	
+			expression <- thisModule.lazyExpression2BehaviorClause(sE.op1),
+			ifBlock <- thisModule.lazyExpression2BehaviorClause(sE.op2)
+			--elseSt <- thisModule.lazyExpression2BehaviorClause(sE.op3)
+		)
+}
+
+--WIP
+-- Transforma Conditional Test Expression em IfThenElse
+lazy rule lazyConditionalTestExpression2IfThenElse {
+	from
+		sE: SYSADL!ConditionalTestExpression
+	to
+		pITE: PIADL!IfThenElse (	
+			expression <- thisModule.lazyExpression2BehaviorClause(sE.op1),
+			ifBlock <- thisModule.lazyExpression2BehaviorClause(sE.op2),
+			elseSt <- thisModule.lazyExpression2BehaviorClause(sE.op3)
+		)
+}
+
+--WIP
+-- Transforma demais tipos de Expression em StringLiteral
+lazy rule lazyExpression2StringLiteral {
+	from
+		sE: SYSADL!Expression
+	to
+		pSL: PIADL!StringLiteral (	
+			
+		)
+}
+
+
+--WIP
+-- Transforma Pins de entrada em Parameters
+lazy rule lazyPin2Parameter {
+	from
+		sP: SYSADL!Pin
+	to
+		pBD: PIADL!Parameter (
+			name <-  sP.name, 
+			type <- thisModule.lazyString2TypeRef(sP.definition.name)
+		)
+}
+
+
+
+-- Cria um BehaviorDeclaration para usar em componentes compostos
+lazy rule lazyComponentDefConfiguration2CompositionBehaviorDeclaration {
+	from
+		sCDC: SYSADL!ComponentDef
+	to
+		pBD: PIADL!BehaviorDeclaration (
+			body <- thisModule.
+					lazyComponentDefConfiguration2CompositionBehaviorClause(sCDC)
+		)
+}
+
+-- Cria um CompositionBehaviorClause, para usar em componentes que compostos
+lazy rule lazyComponentDefConfiguration2CompositionBehaviorClause {
+	from
+		sCDC: SYSADL!ComponentDef
+	to
+		pC: PIADL!Composition (
+			clause <- sCDC.composite.components -> iterate(comp; comps:
+					OrderedSet(PIADL!ElementInstantiation) = OrderedSet{} | comps.
+					including(thisModule.lazyComponentUse2ElementInstantiation(comp))).
+					union(sCDC.composite.connectors -> iterate(con; cons:
+					OrderedSet(PIADL!ElementInstantiation) = OrderedSet{} | cons.
+					including(thisModule.lazyConnectorUse2ElementInstantiation(con)))),
+			uc <- thisModule.lazyComponentDefConfiguration2UnificationClause(sCDC)
+		)
+}
+
+-- Cria um ElementInstantiation a partir de ConnectorUse para uso na Configuração de
+-- Conectores, Componentes compostos e Arquiteturas
+lazy rule lazyConnectorUse2ElementInstantiation {
+	from
+		sCU: SYSADL!ConnectorUse
+	to
+		pBC: PIADL!ElementInstantiation (
+			elementName <- sCU.name,
+			elementType <- sCU.definition.name
+		)
+}
+
+-- Cria um ElementInstantiation a partir de ComponentUse para uso na Configuração de
+-- Componentes compostos e Arquiteturas
+lazy rule lazyComponentUse2ElementInstantiation {
+	from
+		sCU: SYSADL!ComponentUse
+	to
+		pBC: PIADL!ElementInstantiation (
+			elementName <- sCU.name,
+			elementType <- sCU.definition.name
+		)
+}
+
+-- Cria um conjunto de UnficationClause a partir dos conectores usados em um conector
+-- Composto SysADL
+lazy rule lazyConnectorDefConfiguration2UnificationClause {
+	from
+		sCDC: SYSADL!ConnectorDef
+	to
+		pUC: PIADL!UnificationClause (
+			unifications <- sCDC.composite.connectors -> iterate(con; cons:
+					OrderedSet(PIADL!Unification) = OrderedSet{} | cons.
+					including(thisModule.lazyFromCompositeConnectorUse2Unification(con)).including(thisModule.lazyToCompositeConnectorUse2Unification(con)))
+		)
+}
+
+-- Cria uma Unification FROM de um ConnectorUse Composto
+lazy rule lazyFromCompositeConnectorUse2Unification {
+	from
+		sCU: SYSADL!ConnectorUse
+	to
+		pU: PIADL!Unification (
+			fromc <- thisModule.lazyFromSourceConnectorBinding2ConnectionAccess(sCU.
+					bindings -> first()),
+			toc <- thisModule.lazyToConnectorUse2ConnectionAccess(sCU)
+		)
+}
+
+-- Cria uma Unfication TO de um ConnectorUse Composto
+lazy rule lazyToCompositeConnectorUse2Unification {
+	from
+		sCU: SYSADL!ConnectorUse
+	to
+		pU: PIADL!Unification (
+			fromc <- thisModule.lazyFromConnectorUse2ConnectionAccess(sCU),
+			toc <- thisModule.lazyToDestinationConnectorBinding2ConnectionAccess(sCU.
+					bindings -> first())
+		)
+}
+
+-- Cria um Connector Access da parte FROM de um Connector Binding componente composto
+lazy rule lazyFromSourceConnectorBinding2ConnectionAccess {
+	from
+		sCB: SYSADL!ConnectorBinding
+	using {
+		conUse: PIADL!ConnectorUse = SYSADL!ConnectorUse.allInstances() -> select(c | c.
+				bindings -> includes(sCB)) -> first();
+		conComposite: PIADL!ConnectorDef = SYSADL!ConnectorDef.allInstances() -> select(c
+				| c.composite.oclIsUndefined() = false);
+	}
+	to
+		pCA: PIADL!ConnectionAccess (
+			--elementName <-
+					-- conComposite->select(c|c.composite.connectors->includes(conUse))->first().nam
+							-- e
+					-- ,
+			elementName <- 'self',
+			connectionName <- sCB.source.name
+		)
+}
+
+-- Cria um Connector Access da parte TO de um Connector Binding componente composto
+lazy rule lazyToDestinationConnectorBinding2ConnectionAccess {
+	from
+		sCB: SYSADL!ConnectorBinding
+	using {
+		conUse: PIADL!ConnectorUse = SYSADL!ConnectorUse.allInstances() -> select(c | c.
+				bindings -> includes(sCB)) -> first();
+		conComposite: PIADL!ConnectorDef = SYSADL!ConnectorDef.allInstances() -> select(c
+				| c.composite.oclIsUndefined() = false);
+	}
+	to
+		pCA: PIADL!ConnectionAccess (
+			--elementName <-
+					-- conComposite->select(c|c.composite.connectors->includes(conUse))->first().na
+							-- m
+					-- e
+			elementName <- 'self',
+			connectionName <- sCB.destination.name
+		)
+}
+
+-- Cria um Connector Access da parte FROM de um Connector Use para Configuração de
+-- Conectores Compostos
+lazy rule lazyFromConnectorUse2ConnectionAccess {
+	from
+		sCU: SYSADL!ConnectorUse
+	to
+		pCA: PIADL!ConnectionAccess (
+			elementName <- sCU.name,
+			connectionName <- SYSADL!ConnectorDef.allInstances() -> select(c | c = sCU.
+					definition) -> first().flows -> first().destination.name
+		)
+}
+
+-- Cria um Connector Access da parte TO de um Connector Use para Configuração de
+-- Conectores Compostos
+lazy rule lazyToConnectorUse2ConnectionAccess {
+	from
+		sCU: SYSADL!ConnectorUse
+	to
+		pCA: PIADL!ConnectionAccess (
+			elementName <- sCU.name,
+			connectionName <- SYSADL!ConnectorDef.allInstances() -> select(c | c = sCU.
+					definition) -> first().flows -> first().source.name
+		)
+}
+
+-- Cria um conjunto de UnficationClause a partir dos componentes, conectores e delegações
+-- usados em um Componente Composto SysADL
+lazy rule lazyComponentDefConfiguration2UnificationClause {
+	from
+		sCDC: SYSADL!ComponentDef
+	to
+		pUC: PIADL!UnificationClause (
+			unifications <- (sCDC.composite.connectors -> iterate(con; cons:
+					OrderedSet(PIADL!Unification) = OrderedSet{} | (if (con.definition.
+					composite.oclIsUndefined()) then
+							cons.including(thisModule.lazyFromConnectorUse2Unification(con)).including(thisModule.lazyToConnectorUse2Unification(con))
+						else
+							cons.union(con.bindings -> first().source.definition.ports ->
+									iterate(psc; depscs: OrderedSet(PIADL!Unification) =
+									OrderedSet{} | depscs.including(thisModule.
+									lazySourceConnectorComposite2Unification(con.bindings
+									-> first().getSourceUnificationCompositePort(psc))))).
+									union(con.bindings -> first().destination.definition.
+									ports -> iterate(pdc; depdcs:
+									OrderedSet(PIADL!Unification) = OrderedSet{} | depdcs.
+									including(thisModule.
+									lazyDestinationConnectorComposite2Unification(con.
+									bindings -> first().
+									getDestinationUnificationCompositePort(pdc)))))
+						endif))
+							).union(sCDC.composite.delegations -> iterate(del; dels:
+									OrderedSet(PIADL!Unification) = OrderedSet{} | if
+									(del.source.definition.
+									oclIsTypeOf(SYSADL!CompositePortDef)) and (del.
+									destination.definition.
+									oclIsTypeOf(SYSADL!CompositePortDef)) then
+							if (del.source.eContainer() = sCDC) then
+								dels.union(del.destination.definition.ports ->
+										iterate(pc; depcs: OrderedSet(PIADL!Unification)
+										= OrderedSet{} | depcs.including(thisModule.
+										lazyCompositePortUse2Unification(del.getUnificationDestinationDelegationCompositePort(pc)))))
+							else
+								dels.union(del.source.definition.ports -> iterate(pc;
+										depcs: OrderedSet(PIADL!Unification) =
+										OrderedSet{} | depcs.including(thisModule.
+										lazyCompositePortUse2Unification(del.getUnificationSourceDelegationCompositePort(pc)))))
+							endif
+						else
+							dels.including(thisModule.lazySimpleDelegation2Unification(del))
+						endif))
+		)
+}
+
+-- Cria uma unificação FROM de um ConnectorUse (portas simples) para uso em Componentes
+-- Compostos e Arquiteturas
+lazy rule lazyFromConnectorUse2Unification {
+	from
+		sCU: SYSADL!ConnectorUse
+	to
+		pU: PIADL!Unification (
+			fromc <- thisModule.lazyFromConnectorBinding2ConnectionAccess(sCU.bindings ->
+					first()),
+			toc <- thisModule.lazyToConnectorUse2ConnectionAccess(sCU)
+		)
+}
+
+-- Cria uma unificação TO de um ConnectorUse (portas simples) para uso em Componentes
+-- Compostos e Arquiteturas
+lazy rule lazyToConnectorUse2Unification {
+	from
+		sCU: SYSADL!ConnectorUse
+	to
+		pU: PIADL!Unification (
+			fromc <- thisModule.lazyFromConnectorUse2ConnectionAccess(sCU),
+			toc <- thisModule.lazyToConnectorBinding2ConnectionAccess(sCU.bindings ->
+					first())
+		)
+}
+
+-- Cria um Connector Access da parte FROM de um Connector Binding
+lazy rule lazyFromConnectorBinding2ConnectionAccess {
+	from
+		sCB: SYSADL!ConnectorBinding
+	to
+		pCA: PIADL!ConnectionAccess (
+			elementName <- SYSADL!ComponentUse.allInstances() -> select(c | c.ports ->
+					includes(sCB.source)) -> first().name,
+			connectionName <- sCB.source.name
+		)
+}
+
+-- Cria um Connector Access da parte TO de um Connector Binding
+lazy rule lazyToConnectorBinding2ConnectionAccess {
+	from
+		sCB: SYSADL!ConnectorBinding
+	to
+		pCA: PIADL!ConnectionAccess (
+			elementName <- SYSADL!ComponentUse.allInstances() -> select(c | c.ports ->
+					includes(sCB.destination)) -> first().name,
+			connectionName <- sCB.destination.name
+		)
+}
+
+-- Cria uma Unification a partir de informações coletadas de uma Porta Simples que compõe
+-- uma Porta Composta Source de um Binding
+lazy rule lazySourceConnectorComposite2Unification {
+	from
+		sST: TupleType(portName: String, compName: String, conName: String, flow: String)
+	to
+		pU: PIADL!Unification (
+			fromc <- if (sST.flow = #out) then
+					thisModule.lazyFromPortToConnector2ConnectionAccess(sST)
+				else
+					thisModule.lazyFromConnectorToPort2ConnectionAccess(sST)
+				endif,
+			toc <- if (sST.flow = #out) then
+					thisModule.lazyToConnectorFromPort2ConnectionAccess(sST)
+				else
+					thisModule.lazyToPortFromConnector2ConnectionAccess(sST)
+				endif
+		)
+}
+
+-- Cria uma Unification a partir de informações coletadas de uma Porta Simples que compõe
+-- uma Porta Composta Destination de um Binding
+lazy rule lazyDestinationConnectorComposite2Unification {
+	from
+		sST: TupleType(portName: String, compName: String, conName: String, flow: String)
+	to
+		pU: PIADL!Unification (
+			fromc <- if (sST.flow = #out) then
+					thisModule.lazyFromPortToConnector2ConnectionAccess(sST)
+				else
+					thisModule.lazyFromConnectorToPort2ConnectionAccess(sST)
+				endif,
+			toc <- if (sST.flow = #out) then
+					thisModule.lazyToConnectorFromPort2ConnectionAccess(sST)
+				else
+					thisModule.lazyToPortFromConnector2ConnectionAccess(sST)
+				endif
+		)
+}
+
+-- Cria ConnectionAccess a partir de informações coletadas de portas Out Simples que
+-- integra porta composta
+lazy rule lazyFromPortToConnector2ConnectionAccess {
+	from
+		sST: TupleType(portName: String, compName: String, conName: String, flow: String)
+	to
+		pCA: PIADL!ConnectionAccess (
+			elementName <- sST.compName,
+			connectionName <- sST.portName
+		)
+}
+
+-- Cria ConnectionAccess a partir de informações coletadas de porta simples de conector
+-- composto
+lazy rule lazyFromConnectorToPort2ConnectionAccess {
+	from
+		sST: TupleType(portName: String, compName: String, conName: String, flow: String)
+	to
+		pCA: PIADL!ConnectionAccess (
+			elementName <- sST.conName,
+			connectionName <- sST.portName
+		)
+}
+
+-- Cria ConnectionAccess a partir de informações coletadas de porta simples de conector
+-- composto
+lazy rule lazyToConnectorFromPort2ConnectionAccess {
+	from
+		sST: TupleType(portName: String, compName: String, conName: String, flow: String)
+	to
+		pCA: PIADL!ConnectionAccess (
+			elementName <- sST.conName,
+			connectionName <- sST.portName
+		)
+}
+
+-- Cria ConnectionAccess a partir de informações coletadas de portas In Simples que
+-- integra porta composta
+lazy rule lazyToPortFromConnector2ConnectionAccess {
+	from
+		sST: TupleType(portName: String, compName: String, conName: String, flow: String)
+	to
+		pCA: PIADL!ConnectionAccess (
+			elementName <- sST.compName,
+			connectionName <- sST.portName
+		)
+}
+
+-- Cria uma Unification de um Delegation de Porta Simples
+lazy rule lazySimpleDelegation2Unification {
+	from
+		sD: SYSADL!Delegation
+	to
+		pU: PIADL!Unification (
+			fromc <- if (sD.source.definition.flowProperties=#out) then
+					thisModule.lazyFromOutSimplePortUseDelegation2ConnectionAccess(sD.source)
+				else
+					thisModule.lazyFromInSimplePortUseDelegation2ConnectionAccess(sD.destination)
+				endif,
+			toc <- if (sD.source.definition.flowProperties=#out) then
+					thisModule.lazyToOutSimplePortUseDelegation2ConnectionAccess(sD.destination)
+				else
+					thisModule.lazyToInSimplePortUseDelegation2ConnectionAccess(sD.source)
+				endif
+		)
+}
+
+-- Cria uma Unification de um Delegation a partir de informações coletadas de portas In
+-- Simples que integra porta composta
+lazy rule lazyCompositePortUse2Unification {
+	from
+		--sPU : SYSADL!PortUse
+		sPU: TupleType(portName: String, compUseName: String, flow: String)
+	using {
+		nome: String = sPU.portName;
+		Comp: String = sPU.compUseName;
+	}
+	to
+		pU: PIADL!Unification (
+			fromc <- if (sPU.flow=#out) then
+					thisModule.lazyFromOutCompositePortUse2ConnectionAccess(sPU)
+				else
+					thisModule.lazyFromInCompositePortUse2ConnectionAccess(sPU)
+				endif,
+			toc <- if (sPU.flow=#out) then
+					thisModule.lazyToOutCompositePortUse2ConnectionAccess(sPU)
+				else
+					thisModule.lazyToInCompositePortUse2ConnectionAccess(sPU)
+				endif
+		)
+}
+
+-- Cria um ConnectionAccess From, a partir de um delegation para Configuração de
+-- Componentes Compostos (Conexão de porta de saida - comp interno para o externo)
+lazy rule lazyFromOutSimplePortUseDelegation2ConnectionAccess {
+	from
+		sPU: SYSADL!PortUse
+	to
+		pCA: PIADL!ConnectionAccess (
+			elementName <- SYSADL!ComponentUse.allInstances() -> select(c | c.ports ->
+					includes(sPU)) -> first().name,
+			connectionName <- sPU.name
+		)
+}
+
+-- Cria um ConnectionAccess From, a partir de um delegation para Configuração de
+-- Componentes Compostos (Conexão de porta de saida - comp externo para o interno)
+lazy rule lazyFromInSimplePortUseDelegation2ConnectionAccess {
+	from
+		sPU: SYSADL!PortUse
+	using {
+		econtainer: Ecore!EObject = sPU.eContainer();
+		compsDef: OrderedSet(SYSADL!ComponentDef) = SYSADL!ComponentDef.allInstances() ->
+				select(c | not c.oclIsTypeOf(SYSADL!ArchitectureDef));
+		compDefPuse: OrderedSet(SYSADL!ComponentDef) = compsDef -> select(c | c.ports ->
+				select(p | p.definition.name = econtainer.name).notEmpty()) -> first();
+		comp: SYSADL!ComponentDef = SYSADL!ComponentDef.allInstances() -> select(c | c.
+				ports -> includes(sPU)) -> first();
+		pComp: OrderedSet(SYSADL!ComponentDef) = if (econtainer.
+				oclIsTypeOf(SYSADL!CompositePortDef)) then
+			compDefPuse.name
+		else
+			econtainer.name
+		endif;
+	}
+	to
+		pCA: PIADL!ConnectionAccess (
+			elementName <- 'self',
+			connectionName <- sPU.name
+		)
+}
+
+-- Cria um ConnectionAccess In, a partir de um delegation para Configuração de
+-- Componentes Compostos (Conexão de porta de saida - comp interno para o externo)
+lazy rule lazyToOutSimplePortUseDelegation2ConnectionAccess {
+	from
+		sPU: SYSADL!PortUse
+	to
+		pCA: PIADL!ConnectionAccess (
+			elementName <- 'self',
+			connectionName <- sPU.name
+		)
+}
+
+-- Cria um ConnectionAccess In, a partir de um delegation para Configuração de
+-- Componentes Compostos (Conexão de porta de saida - comp externo para o interno)
+lazy rule lazyToInSimplePortUseDelegation2ConnectionAccess {
+	from
+		sPU: SYSADL!PortUse
+	using {
+		econtainer: Ecore!EObject = sPU.eContainer();
+		compsDef: OrderedSet(SYSADL!ComponentDef) = SYSADL!ComponentDef.allInstances() ->
+				select(c | not c.oclIsTypeOf(SYSADL!ArchitectureDef));
+		compDefPuse: OrderedSet(SYSADL!ComponentDef) = compsDef -> select(c | c.ports ->
+				select(p | p.definition.name = econtainer.name).notEmpty()) -> first();
+		comp: SYSADL!ComponentDef = SYSADL!ComponentDef.allInstances() -> select(c | c.
+				ports -> includes(sPU)) -> first();
+		pComp: OrderedSet(SYSADL!ComponentDef) = if (econtainer.
+				oclIsTypeOf(SYSADL!CompositePortDef)) then
+			compDefPuse.name
+		else
+			econtainer.name
+		endif;
+	}
+	to
+		pCA: PIADL!ConnectionAccess (
+			elementName <- pComp,
+			connectionName <- sPU.name
+		)
+}
+
+-- Cria um ConnectionAccess From, a partir de um delegation para Configuração de
+-- Componentes Compostos (Conexão de porta de saida - comp interno para o externo)
+lazy rule lazyFromOutCompositePortUse2ConnectionAccess {
+	from
+		sPU: TupleType(portName: String, compUseName: String, flow: String)
+	to
+		pCA: PIADL!ConnectionAccess (
+			elementName <- sPU.compUseName,
+			connectionName <- sPU.portName
+		)
+}
+
+-- Cria um ConnectionAccess From, a partir de um delegation para Configuração de
+-- Componentes Compostos (Conexão de porta de saida - comp externo para o interno)
+lazy rule lazyFromInCompositePortUse2ConnectionAccess {
+	from
+		sPU: TupleType(portName: String, compUseName: String, flow: String)
+	to
+		pCA: PIADL!ConnectionAccess (
+			elementName <- 'self',
+			connectionName <- sPU.portName
+		)
+}
+
+-- Cria um ConnectionAccess To, a partir de um delegation para Configuração de
+-- Componentes Compostos (Conexão de porta de entrada - comp interno para o
+-- externo)
+lazy rule lazyToOutCompositePortUse2ConnectionAccess {
+	from
+		sPU: TupleType(portName: String, compUseName: String, flow: String)
+	to
+		pCA: PIADL!ConnectionAccess (
+			elementName <- 'self',
+			connectionName <- sPU.portName
+		)
+}
+
+-- Cria um ConnectionAccess To, a partir de um delegation para Configuração de
+-- Componentes Compostos (Conexão de porta de entrada - comp externo para o
+-- interno)
+lazy rule lazyToInCompositePortUse2ConnectionAccess {
+	from
+		sPU: TupleType(portName: String, compUseName: String, flow: String)
+	to
+		pCA: PIADL!ConnectionAccess (
+			elementName <- sPU.compUseName,
+			connectionName <- sPU.portName
+		)
+}
+
+-- #### Regras para Architecture #### --
+--Cria um Architecture a partir de um ArchitectureDef
+lazy rule lazyArchitectureDef2Architecture {
+	from
+		sAD: SYSADL!ArchitectureDef
+	to
+		pA: PIADL!Architecture (
+			name <- sAD.name.debug('Architecture: '),
+			compose <- thisModule.
+					lazyArchitectureDefConfiguration2CompositionBehaviorClause(sAD)
+		)
+}
+
+--Cria um behavior clause Composition, para usar com a arquitetura
+lazy rule lazyArchitectureDefConfiguration2CompositionBehaviorClause {
+	from
+		sADC: SYSADL!ArchitectureDef
+	to
+		pC: PIADL!Composition (
+			clause <- sADC.composite.components -> iterate(comp; comps:
+					OrderedSet(PIADL!ElementInstantiation) = OrderedSet{} | comps.
+					including(thisModule.lazyComponentUse2ElementInstantiation(comp))).
+					union(sADC.composite.connectors -> iterate(con; cons:
+					OrderedSet(PIADL!ElementInstantiation) = OrderedSet{} | cons.
+					including(thisModule.lazyConnectorUse2ElementInstantiation(con)))),
+			uc <- thisModule.lazyArchitectureDefConfiguration2UnificationClause(sADC)
+		)
+}
+
+-- Cria UnificationClause para Composition de Architecture
+lazy rule lazyArchitectureDefConfiguration2UnificationClause {
+	from
+		sADC: SYSADL!ArchitectureDef
+	to
+		pUC: PIADL!UnificationClause (
+			unifications <- sADC.composite.connectors -> iterate(con; cons:
+					OrderedSet(PIADL!Unification) = OrderedSet{} | if (con.definition.
+					composite.oclIsUndefined()) then
+						cons.including(thisModule.lazyFromConnectorUse2Unification(con)).including(thisModule.lazyToConnectorUse2Unification(con))
+					else
+						cons.union(con.bindings -> first().source.definition.ports ->
+								iterate(psc; depscs: OrderedSet(PIADL!Unification) =
+								OrderedSet{} | depscs.including(thisModule.
+								lazySourceConnectorComposite2Unification(con.bindings ->
+								first().getSourceUnificationCompositePort(psc))))).
+								union(con.bindings -> first().destination.definition.
+								ports -> iterate(pdc; depdcs:
+								OrderedSet(PIADL!Unification) = OrderedSet{} | depdcs.
+								including(thisModule.
+								lazyDestinationConnectorComposite2Unification(con.
+								bindings -> first().
+								getDestinationUnificationCompositePort(pdc)))))
+					endif)
+		)
+}
+
+
+--######### CORREÇÕES ##########--
+--comportamento dos conectores simples é conhecido: usar prefix (input prefix e output
+		-- prefix) em BehaviorClause
+--behavior is {
+--	via InA receive d: String
+--	via OutA send d
+--	behavior()
+--}
+
+--########## OBSERVAÇÕES ##########--
+-- Tipo void em SysADL é está como Natural, seria melhor AnyType? Anytype!
+-- Em delegations usei string self para reportar "portas" do proprio componente. self é
+		-- palavra reservada em PiADL, porem nada impede que haja uma variavel com esse
+		-- nome em SysADL. 
+-- Não foi possivel concatenar nome de portas compostas, por causa do problema de perder
+		-- a referencia e não há garantias que esse nome não irá coincidir com outros
+		-- nomes.
+-- Falta testar se as ligacoes de porta composta estão acontecendo em componente composto
+		-- (Feito, porém nenhum exemplo testa isso, mas funciona em Architecture).

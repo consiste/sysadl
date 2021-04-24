@@ -461,8 +461,8 @@ activity def StartMovingAC ( move : VehicleData) : (cmd : CommandToArm, destinat
 			ssm : SendStartMotorAN {
 				using pins: moveSSM : VehicleData;
 			}
-			delegate destination to sc 
-			delegate cmd to sd 
+			delegate destination to sd 
+			delegate cmd to sc 
 			delegate start to ssm
 			delegate move to moveSD 
 			delegate move to moveSC 
@@ -523,8 +523,9 @@ action def SendStartMotorAN ( move : VehicleData ) : CommandToMotor {
 			delegate destination to	Destinations 
 			flow from NotificationsMotor to statusMotor 
 			flow from Destinations to destination 
-			delegate inLocation to location1 delegate
-			outLocation to scl delegate inLocation to location1 
+			delegate inLocation to location1 
+			delegate outLocation to scl 
+			delegate inLocation to location1 
 			delegate stopMotor to sm 
 			delegate passed to pm 
 			flow from cs to comparisonResultPM

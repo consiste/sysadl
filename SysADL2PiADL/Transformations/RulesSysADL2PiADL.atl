@@ -209,9 +209,7 @@ helper context SYSADL!Delegation def:
 		
 		
 -- WIP
---Tuple 	String(Component Nome) -> ActivityDef
---Tuple 	String(ActivityDef Nome) -> Ordered Set (ActionDef)
---Tuple 	String(ActionDef Nome) -> Ordered Set (ContraintDef)
+
 
 -- variavel global XXXXX com mapeamento ActivityDef
 helper def: actityDefs: Map(String, SysADL!ActivityDef) =
@@ -247,10 +245,6 @@ rule Model2ArchitectureDescription {
 				oclIsTypeOf(SYSADL!ArchitectureDef));
 		archDefs: OrderedSet(SYSADL!ArchitectureDef) = SYSADL!ArchitectureDef.
 				allInstances();
-		-- WIP (Como tornar visivel em thisModule.lazyComponentDef2Component(comp)?????)
-		--ActDefs: OrderedSet(SYSADL!ActivityDef) = SYSADL!ActivityDef.allInstances().debug();
-		--AnDefs: OrderedSet(SYSADL!ActionDef) = SYSADL!ActionDef.allInstances().debug();
-		--ConstDefs: OrderedSet(SYSADL!ConstraintDef) = SYSADL!ConstraintDef.allInstances().debug();
 	}
 	to
 		pArch: PIADL!ArchitectureDescription (
@@ -672,14 +666,44 @@ lazy rule lazyComponentDef2BehaviorDeclaration {
 	from
 		sCD: SYSADL!ComponentDef
 	using {		
-		activityDef: SYSADL!ActivityDef = SYSADL!ActivityDef.allInstances() -> select(a | a.name.substring(1, a.name.size()-2) = sCD.name) -> first();	
+		activityDef: SYSADL!ActivityDef = SYSADL!ActivityDef.allInstances() -> select(a | a.name.substring(1, a.name.size()-2) = sCD.name) -> first();
+		actDefParamIn: Sequence(String)= activityDef.inParameters-> 
+			iterate(pimIn; pins: Sequence(String) = Sequence {} | pins.including(pimIn.name));
+		actDefParamOut: Sequence(String)= activityDef.outParameters-> 
+			iterate(pimOut; pins: Sequence(String) = Sequence {} | pins.including(pimOut.name));
+		actDefFlows: Sequence(SYSADL!ActivityFlow)= activityDef.body.flows-> 
+			iterate(flow;flowsSourceNames: Sequence(SYSADL!ActivityFlow) = Sequence {} | 
+				if (flow.oclIsTypeOf(SYSADL!ActivityFlow) and not flow.source.oclIsKindOf(SYSADL!DataObject)) then
+					flowsSourceNames.including(flow.target.name).debug()
+				else	
+					flowsSourceNames
+				endif
+			);
 	}
 	to
 		pBD: PIADL!BehaviorDeclaration (
 			
-			body <- activityDef.body.actions -> iterate(action; actions:
-					OrderedSet(PIADL!BehaviorClause) = OrderedSet{} | actions.
-					including(thisModule.lazyActionUse2FunctionDeclaration(action)))
+			body <- activityDef.body.actions -> iterate(action; funcs:
+					OrderedSet(PIADL!BehaviorClause) = OrderedSet{} | funcs.
+					including(thisModule.lazyActionUse2FunctionDeclaration(action))).union(
+							activityDef.body.flows -> iterate(delI; prefixes:
+								OrderedSet(PIADL!BehaviorClause) = OrderedSet{} | prefixes.
+									including(
+										if(delI.oclIsTypeOf(SYSADL!ActivityDelegation) and not delI.target.oclIsKindOf(SYSADL!DataObject))then
+											if(actDefParamIn.includes(delI.source.name))then --AKI VERIFICAR TESTE NAO FUNCIONANDO
+												thisModule.lazyActivityRelation2InputPrefix(delI)
+											else 
+												if (not actDefFlows.includes(delI.target.pinIn->first().definition.name)) then
+													thisModule.lazyActivityRelation2OutputPrefix(delI)
+												else
+													prefixes
+												endif
+											endif
+										else 
+											prefixes
+										endif	
+									)
+							))
 		)
 }
 
@@ -703,131 +727,135 @@ lazy rule lazyActionUse2FunctionDeclaration {
 	}
 	to
 		pFD: PIADL!FunctionDeclaration (
-			functionName <- sAU.definition.name.debug(),
+			functionName <- sAU.definition.name.debug('Function Name: '),
 			parameters <- sAU.pinIn -> iterate(pin; parameters:
 					OrderedSet(PIADL!Parameter) = OrderedSet{} | parameters.
 					including(thisModule.lazyPin2Parameter(pin))),
 			returnType <- thisModule.lazyString2TypeRef(actionDef.returnType.name),
 			block <- constraintsDefPosC-> iterate(posc; equations: Sequence(PIADL!BehaviorClause) = Sequence{}|
-				equations.including(thisModule.lazyExpression2BehaviorClause(posc.equation))
+				--equations.including(thisModule.lazyExpression2BehaviorClause(posc.equation))
+				equations.including(thisModule.lazyConstraintDef2BehaviorClause(posc))
+			)
+		)
+}
+
+--WIP
+-- Criar InputPrefix a partir do flow entre Activity e action
+lazy rule lazyActivityRelation2InputPrefix {
+	from
+		sAR: SYSADL!ActivityRelation
+	to
+		pIP: PIADL!InputPrefix (
+			connectionName <- sAR.target.name,
+			parameter <- thisModule.lazyPin2Parameter(sAR.target)
+		)
+}
+
+--WIP
+-- Criar InputPrefix a partir do flow entre Activity e action
+lazy rule lazyActivityRelationFlow2InputPrefix {
+	from
+		sAR: SYSADL!ActivityRelation
+	to
+		pIP: PIADL!InputPrefix (
+			connectionName <- sAR.source.name.debug,
+			parameter <- thisModule.lazyPin2Parameter(sAR.target)
+		)
+}
+
+--WIP
+-- Criar OutputPrefix a partir do flow entre Activity e action
+lazy rule lazyActivityRelation2OutputPrefix {
+	from
+		sAR: SYSADL!ActivityRelation
+	to
+		pOP: PIADL!OutputPrefix (
+			connectionName <- sAR.source.name.debug('connectionName:    '),
+			value <- thisModule.lazyActiveRelation2FunctionCall(sAR) 
+		)
+}
+
+--WIP
+-- Criar Parameter a partir de Pin
+lazy rule lazyPin2Parameter {
+	from
+		sP: SYSADL!Pin
+	to
+		pP: PIADL!Parameter (
+			name <- sP.name,
+			type <- thisModule.lazyString2TypeRef(sP.definition.name)
+		)
+}
+
+--WIP FUNCIONANDO MAS VOU TENTAR MUDAR ABAIXO
+-- Criar FunctionCall a partir de ActiveFlowable
+lazy rule lazyActiveRelation2FunctionCallTEMP {
+	from
+		sAR: SYSADL!ActiveRelation
+	to
+		pFC: PIADL!FunctionCall (
+			functionName <- sAR.target.definition.name,
+			params <- sAR.target.pinIn -> iterate(pin; parameters:
+					OrderedSet(PIADL!VariableRef) = OrderedSet{} | parameters.
+					including(thisModule.lazyPin2VariableRef(pin))
+			)
+		)
+}
+
+--WIP
+-- Criar FunctionCall a partir de ActiveFlowable
+lazy rule lazyActiveRelation2FunctionCall {
+	from
+		sAR: SYSADL!ActiveRelation
+	to
+		pFC: PIADL!FunctionCall (
+			functionName <- sAR.target.definition.name,
+			params <- sAR.target.pinIn -> iterate(pin; parameters:
+					OrderedSet(PIADL!VariableRef) = OrderedSet{} |
+					if(true) then
+						parameters.including(thisModule.lazyPin2VariableRef(pin.debug('PIN PARAMETRO:')))
+					else
+						parameters.including(thisModule.lazyPin2VariableRef(pin))
+					endif
 			)
 		)
 }
 
 
 --WIP
--- Transforma Equation em Return
-lazy rule lazyExpression2BehaviorClause {
-	from
-		sE: SYSADL!Expression
-	using{
-		exp: SYSADL!Expression = sE.debug('expressao: ');	
-	}
-	to
-		pR: PIADL!Return (	
-			expr <- if(sE.oclIsTypeOf(SYSADL!ConditionalTestExpression))then
-						thisModule.lazyConditionalTestExpression2IfThenElse(sE)
-					else
-						if(sE.oclIsTypeOf(SYSADL!ConditionalLogicalExpression))then
-							thisModule.lazyConditionalLogicalExpression2IfThenElse(sE)
-						else
-							if(sE.oclIsTypeOf(SYSADL!LogicalExpression))then
-								thisModule.lazyLogicalExpression2LogicalExpression(sE)
-							else 
-								if(sE.oclIsTypeOf(SYSADL!EqualityExpression))then
-									thisModule.lazyEqualityExpression2LogicalExpression(sE)
-								else
-									if(sE.oclIsUndefined()=false)then
-										thisModule.lazyExpression2StringLiteral(sE.v)
-									else
-										PIADL!Expression -- OclUndefined
-									endif
-								endif
-							endif
-						endif
-					endif
-		)
-}
-
---WIP
--- Transforma Equality Expression em Logical Expression 
-lazy rule lazyEqualityExpression2LogicalExpression {
-	from
-		sE: SYSADL!EqualityExpression
-	to
-		pITE: PIADL!LogicalExpression (	
-			op <- '=',
-			left <- thisModule.lazyExpression2BehaviorClause(sE.op1),
-			right <- thisModule.lazyExpression2BehaviorClause(sE.op2)
-			--elseSt <- thisModule.lazyExpression2BehaviorClause(sE.op3)
-		)
-}
-
---WIP
--- Transforma Logical Expression em Logical Expression 
-lazy rule lazyLogicalExpression2LogicalExpression {
-	from
-		sE: SYSADL!LogicalExpression
-	to
-		pITE: PIADL!LogicalExpression (	
-			op <- sE.operator,
-			left <- thisModule.lazyExpression2BehaviorClause(sE.op1),
-			right <- thisModule.lazyExpression2BehaviorClause(sE.op2)
-			--elseSt <- thisModule.lazyExpression2BehaviorClause(sE.op3)
-		)
-}
-
---WIP
--- Transforma Conditional Logical Expression em IfThenElse
-lazy rule lazyConditionalLogicalExpression2IfThenElse {
-	from
-		sE: SYSADL!ConditionalTestExpression
-	to
-		pITE: PIADL!IfThenElse (	
-			expression <- thisModule.lazyExpression2BehaviorClause(sE.op1),
-			ifBlock <- thisModule.lazyExpression2BehaviorClause(sE.op2)
-			--elseSt <- thisModule.lazyExpression2BehaviorClause(sE.op3)
-		)
-}
-
---WIP
--- Transforma Conditional Test Expression em IfThenElse
-lazy rule lazyConditionalTestExpression2IfThenElse {
-	from
-		sE: SYSADL!ConditionalTestExpression
-	to
-		pITE: PIADL!IfThenElse (	
-			expression <- thisModule.lazyExpression2BehaviorClause(sE.op1),
-			ifBlock <- thisModule.lazyExpression2BehaviorClause(sE.op2),
-			elseSt <- thisModule.lazyExpression2BehaviorClause(sE.op3)
-		)
-}
-
---WIP
--- Transforma demais tipos de Expression em StringLiteral
-lazy rule lazyExpression2StringLiteral {
-	from
-		sE: SYSADL!Expression
-	to
-		pSL: PIADL!StringLiteral (	
-			
-		)
-}
-
-
---WIP
--- Transforma Pins de entrada em Parameters
-lazy rule lazyPin2Parameter {
+-- Transforma Pin em VariableRef (parametro de entrada de uma FunctionCall)
+lazy rule lazyPin2VariableRef {
 	from
 		sP: SYSADL!Pin
 	to
-		pBD: PIADL!Parameter (
-			name <-  sP.name, 
-			type <- thisModule.lazyString2TypeRef(sP.definition.name)
+		pVR: PIADL!VariableRef (	
+			variable <- sP.name
 		)
 }
 
+--WIP
+-- Transforma Equation em Return
+lazy rule lazyConstraintDef2BehaviorClause {
+	from
+		sCD: SYSADL!ConstraintDef
+	to
+		pR: PIADL!Return (	
+			--expr <- thisModule.Expression2StringLiteral(sE)
+			expr <- thisModule.Pin2StringLiteral(sCD.outParameters->first())
+		)
+}
 
+--WIP
+-- Transforma Pin em String para o Return
+	lazy rule Pin2StringLiteral{
+	from
+		sP: SYSADL!Pin
+	to
+		pSL: PIADL!StringLiteral (	
+			--value <- thisModule.lazyString2TypeRef(sP.name).toString().debug('retorno: ')
+			value <- '0'
+		)
+}
 
 -- Cria um BehaviorDeclaration para usar em componentes compostos
 lazy rule lazyComponentDefConfiguration2CompositionBehaviorDeclaration {

@@ -489,8 +489,10 @@ action def SendStartMotorAN ( move : VehicleData ) : CommandToMotor {
 			nsm : NotifySupervisoryFromMotorAN {
 				using pins: statusMotor : NotificationFromMotor;
 			}
-			delegate outStatusMotor to nagvm delegate ack to nsm delegate inStatusMotor
-			to statusMotor delegate inStatusMotor to statusMotor
+			delegate outStatusMotor to nagvm 
+			delegate ack to nsm 
+			delegate inStatusMotor to statusMotor 
+			delegate inStatusMotor to statusMotor
 		}
 	}
 	action def NotifyAGVFromMotorAN ( statusMotor : NotificationFromMotor ) : NotificationFromMotor {
@@ -523,7 +525,7 @@ action def SendStartMotorAN ( move : VehicleData ) : CommandToMotor {
 			delegate destination to	Destinations 
 			flow from NotificationsMotor to statusMotor 
 			flow from Destinations to destination 
-			delegate inLocation to location1 
+			delegate inLocation to location1
 			delegate outLocation to scl 
 			delegate inLocation to location1 
 			delegate stopMotor to sm 

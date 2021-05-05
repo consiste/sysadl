@@ -674,11 +674,19 @@ lazy rule lazyComponentDef2BehaviorDeclaration {
 		actDefFlows: Sequence(SYSADL!ActivityFlow)= activityDef.body.flows-> 
 			iterate(flow;flowsSourceNames: Sequence(SYSADL!ActivityFlow) = Sequence {} | 
 				if (flow.oclIsTypeOf(SYSADL!ActivityFlow) and not flow.source.oclIsKindOf(SYSADL!DataObject)) then
-					flowsSourceNames.including(flow.target.name).debug()
+					flowsSourceNames.including(flow)
 				else	
 					flowsSourceNames
 				endif
 			);
+		actionDefs: Sequence(SYSADL!ActionDef) = activityDef.body.actions->
+			iterate(actUse;actDefs: Sequence(SYSADL!ActionDef) = Sequence{}|
+				actDefs.including(actUse.definition)
+			);
+		mapActionPinIn: Map(String, SYSADL!ActionDef) = actDefFlows->
+			iterate(actDefF;pinInsM: Map(String, SYSADL!ActionDef) = Map{}|
+				pinInsM.including(actDefF.target.name, actDefF.source.definition)
+		);
 	}
 	to
 		pBD: PIADL!BehaviorDeclaration (
@@ -690,14 +698,16 @@ lazy rule lazyComponentDef2BehaviorDeclaration {
 								OrderedSet(PIADL!BehaviorClause) = OrderedSet{} | prefixes.
 									including(
 										if(delI.oclIsTypeOf(SYSADL!ActivityDelegation) and not delI.target.oclIsKindOf(SYSADL!DataObject))then
-											if(actDefParamIn.includes(delI.source.name))then --AKI VERIFICAR TESTE NAO FUNCIONANDO
+											if(actDefParamIn.includes(delI.source.name))then 
 												thisModule.lazyActivityRelation2InputPrefix(delI)
 											else 
-												if (not actDefFlows.includes(delI.target.pinIn->first().definition.name)) then
-													thisModule.lazyActivityRelation2OutputPrefix(delI)
-												else
-													prefixes
-												endif
+												--if (delI.target.pinIn) then
+													let tuple: TupleType(activityD: SYSADL!ActivityDef, actionD: SYSADL!ActivityDelegation) = Tuple{activityD = activityDef, actionD = delI} 
+														in
+															thisModule.lazyActivityRelationTuple2OutputPrefix(tuple)
+												--else
+												--	thisModule.lazyActivityRelation2OutputPrefix(delI.debug('NO___ACTIONUSE!!!!'))
+												--endif
 											endif
 										else 
 											prefixes
@@ -727,7 +737,7 @@ lazy rule lazyActionUse2FunctionDeclaration {
 	}
 	to
 		pFD: PIADL!FunctionDeclaration (
-			functionName <- sAU.definition.name.debug('Function Name: '),
+			functionName <- sAU.definition.name,
 			parameters <- sAU.pinIn -> iterate(pin; parameters:
 					OrderedSet(PIADL!Parameter) = OrderedSet{} | parameters.
 					including(thisModule.lazyPin2Parameter(pin))),
@@ -746,7 +756,7 @@ lazy rule lazyActivityRelation2InputPrefix {
 		sAR: SYSADL!ActivityRelation
 	to
 		pIP: PIADL!InputPrefix (
-			connectionName <- sAR.target.name,
+			connectionName <- sAR.source.name,--target.name?
 			parameter <- thisModule.lazyPin2Parameter(sAR.target)
 		)
 }
@@ -764,16 +774,75 @@ lazy rule lazyActivityRelationFlow2InputPrefix {
 }
 
 --WIP
--- Criar OutputPrefix a partir do flow entre Activity e action
-lazy rule lazyActivityRelation2OutputPrefix {
+-- Criar OutputPrefix a partir uma tupla Activity e action
+lazy rule lazyActivityRelationTuple2OutputPrefix {
 	from
-		sAR: SYSADL!ActivityRelation
+		sART: TupleType(activityD: SYSADL!ActivityDef, actionD: SYSADL!ActivityDelegation)
 	to
 		pOP: PIADL!OutputPrefix (
-			connectionName <- sAR.source.name.debug('connectionName:    '),
-			value <- thisModule.lazyActiveRelation2FunctionCall(sAR) 
+			connectionName <- sART.actionD.source.name,
+			value <- thisModule.lazyActiveRelationTuple2FunctionCall(sART) 
 		)
 }
+
+--WIP
+-- Criar FunctionCall a partir de ActiveFlowable Tuple
+lazy rule lazyActiveRelationTuple2FunctionCall {
+	from
+		sART: TupleType(activityD: SYSADL!ActivityDef, actionD: SYSADL!ActivityDelegation)
+	using{
+		--activityDef: SYSADL!ActivityDef = SYSADL!ActivityDef.allInstances() -> select(a | a.name.substring(1, a.name.size()-2) = sART.activityD.name) -> first();
+		--actDefParamIn: Sequence(String)= activityDef.inParameters-> 
+		--	iterate(pimIn; pins: Sequence(String) = Sequence {} | pins.including(pimIn.name));
+		--actDefParamOut: Sequence(String)= activityDef.outParameters-> 
+		--	iterate(pimOut; pins: Sequence(String) = Sequence {} | pins.including(pimOut.name));
+		actDefFlows: Sequence(SYSADL!ActivityFlow)= sART.activityD.body.flows-> 
+			iterate(flow;flowsSourceNames: Sequence(SYSADL!ActivityFlow) = Sequence {} | 
+				if (flow.oclIsTypeOf(SYSADL!ActivityFlow) and not flow.source.oclIsKindOf(SYSADL!DataObject)) then
+					flowsSourceNames.including(flow)
+				else	
+					flowsSourceNames
+				endif
+			);
+		actionDefs: Sequence(SYSADL!ActionDef) = sART.activityD.body.actions->
+			iterate(actUse;actDefs: Sequence(SYSADL!ActionDef) = Sequence{}|
+				actDefs.including(actUse.definition)
+			);
+		mapActionPinIn: Map(String, SYSADL!ActionDef) = actDefFlows->
+			iterate(actDefF;pinInsM: Map(String, SYSADL!ActionDef) = Map{}|
+				pinInsM.including(actDefF.target.name, actDefF.source.definition)
+		);		
+	}
+	to
+		pFC: PIADL!FunctionCall (
+			functionName <- sART.actionD.target.definition.name,
+			
+			--Fazer um teste pra saber o parametro dessa functioncall abaixo
+			params <-  
+			
+			sART.actionD.target.pinIn -> iterate(pin; parameters:
+					OrderedSet(PIADL!VariableRef) = OrderedSet{} |
+						if(mapActionPinIn.getKeys().includes(pin.name))then
+							parameters.including(thisModule.lazyActionDef2FunctionCall(mapActionPinIn.get(pin.name)))
+						else
+							parameters.including(thisModule.lazyPin2VariableRef(pin.debug('ELSE')))
+						endif
+			)
+		)
+}
+
+
+--WIP PROVAVELMENTE EXCLUIDA PELA REGRA ACIMA
+-- Criar OutputPrefix a partir do flow entre Activity e action
+--lazy rule lazyActivityRelation2OutputPrefix {
+--	from
+--		sAR: SYSADL!ActivityRelation
+--	to
+--		pOP: PIADL!OutputPrefix (
+--			connectionName <- sAR.source.name,
+--			value <- thisModule.lazyActiveRelation2FunctionCall(sAR) 
+--		)
+--}
 
 --WIP
 -- Criar Parameter a partir de Pin
@@ -787,36 +856,17 @@ lazy rule lazyPin2Parameter {
 		)
 }
 
---WIP FUNCIONANDO MAS VOU TENTAR MUDAR ABAIXO
--- Criar FunctionCall a partir de ActiveFlowable
-lazy rule lazyActiveRelation2FunctionCallTEMP {
-	from
-		sAR: SYSADL!ActiveRelation
-	to
-		pFC: PIADL!FunctionCall (
-			functionName <- sAR.target.definition.name,
-			params <- sAR.target.pinIn -> iterate(pin; parameters:
-					OrderedSet(PIADL!VariableRef) = OrderedSet{} | parameters.
-					including(thisModule.lazyPin2VariableRef(pin))
-			)
-		)
-}
-
 --WIP
 -- Criar FunctionCall a partir de ActiveFlowable
-lazy rule lazyActiveRelation2FunctionCall {
+lazy rule lazyActionDef2FunctionCall {
 	from
-		sAR: SYSADL!ActiveRelation
+		sAD: SYSADL!ActionDef
 	to
 		pFC: PIADL!FunctionCall (
-			functionName <- sAR.target.definition.name,
-			params <- sAR.target.pinIn -> iterate(pin; parameters:
+			functionName <- sAD.name,
+			params <- sAD.inParameters -> iterate(pin; parameters:
 					OrderedSet(PIADL!VariableRef) = OrderedSet{} |
-					if(true) then
-						parameters.including(thisModule.lazyPin2VariableRef(pin.debug('PIN PARAMETRO:')))
-					else
 						parameters.including(thisModule.lazyPin2VariableRef(pin))
-					endif
 			)
 		)
 }

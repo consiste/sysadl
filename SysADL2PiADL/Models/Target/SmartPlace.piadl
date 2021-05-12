@@ -1494,7 +1494,70 @@
         <type xsi:type="piADL:TypeRef" idt="InfraredCode"/>
       </protocol>
     </protDecl>
-    <behavior/>
+    <behavior>
+      <body xsi:type="piADL:FunctionDeclaration" functionName="SaveLastPresenceAN">
+        <parameters name="presenceSlp">
+          <type xsi:type="piADL:TypeRef" idt="Int"/>
+        </parameters>
+        <parameters name="numPeopleSlp">
+          <type xsi:type="piADL:TypeRef" idt="Int"/>
+        </parameters>
+        <parameters name="currentTime">
+          <type xsi:type="piADL:TypeRef" idt="Schedule"/>
+        </parameters>
+        <returnType xsi:type="piADL:TypeRef" idt="Schedule"/>
+        <block xsi:type="piADL:Return">
+          <expr xsi:type="piADL:StringLiteral" value="0"/>
+        </block>
+      </body>
+      <body xsi:type="piADL:FunctionDeclaration" functionName="TurnOnAN">
+        <parameters name="reservationTon">
+          <type xsi:type="piADL:TypeRef" idt="Boolean"/>
+        </parameters>
+        <parameters name="presenceTon">
+          <type xsi:type="piADL:TypeRef" idt="Int"/>
+        </parameters>
+        <parameters name="numPeopleTon">
+          <type xsi:type="piADL:TypeRef" idt="Int"/>
+        </parameters>
+        <returnType xsi:type="piADL:TypeRef" idt="InfraredCode"/>
+        <block xsi:type="piADL:Return">
+          <expr xsi:type="piADL:StringLiteral" value="0"/>
+        </block>
+      </body>
+      <body xsi:type="piADL:InputPrefix" connectionName="presence">
+        <parameter name="presenceSlp">
+          <type xsi:type="piADL:TypeRef" idt="Int"/>
+        </parameter>
+      </body>
+      <body xsi:type="piADL:InputPrefix" connectionName="numPeople">
+        <parameter name="numPeopleSlp">
+          <type xsi:type="piADL:TypeRef" idt="Int"/>
+        </parameter>
+      </body>
+      <body xsi:type="piADL:InputPrefix" connectionName="reservation">
+        <parameter name="reservationTon">
+          <type xsi:type="piADL:TypeRef" idt="Boolean"/>
+        </parameter>
+      </body>
+      <body xsi:type="piADL:InputPrefix" connectionName="numPeople">
+        <parameter name="numPeopleTon">
+          <type xsi:type="piADL:TypeRef" idt="Int"/>
+        </parameter>
+      </body>
+      <body xsi:type="piADL:InputPrefix" connectionName="presence">
+        <parameter name="presenceTon">
+          <type xsi:type="piADL:TypeRef" idt="Int"/>
+        </parameter>
+      </body>
+      <body xsi:type="piADL:OutputPrefix" connectionName="cmd">
+        <value xsi:type="piADL:FunctionCall" functionName="TurnOnAN">
+          <params xsi:type="piADL:VariableRef" variable="reservationTon"/>
+          <params xsi:type="piADL:VariableRef" variable="presenceTon"/>
+          <params xsi:type="piADL:VariableRef" variable="numPeopleTon"/>
+        </value>
+      </body>
+    </behavior>
   </archElements>
   <archElements xsi:type="piADL:Component" name="SetTemperature">
     <typeDecl name="TypeSensor">

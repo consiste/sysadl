@@ -457,7 +457,7 @@ constraint WSDataAggregatorEQ ( t : LocalTemperature, h : Humidity, ap : AtmPres
 		equation = newWSData->t == (t + wsData->t) && newWSData->h == (h + wsData->h) && 
 		newWSData->p == (ap + wsData->p) && newWSData->ct == (wsData->ct + 1)
 	}
-activity def WeatherProcessingSubSystemARCH3AC ( ip1 : WeatherStation, ip2 : WeatherStation ) : ( tp : LocalTemperature, 
+activity def WeatherProcessingSubSystemARCH3AC ( ip1 : WeatherStation, ip2 : WeatherStation ) : ( tp : LocalTemperature,	 
 	hp : Humidity, ap : AtmPressure ) {
 		body {
 		actions : wpst : WeatherPS_TemperatureARCH3AN {
@@ -540,12 +540,9 @@ component def WatherStationCN_2 {
 	}
 }
 allocations {
-	activity WeatherProcessingSubSystemAC to
-	WeatherProcessingSubSystemCP activity
-	WeatherProcessingSubSystemARCH3AC to
-	WeatherProcessingSubSystemCP activity
-	WSDataAggregatorAC to WSDataAggregatorCP
-	activity WatherStationCN_2AC to
-	WatherStationCN_2
+	activity WeatherProcessingSubSystemAC to WeatherProcessingSubSystemCP 
+	//activity WeatherProcessingSubSystemARCH3AC to WeatherProcessingSubSystemCP 
+	activity WSDataAggregatorAC to WSDataAggregatorCP
+	activity WatherStationCN_2AC to WatherStationCN_2
 	
 }

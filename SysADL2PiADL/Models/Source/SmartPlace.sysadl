@@ -823,3 +823,9 @@ Requirement CheckRoomReservation ( 2.5 ) {
 	derive
 	SmartPlace.AirConditioningControl.TurnOn_TurnOff_AirConditioning.TurnOffAirConditioning;
 }
+
+allocations { 
+	//activity RaspberryControllerAC to ???
+	activity TemperatureControllerAC to TemperatureController 
+	//activity UpdateContextSensorsAC  to ???
+}	

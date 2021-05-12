@@ -96,4 +96,15 @@ package Components {
 	activity def ApplicationAC ( response : String ) { body { } } 
 	activity def ControllerAC ( request : String ) ( accelerometer : Real ) ( temperature : Real ) ( heartRate : Real ) : ( response : String ) { body { } } }
 
-	allocations { activity SensingAC to AccelerometerCP activity SensingAC to TemperatureSensorCP activity SensingAC to HeartRateSensorCP  activity ControllerAC to ControllerCP activity ApplicationAC to ApplicationCP }
+	allocations { 
+		activity SensingAC to AccelerometerCP //boundary... nao deveria existir! 
+		activity SensingAC to TemperatureSensorCP //boundary... nao deveria existir!
+		activity SensingAC to HeartRateSensorCP  //boundary... nao deveria existir!
+		activity ControllerAC to ControllerCP //body vazio
+		activity ApplicationAC to ApplicationCP //body vazio
+	}
+	
+	
+	
+	
+	

@@ -337,6 +337,10 @@ lazy rule lazyComponentDef2Component {
 				String, type: OrderedSet(TupleType(fieldName: String, fieldType:
 				String)))) = OrderedSet{} | dUses.union(thisModule.
 				setTypeDeclarations(dependence)));
+		
+		activityComp: OrderedSet(String) = SYSADL!ActivityAllocation.allInstances()-> iterate(alloc; actComps:
+				OrderedSet(String) = OrderedSet{} | actComps.including(alloc.target.name.debug('target component name: ')));
+
 	}
 	to
 		pC: PIADL!Component (
@@ -364,8 +368,11 @@ lazy rule lazyComponentDef2Component {
 					thisModule.lazyUnobservable2BehaviorDeclaration(PIADL!Unobservable)
 				else
 					if (sSC.composite.oclIsUndefined()) then
-						--WIP
-						thisModule.lazyComponentDef2BehaviorDeclaration(sSC)
+						if (activityComp.includes(sSC.name)) then
+							thisModule.lazyComponentDef2BehaviorDeclaration(sSC)
+						else
+							thisModule.lazyUnobservable2BehaviorDeclaration(PIADL!Unobservable)
+						endif
 					else
 						thisModule.lazyComponentDefConfiguration2CompositionBehaviorDeclaration(sSC)
 					endif
@@ -666,9 +673,10 @@ lazy rule lazyComponentDef2BehaviorDeclaration {
 	from
 		sCD: SYSADL!ComponentDef
 	using {		
-		activityDef: SYSADL!ActivityDef = SYSADL!ActivityDef.allInstances() -> select(a | a.name.substring(1, a.name.size()-2) = sCD.name) -> first();
+		
+		activityDef: SYSADL!ActivityDef = SYSADL!ActivityAllocation.allInstances() -> select (aa | aa.target.name.debug('aa.target= ') = sCD.name.debug('component name = '))->first().source;
 		actDefParamIn: Sequence(String)= activityDef.inParameters-> 
-			iterate(pimIn; pins: Sequence(String) = Sequence {} | pins.including(pimIn.name));
+			iterate(pimIn; pins: Sequence(String) = Sequence {} | pins.including(pimIn.name.debug('pinIN:')));
 		actDefParamOut: Sequence(String)= activityDef.outParameters-> 
 			iterate(pimOut; pins: Sequence(String) = Sequence {} | pins.including(pimOut.name));
 		actDefFlows: Sequence(SYSADL!ActivityFlow)= activityDef.body.flows-> 
@@ -701,13 +709,9 @@ lazy rule lazyComponentDef2BehaviorDeclaration {
 											if(actDefParamIn.includes(delI.source.name))then 
 												thisModule.lazyActivityRelation2InputPrefix(delI)
 											else 
-												--if (delI.target.pinIn) then
 													let tuple: TupleType(activityD: SYSADL!ActivityDef, actionD: SYSADL!ActivityDelegation) = Tuple{activityD = activityDef, actionD = delI} 
 														in
 															thisModule.lazyActivityRelationTuple2OutputPrefix(tuple)
-												--else
-												--	thisModule.lazyActivityRelation2OutputPrefix(delI.debug('NO___ACTIONUSE!!!!'))
-												--endif
 											endif
 										else 
 											prefixes

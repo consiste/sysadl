@@ -656,6 +656,7 @@ action def SendStartMotorAN ( move : VehicleData ) : CommandToMotor {
 			equation = s->destination == dest && s->location1 == loc && s->command == cmd
 		}
 }
+
 Requirement RequestMove ( 1.0 ) {
 	text = "The external Supervisory System sends a \"Move\" command to the AGV System requesting it to move to a factory station and load/unload a part."
 	satisfied by ComponentsAGV.SupervisorySystem;
@@ -724,3 +725,14 @@ Requirement ReceiveVehicleStatus ( 3.0 ) {
 	text = "The Display System must receive of AGV system the vehicle status."
 	satisfied by ComponentsAGV.DisplaySystem;
 }
+
+allocations { 
+	activity StartMovingAC to StartMoving 
+	activity NotifierMotorAC to NotifierMotor 
+	activity CheckStationAC to CheckStation  
+	activity ControlArmAC to ControlArm 
+	activity NotifierArmAC to NotifierArm
+	activity VehicleTimerAC to VehicleTimer
+}	
+
+

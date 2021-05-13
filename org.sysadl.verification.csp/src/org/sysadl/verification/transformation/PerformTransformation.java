@@ -1,6 +1,7 @@
 package org.sysadl.verification.transformation;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -8,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 
 import org.csp.translater.main.Generate;
 import org.csp.translater.query.AuxiliarsQuery;
@@ -66,9 +69,20 @@ public class PerformTransformation {
         List<String> arguments = new ArrayList<String>();
         AuxiliarsQuery query = new AuxiliarsQuery();
         ParserAnswerCSP parser = new ParserAnswerCSP();
+        JFrame progress = new JFrame();
+        JPanel panel = new JPanel();
+        JProgressBar checkpoint = new JProgressBar();
         if (query.CheckPortsAndPinsNames(model).startsWith("Sucess") && query.ExistEqualsNames(model).startsWith("Fail")) {		
 			try {
-				
+				int progressValue = 0;
+				checkpoint.setValue(progressValue);				
+				checkpoint.setStringPainted(true);
+				panel.add(checkpoint);
+				progress.add(panel);
+				progress.setSize(500, 100);
+				progress.setLocationRelativeTo(null);
+				progress.setVisible(true);
+				checkpoint.setString("Making file CSP ...");
 				Generate generator = new Generate(modelURI, folder, arguments);
 							
 	            generator.addPropertiesFile(file.getName());         
@@ -76,6 +90,8 @@ public class PerformTransformation {
 	            Session session = new Session();
 	            try {            	
 	            	session.loadFile(folder.getAbsolutePath() + "\\sysadl2csp.csp");
+	            	checkpoint.setValue(progressValue + 25);
+	            	checkpoint.setString("Verifying the Statements ...");
 	            	for (PrintStatement stm : session.printStatements()) {	            			            		
 	            		
 	            		String result = session.evaluateExpression(stm.expression(), null).result();	            			            		
@@ -99,6 +115,8 @@ public class PerformTransformation {
 	            		
 					
 					}
+	            	checkpoint.setValue(progressValue + 50);
+	            	checkpoint.setString("Verifying the assertions ...");
 	            	for (Assertion assertion : session.assertions()) {
 	    	            assertion.execute(null);    	
 	    	            mapAnwser.put(assertion.toString(), (assertion.passed() ? "Passed" : "Failed"));
@@ -122,7 +140,11 @@ public class PerformTransformation {
 			        System.out.println(error);
 			    }
 	
-			    fdr.libraryExit();				    
+			    fdr.libraryExit();	
+			    checkpoint.setValue(progressValue + 90);
+			    checkpoint.setString("Show the results ...");
+			    checkpoint.setValue(progressValue + 100);
+			    progress.setVisible(false);
 			    VerificationAnwserDialog dialog = new VerificationAnwserDialog(new JFrame(), "Results", mapAnwser, falseCase, false);
 			
 	            
@@ -153,7 +175,7 @@ public class PerformTransformation {
 		int cont =0;
 		EList<Pin> Inparans = constraintEQ.getInParameters();
 		EList<Pin> Outparans = constraintEQ.getOutParameters();
-		result += "InParameters: ";
+		result += "In: ";
 		for (Pin pin : Inparans) {
 			type = pin.getDefinition();
 			result += pin.getName() + "= ";
@@ -178,7 +200,7 @@ public class PerformTransformation {
 			result += "; ";
 		}
 		
-		result += "OutParameters: ";
+		result += "Out: ";
 		for (Pin pin : Outparans) {
 			type = pin.getDefinition();
 			result += pin.getName() + "= ";
@@ -332,20 +354,36 @@ public class PerformTransformation {
 
 	    // Describe the trace of the behaviour
 	    printIndent(out, indent); out.print("Trace: ");
+	    String trace = "";
 	    for (Long event : behaviour.trace())
 	    {
 	        // INVALIDEVENT indiciates that this machine did not perform an event at
 	        // the specified index (i.e. it was not synchronised with the machines
 	        // that actually did perform the event).
-	        if (event == fdr.INVALIDEVENT)
+	        if (event == fdr.INVALIDEVENT) {
 	            out.print("-, ");
-	        else
+	            trace += "-, ";
+	        }
+	        else {
 	            out.print(session.uncompileEvent(event).toString() + ", ");
+	            trace += session.uncompileEvent(event).toString() + ", ";
+	        }
+	            
 	    }
 	    out.println();
+	     
 
 	    // Describe any named states of the behaviour
 	    printIndent(out, indent); out.print("States: ");
+	    String path = System.getProperty("user.dir");
+	    try {
+    		FileWriter file = new FileWriter(path+"//trace");		
+			file.append(trace);
+			file.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	    for (Node node : behaviour.nodePath())
 	    {
 	        if (node == null)

@@ -61,7 +61,7 @@ public class Traceability implements IExternalJavaAction{
 		for (DDiagramElement node : ((DSemanticDiagramSpec)container).getOwnedDiagramElements() ) {
 			if (node instanceof DNodeContainerSpec) {
 				for (DDiagramElement nodeSpec : ((DNodeContainerSpec)node).getOwnedDiagramElements()) {
-					if(structures.contains(((DNodeSpec)nodeSpec).getName().replace("<<component>>", "").replace("[1..1]", "").trim())) {
+					if(structures.contains(((DNodeSpec)nodeSpec).getName().replace("<<component>>", "").replace("[1..1]", "").trim().split(":")[0])) {
 						Style style = ((DNodeSpec)nodeSpec).getStyle();	
 						style.getCustomFeatures().clear();
 						((Square)style).setBorderColor(RGBValues.create(255, 0, 0));
@@ -142,8 +142,13 @@ public class Traceability implements IExternalJavaAction{
 			Scanner in = new Scanner(file);
 			while (in.hasNextLine()) {
 			    String line = in.nextLine();
-			    System.out.println(line);
-			    structures.add(line);
+			    line = line.replaceAll("-,", "");
+			    String[] lines = line.split(",");
+			    for (int i = 0; i < lines.length; i++) {
+			    	String comp = lines[i].split("_")[0];
+			    	structures.add(comp.trim());
+				}			    
+			    
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

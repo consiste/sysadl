@@ -26,11 +26,11 @@
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.BDD']"/>
         <target xmi:type="sysadl:Package" href="My.sysadl#//@packages[name='Components']"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_vpNKoJtZEeqYK-IPB1YhQg" name="Internal Block Diagram (Structural IBD)" repPath="#_vmjfQJtZEeqYK-IPB1YhQg" changeId="7fcfbca5-58ec-4d41-9e67-48b4cedcc6f5">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_vpNKoJtZEeqYK-IPB1YhQg" name="Internal Block Diagram (Structural IBD)" repPath="#_vmjfQJtZEeqYK-IPB1YhQg" changeId="d7b42428-9cc4-4a16-8950-0a8cd5c99372">
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']"/>
         <target xmi:type="sysadl:Configuration" href="My.sysadl#//@packages[name='Components']/@definitions[name='RTCSystemCFD']/@composite"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_MhLAECqXEeuy_YpTocGAGQ" name="Internal Block Diagram (Structural IBD)" repPath="#_Mg2P8CqXEeuy_YpTocGAGQ" changeId="13159937-55fa-4b06-b300-85d699c94df1">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_MhLAECqXEeuy_YpTocGAGQ" name="Internal Block Diagram (Structural IBD)" repPath="#_Mg2P8CqXEeuy_YpTocGAGQ" changeId="e031be08-28e8-49c3-b859-8910b6d34874">
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']"/>
         <target xmi:type="sysadl:Configuration" href="My.sysadl#//@packages[name='Components']/@definitions[name='RoomTemperatureControllerCP']/@composite"/>
       </ownedRepresentationDescriptors>
@@ -4520,7 +4520,7 @@
         <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
         <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
         <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
-        <ownedStyle xmi:type="diagram:Square" uid="_vnXXkJtZEeqYK-IPB1YhQg" showIcon="false" iconPath="/org.sysadl.viewpoints/icons/ComponentUse.gif" borderSize="2" borderSizeComputationExpression="2" borderColor="255,0,0" labelPosition="node" width="15" height="7" color="126,177,254">
+        <ownedStyle xmi:type="diagram:Square" uid="_vnXXkJtZEeqYK-IPB1YhQg" showIcon="false" iconPath="/org.sysadl.viewpoints/icons/ComponentUse.gif" borderSizeComputationExpression="2" borderColor="255,0,0" labelPosition="node" width="15" height="7" color="126,177,254">
           <customFeatures>borderColor</customFeatures>
           <customFeatures>borderLineStyle</customFeatures>
           <customFeatures>borderSizeComputationExpression</customFeatures>
@@ -4546,7 +4546,7 @@
         <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
         <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
         <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
-        <ownedStyle xmi:type="diagram:Square" uid="_vnaa4JtZEeqYK-IPB1YhQg" showIcon="false" iconPath="/org.sysadl.viewpoints/icons/ComponentUse.gif" borderSize="2" borderSizeComputationExpression="2" borderColor="255,0,0" labelPosition="node" width="15" height="7" color="126,177,254">
+        <ownedStyle xmi:type="diagram:Square" uid="_vnaa4JtZEeqYK-IPB1YhQg" showIcon="false" iconPath="/org.sysadl.viewpoints/icons/ComponentUse.gif" borderSizeComputationExpression="2" borderColor="255,0,0" labelPosition="node" width="15" height="7" color="126,177,254">
           <customFeatures>borderColor</customFeatures>
           <customFeatures>borderLineStyle</customFeatures>
           <customFeatures>borderSizeComputationExpression</customFeatures>
@@ -4571,7 +4571,7 @@
         <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
         <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
         <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
-        <ownedStyle xmi:type="diagram:Square" uid="_vnbB8JtZEeqYK-IPB1YhQg" showIcon="false" iconPath="/org.sysadl.viewpoints/icons/ComponentUse.gif" borderSize="2" borderSizeComputationExpression="2" borderColor="255,0,0" labelPosition="node" width="15" height="7" color="126,177,254">
+        <ownedStyle xmi:type="diagram:Square" uid="_vnbB8JtZEeqYK-IPB1YhQg" showIcon="false" iconPath="/org.sysadl.viewpoints/icons/ComponentUse.gif" borderSizeComputationExpression="2" borderColor="255,0,0" labelPosition="node" width="15" height="7" color="126,177,254">
           <customFeatures>borderColor</customFeatures>
           <customFeatures>borderLineStyle</customFeatures>
           <customFeatures>borderSizeComputationExpression</customFeatures>
@@ -4596,7 +4596,7 @@
         <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
         <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
         <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
-        <ownedStyle xmi:type="diagram:Square" uid="_vnbpAJtZEeqYK-IPB1YhQg" showIcon="false" iconPath="/org.sysadl.viewpoints/icons/ComponentUse.gif" borderSize="2" borderSizeComputationExpression="2" borderColor="255,0,0" labelPosition="node" width="15" height="7" color="126,177,254">
+        <ownedStyle xmi:type="diagram:Square" uid="_vnbpAJtZEeqYK-IPB1YhQg" showIcon="false" iconPath="/org.sysadl.viewpoints/icons/ComponentUse.gif" borderSizeComputationExpression="2" borderColor="255,0,0" labelPosition="node" width="15" height="7" color="126,177,254">
           <customFeatures>borderColor</customFeatures>
           <customFeatures>borderLineStyle</customFeatures>
           <customFeatures>borderSizeComputationExpression</customFeatures>
@@ -4621,10 +4621,7 @@
         <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
         <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
         <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
-        <ownedStyle xmi:type="diagram:Square" uid="_vndeMJtZEeqYK-IPB1YhQg" showIcon="false" iconPath="/org.sysadl.viewpoints/icons/ComponentUse.gif" borderSize="2" borderSizeComputationExpression="2" borderColor="255,0,0" labelPosition="node" width="15" height="7" color="126,177,254">
-          <customFeatures>borderColor</customFeatures>
-          <customFeatures>borderLineStyle</customFeatures>
-          <customFeatures>borderSizeComputationExpression</customFeatures>
+        <ownedStyle xmi:type="diagram:Square" uid="_vndeMJtZEeqYK-IPB1YhQg" showIcon="false" iconPath="/org.sysadl.viewpoints/icons/ComponentUse.gif" labelPosition="node" width="15" height="7" color="126,177,254">
           <description xmi:type="style:SquareDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@subNodeMappings[name='IBD.Component%20']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@subNodeMappings[name='IBD.Component%20']"/>
@@ -4646,10 +4643,7 @@
         <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
         <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
         <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
-        <ownedStyle xmi:type="diagram:Square" uid="_vnfTYJtZEeqYK-IPB1YhQg" showIcon="false" iconPath="/org.sysadl.viewpoints/icons/ComponentUse.gif" borderSize="2" borderSizeComputationExpression="2" borderColor="255,0,0" labelPosition="node" width="15" height="7" color="126,177,254">
-          <customFeatures>borderColor</customFeatures>
-          <customFeatures>borderLineStyle</customFeatures>
-          <customFeatures>borderSizeComputationExpression</customFeatures>
+        <ownedStyle xmi:type="diagram:Square" uid="_vnfTYJtZEeqYK-IPB1YhQg" showIcon="false" iconPath="/org.sysadl.viewpoints/icons/ComponentUse.gif" labelPosition="node" width="15" height="7" color="126,177,254">
           <description xmi:type="style:SquareDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@subNodeMappings[name='IBD.Component%20']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@subNodeMappings[name='IBD.Component%20']"/>
@@ -4723,10 +4717,7 @@
           </ownedStyle>
           <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@subNodeMappings[name='IBD.Component%20']/@borderedNodeMappings[name='IBD.Component.PortUse']"/>
         </ownedBorderedNodes>
-        <ownedStyle xmi:type="diagram:Square" uid="_vnf6cJtZEeqYK-IPB1YhQg" showIcon="false" iconPath="/org.sysadl.viewpoints/icons/ComponentUse.gif" borderSize="2" borderSizeComputationExpression="2" borderColor="255,0,0" labelPosition="node" width="15" height="7" color="126,177,254">
-          <customFeatures>borderColor</customFeatures>
-          <customFeatures>borderLineStyle</customFeatures>
-          <customFeatures>borderSizeComputationExpression</customFeatures>
+        <ownedStyle xmi:type="diagram:Square" uid="_vnf6cJtZEeqYK-IPB1YhQg" showIcon="false" iconPath="/org.sysadl.viewpoints/icons/ComponentUse.gif" labelPosition="node" width="15" height="7" color="126,177,254">
           <description xmi:type="style:SquareDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@subNodeMappings[name='IBD.Component%20']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@subNodeMappings[name='IBD.Component%20']"/>
@@ -4736,7 +4727,6 @@
       <target xmi:type="sysadl:ConnectorUse" href="My.sysadl#//@packages[name='Components']/@definitions[name='RTCSystemCFD']/@composite/@connectors[name='c1']"/>
       <semanticElements xmi:type="sysadl:ConnectorUse" href="My.sysadl#//@packages[name='Components']/@definitions[name='RTCSystemCFD']/@composite/@connectors[name='c1']"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_vomGoJtZEeqYK-IPB1YhQg" size="2">
-        <customFeatures>strokeColor</customFeatures>
         <description xmi:type="style:EdgeStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@edgeMappings[name='IBD.Connectors']/@style"/>
         <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_vomGoZtZEeqYK-IPB1YhQg" showIcon="false"/>
       </ownedStyle>
@@ -4746,7 +4736,6 @@
       <target xmi:type="sysadl:ConnectorUse" href="My.sysadl#//@packages[name='Components']/@definitions[name='RTCSystemCFD']/@composite/@connectors[name='uc']"/>
       <semanticElements xmi:type="sysadl:ConnectorUse" href="My.sysadl#//@packages[name='Components']/@definitions[name='RTCSystemCFD']/@composite/@connectors[name='uc']"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_vowesZtZEeqYK-IPB1YhQg" size="2">
-        <customFeatures>strokeColor</customFeatures>
         <description xmi:type="style:EdgeStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@edgeMappings[name='IBD.Connectors']/@style"/>
         <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_vowesptZEeqYK-IPB1YhQg" showIcon="false"/>
       </ownedStyle>
@@ -4756,7 +4745,6 @@
       <target xmi:type="sysadl:ConnectorUse" href="My.sysadl#//@packages[name='Components']/@definitions[name='RTCSystemCFD']/@composite/@connectors[name='cc2']"/>
       <semanticElements xmi:type="sysadl:ConnectorUse" href="My.sysadl#//@packages[name='Components']/@definitions[name='RTCSystemCFD']/@composite/@connectors[name='cc2']"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_voxs0JtZEeqYK-IPB1YhQg" size="2">
-        <customFeatures>strokeColor</customFeatures>
         <description xmi:type="style:EdgeStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@edgeMappings[name='IBD.Connectors']/@style"/>
         <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_voxs0ZtZEeqYK-IPB1YhQg" showIcon="false"/>
       </ownedStyle>
@@ -4766,7 +4754,6 @@
       <target xmi:type="sysadl:ConnectorUse" href="My.sysadl#//@packages[name='Components']/@definitions[name='RTCSystemCFD']/@composite/@connectors[name='pc']"/>
       <semanticElements xmi:type="sysadl:ConnectorUse" href="My.sysadl#//@packages[name='Components']/@definitions[name='RTCSystemCFD']/@composite/@connectors[name='pc']"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_vo0JEJtZEeqYK-IPB1YhQg" size="2">
-        <customFeatures>strokeColor</customFeatures>
         <description xmi:type="style:EdgeStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@edgeMappings[name='IBD.Connectors']/@style"/>
         <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_vo0JEZtZEeqYK-IPB1YhQg" showIcon="false"/>
       </ownedStyle>
@@ -4776,7 +4763,6 @@
       <target xmi:type="sysadl:ConnectorUse" href="My.sysadl#//@packages[name='Components']/@definitions[name='RTCSystemCFD']/@composite/@connectors[name='c2']"/>
       <semanticElements xmi:type="sysadl:ConnectorUse" href="My.sysadl#//@packages[name='Components']/@definitions[name='RTCSystemCFD']/@composite/@connectors[name='c2']"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_vo0wIJtZEeqYK-IPB1YhQg" size="2">
-        <customFeatures>strokeColor</customFeatures>
         <description xmi:type="style:EdgeStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@edgeMappings[name='IBD.Connectors']/@style"/>
         <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_vo0wIZtZEeqYK-IPB1YhQg" showIcon="false"/>
       </ownedStyle>
@@ -4786,7 +4772,6 @@
       <target xmi:type="sysadl:ConnectorUse" href="My.sysadl#//@packages[name='Components']/@definitions[name='RTCSystemCFD']/@composite/@connectors[name='cc1']"/>
       <semanticElements xmi:type="sysadl:ConnectorUse" href="My.sysadl#//@packages[name='Components']/@definitions[name='RTCSystemCFD']/@composite/@connectors[name='cc1']"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_vo1XMJtZEeqYK-IPB1YhQg" size="2">
-        <customFeatures>strokeColor</customFeatures>
         <description xmi:type="style:EdgeStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@edgeMappings[name='IBD.Connectors']/@style"/>
         <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_vo1XMZtZEeqYK-IPB1YhQg" showIcon="false"/>
       </ownedStyle>
@@ -7760,10 +7745,7 @@
         <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
         <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
         <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
-        <ownedStyle xmi:type="diagram:Square" uid="_Mi-98CqXEeuy_YpTocGAGQ" showIcon="false" iconPath="/org.sysadl.viewpoints/icons/ComponentUse.gif" borderSize="2" labelPosition="node" width="15" height="7" color="126,177,254">
-          <customFeatures>borderColor</customFeatures>
-          <customFeatures>borderLineStyle</customFeatures>
-          <customFeatures>borderSizeComputationExpression</customFeatures>
+        <ownedStyle xmi:type="diagram:Square" uid="_Mi-98CqXEeuy_YpTocGAGQ" showIcon="false" iconPath="/org.sysadl.viewpoints/icons/ComponentUse.gif" labelPosition="node" width="15" height="7" color="126,177,254">
           <description xmi:type="style:SquareDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@subNodeMappings[name='IBD.Component%20']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@subNodeMappings[name='IBD.Component%20']"/>
@@ -7803,10 +7785,7 @@
           </ownedStyle>
           <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@subNodeMappings[name='IBD.Component%20']/@borderedNodeMappings[name='IBD.Component.PortUse']"/>
         </ownedBorderedNodes>
-        <ownedStyle xmi:type="diagram:Square" uid="_Mi_lASqXEeuy_YpTocGAGQ" showIcon="false" iconPath="/org.sysadl.viewpoints/icons/ComponentUse.gif" borderSize="2" labelPosition="node" width="15" height="7" color="126,177,254">
-          <customFeatures>borderColor</customFeatures>
-          <customFeatures>borderLineStyle</customFeatures>
-          <customFeatures>borderSizeComputationExpression</customFeatures>
+        <ownedStyle xmi:type="diagram:Square" uid="_Mi_lASqXEeuy_YpTocGAGQ" showIcon="false" iconPath="/org.sysadl.viewpoints/icons/ComponentUse.gif" labelPosition="node" width="15" height="7" color="126,177,254">
           <description xmi:type="style:SquareDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@subNodeMappings[name='IBD.Component%20']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@subNodeMappings[name='IBD.Component%20']"/>
@@ -7841,10 +7820,7 @@
         <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
         <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
         <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
-        <ownedStyle xmi:type="diagram:Square" uid="_MjAzICqXEeuy_YpTocGAGQ" showIcon="false" iconPath="/org.sysadl.viewpoints/icons/ComponentUse.gif" borderSize="2" labelPosition="node" width="15" height="7" color="126,177,254">
-          <customFeatures>borderColor</customFeatures>
-          <customFeatures>borderLineStyle</customFeatures>
-          <customFeatures>borderSizeComputationExpression</customFeatures>
+        <ownedStyle xmi:type="diagram:Square" uid="_MjAzICqXEeuy_YpTocGAGQ" showIcon="false" iconPath="/org.sysadl.viewpoints/icons/ComponentUse.gif" labelPosition="node" width="15" height="7" color="126,177,254">
           <description xmi:type="style:SquareDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@subNodeMappings[name='IBD.Component%20']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@containerMappings[name='IBD.Config']/@subNodeMappings[name='IBD.Component%20']"/>
@@ -7854,7 +7830,6 @@
       <target xmi:type="sysadl:ConnectorUse" href="My.sysadl#//@packages[name='Components']/@definitions[name='RoomTemperatureControllerCP']/@composite/@connectors[name='target']"/>
       <semanticElements xmi:type="sysadl:ConnectorUse" href="My.sysadl#//@packages[name='Components']/@definitions[name='RoomTemperatureControllerCP']/@composite/@connectors[name='target']"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_Mn7vYCqXEeuy_YpTocGAGQ" size="2">
-        <customFeatures>strokeColor</customFeatures>
         <description xmi:type="style:EdgeStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@edgeMappings[name='IBD.Connectors']/@style"/>
         <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_Mn7vYSqXEeuy_YpTocGAGQ" showIcon="false"/>
       </ownedStyle>
@@ -7864,7 +7839,6 @@
       <target xmi:type="sysadl:ConnectorUse" href="My.sysadl#//@packages[name='Components']/@definitions[name='RoomTemperatureControllerCP']/@composite/@connectors[name='average']"/>
       <semanticElements xmi:type="sysadl:ConnectorUse" href="My.sysadl#//@packages[name='Components']/@definitions[name='RoomTemperatureControllerCP']/@composite/@connectors[name='average']"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_MoDrMSqXEeuy_YpTocGAGQ" size="2">
-        <customFeatures>strokeColor</customFeatures>
         <description xmi:type="style:EdgeStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@edgeMappings[name='IBD.Connectors']/@style"/>
         <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_MoDrMiqXEeuy_YpTocGAGQ" showIcon="false"/>
       </ownedStyle>
@@ -7874,7 +7848,6 @@
       <target xmi:type="sysadl:Delegation" href="My.sysadl#//@packages[name='Components']/@definitions[name='RoomTemperatureControllerCP']/@composite/@delegations.0"/>
       <semanticElements xmi:type="sysadl:Delegation" href="My.sysadl#//@packages[name='Components']/@definitions[name='RoomTemperatureControllerCP']/@composite/@delegations.0"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_MoRGkSqXEeuy_YpTocGAGQ" lineStyle="dash" targetArrow="NoDecoration" size="2">
-        <customFeatures>strokeColor</customFeatures>
         <description xmi:type="style:EdgeStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@edgeMappings[name='IBD.Delegation']/@style"/>
         <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_MoRGkiqXEeuy_YpTocGAGQ"/>
       </ownedStyle>
@@ -7884,7 +7857,6 @@
       <target xmi:type="sysadl:Delegation" href="My.sysadl#//@packages[name='Components']/@definitions[name='RoomTemperatureControllerCP']/@composite/@delegations.1"/>
       <semanticElements xmi:type="sysadl:Delegation" href="My.sysadl#//@packages[name='Components']/@definitions[name='RoomTemperatureControllerCP']/@composite/@delegations.1"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_MoRtoCqXEeuy_YpTocGAGQ" lineStyle="dash" targetArrow="NoDecoration" size="2">
-        <customFeatures>strokeColor</customFeatures>
         <description xmi:type="style:EdgeStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@edgeMappings[name='IBD.Delegation']/@style"/>
         <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_MoRtoSqXEeuy_YpTocGAGQ"/>
       </ownedStyle>
@@ -7894,7 +7866,6 @@
       <target xmi:type="sysadl:Delegation" href="My.sysadl#//@packages[name='Components']/@definitions[name='RoomTemperatureControllerCP']/@composite/@delegations.2"/>
       <semanticElements xmi:type="sysadl:Delegation" href="My.sysadl#//@packages[name='Components']/@definitions[name='RoomTemperatureControllerCP']/@composite/@delegations.2"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_MoRtpSqXEeuy_YpTocGAGQ" lineStyle="dash" targetArrow="NoDecoration" size="2">
-        <customFeatures>strokeColor</customFeatures>
         <description xmi:type="style:EdgeStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@edgeMappings[name='IBD.Delegation']/@style"/>
         <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_MoRtpiqXEeuy_YpTocGAGQ"/>
       </ownedStyle>
@@ -7904,7 +7875,6 @@
       <target xmi:type="sysadl:Delegation" href="My.sysadl#//@packages[name='Components']/@definitions[name='RoomTemperatureControllerCP']/@composite/@delegations.3"/>
       <semanticElements xmi:type="sysadl:Delegation" href="My.sysadl#//@packages[name='Components']/@definitions[name='RoomTemperatureControllerCP']/@composite/@delegations.3"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_MoSUsSqXEeuy_YpTocGAGQ" lineStyle="dash" targetArrow="NoDecoration" size="2">
-        <customFeatures>strokeColor</customFeatures>
         <description xmi:type="style:EdgeStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@edgeMappings[name='IBD.Delegation']/@style"/>
         <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_MoSUsiqXEeuy_YpTocGAGQ"/>
       </ownedStyle>
@@ -7914,7 +7884,6 @@
       <target xmi:type="sysadl:Delegation" href="My.sysadl#//@packages[name='Components']/@definitions[name='RoomTemperatureControllerCP']/@composite/@delegations.4"/>
       <semanticElements xmi:type="sysadl:Delegation" href="My.sysadl#//@packages[name='Components']/@definitions[name='RoomTemperatureControllerCP']/@composite/@delegations.4"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_MoSUtiqXEeuy_YpTocGAGQ" lineStyle="dash" targetArrow="NoDecoration" size="2">
-        <customFeatures>strokeColor</customFeatures>
         <description xmi:type="style:EdgeStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@edgeMappings[name='IBD.Delegation']/@style"/>
         <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_MoSUtyqXEeuy_YpTocGAGQ"/>
       </ownedStyle>
@@ -7924,7 +7893,6 @@
       <target xmi:type="sysadl:Delegation" href="My.sysadl#//@packages[name='Components']/@definitions[name='RoomTemperatureControllerCP']/@composite/@delegations.5"/>
       <semanticElements xmi:type="sysadl:Delegation" href="My.sysadl#//@packages[name='Components']/@definitions[name='RoomTemperatureControllerCP']/@composite/@delegations.5"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_MoS7wSqXEeuy_YpTocGAGQ" lineStyle="dash" targetArrow="NoDecoration" size="2">
-        <customFeatures>strokeColor</customFeatures>
         <description xmi:type="style:EdgeStyleDescription" href="platform:/plugin/org.sysadl.viewpoints/description/SysADL_vp.odesign#//@ownedViewpoints[name='SysADL.Structural']/@ownedRepresentations[name='SysADL.IBD']/@defaultLayer/@edgeMappings[name='IBD.Delegation']/@style"/>
         <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_MoS7wiqXEeuy_YpTocGAGQ"/>
       </ownedStyle>

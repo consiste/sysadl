@@ -17,7 +17,11 @@ public class ParserAnswerCSP {
 	public String assertion = "";
 	
 	public String getTrace(String answer, String assertion) {
-		this.assertion = (String) assertion.subSequence(0, assertion.indexOf(":"));
+		if (assertion.contains(":")) 
+			this.assertion = (String) assertion.subSequence(0, assertion.indexOf(":"));
+		else if(assertion.contains("[T="))
+			this.assertion = (String) assertion.subSequence(0, assertion.indexOf("[T="));
+		
 		Pattern pattern = Pattern.compile("[Tt]race.*");
 		Matcher matcher = pattern.matcher(PARSE_STRING);				
 		String mach = "";			

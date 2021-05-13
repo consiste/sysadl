@@ -1,15 +1,16 @@
 package org.sysadl.verification.csp;
 
-import java.awt.Point;
 
 import javax.swing.JDialog;
 import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
@@ -24,9 +25,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
+import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
-
-import sysadl.viewpoints.actions.*;
 
 
 public class VerificationAnwserDialog extends JDialog {
@@ -37,12 +37,9 @@ public class VerificationAnwserDialog extends JDialog {
 	    public VerificationAnwserDialog(JFrame parent, String title, HashMap<String, String> message,HashMap<String, String> falseCase, boolean error) {
 	        super(parent, title);
 	        System.out.println("creating the window..");
-	        // set the position of the window
-	        Point p = new Point(400, 400);
-	        int c =0;
-	        setLocation(p.x, p.y);
-	        array = message.keySet().toArray();	        
-	        Object k;
+	        // set the position of the window	        
+	        setLocationRelativeTo(null);
+	        array = message.keySet().toArray();	        	        
 	        // Create a message
 	        if (error) {
 	        	JPanel messagePane = new JPanel();	        
@@ -56,15 +53,11 @@ public class VerificationAnwserDialog extends JDialog {
 		        messagePane.add(new JLabel("<html>" + text + "<br/>" + "</html>"));
 		        getContentPane().add(messagePane);
 			}
-	        else {
-	        	 
-	        	int cont = -1;
+	        else {	        	 	        
 		        JPanel panel = new JPanel();
 		        panel.setLayout(new GridLayout(array.length,2,3,3));		        	        		       
 		        JButton errorbutton = null;		       
-		        for (int i = 0; i < array.length; i++) {
-		        	cont++;
-		        	
+		        for (int i = 0; i < array.length; i++) {		        			        	
 		        	JPanel messagePane = new JPanel();
 		        	messagePane.setLayout(new BoxLayout(messagePane, BoxLayout.LINE_AXIS));
 		        	String text = "";
@@ -74,7 +67,7 @@ public class VerificationAnwserDialog extends JDialog {
 					}
 		        	else if(array[i].toString().contains("[T=")) {
 		        		String[] aux = array[i].toString().split(" ");
-		        		text+= "Safety property: " + aux[2];
+		        		text+= "Safety property: " + aux[0];
 		        	}
 		        	else if(array[i].toString().contains("[deadlock free [FD]]")) {
 		        		String[] aux = array[i].toString().split(" :");
@@ -116,8 +109,8 @@ public class VerificationAnwserDialog extends JDialog {
 					            	   textFalseCase += falseCase.get(falseKeys[j]);
 					               }
 					               //createFrameWithMessage(frame, "?", textFalseCase, falseKeys);
-					               String path = System.getProperty("user.dir");
-					               makeFileWithTraces(path+"//trace");
+//					               String path = System.getProperty("user.dir");
+//					               makeFileWithTraces(path+"//trace");
 					               
 								}
 							});
@@ -136,7 +129,7 @@ public class VerificationAnwserDialog extends JDialog {
 								 JFrame frame = new JFrame();		               					               
 					               createFrameWithMessage(frame, "?", falseCase, kf);
 					               String path = System.getProperty("user.dir");
-					               makeFileWithTraces(path+"//trace");
+//					               makeFileWithTraces(path+"//trace");
 					               
 								}
 							});
@@ -147,12 +140,21 @@ public class VerificationAnwserDialog extends JDialog {
 		        	panel.add(messagePane);
 		        	
 		        	
+		        	
+		        	
 				}	        
 		        
 		        // get content pane, which is usually the
 		        // Container of all the dialog's components.	        
 		        		        		       		        
 		        getContentPane().add(panel);
+		        JScrollPane scrollPane = new JScrollPane(panel);
+		        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		        scrollPane.setBounds(50, 30, 300, 50);
+		        getContentPane().setPreferredSize(new Dimension(500, 400));
+	    		getContentPane().add(scrollPane);
+	    		
 		    }
 	        // Create a button
 	        JPanel buttonPane = new JPanel();
@@ -176,7 +178,7 @@ public class VerificationAnwserDialog extends JDialog {
             
 			if (key.toString().contains("_check")) {
 				String[] parts = falseCase.get(key).toString().split(";");
-	            String anwser = "<html>The folow set " + parts[0] +" it is not valid for the InParameters on the equation " ;
+	            String anwser = "<html>The following set " + parts[0] +" is not valid for input parameters of the " ;
 	            anwser += "<br/>";
 	            anwser += "equation: " + parts[1];
 	            anwser += "<br/>";
@@ -191,7 +193,7 @@ public class VerificationAnwserDialog extends JDialog {
 			}
 			else if(key.toString().contains("subset")) {
 				String[] parts = falseCase.get(key).toString().split(";");
-	            String anwser = "<html>The folow set of execution values " + parts[0] +"<br/> it is not a subset of the values definied by the Compotament ";
+	            String anwser = "<html>The following set " + parts[0] +"<br/> is not a subset of the values defined by the component. ";
 	            anwser += "<br/>";	           
 	            
 	            anwser += "</html>";
@@ -199,28 +201,41 @@ public class VerificationAnwserDialog extends JDialog {
 	            frame.add(panel);
 	            return;
 			}
+			else if(key.toString().contains("SPEC_")) {
+				String path = System.getProperty("user.dir");
+				File traces = new File(path+"//trace");
+				BufferedReader br;
+				try {
+					br = new BufferedReader(new FileReader(traces));
+					String st = br.readLine();
+					st = st.replaceAll("-,", "");
+					st = st.replaceAll(",", "<br/>");
+					st = st.replaceAll("\\.", " : ");
+					st = st.replace("?", "");
+					String anwser = "<html> Sequence of events:<br/>" + st + "</html>";
+					panel.add(new JLabel(anwser));
+					JScrollPane scrollPane = new JScrollPane(panel);
+			        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+			        scrollPane.setBounds(50, 30, 300, 50);
+			        frame.setPreferredSize(new Dimension(500, 400));
+		            frame.add(scrollPane);
+		            return;
+					  
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				  
+				  
+				  
+			}
 			
             
-	    }
-	    
-	    private void makeFileWithTraces( String title) {	    		    
-	    	try {
-	    		FileWriter file = new FileWriter(title);
-				
-			String teste = "s1:TemperatureSensorCP\n"
-							+"s2:TemperatureSensorCP\n"
-							+"s3:PresenceSensorCP\n"
-							+"ui:UserInterfaceCP\n"
-							+"c1 : FahrenheitToCelsiusCN";
-			
-			file.append(teste);
-			file.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	    		    	
-	    }
+	    }	    	   
 	 
 	    // override the createRootPane inherited by the JDialog, to create the rootPane.
 	    // create functionality to close the window when "Escape" button is pressed

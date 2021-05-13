@@ -14,11 +14,19 @@ lazy rule lazyComponentDef2Component {
 					thisModule.lazySimplePortUse2ConnectionDeclaration(con)
 				endif)),
 			protDecl <- thisModule.lazyComponent2ProtocolDeclaration(sSC),
-			behavior <- if (sSC.isBoundary = true or sSC.composite.oclIsUndefined()) then
+			behavior <- if (sSC.isBoundary = true) then
 							thisModule.lazyUnobservable2BehaviorDeclaration(PIADL!Unobservable)
 						else
-							thisModule.lazyComponentDefConfiguration2CompositionBehaviorDeclaration(sSC)
-						endif
+							if (sSC.composite.oclIsUndefined()) then
+								if (activityComp.includes(sSC.name)) then
+									thisModule.lazyComponentDef2BehaviorDeclaration(sSC)
+								else
+									thisModule.lazyUnobservable2BehaviorDeclaration(PIADL!Unobservable)
+								endif
+							else
+								thisModule.lazyComponentDefConfiguration2CompositionBehaviorDeclaration(sSC)
+							endif
+						endif			
 			)
 }
 
@@ -29,7 +37,3 @@ lazy rule lazyComponentDef2Component {
 
 
 
-
-
-		
-		

@@ -49,7 +49,22 @@
         <type xsi:type="piADL:TypeRef" idt="Int"/>
       </protocol>
     </protDecl>
-    <behavior/>
+    <behavior>
+      <body xsi:type="piADL:FunctionDeclaration" functionName="SetValueAN">
+        <parameters name="bI">
+          <type xsi:type="piADL:TypeRef" idt="Int"/>
+        </parameters>
+        <returnType xsi:type="piADL:TypeRef" idt="Int"/>
+        <block xsi:type="piADL:Return">
+          <expr xsi:type="piADL:StringLiteral" value="0"/>
+        </block>
+      </body>
+      <body xsi:type="piADL:OutputPrefix" connectionName="aout">
+        <value xsi:type="piADL:FunctionCall" functionName="SetValueAN">
+          <params xsi:type="piADL:VariableRef" variable="bI"/>
+        </value>
+      </body>
+    </behavior>
   </archElements>
   <archElements xsi:type="piADL:Component" name="boundary CompB">
     <connections name="aIn">

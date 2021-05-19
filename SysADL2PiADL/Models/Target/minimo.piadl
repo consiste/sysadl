@@ -9,7 +9,22 @@
         <type xsi:type="piADL:TypeRef" idt="Int"/>
       </protocol>
     </protDecl>
-    <behavior/>
+    <behavior>
+      <body xsi:type="piADL:FunctionDeclaration" functionName="SetValueAN">
+        <parameters name="b">
+          <type xsi:type="piADL:TypeRef" idt="Boolean"/>
+        </parameters>
+        <returnType xsi:type="piADL:TypeRef" idt="Int"/>
+        <block xsi:type="piADL:Return">
+          <expr xsi:type="piADL:StringLiteral" value="0"/>
+        </block>
+      </body>
+      <body xsi:type="piADL:OutputPrefix" connectionName="aout">
+        <value xsi:type="piADL:FunctionCall" functionName="SetValueAN">
+          <params xsi:type="piADL:VariableRef" variable="b"/>
+        </value>
+      </body>
+    </behavior>
   </archElements>
   <archElements xsi:type="piADL:Component" name="boundary CompB">
     <connections name="bOut" direction="out">

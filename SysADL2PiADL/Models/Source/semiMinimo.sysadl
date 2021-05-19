@@ -90,4 +90,27 @@ package ComponentsAGV {
 			aIn : inPortaA {}
 			bOut : outPortaB{}
 	}
+
+	activity def CompAAC (bI : Int) : (aout : Int) {
+		body {
+		actions : 
+			sv : SetValueAN{
+				using pins: bI : Int;
+			}
+		delegate aout to sv 
+		}
+	}
+	action def SetValueAN(bsI: Int): Int {
+		constraint : post-condition SetValueEQ
+		delegate SetValueAN to result
+	}	
+		constraint SetValueEQ (bi: Int) :
+		(result : Int) {
+			equation = bi == 439 ? result == 1 : result == 0
+		}
+	
 }
+
+allocations { 
+	activity CompAAC to CompA 
+}	

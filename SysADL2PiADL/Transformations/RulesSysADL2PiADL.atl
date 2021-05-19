@@ -146,8 +146,7 @@ helper def: setTypeDeclarations(dependences: OrderedSet(String)):
 						let typeElem: String =
 							thisModule.typeDecls.get(dependence) -> first()
 						in
-							if (typeElem.oclIsUndefined() or typeElem = PIADL!AnyType)
-									then
+							if (typeElem.oclIsUndefined() or typeElem = PIADL!AnyType) then
 								fields.including(Tuple{fieldName = typeElem, fieldType =
 										typeElem})
 							else
@@ -339,7 +338,7 @@ lazy rule lazyComponentDef2Component {
 				setTypeDeclarations(dependence)));
 		
 		activityComp: OrderedSet(String) = SYSADL!ActivityAllocation.allInstances()-> iterate(alloc; actComps:
-				OrderedSet(String) = OrderedSet{} | actComps.including(alloc.target.name.debug('target component name: ')));
+				OrderedSet(String) = OrderedSet{} | actComps.including(alloc.target.name));
 
 	}
 	to
@@ -674,9 +673,9 @@ lazy rule lazyComponentDef2BehaviorDeclaration {
 		sCD: SYSADL!ComponentDef
 	using {		
 		
-		activityDef: SYSADL!ActivityDef = SYSADL!ActivityAllocation.allInstances() -> select (aa | aa.target.name.debug('aa.target= ') = sCD.name.debug('component name = '))->first().source;
+		activityDef: SYSADL!ActivityDef = SYSADL!ActivityAllocation.allInstances() -> select (aa | aa.target.name = sCD.name)->first().source;
 		actDefParamIn: Sequence(String)= activityDef.inParameters-> 
-			iterate(pimIn; pins: Sequence(String) = Sequence {} | pins.including(pimIn.name.debug('pinIN:')));
+			iterate(pimIn; pins: Sequence(String) = Sequence {} | pins.including(pimIn.name));
 		actDefParamOut: Sequence(String)= activityDef.outParameters-> 
 			iterate(pimOut; pins: Sequence(String) = Sequence {} | pins.including(pimOut.name));
 		actDefFlows: Sequence(SYSADL!ActivityFlow)= activityDef.body.flows-> 
@@ -829,7 +828,7 @@ lazy rule lazyActiveRelationTuple2FunctionCall {
 						if(mapActionPinIn.getKeys().includes(pin.name))then
 							parameters.including(thisModule.lazyActionDef2FunctionCall(mapActionPinIn.get(pin.name)))
 						else
-							parameters.including(thisModule.lazyPin2VariableRef(pin.debug('ELSE')))
+							parameters.including(thisModule.lazyPin2VariableRef(pin))
 						endif
 			)
 		)

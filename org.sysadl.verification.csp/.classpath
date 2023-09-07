@@ -10,8 +10,11 @@
 		<accessrules>
 			<accessrule kind="accessible" pattern="org/sysadl/**"/>
 			<accessrule kind="accessible" pattern="org/eclipse/core/resources/**"/>
+			<accessrule kind="accessible" pattern="org/eclipse/equinox/**"/>
 		</accessrules>
 	</classpathentry>
 	<classpathentry kind="lib" path="FDR-lib/bin/fdr.jar"/>
+	<classpathentry kind="lib" path="common-3.7.0.jar"/>
+	<classpathentry kind="lib" path="swingx-1.6.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

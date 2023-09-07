@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.SwingUtilities;
 
 import org.csp.translater.main.Generate;
 import org.csp.translater.query.AuxiliarsQuery;
@@ -57,6 +58,8 @@ import uk.ac.ox.cs.fdr.fdr;
 
 
 public class PerformTransformation {
+	
+	public static String trace = "";
 
 	public static void run(IFile file,Model model, Object architecture) {
 		PrintStream out = System.out;
@@ -99,9 +102,11 @@ public class PerformTransformation {
 	            		
 	            		if (result.equals("false")) {
 							if (stm.expression().toString().contains("subset")) {
-								String[] sets = stm.expression().replace("subset(", "").replace(")\r", "").split(",");
+								String[] sets = stm.expression().replace("subset(", "").replace(")", "").replace(")\r", "").split(",");
 								String diffResult =  session.evaluateExpression("diff(" + sets[0]+ ","+sets[1]+")", null).result();
-								falseCase.put(stm.expression().toString(), diffResult);
+								ConstraintDef constraintEQ = getEquation(model,sets[1].toString().replace("_s",""));
+								String types = getTypes(constraintEQ);
+								falseCase.put(stm.expression().toString(), diffResult+";"+types);
 							}
 							else {
 								stm.expression().toString();
@@ -123,9 +128,14 @@ public class PerformTransformation {
 	    	            
 	    	            System.out.println(assertion.toString()+" "+
 	    	                (assertion.passed() ? "Passed" : "Failed"));
+	    	            if(!assertion.passed()) {
+	    	            	trace += ":";
+	    	            	trace += assertion.toString().split(" ")[0];
+	    	            	trace += ":";
+	    	            }
 	    	            
 	    	         // Pretty print the counterexamples
-	    	            for (Counterexample counterexample : assertion.counterexamples()) {
+	    	            for (Counterexample counterexample : assertion.counterexamples()) {	    	            	
 	    	                describeCounterexample(out, session, counterexample);
 	    	                
 	    	                parser.getTrace(out.toString(), assertion.toString());
@@ -145,8 +155,11 @@ public class PerformTransformation {
 			    checkpoint.setString("Show the results ...");
 			    checkpoint.setValue(progressValue + 100);
 			    progress.setVisible(false);
-			    VerificationAnwserDialog dialog = new VerificationAnwserDialog(new JFrame(), "Results", mapAnwser, falseCase, false);
-			
+			    SwingUtilities.invokeLater(() -> {
+			    	VerificationAnwserDialog dialog = new VerificationAnwserDialog(new JFrame(), "Results", mapAnwser, falseCase, false, file);
+					
+			    });
+			    
 	            
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -157,12 +170,12 @@ public class PerformTransformation {
         	if (query.CheckPortsAndPinsNames(model).startsWith("Fail")) {
         		String[] aux = query.CheckPortsAndPinsNames(model).split("-");
         		mapAnwser.put(aux[0], aux[1]);
-        		VerificationAnwserDialog dialog = new VerificationAnwserDialog(new JFrame(), "Error", mapAnwser,falseCase, true);
+        		VerificationAnwserDialog dialog = new VerificationAnwserDialog(new JFrame(), "Error", mapAnwser,falseCase, true, file);
 			}
         	else if (query.ExistEqualsNames(model).startsWith("Sucess")) {
         		String[] aux = query.ExistEqualsNames(model).split("-");
         		mapAnwser.put(aux[0], aux[1]);
-        		VerificationAnwserDialog dialog = new VerificationAnwserDialog(new JFrame(), "Error", mapAnwser,falseCase, true);
+        		VerificationAnwserDialog dialog = new VerificationAnwserDialog(new JFrame(), "Error", mapAnwser,falseCase, true, file);
 			}
         	
         }
@@ -311,99 +324,100 @@ public class PerformTransformation {
 	    DebugContext debugContext, Behaviour behaviour, int indent,
 	    boolean recurse)
 	{
-	    // Describe the behaviour type
-	    printIndent(out, indent); out.print("behaviour type: ");
-	    indent += 2;
-	    if (behaviour instanceof ExplicitDivergenceBehaviour)
-	        out.println("explicit divergence after trace");
-	    else if (behaviour instanceof IrrelevantBehaviour)
-	        out.println("irrelevant");
-	    else if (behaviour instanceof LoopBehaviour)
-	    {
-	        LoopBehaviour loop = (LoopBehaviour) behaviour;
-	        out.println("loops after index " + loop.loopIndex());
-	    }
-	    else if (behaviour instanceof MinAcceptanceBehaviour)
-	    {
-	        MinAcceptanceBehaviour minAcceptance = (MinAcceptanceBehaviour) behaviour;
-	        out.print("minimal acceptance refusing {");
-	        for (Long event : minAcceptance.minAcceptance())
-	            out.print(session.uncompileEvent(event).toString() + ", ");
-	        out.println("}");
-	    }
-	    else if (behaviour instanceof SegmentedBehaviour)
-	    {
-	        SegmentedBehaviour segmented = (SegmentedBehaviour) behaviour;
-	        out.println("Segmented behaviour consisting of:");
-	        // Describe the sections of this behaviour. Note that it is very
-	        // important that false is passed to the the descibe methods below
-	        // because segments themselves cannot be divded via the DebugContext.
-	        // That is, asking for behaviourChildren for a behaviour of a
-	        // SegmentedBehaviour is not allowed.
-	        for (TraceBehaviour child : segmented.priorSections())
-	            describeBehaviour(out, session, debugContext, child, indent + 2, false);
-	        describeBehaviour(out, session, debugContext, segmented.last(),
-	            indent + 2, false);
-	    }
-	    else if (behaviour instanceof TraceBehaviour)
-	    {
-	        TraceBehaviour trace = (TraceBehaviour) behaviour;
-	        out.println("performs event " +
-	            session.uncompileEvent(trace.errorEvent()).toString());
-	    }
-
-	    // Describe the trace of the behaviour
-	    printIndent(out, indent); out.print("Trace: ");
-	    String trace = "";
-	    for (Long event : behaviour.trace())
-	    {
-	        // INVALIDEVENT indiciates that this machine did not perform an event at
-	        // the specified index (i.e. it was not synchronised with the machines
-	        // that actually did perform the event).
-	        if (event == fdr.INVALIDEVENT) {
-	            out.print("-, ");
-	            trace += "-, ";
-	        }
-	        else {
-	            out.print(session.uncompileEvent(event).toString() + ", ");
-	            trace += session.uncompileEvent(event).toString() + ", ";
-	        }
-	            
-	    }
-	    out.println();
-	     
-
-	    // Describe any named states of the behaviour
-	    printIndent(out, indent); out.print("States: ");
-	    String path = System.getProperty("user.dir");
-	    try {
-    		FileWriter file = new FileWriter(path+"//trace");		
-			file.append(trace);
-			file.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	    for (Node node : behaviour.nodePath())
-	    {
-	        if (node == null)
-	            out.print("-, ");
-	        else
-	        {
-	            ProcessName processName = session.machineNodeName(behaviour.machine(), node);
-	            if (processName == null)
-	                out.print("(unknown), ");
-	            else
-	                out.print(processName.toString()+", ");
-	        }
-	    }
-	    out.println();
-
-	    // Describe our own children recursively
-	    if (recurse) {
-	        for (Behaviour child : debugContext.behaviourChildren(behaviour))
-	            describeBehaviour(out, session, debugContext, child, indent + 2, true);
-	    }
+		String path = System.getProperty("user.dir");
+		FileWriter file;
+		try {
+			file = new FileWriter(path+"//trace");		
+		    // Describe the behaviour type
+		    printIndent(out, indent); out.print("behaviour type: ");
+		    indent += 2;
+		    if (behaviour instanceof ExplicitDivergenceBehaviour)
+		        out.println("explicit divergence after trace");
+		    else if (behaviour instanceof IrrelevantBehaviour)
+		        out.println("irrelevant");
+		    else if (behaviour instanceof LoopBehaviour)
+		    {
+		        LoopBehaviour loop = (LoopBehaviour) behaviour;
+		        out.println("loops after index " + loop.loopIndex());
+		    }
+		    else if (behaviour instanceof MinAcceptanceBehaviour)
+		    {
+		        MinAcceptanceBehaviour minAcceptance = (MinAcceptanceBehaviour) behaviour;
+		        out.print("minimal acceptance refusing {");
+		        for (Long event : minAcceptance.minAcceptance())
+		            out.print(session.uncompileEvent(event).toString() + ", ");
+		        out.println("}");
+		    }
+		    else if (behaviour instanceof SegmentedBehaviour)
+		    {
+		        SegmentedBehaviour segmented = (SegmentedBehaviour) behaviour;
+		        out.println("Segmented behaviour consisting of:");
+		        // Describe the sections of this behaviour. Note that it is very
+		        // important that false is passed to the the descibe methods below
+		        // because segments themselves cannot be divded via the DebugContext.
+		        // That is, asking for behaviourChildren for a behaviour of a
+		        // SegmentedBehaviour is not allowed.
+		        for (TraceBehaviour child : segmented.priorSections())
+		            describeBehaviour(out, session, debugContext, child, indent + 2, false);
+		        describeBehaviour(out, session, debugContext, segmented.last(),
+		            indent + 2, false);
+		    }
+		    else if (behaviour instanceof TraceBehaviour)
+		    {
+		        TraceBehaviour trace = (TraceBehaviour) behaviour;
+		        out.println("performs event " +
+		            session.uncompileEvent(trace.errorEvent()).toString());
+		    }
+	
+		    // Describe the trace of the behaviour
+		    printIndent(out, indent); out.print("Trace: ");
+		    
+		    for (Long event : behaviour.trace())
+		    {
+		        // INVALIDEVENT indiciates that this machine did not perform an event at
+		        // the specified index (i.e. it was not synchronised with the machines
+		        // that actually did perform the event).
+		        if (event == fdr.INVALIDEVENT) {
+		            out.print("-, ");
+		            trace += "-, ";
+		        }
+		        else {
+		            out.print(session.uncompileEvent(event).toString() + ", ");
+		            trace += session.uncompileEvent(event).toString() + ", ";
+		        }
+		            
+		    }
+		    out.println();
+		    file.append(trace);
+	
+		    // Describe any named states of the behaviour
+		    printIndent(out, indent); out.print("States: ");
+		    	
+		    for (Node node : behaviour.nodePath())
+		    {
+		        if (node == null)
+		            out.print("-, ");
+		        else
+		        {
+		            ProcessName processName = session.machineNodeName(behaviour.machine(), node);
+		            if (processName == null)
+		                out.print("(unknown), ");
+		            else
+		                out.print(processName.toString()+", ");
+		        }
+		    }
+		    out.println();
+	
+		    // Describe our own children recursively
+		    if (recurse) {
+		        for (Behaviour child : debugContext.behaviourChildren(behaviour))
+		            describeBehaviour(out, session, debugContext, child, indent + 2, true);
+		    }		    
+		    file.close();		    
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
